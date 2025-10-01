@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>xử lý tem</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway"> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+</head>
+<body class="w3-light-grey" onload="loaddata()">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">Hệ thống tem lương tháng 7 (new)</span>
+</div>
+
+<!-- Sidebar/menu -->
+<%-include ('./side_nav/sidemenu_n');%>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:220px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-dashboard"></i> Trình xem ảnh tem lương tạm thời <spand id="week_num"></spand></b></h5>
+  </header>
+
+  <div class="w3-row" style="padding-top:10px; padding-bottom:30px;">
+    <div class="w3-col m2 text-left">
+      <form style="padding-left: 20px;">
+        <label for="groupname" >Nhóm chuyền:</label><br>
+        <select class="form-control" id="groupname">
+          <option >All</option>
+          <option >001-007</option>
+          <option >008-014</option>
+          <!-- <option >008-0014</option> -->
+          <option >015-020</option>
+          <option >021-027</option>
+          <option >028-034</option>
+          <option >035-042</option>
+          <option >043-050</option>
+          <option >051-058</option>
+          <option >059-066</option>
+          <option >067-074</option>
+          <option >075-082</option>
+          <option >083-090</option>
+          <option >201-203</option>
+          <option >232-234</option>
+          <option >204-210</option>
+          <option >211-217</option>
+          <option >218-224</option>
+          <option >225-231</option>
+          <option >239-245</option>
+          <option >246-252</option>
+          <option >253-259</option>
+          <option >260-266</option>
+          <option >270-276</option>
+          <option >277-283</option>
+          <option >284-290</option>
+          <option >291-297</option>
+          <option >298-304</option>
+          <option >305-311</option>
+          <option >312-318</option>
+          <option >319-325</option>
+          <option >326-332</option>
+          <option >333-339</option>
+          <option >340-345</option>
+          <option >346-353</option>
+        </select>
+      </form>
+    </div>
+    <div class="w3-col m2 text-left">
+      <form style="padding-left: 20px;">
+        <label for="wlot" >Work_lot:</label><br>
+        <input class="form-control"  type="text" id="wlot" name="wlot">
+      </form>
+    </div>
+    <div class="w3-col m1 text-left">
+      <form style="padding-left: 20px;">
+        <label for="shift" >Ca:</label><br>
+        <select class="form-control" id="shift">
+          <option >-</option>
+          <option >R</option>
+          <option >B</option>
+        </select>
+      </form>
+    </div>
+    <div class="w3-col m2 w3-container">
+      <form style="padding-left: 20px;">
+        <label for="date_sel" >chọn ngày:</label><br>
+        <input class="form-control"  type="date" id="date_sel" name="date_sel" />
+      </form>
+    </div>
+    <div class="w3-col m1 text-center">
+      <br>
+      <button class="w3-button w3-black" id="bt_search" onclick="search_img_qty()">làm mới</button>
+    </div>
+    <div class="w3-col m1 text-center">
+      <br>
+      <button class="w3-button w3-black" id="bt_err" onclick="search_err()">Ảnh lỗi</button>
+    </div>
+    <div class="w3-col m1 text-center">
+      <br>
+      <button class="w3-button w3-black" id="bt_wip" onclick="search_wip()">WIP</button>
+    </div>
+  </div>
+
+  <div class="w3-panel" style="height:calc(100vh - 250px); overflow-y: scroll;">
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <!-- <div class="w3-third">
+        <h5>Regions</h5>
+        <img src="/w3images/region.jpg" style="width:100%" alt="Google Regional Map">
+      </div> -->
+      <div class="w3-row">
+        <h5>Danh sách các ảnh đã được scan <spand id="sl_anh"></spand><spand id="wiploi"></spand></h5>
+        <style>
+          .tablea {
+              margin-top: 0px !important;
+              font-family: Arial, Helvetica, sans-serif;
+              border-collapse: collapse;
+              border-radius: 15px;
+              /* border: 1px solid #ffffff; */
+              overflow: scroll !important;
+          }
+          
+          .tablea td {
+              text-align: left;
+              /* border: 1px solid #3a3a3a; */
+              /* height: 25px !important; */
+              text-align: center !important;
+              border: solid 1px rgb(218, 218, 218);
+          }
+          
+          .tablea th {
+              border: 1px solid #ddd;
+              padding: 4px;
+              border: 1px solid #ffffff;
+              height: 25px !important;
+              min-width: 50px;
+              border: solid 1px #7c4abe;
+          }
+          
+          .tablea tr:nth-child(even) {
+              background-color: #f2f2f2;
+          }
+          
+          .tablea tr:hover {
+              background-color: #ddd;
+          }
+          
+          #tablea th {
+              height: 40px;
+              padding-top: 5px;
+              padding-bottom: 5px;
+              text-align: center;
+              background-color: #7c4abe;
+              color: rgb(255, 255, 255);
+              border: solid 1px rgb(218, 218, 218);
+          }
+          
+          .tableFixHead {
+              overflow-y: auto;
+              height: calc(100vh - 300px);
+          }
+          
+          .tableFixHead thead:not([scope=row]) {
+              position: sticky;
+              top: 0;
+          }
+          
+          .tablea {
+              border-collapse: collapse;
+              width: 100%;
+          }
+          
+          #tableb td {
+              border-bottom: 1px solid #ffffff;
+              border-top: 1px solid #ffffff;
+              text-align: left;
+              /* border: 1px solid #ffffff; */
+              height: 30px !important;
+              text-align: center !important;
+          }
+          
+          #tableb th {
+              height: 600px;
+              padding-top: 12px;
+              padding-bottom: 12px;
+              text-align: center;
+              background-color: #ffffff;
+              color: #7c4abe;
+              border: solid 1px rgb(218, 218, 218);
+          }
+        </style>
+        <div class="tableFixHead">
+            <div class="page-content" style=" margin-top: 3px;margin-left: 0px;">
+                <table id="tablea" class="tablea" style="width:99%; margin: auto; overflow-x: scroll;" onclick="detail_ticket()">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;" >WORK_LOT</th>
+                            <th style="text-align: center;" >IDNV</th>
+                            <th style="text-align: center;" >FILE ẢNH</th>
+                            <th style="text-align: center;">TRẠNG THÁI</th>
+                            <th style="text-align: center;" >SỐ TEM</th>
+                            <th style="text-align: center;" >SỐ MÃ NV</th>
+                            <th style="text-align: center;" >LOẠI TEM</th>
+                            <th style="text-align: center;" >TRANG</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: left;">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-16 w3-black">
+    <p>Powered by <a href="" target="_blank">Ngoi.mai1@hanes.com</a></p>
+  </footer>
+
+  <!-- End page content -->
+  <!-- modal picture-->
+  <!-- modal picture show -->
+  <button id="dialog_img" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal_plan_process">Open Modal</button>
+  <!-- Modal confirm kanban -->
+  <div class="modal fade" id="myModal_plan_process" role="dialog" style="z-index: 9990; margin-top: 20px!important; width: 100%;">
+    <div class="modal-dialog" style="max-width: calc(100vw - 100px)!important;">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><strong>thông tin ảnh</strong><span id="sys_confirm">.</span></h4>
+          <button id="dialog_img_close" type="button" class="close" data-dismiss="modal">&times;</button>
+          
+        </div>
+        <div class="modal-body" style="max-height: calc(100vh - 160px);">
+              <div class="w3-row">
+                <div class="w3-col text-center" style="width: 50%; height: calc(100vh - 160px); overflow-y: scroll;">
+                  <img id="image" src="" style="width:600px">
+                </div>
+                <div class="w3-col" style="width: 50%; height: calc(100vh - 160px); overflow-y: scroll;">
+                  <div class="w3-row-padding">
+                    
+                      <div class="w3-col" style="width: 25%; padding-left: 10px;">
+                        <label for="img_lot" >Work_lot:</label><br>
+                        <input class="form-control" disabled type="text" id="img_lot" name="img_lot">
+                      </div>
+                      <div class="w3-col" style="width: 20%; padding-left: 10px;">
+                        <label for="img_style" >STYLE:</label><br>
+                        <input class="form-control" disabled type="text" id="img_style" name="img_style">
+                      </div>
+                      <div class="w3-col" style="width: 15%; padding-left: 10px;">
+                        <label for="img_size" >size:</label><br>
+                        <input class="form-control" disabled type="text" id="img_size" name="img_size">
+                      </div>
+                      <div class="w3-col" style="width: 15%; padding-left: 10px;">
+                        <label for="img_is_full" >Đủ:</label><br>
+                        <select class="form-control" id="img_is_full" disabled>
+                          <option >-</option>
+                          <option >Not OK</option>
+                        </select>
+                      </div>
+                    
+                      <div class="w3-col text-center" style="width: 25%; padding-left: 10px;">
+                        <br>
+                        <!-- <button class="w3-button w3-indigo" id="bt_update_lot" onclick="update_lot_img()">Cập nhật</button> -->
+                        <button class="w3-button w3-indigo" id="bt_skip_tk" onclick="skip_tk()">Bỏ qua</button>
+                      </div>
+                    
+                  </div>
+                  <div class="w3-bar w3-dark-grey" style="margin-top: 10px;">
+                    Tên ảnh: <spand id="img_name"></spand>
+                  </div>
+                  <div class="w3-row-padding">
+                    <table id="tabled" class="w3-table w3-striped w3-bordered" style="width:99%; margin: auto; overflow-x: scroll; padding-top: 20px;" onclick="modify_ticket()">
+                      <thead>
+                          <tr>
+                              <th style="text-align: center;" >TEM</th>
+                              <th style="text-align: center;" >IDNV</th>
+                              <th style="text-align: center;" >TÊN NV</th>
+                              <th style="text-align: center;" >SAM</th>
+                          </tr>
+                      </thead>
+                      <tbody style="text-align: left;">
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+          ---
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>
+
+
+  <!-- modal modify ticket -->
+  <button id="dialog_tk" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal_tk">Open Modal</button>
+  <!-- Modal confirm kanban -->
+  <div class="modal fade" id="myModal_tk" role="dialog" style="z-index: 9991; margin-top: 120px!important; width: 100%;">
+    <div class="modal-dialog" style="margin-right: 100px;">
+      <!-- Modal content-->
+      <div class="modal-content w3-pale-blue">
+        <div class="modal-header">
+          <h4 class="modal-title"><strong>Phiếu điều chỉnh tem</strong><span id="sys_confirm">.</span></h4>
+          <button id="dialog_tk_close" type="button" class="close" data-dismiss="modal">&times;</button>
+          
+        </div>
+        <div class="modal-body" style="max-height: 600px;">
+              <div class="w3-row">
+                  <div class="w3-row-padding">
+                    <h4>thông tin tem cũ</h4>
+                    <div class="w3-col m8 w3-container">
+                      <form style="padding-left: 20px;">
+                        <label >Mã Tem:</label><br>
+                        <input class="form-control"  type="text" id="old_tk" name="old_tk" disabled />
+                      </form>
+                    </div>
+                    <div class="w3-col m4 w3-container">
+                      <form style="padding-left: 20px;">
+                        <label >Mã NV:</label><br>
+                        <input class="form-control"  type="text" id="old_id" name="old_id" disabled/>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="w3-row-padding">
+                    <h4>thông tin tem mới</h4>
+                    <div class="w3-col m8 w3-container">
+                      <form style="padding-left: 20px;">
+                        <label >Mã Tem:</label><br>
+                        <input class="form-control"  type="text" id="new_tk" name="new_tk" />
+                      </form>
+                    </div>
+                    <div class="w3-col m4 w3-container">
+                      <form style="padding-left: 20px;">
+                        <label >Mã NV:</label><br>
+                        <input class="form-control"  type="text" id="new_id" name="new_id" />
+                      </form>
+                    </div>
+                  </div>
+              </div>
+        </div>
+        <div class="modal-footer text-center">
+          <div class="w3-row" style="width:100%">
+            <div class="w3-col m4">
+              <button class="w3-button w3-indigo" id="bt_add_tk" onclick="add_tk()">Thêm mới</button>
+            </div>
+            <div class="w3-col m4">
+              <button class="w3-button w3-indigo" id="bt_del_tk" onclick="del_tk()">Xóa</button>
+            </div>
+            <!-- <div class="w3-col m3">
+              <button class="w3-button w3-indigo" id="bt_skip_tk" onclick="skip_tk()">Bỏ qua</button>
+            </div> -->
+            <div class="w3-col m4">
+              <button class="w3-button w3-indigo" id="bt_adj_tc" onclick="adj_tk()">Sửa tem</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+  // Get the Sidebar
+  var mySidebar = document.getElementById("mySidebar");
+
+  // Get the DIV with overlay effect
+  var overlayBg = document.getElementById("myOverlay");
+
+  // Toggle between showing and hiding the sidebar, and add overlay effect
+  function w3_open() {
+    if (mySidebar.style.display === 'block') {
+      mySidebar.style.display = 'none';
+      overlayBg.style.display = "none";
+    } else {
+      mySidebar.style.display = 'block';
+      overlayBg.style.display = "block";
+    }
+  }
+
+  // Close the sidebar with the close button
+  function w3_close() {
+    mySidebar.style.display = "none";
+    overlayBg.style.display = "none";
+  }
+</script>
+
+<script type="text/javascript">
+  function change_time(time){
+    return (new Date(time)).toLocaleDateString('fr-CA');
+  } 
+
+  function acitve_menu() {
+  var element = document.getElementById("pr7k");
+  element.classList.add("w3-blue");
+  }
+
+
+  function loaddata(){
+
+    acitve_menu()
+    currentDate = new Date();
+    startDate = new Date(currentDate.getFullYear(), 0, 2);
+    var days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
+          
+    // var weekNumber = Math.ceil((currentDate.getDay() + 1 + days) / 7);
+
+    // console.log(weekNumber)
+    // document.getElementById("week_num").innerHTML=weekNumber;
+    var datenow = change_time(Date.now());
+    document.getElementById("date_sel").value= change_time(Date.now());
+    // document.getElementById("date3").value= change_time(Date.now());
+    // var date1 = new Date(datenow);
+    // date11 =change_time(date1.setDate(date1.getDate() - 7));
+    // date12 =change_time(date1.setDate(date1.getDate() + 14));
+    // document.getElementById("date1").value= date11;
+    // document.getElementById("date").value= date12;
+    // loadchart()
+    // wo()
+    // document.getElementById("linkhome").style.backgroundColor="#4c4c4c";
+    get_group()
+  }
+  function adj_tk(){
+    var lot=document.getElementById('img_lot').value
+    var imgname=document.getElementById('img_name').innerText;
+    var old_tk=document.getElementById('old_tk').value
+    var old_id=document.getElementById('old_id').value
+    var new_tk=document.getElementById('new_tk').value
+    var new_id=document.getElementById('new_id').value
+    var tabled = document.getElementById("tabled");
+    var tk=tabled.rows.length-1;
+    if (new_tk=='' || new_id==''){
+      alert('Cần nhập đủ mã tem và mã nhân viên để điều chỉnh')
+      return
+    }
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", '/pr7k5/adj_ticket', true);
+    // var date=document.getElementById("date2").value;
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data={
+      file:imgname,
+      old_tk:old_tk,
+      old_id:old_id,
+      new_tk:new_tk,
+      new_id:new_id,
+      tk:tk,
+      lot:lot
+    }
+    console.log(data)
+    xmlhttp.send(JSON.stringify(data));  
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var datar = this.responseText;
+          if (datar=='ok'){
+            alert("thông tin đã được điều chỉnh")
+            search_tk(imgname)
+            document.getElementById('img_is_full').value='-'
+            document.getElementById('dialog_tk_close').click()
+            var wip=document.getElementById('wiploi').innerText;
+            if (wip=='WIP'){
+              document.getElementById('bt_wip').click()
+            }else{
+              document.getElementById('bt_err').click()
+            }
+          }else{
+            if (datar=='ava'){
+              alert("thông tin đã được điều chỉnh")
+            }
+            else if(datar=='something wrong'){
+              alert('Có thể là wip đã được scan lại \n có thể bỏ qua nếu tem đúng và chưa match SAH \n hoặc xóa tem này nếu tem lỗi')
+            }else{
+              document.getElementById('reload').click()
+            }
+            
+          }
+          
+        }
+    }
+  }
+
+  function del_tk(){
+    var imgname=document.getElementById('img_name').innerText;
+    var old_tk=document.getElementById('old_tk').value
+    var old_id=document.getElementById('old_id').value
+    var new_tk=document.getElementById('new_tk').value
+    var new_id=document.getElementById('new_id').value
+    var tabled = document.getElementById("tabled");
+    var tk=tabled.rows.length-1;
+    var lot=document.getElementById('img_lot').value
+    // if (new_tk=='' || new_id==''){
+    //   alert('Cần nhập đủ mã tem và mã nhân viên để điều chỉnh')
+    //   return
+    // }
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", '/pr7k5/del_ticket', true);
+    // var date=document.getElementById("date2").value;
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data={
+      file:imgname,
+      old_tk:old_tk,
+      old_id:old_id,
+      new_tk:new_tk,
+      new_id:new_id,
+      tk:tk,
+      lot:lot
+    }
+    xmlhttp.send(JSON.stringify(data));  
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var datar = this.responseText;
+          if (datar=='ok'){
+            alert("thông tin đã được điều chỉnh")
+            search_tk(imgname)
+            document.getElementById('img_is_full').value='-'
+            document.getElementById('dialog_tk_close').click()
+            var wip=document.getElementById('wiploi').innerText;
+            if (wip=='WIP'){
+              document.getElementById('bt_wip').click()
+            }else{
+              document.getElementById('bt_err').click()
+            }
+          }else{
+            document.getElementById('reload').click()
+          }
+          
+        }
+    }
+  }
+
+  function skip_tk(){
+    var imgname=document.getElementById('img_name').innerText;
+    var old_tk=document.getElementById('old_tk').value
+    var old_id=document.getElementById('old_id').value
+    var new_tk=document.getElementById('new_tk').value
+    var new_id=document.getElementById('new_id').value
+    var tabled = document.getElementById("tabled");
+    var lot=document.getElementById('img_lot').value
+    var tk=tabled.rows.length-1;
+    // if (new_tk=='' || new_id==''){
+    //   alert('Cần nhập đủ mã tem và mã nhân viên để điều chỉnh')
+    //   return
+    // }
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", '/pr7k5/skip_ticket', true);
+    // var date=document.getElementById("date2").value;
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data={
+      file:imgname,
+      old_tk:old_tk,
+      old_id:old_id,
+      new_tk:new_tk,
+      new_id:new_id,
+      tk:tk,
+      lot:lot
+    }
+    xmlhttp.send(JSON.stringify(data));  
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var datar = this.responseText;
+          if (datar=='ok'){
+            alert("thông tin đã được điều chỉnh")
+            search_tk(imgname)
+            document.getElementById('img_is_full').value='-'
+            document.getElementById('dialog_tk_close').click()
+            var wip=document.getElementById('wiploi').innerText;
+            if (wip=='WIP'){
+              document.getElementById('bt_wip').click()
+            }else{
+              document.getElementById('bt_err').click()
+            }
+            document.getElementById('dialog_img_close').click()
+          }else{
+            document.getElementById('reload').click()
+          }
+          
+        }
+    }
+  }
+  function add_tk(){
+    var imgname=document.getElementById('img_name').innerText;
+    var date=document.getElementById("date_sel").value;
+    const myArray = date.split("-");
+    dx=myArray[0]+myArray[1]+myArray[2]
+    var old_tk=document.getElementById('old_tk').value
+    var old_id=document.getElementById('old_id').value
+    var new_tk=document.getElementById('new_tk').value
+    var new_id=document.getElementById('new_id').value
+    var tabled = document.getElementById("tabled");
+    var tk=tabled.rows.length;
+    var lot=document.getElementById('img_lot').value
+    // if (new_tk=='' || new_id==''){
+    //   alert('Cần nhập đủ mã tem và mã nhân viên để điều chỉnh')
+    //   return
+    // }
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", '/pr7k5/add_ticket', true);
+    // var date=document.getElementById("date2").value;
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data={
+      file:imgname,
+      old_tk:old_tk,
+      old_id:old_id,
+      new_tk:new_tk,
+      new_id:new_id,
+      tk:tk,
+      lot:lot,
+      dx:dx
+    }
+    xmlhttp.send(JSON.stringify(data));  
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var datar = this.responseText;
+          if (datar=="ava"){
+            alert('ticket đã tồn tại')
+            return
+          }
+          if (datar=='ok'){
+            alert("thông tin đã được điều chỉnh")
+            search_tk(imgname)
+            document.getElementById('img_is_full').value='-'
+            document.getElementById('dialog_tk_close').click()
+            var wip=document.getElementById('wiploi').innerText;
+            if (wip=='WIP'){
+              document.getElementById('bt_wip').click()
+            }else{
+              document.getElementById('bt_err').click()
+            }
+          }else{
+            document.getElementById('reload').click()
+          }
+          
+        }
+    }
+  }
+  function pmticket(){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("get", '/day_scaned/file', true);
+    // var date=document.getElementById("date2").value;
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var data = JSON.parse (this.responseText);
+          // $("#sl_anh").html(data[0].sltk)
+          document.getElementById('sl_anh').innerText=data[0].sltk;
+        }
+      }
+    xmlhttp.send();  
+  }
+  
+  function update_group(){
+  
+    var groupname=document.getElementById('groupname').value
+
+    var shift=document.getElementById('shift').value
+
+
+    // console.log(dx)
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", '/pr7k5/update_group', true);
+
+    // alert('search img')
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data = {
+      groupname: groupname,
+      shift:shift
+    };
+    // console.log(data)
+    xmlhttp.send(JSON.stringify(data));   
+    console.log('send request update group') 
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        // alert('done')
+        // console.log(this.responseText)
+        var datar = this.responseText;
+        console.log(datar)
+      }
+    }
+
+  }
+
+  function get_group(){
+
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("get", '/pr7k5/get_group', true);
+
+  // alert('search img')
+  xmlhttp.setRequestHeader("Content-type", "application/json");
+  // console.log(data)
+  xmlhttp.send();   
+  console.log('send request get group') 
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      // alert('done')
+      // console.log(this.responseText)
+      var datar = JSON.parse(this.responseText);
+      console.log(datar)
+      var groupname=datar[0].groupname
+      if (groupname !=null){
+        document.getElementById('groupname').value=groupname
+        var shift=datar[0].shift
+        document.getElementById('shift').value=shift
+      }
+
+    }
+  }
+
+}
+
+
+function search_img_qty(){
+    var date=document.getElementById("date_sel").value;
+    var groupname=document.getElementById('groupname').value
+    var worklot=document.getElementById('wlot').value
+    var shift=document.getElementById('shift').value
+    console.log(shift)
+    groupname=groupname.replace('-','')
+    // console.log(date)
+    const myArray = date.split("-");
+    dx=myArray[0]+myArray[1]+myArray[2]
+    // console.log(dx)
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", '/pr7k5/search_qty_img', true);
+
+    // alert('search img')
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data = {
+      date: dx,
+      groupname: groupname,
+      worklot: worklot,
+      shift:shift
+    };
+    // console.log(data)
+    xmlhttp.send(JSON.stringify(data));   
+    console.log('send request') 
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        // alert('done')
+        // console.log(this.responseText)
+        var dtx=this.responseText
+        if (dtx=='login'){
+          document.getElementById('reload').click()
+          return
+        }
+        var datar = JSON.parse (this.responseText);
+        // work_lot,DATE,FILE,is_full,qty_ticket,qty_emp,page,type_tk
+        document.getElementById('sl_anh').innerText=datar[0].sltk;
+        search_img()
+      }
+    }
+
+  }
+
+
+
+  function search_img(){
+    var date=document.getElementById("date_sel").value;
+    var groupname=document.getElementById('groupname').value
+    var worklot=document.getElementById('wlot').value
+    var shift=document.getElementById('shift').value
+    console.log(shift)
+    groupname=groupname.replace('-','')
+    // console.log(date)
+    const myArray = date.split("-");
+    dx=myArray[0]+myArray[1]+myArray[2]
+    // console.log(dx)
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", '/pr7k5/search_img', true);
+
+    // alert('search img')
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data = {
+      date: dx,
+      groupname: groupname,
+      worklot: worklot,
+      shift:shift
+    };
+    // console.log(data)
+    xmlhttp.send(JSON.stringify(data));   
+    console.log('send request') 
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        // alert('done')
+        // console.log(this.responseText)
+        var dtx=this.responseText
+        if (dtx=='login'){
+          document.getElementById('reload').click()
+          return
+        }
+        var datar = JSON.parse (this.responseText);
+        // console.log(datar)
+        trHTML='';
+        // work_lot,DATE,FILE,is_full,qty_ticket,qty_emp,page,type_tk
+        if (datar.length>=0){
+
+          for (i = 0; i <  datar.length; i++) {
+            var wlot      =   datar[i].work_lot;
+            var datesc    =   datar[i].DATE;
+            var file_img  =   datar[i].FILE;
+            var st        =   datar[i].is_full;
+            var trangthai='-'
+            if (st=='0'){
+              trangthai='Not OK'
+            }
+            var tk        =   datar[i].qty_ticket;
+            var emp       =   datar[i].qty_emp;
+            var page      =   datar[i].page;
+            var type_tk   =   datar[i].type_tk;
+
+            trHTML += '<tr ><td style="text-align: left;">' + wlot + '</td><td style="text-align: center;">'
+            trHTML += datesc + '</td><td style="text-align: center;">' + file_img + '</td><td style="text-align: center;">'
+            trHTML += trangthai + '</td><td style="text-align: center;">' + tk + '</td><td style="text-align: center;">'
+            trHTML += emp + '</td><td style="text-align: center;">' + type_tk + '</td><td style="text-align: center;">'
+            trHTML += page + '</td></tr>';
+          }
+        }else{
+          document.getElementById('reload').click()
+        }
+        console.log(trHTML)
+        $('#tablea tbody').html(trHTML);
+      }
+    }
+
+  }
+
+
+  function search_wip(){
+    document.getElementById('wiploi').innerText='WIP';
+    var date=document.getElementById("date_sel").value;
+    const myArray = date.split("-");
+    dx=myArray[0]+myArray[1]+myArray[2]
+    var groupname=document.getElementById('groupname').value
+    var worklot=document.getElementById('wlot').value
+    groupname=groupname.replace('-','')
+    // console.log(date)
+    
+    // console.log(dx)
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", '/pr7k5/search_wip', true);
+
+    // alert('search img')
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data = {
+      date: dx,
+      groupname: groupname,
+      worklot: worklot
+    };
+    // console.log(data)
+    xmlhttp.send(JSON.stringify(data));   
+    console.log('send request') 
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var dtx=this.responseText
+        if (dtx=='login'){
+          document.getElementById('reload').click()
+          return
+        }
+        var datar = JSON.parse (this.responseText);
+        // console.log(datar)
+        trHTML='';
+        // work_lot,DATE,FILE,is_full,qty_ticket,qty_emp,page,type_tk
+        document.getElementById('sl_anh').innerText=0;
+        if (datar.length>=0){
+          var sl_anh=datar.length;
+          document.getElementById('sl_anh').innerText=sl_anh;
+          for (i = 0; i <  datar.length; i++) {
+            var wlot      =   datar[i].work_lot;
+            var datesc    =   datar[i].DATE;
+            var file_img  =   datar[i].FILE;
+            var st        =   datar[i].is_full;
+            var trangthai='-'
+            if (st=='0'){
+              trangthai='Not OK'
+            }
+            var tk        =   datar[i].qty_ticket;
+            var emp       =   datar[i].qty_emp;
+            var page      =   datar[i].page;
+            var type_tk   =   datar[i].type_tk;
+
+            trHTML += '<tr ><td style="text-align: left;">' + wlot + '</td><td style="text-align: center;">'
+            trHTML += datesc + '</td><td style="text-align: center;">' + file_img + '</td><td style="text-align: center;">'
+            trHTML += trangthai + '</td><td style="text-align: center;">' + tk + '</td><td style="text-align: center;">'
+            trHTML += emp + '</td><td style="text-align: center;">' + type_tk + '</td><td style="text-align: center;">'
+            trHTML += page + '</td></tr>';
+          }
+        }else{
+          document.getElementById('reload').click()
+        }
+        console.log(trHTML)
+        $('#tablea tbody').html(trHTML);
+        // update_group()
+      }
+    }
+
+  }
+
+
+
+  function search_err(){
+    document.getElementById('wiploi').innerText=' lỗi';
+    var date=document.getElementById("date_sel").value;
+    const myArray = date.split("-");
+    dx=myArray[0]+myArray[1]+myArray[2]
+    var groupname=document.getElementById('groupname').value
+    var worklot=document.getElementById('wlot').value
+    groupname=groupname.replace('-','')
+    // console.log(date)
+    
+    // console.log(dx)
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", '/pr7k5/search_err', true);
+
+    // alert('search img')
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data = {
+      date: dx,
+      groupname: groupname,
+      worklot: worklot
+    };
+    // console.log(data)
+    xmlhttp.send(JSON.stringify(data));   
+    console.log('send request') 
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var dtx=this.responseText
+        if (dtx=='login'){
+          document.getElementById('reload').click()
+          return
+        }
+        var datar = JSON.parse (this.responseText);
+        // console.log(datar)
+        trHTML='';
+        // work_lot,DATE,FILE,is_full,qty_ticket,qty_emp,page,type_tk
+        document.getElementById('sl_anh').innerText=0;
+        if (datar.length>=0){
+          var sl_anh=datar.length;
+          document.getElementById('sl_anh').innerText=sl_anh;
+          for (i = 0; i <  datar.length; i++) {
+            var wlot      =   datar[i].work_lot;
+            var datesc    =   datar[i].DATE;
+            var file_img  =   datar[i].FILE;
+            var st        =   datar[i].is_full;
+            var trangthai='-'
+            if (st=='0'){
+              trangthai='Not OK'
+            }
+            var tk        =   datar[i].qty_ticket;
+            var emp       =   datar[i].qty_emp;
+            var page      =   datar[i].page;
+            var type_tk   =   datar[i].type_tk;
+
+            trHTML += '<tr ><td style="text-align: left;">' + wlot + '</td><td style="text-align: center;">'
+            trHTML += datesc + '</td><td style="text-align: center;">' + file_img + '</td><td style="text-align: center;">'
+            trHTML += trangthai + '</td><td style="text-align: center;">' + tk + '</td><td style="text-align: center;">'
+            trHTML += emp + '</td><td style="text-align: center;">' + type_tk + '</td><td style="text-align: center;">'
+            trHTML += page + '</td></tr>';
+          }
+        }else{
+          document.getElementById('reload').click()
+        }
+        console.log(trHTML)
+        $('#tablea tbody').html(trHTML);
+        // update_group()
+      }
+    }
+
+  }
+
+
+
+
+function search_tk(file_name){
+  console.log(file_name)
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("post", '/pr7k5/search_ticket', true);
+  // var date=document.getElementById("date2").value;
+  xmlhttp.setRequestHeader("Content-type", "application/json");
+  data={
+    file:file_name
+  }
+  xmlhttp.send(JSON.stringify(data));  
+  xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var dtx=this.responseText
+        if (dtx=='login'){
+          document.getElementById('reload').click()
+          return
+        }
+        var datar = JSON.parse (this.responseText);
+        console.log(datar)
+        trHTML='';
+        // work_lot,DATE,FILE,is_full,qty_ticket,qty_emp,page,type_tk
+        if (datar.length>0){
+          var style=document.getElementById('img_style').value=datar[0].style
+          var size=document.getElementById('img_size').value=datar[0].size
+          for (i = 0; i <  datar.length; i++) {
+            var ticket      =   datar[i].ticket;
+            var idnv    =   datar[i].employee;
+            var ln=datar[i].lname
+            var sam=datar[i].sah
+            trHTML += '<tr ><td style="text-align: left;">' + ticket + '</td><td style="text-align: center;">'
+            trHTML += idnv + '</td><td>'+ln+ '</td><td>'+sam+'</td></tr>';
+          }
+        }
+        console.log(trHTML)
+        $('#tabled tbody').html(trHTML);
+      }
+  }
+}
+
+
+function update_lot_img(){
+  var lot=document.getElementById("img_lot").value
+  var style=document.getElementById('img_style').value
+  var size=document.getElementById('img_size').value
+  var imgname=document.getElementById('img_name').innerText
+  var tabled=document.getElementById('tabled');
+  var tk=tabled.rows.length-1;
+  var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", '/pr7k5/update_lot', true);
+    // var date=document.getElementById("date2").value;
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data={
+      file:imgname,
+      lot:lot,
+      qty_tk:tk,
+      style:style,
+      size:size
+    }
+    xmlhttp.send(JSON.stringify(data));  
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var d=this.responseText;
+          if (d=='ok'){
+            alert('thông tin đã được cập nhật')
+            var wip=document.getElementById('wiploi').innerText;
+            if (wip=='WIP'){
+              document.getElementById('bt_wip').click()
+            }else{
+              document.getElementById('bt_err').click()
+            }
+            
+          }else{
+            document.getElementById('reload').click()
+          }
+        }
+      }
+
+}
+
+function detail_ticket() {      
+  var table = document.getElementById("tablea");
+  // console.log(table)
+  event.stopImmediatePropagation;
+  console.log("inside table")
+  for (var i = 1; i < table.rows.length; i++) {
+      table.rows[i].ondblclick = function(e) {
+          console.log(this)
+          tableText(this);
+      };
+  };
+}
+
+function checkImage(dsc,filename) {
+  var url_img='imgpath/'+dsc+'/'+filename
+  var request = new XMLHttpRequest();
+  request.open("GET", url_img, true);
+  request.send();
+  request.onload = function() {
+    status = request.status;
+    if (request.status == 200) //if(statusText == OK)
+    {
+      document.getElementById('image').src='imgpath/'+dsc+'/'+filename
+    } else {
+      document.getElementById('image').src='imgpath2/'+dsc+'/'+filename
+    }
+  }
+}
+function tableText(tableRow) {
+  var dsc = tableRow.childNodes[1].innerText;
+  var filename=tableRow.childNodes[2].innerText
+  checkImage(dsc,filename)
+  var lot=tableRow.childNodes[0].innerText;
+  var tt=tableRow.childNodes[3].innerText;
+  document.getElementById("img_name").innerText = tableRow.childNodes[2].innerText;
+  document.getElementById("img_lot").value=lot
+  // if (lot==''){
+  //   document.getElementById("bt_update_lot").disabled=false;
+  // }else{
+  //   document.getElementById("bt_update_lot").disabled=true;
+  // }
+  document.getElementById("img_is_full").value=tt
+  search_tk(filename)
+  document.getElementById("dialog_img").click();
+};
+
+
+function modify_ticket() {      
+  var tabled = document.getElementById("tabled");
+  // console.log(table)
+  event.stopImmediatePropagation;
+  console.log("inside tabled")
+  for (var i = 1; i < tabled.rows.length; i++) {
+      tabled.rows[i].ondblclick = function(e) {
+          console.log(this)
+          tabled_Text(this);
+      };
+  };
+}
+function tabled_Text(tableRow) {
+  var tk = tableRow.childNodes[0].innerText;
+  var idnv=tableRow.childNodes[1].innerText
+  document.getElementById('old_tk').value=tk
+  document.getElementById('old_id').value=idnv
+  document.getElementById('new_tk').value=tk
+  document.getElementById('new_id').value=idnv
+  // document.getElementById("img_name").innerText = tableRow.childNodes[2].innerText;
+  // document.getElementById("img_lot").value=lot
+  // if (lot==''){
+  //   document.getElementById("bt_update_lot").disabled=false;
+  // }else{
+  //   document.getElementById("bt_update_lot").disabled=true;
+  // }
+  // document.getElementById("img_is_full").value=tt
+  document.getElementById("dialog_tk").click();
+};
+
+
+
+</script> 
+
+
+</body>
+</html>

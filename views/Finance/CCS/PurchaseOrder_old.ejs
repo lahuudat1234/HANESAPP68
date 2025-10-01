@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<header>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <title>CCS - Purchase Order</title>
+</header>
+
+<body style="background-color: white;" onload="load_unit()">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title">PURCHASE ORDER</span>
+                <div class="mdl-layout-spacer"></div>
+                <div id="div_cbb_dept"
+                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                    style="margin: 0 auto; width: 150px; margin-right: 20px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_dept" readonly>
+                    <input type="hidden" value="" name="cbb_dept">
+                    <label for="cbb_dept" class="mdl-textfield__label">Bộ Phận</label>
+                    <ul for="cbb_dept" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                        id="list_cbb_dept">
+                        <li class="mdl-menu__item" data-val="0" data-selected="true">ALL</li>
+                        <li class="mdl-menu__item" data-val="IE">IE</li>
+                        <li class="mdl-menu__item" data-val="IND">IND</li>
+                        <li class="mdl-menu__item" data-val="QA">QA</li>
+                        <li class="mdl-menu__item" data-val="PL">PL</li>
+                        <li class="mdl-menu__item" data-val="IT">IT</li>
+                        <li class="mdl-menu__item" data-val="HR">HR</li>
+                        <li class="mdl-menu__item" data-val="FI">FI</li>
+                        <li class="mdl-menu__item" data-val="PR">PR</li>
+                        <li class="mdl-menu__item" data-val="CT">CT</li>
+                        <li class="mdl-menu__item" data-val="LP">LP</li>
+                        <li class="mdl-menu__item" data-val="MEC">MEC</li>
+                        <li class="mdl-menu__item" data-val="PAD">PAD</li>
+                        <li class="mdl-menu__item" data-val="FM">F&M</li>
+                        <li class="mdl-menu__item" data-val="LOG">LOG</li>
+                        <li class="mdl-menu__item" data-val="CPL">CPL</li>
+                        <li class="mdl-menu__item" data-val="IECT">IECT</li>
+                    </ul>
+                </div>
+
+
+                <div id="div_cbb_month"
+                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                    style="width: 50px; margin-left: 80px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_month" readonly>
+                    <input type="hidden" value="" name="cbb_month">
+                    <label for="cbb_month" class="mdl-textfield__label" style="color:white">Tháng</label>
+                    <ul for="cbb_month" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                        id="list_cbb_month">
+                        <li class="mdl-menu__item" data-val="0">ALL</li>
+                        <li class="mdl-menu__item" data-val="1">1</li>
+                        <li class="mdl-menu__item" data-val="2">2</li>
+                        <li class="mdl-menu__item" data-val="3">3</li>
+                        <li class="mdl-menu__item" data-val="4">4</li>
+                        <li class="mdl-menu__item" data-val="5">5</li>
+                        <li class="mdl-menu__item" data-val="6">6</li>
+                        <li class="mdl-menu__item" data-val="7">7</li>
+                        <li class="mdl-menu__item" data-val="8">8</li>
+                        <li class="mdl-menu__item" data-val="9">9</li>
+                        <li class="mdl-menu__item" data-val="10">10</li>
+                        <li class="mdl-menu__item" data-val="11">11</li>
+                        <li class="mdl-menu__item" data-val="12">12</li>
+                    </ul>
+                </div>
+                <div id="div_cbb_year"
+                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                    style="width: 70px; margin-left: 40px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_year" readonly>
+                    <input type="hidden" value="" name="cbb_year">
+                    <label for="cbb_year" class="mdl-textfield__label" style="color:white">Năm</label>
+                    <ul for="cbb_year" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                        id="list_cbb_year">
+                        <li class="mdl-menu__item" data-val="2020">2020</li>
+                        <li class="mdl-menu__item" data-val="2021">2021</li>
+                        <li class="mdl-menu__item" data-val="2022">2022</li>
+                        <li class="mdl-menu__item" data-val="2023">2023</li>
+                        <li class="mdl-menu__item" data-val="2024">2024</li>
+                        <li class="mdl-menu__item" data-val="2025">2025</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Tabs -->
+            <div id="tabs" class="mdl-layout__tab-bar mdl-js-ripple-effect">
+                <a data-toggle="tab" href="#scroll-tab-1" class="mdl-layout__tab" is-active>PURCHASE ORDER</a>
+                <a data-toggle="tab" href="#scroll-tab-2" class="mdl-layout__tab">REQUISITIONS</a>
+            </div>
+        </header>
+        <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+
+                    <div class="page-content">
+
+                        <div style="width: 99%; margin: 10px auto; border-radius: 10px;">
+                            <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 10px;">
+
+                                <div id="table_PurchaseOrder" class="mdl-card mdl-shadow--6dp"
+                                    style="width: 98%;height: 460px;margin: 10px auto; overflow:auto; border-radius: 10px;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                        <thead class="scroll" style="background-color: rgb(28, 43, 109);">
+                                            <tr>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">PR
+                                                </th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">PR
+                                                    LINE</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">PO
+                                                </th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">PO
+                                                    LINE</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">PO
+                                                    DATE</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    PROJECT NAME</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">ITEM
+                                                    CODE</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    DESCRIPTION ENGLISH</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    QUANITY</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    PRICE</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    CURRENCY</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    AMOUNT</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    RECEIVE QTY</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    RECEIVE DATE</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    CLOSE DATE</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">LEAD
+                                                    TIME/MONTH</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">YEAR
+                                                </th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">USER
+                                                </th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    PURCHASER</th>
+                                                <!-- <th class="mdl-data-table__cell--non-numeric" style="color: white;">ASS APPROVED</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">ASS RESULT</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">HEAD APPROVED</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">HEAD RESULT</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">OPERATION APPROVED</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">OPERATION RESULT</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">PLANT APPROVED</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">PLANT RESULT</th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body" style="text-align: center; font-size: 12px;">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+                    <div class="page-content">
+                        <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect" style="margin: 10px auto;">
+                            <div class="mdl-grid" style="width: 100%;">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                                    style="margin: 10px auto;">
+                                    <input class="mdl-textfield__input" type="text" id="txt_item_find">
+                                    <label class="mdl-textfield__label" for="txt_item_find">Find Request...</label>
+                                </div>
+                            </div>
+                            <div class="mdl-tabs__tab-bar" style="border: none">
+                                <a href="#tab1-panel" class="mdl-tabs__tab is-active" style="font-weight: bold;">GENERAL
+                                    INFORMATION</a>
+                                <a href="#tab2-panel" class="mdl-tabs__tab" style="font-weight: bold;">APPROVAL</a>
+                                <a href="#tab3-panel" class="mdl-tabs__tab" style="font-weight: bold;">HISTORY</a>
+                                <a href="#tab4-panel" class="mdl-tabs__tab" style="font-weight: bold;">BIDDING</a>
+                            </div>
+                            <!-- General Information -->
+                            <div class="mdl-tabs__panel is-active" id="tab1-panel">
+                                <div class="demo-card-wide mdl-card mdl-shadow--2dp"
+                                    style="margin-top:10px;margin-left: auto;margin-right: auto;width: 1260px;height: 460px; border-radius: 10px;">
+                                    <div class="mdl-card__title" style="background-color: #2596be; color: white;">
+                                        <h4 class="mdl-card__title-text">General Information</h4>
+                                    </div>
+                                    <div class="mdl-card__supporting-text">
+                                        <div class="mdl-grid" style="width: 100%; padding:0;">
+                                            <div class="mdl-cell mdl-cell--6-col">
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Created by:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_createdby" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Plant:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_plant" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Department:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_department" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Approval:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_approval" readonly style="color: black;">
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Expected
+                                                            delivery:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_exdelivery" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Estimate
+                                                            delivery:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_esdelivery" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Amount:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_amount" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mdl-cell mdl-cell--6-col">
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Urgent:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_urgent" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Over budget:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_overbudget" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Vendor Name:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_vendor" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Address:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_address" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Email:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_email" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--12-col"
+                                                    style="text-align:center;height: 40px;">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <label class="mdl-textfield__label"
+                                                            style="color:black;text-align: left;">Lead time:</label>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-cell--6-col">
+                                                        <div class="mdl-textfield mdl-js-textfield">
+                                                            <input class="mdl-textfield__input" type="text"
+                                                                id="id_leadtime" readonly style="color: black;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- Approval -->
+                            <div class="mdl-tabs__panel" id="tab2-panel">
+                                <style>
+                                    .container {
+                                        width: 100%;
+                                        height: fit-content;
+                                    }
+
+                                    .progressbar {
+                                        counter-reset: step;
+                                    }
+
+                                    .progressbar li {
+                                        list-style-type: none;
+                                        width: 13%;
+                                        float: left;
+                                        font-size: 12px;
+                                        position: relative;
+                                        text-align: center;
+                                        text-transform: uppercase;
+                                        color: #7d7d7d;
+                                    }
+
+                                    .progressbar li:before {
+                                        width: 30px;
+                                        height: 30px;
+                                        content: counter(step);
+                                        counter-increment: step;
+                                        line-height: 30px;
+                                        border: 2px solid #7d7d7d;
+                                        display: block;
+                                        text-align: center;
+                                        margin: 0 auto 10px auto;
+                                        border-radius: 50%;
+                                        background-color: white;
+                                    }
+
+                                    .progressbar li:after {
+                                        width: 100%;
+                                        height: 2px;
+                                        content: '';
+                                        position: absolute;
+                                        background-color: #7d7d7d;
+                                        top: 15px;
+                                        left: -50%;
+                                        z-index: -1;
+                                    }
+
+                                    .progressbar li:first-child:after {
+                                        content: none;
+                                    }
+
+                                    .progressbar li.active {
+                                        color: green;
+                                    }
+
+                                    .progressbar li.active:before {
+                                        border-color: #55b776;
+                                    }
+
+                                    .progressbar li.active+li:after {
+                                        background-color: #55b776;
+                                    }
+
+                                    .infor {
+                                        margin-top: 2px;
+                                        width: 180px;
+                                        height: 80px;
+                                        margin-left: auto;
+                                        margin-right: auto;
+                                        border-color: green;
+                                        border-radius: 5px;
+                                    }
+                                </style>
+                                <div class="demo-card-wide mdl-card mdl-shadow--2dp"
+                                    style="margin-top:10px;margin-left: auto;margin-right: auto;width: 96%;height: fit-content; border-radius: 10px;">
+                                    <div class="mdl-card__title" style="background-color: #2596be; color: white; ">
+                                        <h4 class="mdl-card__title-text">Approval</h4>
+                                    </div>
+
+                                    <div class="mdl-card__supporting-text"
+                                        style="width: 100%;margin-left: auto;margin-right: auto;">
+
+                                        <div class="mdl-grid" style="width: 100%; padding:0;">
+                                            <div class="container">
+                                                <ul class="progressbar">
+                                                    <li class="active">
+                                                        <p>Created by</p>
+                                                        <div class="infor">
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_createdby_user" readonly
+                                                                    style="color: black;text-align: center; font-size: 12px;">
+                                                            </div>
+                                                            <br>
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_createdby_date" readonly
+                                                                    style="color: black;text-align: center;font-size: 12px;">
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li id='lev1'>
+                                                        <p>Assistant Manager</p>
+                                                        <div class="infor">
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_asst_user" readonly
+                                                                    style="color: black;text-align: center;font-size: 12px;">
+                                                            </div>
+                                                            <br>
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_asst_date" readonly
+                                                                    style="color: black;text-align: center;font-size: 12px;">
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li id='lev2'>
+                                                        <p>Head Department</p>
+                                                        <div class="infor">
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_head_user" readonly
+                                                                    style="color: black;text-align: center;font-size: 12px">
+                                                            </div>
+                                                            <br>
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_head_date" readonly
+                                                                    style="color: black;text-align: center;font-size: 12px">
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li id='lev2_3'>
+                                                        <p>Finance Manger</p>
+                                                        <div class="infor">
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_finance_user" readonly
+                                                                    style="color: black;text-align: center;font-size: 12px">
+                                                            </div>
+                                                            <br>
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_finance_date" readonly
+                                                                    style="color: black;text-align: center;font-size: 12px">
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li id='lev3'>
+                                                        <p>Operation Manager</p>
+                                                        <div class="infor">
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_opr_user" readonly
+                                                                    style="color: black;text-align: center;font-size: 12px">
+                                                            </div>
+                                                            <br>
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_opr_date" readonly
+                                                                    style="color: black;text-align: center;font-size: 12px">
+                                                            </div>
+                                                        </div>
+
+                                                    </li>
+
+                                                    <li id='lev4'>
+                                                        <p>Plant Manger</p>
+                                                        <div class="infor">
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_plant_user" readonly
+                                                                    style="color: black;text-align: center;font-size: 12px">
+                                                            </div>
+                                                            <br>
+                                                            <div class="mdl-textfield mdl-js-textfield"
+                                                                style="padding: 0px;">
+                                                                <input class="mdl-textfield__input" type="text"
+                                                                    id="id_plant_date" readonly
+                                                                    style="color: black;text-align: center;font-size: 12px">
+                                                            </div>
+                                                        </div>
+
+                                                    </li>
+                                                    <li id='lev5'>Approval Completed</li>
+                                                </ul>
+                                            </div>
+                                            <!-- comment -->
+                                            <div class="mdl-grid"
+                                                style="margin-left: auto;margin-right: auto;width:90%; height: 120px; border-radius: 10px; border-style: solid;;">
+                                                <div class="mdl-cell mdl-cell--2-col"
+                                                    style="margin-left: auto;margin-right: auto;margin-top: auto;margin-bottom: auto;font-weight: bold;;">
+                                                    Comment</div>
+                                                <div class="mdl-cell mdl-cell--2-col">
+                                                    <div style="height: 40px;">Urgent</div>
+                                                    <div style="height: 40px;">Over budget</div>
+                                                    <div style="height: 40px;"> Over >$3K</div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--8-col">
+                                                    <div id="id_urgent_cmt" style="height: 40px;"></div>
+                                                    <div id="id_overbudget_cmt" style="height: 40px;"></div>
+                                                    <div id="id_over3k_cmt" style="height: 40px;"></div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Reject -->
+                                            <div class="mdl-grid"
+                                                style="margin-top:5px;margin-left: auto;margin-right: auto;width:90%; height: 40px; border-radius: 10px; border-style: solid;">
+                                                <div class="mdl-cell mdl-cell--2-col"
+                                                    style="height: 40px;font-weight: bold;">Reject</div>
+                                                <div class="mdl-cell mdl-cell--10-col">
+                                                    <div id="id_reject_cmt" style="height: 40px;color:red;"></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- History -->
+                            <div class="mdl-tabs__panel" id="tab3-panel">
+                                <div class="page-content">
+
+                                    <div style="width: 99%; margin: 10px auto; border-radius: 10px;">
+                                        <div class="mdl-grid mdl-shadow--6dp"
+                                            style="background: white; border-radius: 10px;">
+
+                                            <div id="table_History" class="mdl-card mdl-shadow--6dp"
+                                                style="width: 98% ;height: 100%;;margin: 10px auto; overflow-x:auto; overflow-y:auto; border-radius: 10px;">
+                                                <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                                    <thead style="background-color: #2596be; color: white;">
+                                                        <tr>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">PR</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">PR LINE</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">PO</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">PO LINE</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">PO DATE</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">PROJECT NAME</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">ITEM CODE</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">DESCRIPTION ENGLISH</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">QUANITY</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">PRICE</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">CURRENCY</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">AMOUNT</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">RECEIVE QTY</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">RECEIVE DATE</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">CLOSE DATE</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">LEAD TIME/MONTH</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">YEAR</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">USER</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">PURCHASER</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">ASS APPROVED</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">ASS RESULT</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">HEAD APPROVED</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">HEAD RESULT</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">OPERATION APPROVED</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">OPERATION RESULT</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">PLANT APPROVED</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">PLANT RESULT</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="table_body_history" style="text-align: center;">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- Bidding -->
+                            <div class="mdl-tabs__panel" id="tab4-panel">
+                                <table class="mdl-data-table mdl-js-data-table mdl-shadow--6dp"
+                                    style="border-radius: 10px; border: none; width: 80%; overflow: hidden; margin: 10px auto;">
+                                    <thead style="background-color: #2596be; color: white;">
+                                        <tr style=" height: 60px;" style="border-radius: 10px;">
+                                            <th class="mdl-data-table__cell--non-numeric"
+                                                style="color: white;text-align: center;">PR</th>
+                                            <th class="mdl-data-table__cell--non-numeric"
+                                                style="color: white;text-align: center;">PR LINE</th>
+                                            <th class="mdl-data-table__cell--non-numeric"
+                                                style="color: white;text-align: center;">ITEM CODE</th>
+                                            <th class="mdl-data-table__cell--non-numeric"
+                                                style="color: white;text-align: center;">DESCRIPTION ENGLISH</th>
+                                            <th class="mdl-data-table__cell--non-numeric"
+                                                style="color: white;text-align: center;">PRICE</th>
+                                            <th class="mdl-data-table__cell--non-numeric"
+                                                style="color: white;text-align: center;">CURRENCY</th>
+                                            <th class="mdl-data-table__cell--non-numeric"
+                                                style="color: white;text-align: center;">BIDDING</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_body_bidding">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                </section>
+            </main>
+    </div>
+
+
+</body>
+<script>
+
+    function load_unit() {
+        document.getElementById('div_cbb_dept').style.display = 'none';
+        init_month_year();
+        init_user();
+    }
+    document.getElementById('cbb_month').addEventListener('change', function () {
+        month = document.getElementById('cbb_month').value;
+        year = document.getElementById('cbb_year').value;
+        var sort_dept = document.getElementById('cbb_dept').value;
+        if (month != '' & year != '' & sort_dept != '') {
+            get_PurchaseOrder(month, year, sort_dept);
+        }
+    });
+    document.getElementById('cbb_year').addEventListener('change', function () {
+        month = document.getElementById('cbb_month').value;
+        year = document.getElementById('cbb_year').value;
+        var sort_dept = document.getElementById('cbb_dept').value;
+        if (month != '' & year != '' & sort_dept != '') {
+            get_PurchaseOrder(month, year, sort_dept);
+        }
+    });
+    document.getElementById('cbb_dept').addEventListener('change', function () {
+        month = document.getElementById('cbb_month').value;
+        year = document.getElementById('cbb_year').value;
+        var sort_dept = document.getElementById('cbb_dept').value;
+        if (month != '' & year != '' & sort_dept != '') {
+            get_PurchaseOrder(month, year, sort_dept);
+        }
+    });
+
+    document.getElementById('txt_item_find').addEventListener('keyup', function (event) {
+        pr_find = document.getElementById('txt_item_find').value;
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            get_Requisions(pr_find);
+        }
+    });
+    function init_user() {
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CSS/get_User", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data_user = JSON.parse(xsend.responseText);
+                console.log(data_user);
+                if (data_user[0].User == 'ngthu1' || data_user[0].User == 'tathi' || data_user[0].User == 'phphan2') {
+                    document.getElementById('div_cbb_dept').style.display = 'block';
+                }
+                else {
+
+                    $('ul[for="cbb_dept"]  li[data-val="' + data_user[0].Department + '"]').attr('data-selected', true);
+                    getmdlSelect.init('#div_cbb_dept');
+                    document.getElementById('div_cbb_dept').style.display = 'none';
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        xsend.send();
+    }
+    function init_month_year() {
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+        var month = localISOTime.substring(5, 7);
+        var year = localISOTime.substring(0, 4);
+        $('ul[for="cbb_month"] li[data-val="' + parseInt(month) + '"]').attr('data-selected', true);
+        $('ul[for="cbb_year"]  li[data-val="' + year + '"]').attr('data-selected', true);
+        var sort_dept = document.getElementById('cbb_dept').value;
+        get_PurchaseOrder(month, year, sort_dept);
+    }
+    function get_PurchaseOrder(month, year, sort_dept) {
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/PurchaseOrder", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                console.log(data)
+                if (data.result == 'empty') {
+                    alert("Không có thông tin nào!");
+                    return;
+                }
+                if (data.length > 0) {
+                    table_body = document.getElementById('table_body');
+                    while (table_body.childNodes.length > 0)
+                        table_body.removeChild(table_body.childNodes[0]);
+                    for (i = 0; i < data.length; i++) {
+                        var tr = document.createElement("tr");
+                        //PR
+                        var tdPR = document.createElement("td");
+                        tdPR.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].OrderID == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].OrderID);
+                        tdPR.appendChild(node);
+                        tdPR.setAttribute('onclick', 'link_searchPR(this);')
+                        tr.appendChild(tdPR);
+                        //PR LINE
+                        var tdPRLINE = document.createElement("td");
+                        tdPRLINE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].PR_LINE == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].PR_LINE);
+                        tdPRLINE.appendChild(node);
+                        tr.appendChild(tdPRLINE);
+                        // PO
+                        var tdPO = document.createElement("td");
+                        tdPO.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].LW_PO_LINE == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].LW_PO_LINE);
+                        tdPO.appendChild(node);
+                        tr.appendChild(tdPO);
+                        // PO LINE
+                        var tdPOLINE = document.createElement("td");
+                        tdPOLINE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].LW_PO_NUMBER == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].LW_PO_NUMBER);
+                        tdPOLINE.appendChild(node);
+                        tr.appendChild(tdPOLINE);
+                        //PO DATE
+                        var tdPODATE = document.createElement("td");
+                        tdPODATE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].LW_PO_DATE == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].LW_PO_DATE.substring(0, 10));
+                        tdPODATE.appendChild(node);
+                        tr.appendChild(tdPODATE);
+                        //PROJECT NAME
+                        var tdPROJECTNAME = document.createElement("td");
+                        tdPROJECTNAME.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].ProjectName == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].ProjectName);
+                        tdPROJECTNAME.appendChild(node);
+                        tr.appendChild(tdPROJECTNAME);
+                        //ITEM CODE
+                        var tdITEMCODE = document.createElement("td");
+                        tdITEMCODE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].ID == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].ID.split(';')[2]);
+                        tdITEMCODE.appendChild(node);
+                        tr.appendChild(tdITEMCODE);
+                        //DESCRIPTION ENGLISH
+                        var tdDESCRIPTIONENGLISH = document.createElement("td");
+                        tdDESCRIPTIONENGLISH.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].English == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].English);
+                        tdDESCRIPTIONENGLISH.appendChild(node);
+                        tr.appendChild(tdDESCRIPTIONENGLISH);
+                        // QUANITY
+                        var tdQUANITY = document.createElement("td");
+                        tdQUANITY.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].Quantity == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].Quantity);
+                        tdQUANITY.appendChild(node);
+                        tr.appendChild(tdQUANITY);
+                        // PRICE
+                        var tdPRICE = document.createElement("td");
+                        tdPRICE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].ActualPrice == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].ActualPrice);
+                        tdPRICE.appendChild(node);
+                        tr.appendChild(tdPRICE);
+                        // CURRENCY
+                        var tdCURRENCY = document.createElement("td");
+                        tdCURRENCY.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].Currency == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].Currency);
+                        tdCURRENCY.appendChild(node);
+                        tr.appendChild(tdCURRENCY);
+                        // AMOUNT
+                        var tdAMOUNT = document.createElement("td");
+                        tdAMOUNT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].LW_EXTENDED_AMT == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].LW_EXTENDED_AMT);
+                        tdAMOUNT.appendChild(node);
+                        tr.appendChild(tdAMOUNT);
+                        // RECEIVE QTY
+                        var tdRECEIVEQTY = document.createElement("td");
+                        tdRECEIVEQTY.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].LW_REC_QTY == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].LW_REC_QTY);
+                        tdRECEIVEQTY.appendChild(node);
+                        tr.appendChild(tdRECEIVEQTY);
+                        // RECEIVE DATE
+                        var tdRECEIVEDATE = document.createElement("td");
+                        tdRECEIVEDATE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].LW_REC_ACT_DATE == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].LW_REC_ACT_DATE.substring(0, 10));
+                        tdRECEIVEDATE.appendChild(node);
+                        tr.appendChild(tdRECEIVEDATE);
+                        // CLOSE DATE
+                        var tdCLOSEDATE = document.createElement("td");
+                        tdCLOSEDATE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].LW_CLOSE_DATE == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].LW_CLOSE_DATE.substring(0, 10));
+                        tdCLOSEDATE.appendChild(node);
+                        tr.appendChild(tdCLOSEDATE);
+                        // LEAD TIME/MONTH
+                        var tdLEADTIME = document.createElement("td");
+                        tdLEADTIME.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].Month_Estimated == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].Month_Estimated);
+                        tdLEADTIME.appendChild(node);
+                        tr.appendChild(tdLEADTIME);
+                        // YEAR
+                        var tdYEAR = document.createElement("td");
+                        tdYEAR.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].Year_Estimated == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].Year_Estimated);
+                        tdYEAR.appendChild(node);
+                        tr.appendChild(tdYEAR);
+                        // USER
+                        var tdUSER = document.createElement("td");
+                        tdUSER.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].User == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].User);
+                        tdUSER.appendChild(node);
+                        tr.appendChild(tdUSER);
+                        // PURCHASER
+                        var tdPURCHASER = document.createElement("td");
+                        tdPURCHASER.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].Purchaser == null) node = document.createTextNode('');
+                        else node = document.createTextNode(data[i].Purchaser);
+                        tdPURCHASER.appendChild(node);
+                        tr.appendChild(tdPURCHASER);
+                        /*
+                         // ASS APPROVED
+                        var tdASSAPPROVED=document.createElement("td");
+                        tdASSAPPROVED.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].Assistan_Approve==null) node=document.createTextNode('');
+                        else node=document.createTextNode(data[i].Assistan_Approve);
+                        tdASSAPPROVED.appendChild(node);
+                        tr.appendChild(tdASSAPPROVED);
+                         // ASS RESULT
+                        var tdASSRESULT=document.createElement("td");
+                        tdASSRESULT.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].Assistan_Result==null) node=document.createTextNode('');
+                        else node=document.createTextNode(data[i].Assistan_Result);
+                        tdASSRESULT.appendChild(node);
+                        tr.appendChild(tdASSRESULT); 
+                         // HEAD APPROVED
+                        var tdHEADAPPROVED=document.createElement("td");
+                        tdHEADAPPROVED.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].HeadDept_Approve==null) node=document.createTextNode('');
+                        else node=document.createTextNode(data[i].HeadDept_Approve);
+                        tdHEADAPPROVED.appendChild(node);
+                        tr.appendChild(tdHEADAPPROVED);
+                         // HEAD RESULT
+                        var tdHEADRESULT=document.createElement("td");
+                        tdHEADRESULT.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].HeadDept_Result==null) node=document.createTextNode('');
+                        else node=document.createTextNode(data[i].HeadDept_Result);
+                        tdHEADRESULT.appendChild(node);
+                        tr.appendChild(tdHEADRESULT);
+                        // OPERATION APPROVED
+                        var tdOPERATION_APPROVED=document.createElement("td");
+                        tdOPERATION_APPROVED.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].OperationMng_Approve==null) node=document.createTextNode('');
+                        else node=document.createTextNode(data[i].OperationMng_Approve);
+                        tdOPERATION_APPROVED.appendChild(node);
+                        tr.appendChild(tdOPERATION_APPROVED);
+                         // OPERATION RESULT
+                        var tdOPERATION_RESULT=document.createElement("td");
+                        tdOPERATION_RESULT.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].OperationMng_Result==null) node=document.createTextNode('');
+                        else node=document.createTextNode(data[i].OperationMng_Result);
+                        tdOPERATION_RESULT.appendChild(node);
+                        tr.appendChild(tdOPERATION_RESULT);
+                         // PLANT APPROVED
+                        var tdPLANTAPPROVED=document.createElement("td");
+                        tdPLANTAPPROVED.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].PlantMng_Approve==null) node=document.createTextNode('');
+                        else node=document.createTextNode(data[i].PlantMng_Approve);
+                        tdPLANTAPPROVED.appendChild(node);
+                        tr.appendChild(tdPLANTAPPROVED);
+                         // PLANT RESULT
+                        var tdPLANTRESULT=document.createElement("td");
+                        tdPLANTRESULT.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node;
+                        if (data[i].PlantMng_Result==null) node=document.createTextNode('');
+                        else node=document.createTextNode(data[i].PlantMng_Result);
+                        tdPLANTRESULT.appendChild(node);
+                        tr.appendChild(tdPLANTRESULT); 
+                        */
+                        componentHandler.upgradeElement(tr);
+                        table_body.appendChild(tr);
+                    }
+
+                }
+                else {
+                    alert("Không có thông tin nào!");
+                    return;
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        if (month == 'ALL') month = 0;
+        if (sort_dept == 'ALL') sort_dept = 0;
+        data = { month: month, year: year, sort_dept: sort_dept }
+        xsend.send(JSON.stringify(data));
+    }
+    function get_Requisions(pr) {
+        if (pr == '' || pr == null) {
+            alert('Bạn chưa nhập PR');
+            return;
+        }
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/PurchaseOrder/Requisions", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                console.log(data)
+                if (data.result == 'empty') {
+                    alert("Không có thông tin nào!");
+                    document.getElementById('txt_item_find').value = '';
+                    return;
+                }
+                if (data.length > 0) {
+                    get_GeneralInfor_approval(data);
+                    get_History(data);
+                    get_Bidding(data);
+                }
+                else {
+                    alert("Không có thông tin nào!");
+                    document.getElementById('txt_item_find').value = '';
+                    return;
+                }
+                document.getElementById('txt_item_find').value = '';
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { pr: pr }
+        xsend.send(JSON.stringify(data));
+    }
+    function get_GeneralInfor_approval(data) {
+        createdby_user = data[0].Name;
+        // createdby_date=data[0].
+        department = data[0].ID.split('_')[0];
+        id_plant = data[0].AccountName.split(" ")[2].substring(0, 2);
+        if (id_plant == '98') plant = 'IEC'
+        else plant = 'PBC';
+        approval_ass = '';
+        if (data[0].Assistan_Result == null) approval_ass = '';
+        else approval_ass = data[0].Assistan_Result;
+
+        approval_head = '';
+        if (data[0].HeadDept_Result == null) approval_head = '';
+        else approval_head = data[0].HeadDept_Result;
+
+        approval_fin = '';
+        if (data[0].Finance_Result == null) approval_fin = '';
+        else approval_fin = data[0].Finance_Result;
+
+        approval_opr = '';
+        if (data[0].OperationMng_Result == null) approval_opr = '';
+        else approval_opr = data[0].OperationMng_Result;
+
+        approval_plant = '';
+        if (data[0].PlantMng_Result == null) approval_plant = '';
+        else approval_plant = data[0].PlantMng_Result;
+
+        approval_pur = '';
+        if (data[0].Purchasing_Result == null) approval_pur = '';
+        else approval_pur = data[0].Purchasing_Result;
+        // 
+        if (approval_ass == 'N') {
+            sum_approval = 'Reject';
+            if (data[0].Assistan_Reason == null) Assistan_Reason = '';
+            else Assistan_Reason = data[0].Assistan_Reason;
+            document.getElementById('id_reject_cmt').value = Assistan_Reason;
+        }
+        else if (approval_ass == 'Y') {
+            document.getElementById('lev1').setAttribute('class', 'active');
+        }
+        else {
+            document.getElementById('lev1').setAttribute('class', '');
+        }
+        // 
+        if (approval_head == 'N') {
+            sum_approval = 'Reject';
+            if (data[0].HeadDept_Reason == null) HeadDept_Reason = '';
+            else HeadDept_Reason = data[0].HeadDept_Reason;
+            document.getElementById('id_reject_cmt').value = HeadDept_Reason;
+        }
+        else if (approval_head == 'Y') {
+            document.getElementById('lev2').setAttribute('class', 'active');
+        }
+        else {
+            document.getElementById('lev2').setAttribute('class', '');
+        }
+        // 
+        if (approval_fin == 'N') {
+            sum_approval = 'Reject';
+            if (data[0].Finance_Reason == null) Finance_Reason = '';
+            else Finance_Reason = data[0].Finance_Reason;
+            document.getElementById('id_reject_cmt').value = Finance_Reason;
+        }
+        else if (approval_fin == 'Y') {
+            document.getElementById('lev2_3').setAttribute('class', 'active');
+        }
+        else {
+            document.getElementById('lev2_3').setAttribute('class', '');
+        }
+        // 
+        if (approval_opr == 'N') {
+            sum_approval = 'Reject';
+            if (data[0].OperationMng_Reason == null) OperationMng_Reason = '';
+            else OperationMng_Reason = data[0].OperationMng_Reason;
+            document.getElementById('id_reject_cmt').value = OperationMng_Reason;
+        }
+        else if (approval_opr == 'Y') {
+            document.getElementById('lev3').setAttribute('class', 'active');
+        }
+        else {
+            document.getElementById('lev3').setAttribute('class', '');
+        }
+        // 
+        if (approval_plant == 'N') {
+            sum_approval = 'Reject';
+            if (data[0].PlantMng_Reason == null) PlantMng_Reason = '';
+            else PlantMng_Reason = data[0].PlantMng_Reason;
+            document.getElementById('id_reject_cmt').value = PlantMng_Reason;
+
+        }
+        else if (approval_plant == 'Y') {
+            document.getElementById('lev4').setAttribute('class', 'active');
+            document.getElementById('lev5').setAttribute('class', 'active');
+
+        }
+
+        else if (approval_plant == '') {
+            document.getElementById('lev4').setAttribute('class', '');
+            document.getElementById('lev5').setAttribute('class', '');
+        }
+        // 
+        if (approval_pur == 'Y') {
+            sum_approval = 'Approve';
+            document.getElementById('lev1').setAttribute('class', 'active');
+            document.getElementById('lev2').setAttribute('class', 'active');
+            document.getElementById('lev2_3').setAttribute('class', 'active');
+            document.getElementById('lev3').setAttribute('class', 'active');
+            document.getElementById('lev4').setAttribute('class', 'active');
+            document.getElementById('lev5').setAttribute('class', 'active');
+        }
+        else {
+            sum_approval = 'On Process';
+        }
+        approval_pur = '';
+        if (data[0].Purchasing_Result == null) approval_pur = '';
+        else approval_pur = data[0].Purchasing_Result;
+
+        if (data[0].Month_Estimated == null) Month_Estimated = '';
+        else Month_Estimated = data[0].Month_Estimated;
+
+        if (data[0].LW_EARLY_DL_DATE == null) LW_EARLY_DL_DATE = '';
+        else LW_EARLY_DL_DATE = data[0].LW_EARLY_DL_DATE.substring(0, 10);
+
+        sum_amount = 0;
+        for (i = 0; i < data.length; i++) {
+            if (data[i].LW_EXTENDED_AMT == null) LW_EXTENDED_AMT = 0;
+            else LW_EXTENDED_AMT = data[i].LW_EXTENDED_AMT;
+            sum_amount += parseFloat(LW_EXTENDED_AMT);
+        }
+
+        if (data[0].Urgent == null || data[0].Urgent == 'N') Urgent = '';
+        else Urgent = data[0].Urgent;
+        if (data[0].OverBudget == null || data[0].OverBudget == 'N') OverBudget = '';
+        else OverBudget = data[0].OverBudget;
+
+        if (data[0].VendorName == null) VendorName = '';
+        else VendorName = data[0].VendorName;
+        if (data[0].Address == null) Address = '';
+        else Address = data[0].Address;
+        if (data[0].Email == null) Email = '';
+        else Email = data[0].Email;
+        if (data[0].Leadtime == null) Leadtime = '';
+        else Leadtime = data[0].Leadtime;
+
+        // show general information
+        document.getElementById("id_createdby").value = createdby_user;
+        document.getElementById("id_plant").value = plant;
+        document.getElementById('id_department').value = department;
+        document.getElementById('id_approval').value = sum_approval;
+        document.getElementById('id_exdelivery').value = Month_Estimated;
+        document.getElementById('id_esdelivery').value = LW_EARLY_DL_DATE;
+        document.getElementById('id_amount').value = sum_amount.toFixed(2) + " VND";
+        document.getElementById('id_urgent').value = Urgent;
+        document.getElementById('id_overbudget').value = OverBudget;
+        document.getElementById('id_vendor').value = VendorName;
+        document.getElementById('id_address').value = Address;
+        document.getElementById('id_email').value = Email;
+        document.getElementById('id_leadtime').value = Leadtime + " (days)";
+        // show information
+        if (data[0].LW_PO_DATE == null) LW_PO_DATE = '';
+        else LW_PO_DATE = data[0].LW_PO_DATE;
+
+        if (data[0].Assistan_Name == null) Assistan_Name = '';
+        else Assistan_Name = data[0].Assistan_Name;
+        if (data[0].Assistan_Approve == null) Assistan_Approve = '';
+        else Assistan_Approve = data[0].Assistan_Approve;
+
+        if (data[0].HeadDept_Name == null) HeadDept_Name = '';
+        else HeadDept_Name = data[0].HeadDept_Name;
+        if (data[0].HeadDept_Approve == null) HeadDept_Approve = '';
+        else HeadDept_Approve = data[0].HeadDept_Approve;
+
+        if (data[0].Finance_Name == null) Finance_Name = '';
+        else Finance_Name = data[0].Finance_Name;
+        if (data[0].Finance_Approve == null) Finance_Approve = '';
+        else Finance_Approve = data[0].Finance_Approve;
+
+        if (data[0].OperationMng_Name == null) OperationMng_Name = '';
+        else OperationMng_Name = data[0].OperationMng_Name;
+        if (data[0].OperationMng_Approve == null) OperationMng_Approve = '';
+        else OperationMng_Approve = data[0].OperationMng_Approve;
+
+        if (data[0].PlantMng_Name == null) PlantMng_Name = '';
+        else PlantMng_Name = data[0].PlantMng_Name;
+        if (data[0].PlantMng_Approve == null) PlantMng_Approve = '';
+        else PlantMng_Approve = data[0].PlantMng_Approve;
+
+        if (data[0].Urgent_Note == null) Urgent_Note = '';
+        else Urgent_Note = data[0].Urgent_Note;
+
+        if (data[0].OverBudget_Note == null) OverBudget_Note = '';
+        else OverBudget_Note = data[0].OverBudget_Note;
+
+        if (data[0].Over3000_Note == null) Over3000_Note = '';
+        else Over3000_Note = data[0].Over3000_Note;
+        document.getElementById('id_createdby_user').value = createdby_user;
+        document.getElementById('id_createdby_date').value = LW_PO_DATE.substring(0, 10);
+        document.getElementById('id_asst_user').value = Assistan_Name;
+        document.getElementById('id_asst_date').value = Assistan_Approve.substring(0, 10);
+        document.getElementById('id_head_user').value = HeadDept_Name;
+        document.getElementById('id_head_date').value = HeadDept_Approve.substring(0, 10);
+
+        document.getElementById('id_finance_user').value = Finance_Name;
+        document.getElementById('id_finance_date').value = Finance_Approve.substring(0, 10);
+
+        document.getElementById('id_opr_user').value = OperationMng_Name;
+        document.getElementById('id_opr_date').value = OperationMng_Approve.substring(0, 10);
+
+        document.getElementById('id_plant_user').value = PlantMng_Name;
+        document.getElementById('id_plant_date').value = PlantMng_Approve.substring(0, 10);
+
+        document.getElementById('id_urgent_cmt').value = Urgent_Note;
+        document.getElementById('id_overbudget_cmt').value = OverBudget_Note;
+        document.getElementById('id_over3k_cmt').value = Over3000_Note;
+    }
+    function get_History(data) {
+        table_body = document.getElementById('table_body_history');
+        while (table_body.childNodes.length > 0)
+            table_body.removeChild(table_body.childNodes[0]);
+        for (i = 0; i < data.length; i++) {
+            var tr = document.createElement("tr");
+            //PR
+            var tdPR = document.createElement("td");
+            tdPR.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].OrderID == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].OrderID);
+            tdPR.appendChild(node);
+            tr.appendChild(tdPR);
+            //PR LINE
+            var tdPRLINE = document.createElement("td");
+            tdPRLINE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].PR_LINE == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].PR_LINE);
+            tdPRLINE.appendChild(node);
+            tr.appendChild(tdPRLINE);
+            // PO
+            var tdPO = document.createElement("td");
+            tdPO.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].LW_PO_LINE == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].LW_PO_LINE);
+            tdPO.appendChild(node);
+            tr.appendChild(tdPO);
+            // PO LINE
+            var tdPOLINE = document.createElement("td");
+            tdPOLINE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].LW_PO_NUMBER == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].LW_PO_NUMBER);
+            tdPOLINE.appendChild(node);
+            tr.appendChild(tdPOLINE);
+            //PO DATE
+            var tdPODATE = document.createElement("td");
+            tdPODATE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].LW_PO_DATE == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].LW_PO_DATE.substring(0, 10));
+            tdPODATE.appendChild(node);
+            tr.appendChild(tdPODATE);
+            //PROJECT NAME
+            var tdPROJECTNAME = document.createElement("td");
+            tdPROJECTNAME.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].ProjectName == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].ProjectName);
+            tdPROJECTNAME.appendChild(node);
+            tr.appendChild(tdPROJECTNAME);
+            //ITEM CODE
+            var tdITEMCODE = document.createElement("td");
+            tdITEMCODE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].ID == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].ID.split(';')[2]);
+            tdITEMCODE.appendChild(node);
+            tr.appendChild(tdITEMCODE);
+            //DESCRIPTION ENGLISH
+            var tdDESCRIPTIONENGLISH = document.createElement("td");
+            tdDESCRIPTIONENGLISH.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].English == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].English);
+            tdDESCRIPTIONENGLISH.appendChild(node);
+            tr.appendChild(tdDESCRIPTIONENGLISH);
+            // QUANITY
+            var tdQUANITY = document.createElement("td");
+            tdQUANITY.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].Quantity == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].Quantity);
+            tdQUANITY.appendChild(node);
+            tr.appendChild(tdQUANITY);
+            // PRICE
+            var tdPRICE = document.createElement("td");
+            tdPRICE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].ActualPrice == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].ActualPrice);
+            tdPRICE.appendChild(node);
+            tr.appendChild(tdPRICE);
+            // CURRENCY
+            var tdCURRENCY = document.createElement("td");
+            tdCURRENCY.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].Currency == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].Currency);
+            tdCURRENCY.appendChild(node);
+            tr.appendChild(tdCURRENCY);
+            // AMOUNT
+            var tdAMOUNT = document.createElement("td");
+            tdAMOUNT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].LW_EXTENDED_AMT == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].LW_EXTENDED_AMT);
+            tdAMOUNT.appendChild(node);
+            tr.appendChild(tdAMOUNT);
+            // RECEIVE QTY
+            var tdRECEIVEQTY = document.createElement("td");
+            tdRECEIVEQTY.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].LW_REC_QTY == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].LW_REC_QTY);
+            tdRECEIVEQTY.appendChild(node);
+            tr.appendChild(tdRECEIVEQTY);
+            // RECEIVE DATE
+            var tdRECEIVEDATE = document.createElement("td");
+            tdRECEIVEDATE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].LW_REC_ACT_DATE == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].LW_REC_ACT_DATE.substring(0, 10));
+            tdRECEIVEDATE.appendChild(node);
+            tr.appendChild(tdRECEIVEDATE);
+            // CLOSE DATE
+            var tdCLOSEDATE = document.createElement("td");
+            tdCLOSEDATE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].LW_CLOSE_DATE == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].LW_CLOSE_DATE.substring(0, 10));
+            tdCLOSEDATE.appendChild(node);
+            tr.appendChild(tdCLOSEDATE);
+            // LEAD TIME/MONTH
+            var tdLEADTIME = document.createElement("td");
+            tdLEADTIME.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].Month_Estimated == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].Month_Estimated);
+            tdLEADTIME.appendChild(node);
+            tr.appendChild(tdLEADTIME);
+            // YEAR
+            var tdYEAR = document.createElement("td");
+            tdYEAR.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].Year_Estimated == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].Year_Estimated);
+            tdYEAR.appendChild(node);
+            tr.appendChild(tdYEAR);
+            // USER
+            var tdUSER = document.createElement("td");
+            tdUSER.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].User == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].User);
+            tdUSER.appendChild(node);
+            tr.appendChild(tdUSER);
+            // PURCHASER
+            var tdPURCHASER = document.createElement("td");
+            tdPURCHASER.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].Purchaser == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].Purchaser);
+            tdPURCHASER.appendChild(node);
+            tr.appendChild(tdPURCHASER);
+            // ASS APPROVED
+            var tdASSAPPROVED = document.createElement("td");
+            tdASSAPPROVED.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].Assistan_Approve == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].Assistan_Approve.substring(0, 10));
+            tdASSAPPROVED.appendChild(node);
+            tr.appendChild(tdASSAPPROVED);
+            // ASS RESULT
+            var tdASSRESULT = document.createElement("td");
+            tdASSRESULT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].Assistan_Result == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].Assistan_Result);
+            tdASSRESULT.appendChild(node);
+            tr.appendChild(tdASSRESULT);
+            // HEAD APPROVED
+            var tdHEADAPPROVED = document.createElement("td");
+            tdHEADAPPROVED.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].HeadDept_Approve == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].HeadDept_Approve.substring(0, 10));
+            tdHEADAPPROVED.appendChild(node);
+            tr.appendChild(tdHEADAPPROVED);
+            // HEAD RESULT
+            var tdHEADRESULT = document.createElement("td");
+            tdHEADRESULT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].HeadDept_Result == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].HeadDept_Result);
+            tdHEADRESULT.appendChild(node);
+            tr.appendChild(tdHEADRESULT);
+            // OPERATION APPROVED
+            var tdOPERATION_APPROVED = document.createElement("td");
+            tdOPERATION_APPROVED.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].OperationMng_Approve == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].OperationMng_Approve.substring(0, 10));
+            tdOPERATION_APPROVED.appendChild(node);
+            tr.appendChild(tdOPERATION_APPROVED);
+            // OPERATION RESULT
+            var tdOPERATION_RESULT = document.createElement("td");
+            tdOPERATION_RESULT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].OperationMng_Result == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].OperationMng_Result);
+            tdOPERATION_RESULT.appendChild(node);
+            tr.appendChild(tdOPERATION_RESULT);
+            // PLANT APPROVED
+            var tdPLANTAPPROVED = document.createElement("td");
+            tdPLANTAPPROVED.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].PlantMng_Approve == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].PlantMng_Approve.substring(0, 10));
+            tdPLANTAPPROVED.appendChild(node);
+            tr.appendChild(tdPLANTAPPROVED);
+            // PLANT RESULT
+            var tdPLANTRESULT = document.createElement("td");
+            tdPLANTRESULT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].PlantMng_Result == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].PlantMng_Result);
+            tdPLANTRESULT.appendChild(node);
+            tr.appendChild(tdPLANTRESULT);
+            componentHandler.upgradeElement(tr);
+            table_body.appendChild(tr);
+        }
+    }
+    function get_Bidding(data) {
+        table_body = document.getElementById('table_body_bidding');
+        while (table_body.childNodes.length > 0)
+            table_body.removeChild(table_body.childNodes[0]);
+        for (i = 0; i < data.length; i++) {
+            var tr = document.createElement("tr");
+            //PR
+            var tdPR = document.createElement("td");
+            tdPR.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].OrderID == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].OrderID);
+            tdPR.appendChild(node);
+            tr.appendChild(tdPR);
+            //PR LINE
+            var tdPRLINE = document.createElement("td");
+            tdPRLINE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].PR_LINE == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].PR_LINE);
+            tdPRLINE.appendChild(node);
+            tr.appendChild(tdPRLINE);
+            //ITEM CODE
+            var tdITEMCODE = document.createElement("td");
+            tdITEMCODE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].ID == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].ID.split(';')[2]);
+            tdITEMCODE.appendChild(node);
+            tr.appendChild(tdITEMCODE);
+            //DESCRIPTION ENGLISH
+            var tdDESCRIPTIONENGLISH = document.createElement("td");
+            tdDESCRIPTIONENGLISH.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].English == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].English);
+            tdDESCRIPTIONENGLISH.appendChild(node);
+            tr.appendChild(tdDESCRIPTIONENGLISH);
+            // PRICE
+            var tdPRICE = document.createElement("td");
+            tdPRICE.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].ActualPrice == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].ActualPrice);
+            tdPRICE.appendChild(node);
+            tr.appendChild(tdPRICE);
+            // CURRENCY
+            var tdCURRENCY = document.createElement("td");
+            tdCURRENCY.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var node;
+            if (data[i].Currency == null) node = document.createTextNode('');
+            else node = document.createTextNode(data[i].Currency);
+            tdCURRENCY.appendChild(node);
+            tr.appendChild(tdCURRENCY);
+            // BIDDING 
+            var tdBIDDING = document.createElement("td");
+            tdBIDDING.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            var bidding;
+            if (data[i].ID == null) bidding = '';
+            else bidding = data[i].ID.split(";")[1];
+            var node = document.createTextNode(bidding);
+            tdBIDDING.appendChild(node);
+            tr.appendChild(tdBIDDING);
+            tr.setAttribute('onclick', 'link_bidding(this);');
+            componentHandler.upgradeElement(tr);
+            table_body.appendChild(tr);
+        }
+    }
+    function link_bidding(id_bidding) {
+        req_id = id_bidding.childNodes[6].innerHTML
+        window.open("http://pbvweb01v/CCS/Bidding?req_id=" + req_id);
+    }
+    function link_searchPR(id_pr) {
+        get_pr = id_pr.innerHTML;
+        $('a[href="#scroll-tab-2"]').tab('show');
+        get_Requisions(get_pr);
+        // document.getElementById('txt_item_find').value=get_pr;
+    }
+</script>
+
+</html>

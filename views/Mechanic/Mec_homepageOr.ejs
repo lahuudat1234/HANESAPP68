@@ -1,0 +1,2235 @@
+<!DOCTYPE html>
+<html>
+<title>MMS</title>
+<!-- <meta charset="UTF-8"> -->
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../CSS/w3.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/JS/boostrap/w3.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Helvetica","Arial",sans-serif;
+}
+a,li{
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+}
+.w3-bar-block .w3-bar-item {padding:20px}
+body{
+  font-family: "Helvetica","Arial",sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  /* background-image: url("/public/imgbook/bodyBG2.jpg"); */
+  background-color: whitesmoke;
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+</style>
+<body>
+    <!-- Sidebar (hidden by default) -->
+    <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:100;width:25%;min-width:300px; background-image: url(/public/imgbook/bodyBG.jpg);" id="mySidebar">
+      <a href="/mechome" class="w3-bar-item w3-button" ><span class="glyphicon glyphicon-home" style="padding-right: 20px;"></span>Trang Chủ</a>
+      <a href="/mechome" class="w3-bar-item w3-button w3-blue"><span class="glyphicon glyphicon-inbox" style="padding-right: 20px;"></span>Quét thẻ downtime</a>
+      <a href="/mec/updateloc" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật vị trí</a>
+      <a href="/mec/update_loc_pi" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật vị trí PI</a>
+      <a href="/mec/machineupdate" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật thông tin máy</a>
+      <a href="/mec/report" id="report_link" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-list-alt" style="padding-right: 20px;"></span>Báo cáo Realtime</a>
+      <a href="/get/autoclose" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-list-alt" style="padding-right: 20px;"></span>danh sách máy chốt cuối ca chưa sửa</a>
+      <a href="/mec/partissue" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-usd" style="padding-right: 20px;"></span>Cấp / Phát phụ tùng</a>
+      <a href="/mec/machinemovelog" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>thông tin di chuyển máy</a>
+      <a href="/mec/setupgroup" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Thiết lập nhóm chuyền</a>
+      <a href="#" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-duplicate" style="padding-right: 20px;"></span>Mechanic KPI</a>
+    </nav>
+    <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-right" style="display:none;z-index:2;width:30%;min-width:300px; right: 0;" id="mySidebar_right">
+      <a href="javascript:void(0)" class="w3-bar-item w3-button" id="name">Thông tin user đăng nhập</a>
+      <div class="w3-container w3-card-4 w3-light-grey" style="display:none;">
+        <a id="logout_ref" href="/logout" class="w3-bar-item w3-button">Logout</a>
+      </div>
+      <div class="form-group">
+        <label for="sel_shift">Ca làm việc hệ thống: <%= shift %></label>
+        <select class="form-control" name="sel_shift" id="sel_shift">
+          <option>BALI</option>
+          <option>RITMO</option>
+        </select>
+      </div>
+      <br>
+      <div class="form-group">
+        <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="logout()"><span class="glyphicon glyphicon-floppy-saved"></span> Đăng xuất</button>
+      </div>
+    </nav>
+    <!-- Top menu -->
+    <div class="w3-top w3-center">
+      <div class="w3-purple w3-xlarge" style="width: 100%;margin:auto;">
+        <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+        <div class="w3-right w3-padding-16" onclick="open_signup()" >
+        <span class="glyphicon glyphicon-user" style="padding-right: 10px;" ></span><span id="username"><%= user %></span></div>
+        <div class="w3-center w3-padding-16" style="margin: 0 auto;"><h3 style="margin: 0 auto;">HỆ THỐNG GHI NHẬN THỜI GIAN MÁY HỎNG</h3></div>
+        <a href="/mechome" id="refresh" style="display: none;"></a>
+      </div>
+    </div>
+      
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-container w3-center" style="width: 100%;margin-top:50px; margin-left: auto;" onclick="w3_close()">
+      <hr id="about">
+      <!-- About Section -->
+      <!-- Home Page -->
+      <div class="w3-container" id="home_page" style="padding: 0px; margin: 0;">  
+        <!-- nhập thông tin máy hỏng -->
+        <div class="w3-quarter" id="downtime_reg" style=" display: none; left: 0px;">
+          <div class="col-md-9">
+            <h3>thông tin máy hỏng</h3>
+            <form id="form_reg" action="javascript:" onsubmit="ticketSubmit(this)" style="text-align: left;">
+              <div class="form-group">
+                <label for="employee_id">mã số nhân viên:</label>
+                <input name="employee_id" type="number" id="employee_id" class="form-control" onkeypress="get_name_Function()" placeholder="nhập vào mã số NV" style="background-color: yellow;">
+              </div>
+              <div class="form-group">
+                <label id="emp_name" style="color: #f4511e;"><%= name %></label>
+              </div>
+              <div class="form-group">
+                <label for="sel_op">công đoạn:</label>
+                <select class="form-control" name="sel_op" id="sel_op" style="background-color: yellow;">
+                  <option>-</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="machine_id">mã máy:</label>
+                <input name="machine_id" type="text" id="machine_id" class="form-control" onkeypress="get_machine_Function()" placeholder="nhập vào mã máy" disabled="true">
+              </div>
+              <div class="form-group">
+                <label id="machine_type" style="color: #f4511e;"><%= machine %></label>
+              </div>
+              <div class="form-group">
+                <label for="sel_code">nhân viên báo mã hỏng:</label>
+                <select class="form-control" name="sel_code" id="sel_code" onchange="change_code()" placeholder="chọn mã máy hỏng" style="background-color: yellow;">
+                  <!-- <option>001 (Chuyển đổi mã hàng bó đầu tiên)</option> -->
+                  <option>2 Nhóm Lỗi NVL( Lỗi thun; Bẩn; Thông số; Tưa vải)</option>
+                  <option>3 Nhóm Lỗi Chất lượng (Lổ kim; Chỉ dài; Sai mật độ mũi chỉ; Máy nghiến, Lại mũi; Kẹp; Hỏng bờ; Lóc nhãn)</option>
+                  <option>4 Nhóm Lỗi Điều kiện vận hành máy (Lỗi Đứt chỉ; Bỏ mũi; Gãy kim, Căng chỉ-Lỏng chỉ, Dầu máy, Máy bị Bó, Hỏng Motor + Hộp điện tử)</option>
+                  <option>5 Nhóm Lỗi Thao tác (Lỗi Sole; Xì; Nhăn Bai Xạc; Sụp mí; Lè vải; May không đạt)</option>
+                  <option>6 Nhóm Lỗi Pad (Lỗi nhãn, chảy mực)</option>
+                  <option>7 Nhóm Lỗi An toàn (Hỏng bảo hộ, rò điện, gãy khung bàn mặt bàn, lồi đinh vít sắc nhọn)</option>
+                  <option>8 (PM bảo dưỡng máy)</option>
+                  
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="linesew">line:</label>
+                <input class="form-control" name="linesew" id="linesew" type="text" disabled="true">
+              </div>
+              <div class="form-group">
+                <label for="pos">thứ tự trên line:</label>
+                <select class="form-control" name="sel_pos" id="sel_pos" disabled="true">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                  <option>10</option>
+                  <option>11</option>
+                  <option>12</option>
+                  <option>13</option>
+                  <option>14</option>
+                  <option>15</option>
+                </select>
+              </div>
+              <!-- <div class="form-group">
+                <label for="mec_id">mã thợ máy:</label>
+                <input name="mec_id" type="number" id="mec_id" class="form-control" onkeypress="get_mec_name()" placeholder="nhập vào mã số thợ máy">
+              </div>
+              <div class="form-group">
+                <label id="mec_name" style="color: #f4511e;"><%= mechanic %></label>
+              </div> -->
+              <div class="form-group">
+                <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="submit_form_openticket()"><span class="glyphicon glyphicon-upload"></span> Đăng ký</button>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+
+      <!-- tình trạng máy trên chuyền -->
+        <div class="w3-rest" style="border: blueviolet; border-style: groove; border-radius: 5px;">
+          <div class="container" onclick="close_reg()" style="margin: 0px;">
+            <div class="col-md-2 w3-left">
+              <div class="form-group">
+                <select class="form-control" name="sel_group" id="sel_group">
+                  <option><%- listgroup %></option>
+                </select>
+              </div>
+              <div class="form-group">
+                <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="load_group()"><span class="glyphicon glyphicon-search"></span> Xem thông tin</button>
+                
+              </div>
+            </div>
+            <div class="w3-rest">
+              <div class="w3-row">
+                <h3 id="detail_infor" style="color: blueviolet;">rest - detail information</h3>
+              </div>
+              <div class="w3-row">
+                <div class="col-md-2" style="background-color: cyan;">hoạt động tốt</div>
+                <div class="col-md-2" style="background-color: yellow;">đang sửa</div>
+                <div class="col-md-2" style="background-color: red;">hỏng</div>
+                <div class="col-md-2" style="background-color: #4d94ff;">chuyển đổi</div>
+                <div class="col-md-2" style="background-color: #ff1aff;">đóng cuối ca</div>
+                <div class="col-md-2" style="background-color: blue; color: white;">hỏng bảo hộ</div>
+                <div class="col-md-2" style="background-color: green;">PM</div>
+                
+              </div>
+              
+              <!-- <h3 id="detail_infor" style="color: blueviolet;">RITMO: Tổng thợ máy: 50 , đang sửa máy: 1, có thể giao việc: 49</h3> -->
+            </div>
+
+          
+          </div>
+          <div style="overflow-x: scroll; padding: 0px; margin: auto; position: relative; width: 100%; height: 900px;">
+            <div style="opacity: 0; position: absolute; left: 0px; top: 0px; z-index: 10;">
+              <img src="../imgbook/bodyBG2.jpg" width="2192" height="900" alt="Planets"  usemap="#MapMC">
+            </div>
+            <div style="position: absolute; left: 0px; top: 0px;">
+              <canvas id="myCanvas" width="2192" height="900" style="border:1px solid #d3d3d3;"></canvas>
+            </div>
+            <map name="MapMC" id="MapMC">
+              <!-- <area shape="rect" coords="0,0,120,180" alt="MC1" href="/login"> -->
+            </map>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- Footer -->
+    <footer class="w3-row-padding w3-padding-32 w3-center">
+    </footer>
+    <!-- End page content -->
+    </div>
+        <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+    <button id="dialog2" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><strong>Thông tin thợ máy</strong><span id="sys_confirm">.</span></h4>
+          </div>
+          <div class="modal-body">
+            <form id="reg_repair" action="javascript:">
+              <label for="idmc2">mã máy:</label><br>
+              <input class="form-control w3-left" type="text" name="idmc2" id="idmc2">
+              <p>---</p>
+              <label id="nv_reg">Nhân viên mở tk:</label><br>
+              <label id="mc_type">loại máy:</label><br>
+              <label id="broken_code">lỗi:</label><br>
+              <br>
+              <div class="modal-body" id="closeB">
+                <label class="form-control w3-left">Quét mã thẻ thợ máy:</label>
+                <input class="form-control w3-center" style="background-color:  rgb(230, 231, 206);" onkeypress="get_mec_name()" placeholder="đưa chuột vào và quét thẻ" type="number" name="id_nvtm" id="id_nvtm">
+                <p>---------------------</p>
+                <label class="form-control w3-left" id="name_nvtm">Tên thợ máy</label>
+                <p>---------------------</p>
+              </div>
+              <div class="modal-body" id="closeA" style="display: none;">
+                <label class="form-control w3-left">Quét mã thẻ nhân viên chốt giờ:</label>
+                <input class="form-control w3-center" style="background-color: rgb(230, 231, 206);" onkeypress="get_name4()" placeholder="đưa chuột vào và quét thẻ" type="number" name="employee_id4" id="employee_id4">
+                <label class="form-control w3-left" id="emp_name4">Tên nhân viên</label>
+              </div>
+              <br>
+              <div class="modal-body">
+                <div class="col-md-5">
+                  <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="start_repair()"><span class="glyphicon glyphicon-wrench"></span> Bắt đầu sửa máy</button>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                  <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="close_advance()"><span class="glyphicon glyphicon-lock"></span> đóng không cần sửa</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="close_dialog2" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+    <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+    <button id="dialog_finish" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#FModal">Open Modal</button>
+    <!-- Modal -->
+    <div class="modal fade" id="FModal" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><strong>Thông tin sửa máy</strong><span id="sys_confirm3">.</span></h4>
+          </div>
+          <div class="modal-body">
+            <form id="finish_repair" action="javascript:">
+              <label for="idmc3">mã máy:</label><br>
+              <input class="form-control w3-left" type="text" name="idmc3" id="idmc3">
+              <p>---</p>
+              <label id="mc_type3">loại máy:</label><br>
+              <label id="broken_code3" style="display: block;">lỗi:</label><br>
+              <div class="modal-body" id="tm_close">
+                <label class="form-control w3-left" for="mccode">code hỏng máy:</label>
+                <select class="form-control" name="mccode" id="mccode" style="background-color: yellow;">
+                  <!-- <option>001 (Chuyển đổi mã hàng bó đầu tiên)</option> -->
+                  <option>002 không an toàn (thiếu bảo hộ/ rò điện...)</option>
+                  <option>003 máy bị gãy kim</option>
+                  <option>100 đổi máy - chuyển đổi mã hàng</option>
+                  <option>401 lỗ kim</option>
+                  <option>500 sụp mí</option>
+                  <option>502 sai mật độ mũi chỉ</option>
+                  <option>503 bỏ mũi</option>
+                  <option>504 máy nghiến</option>
+                  <option>505 đứt chỉ / bung chỉ</option>
+                  <option>520 Xì</option>
+                  <option>521 kẹp vải</option>
+                  <option>522 máy chả dầu</option>
+                  <option>528 nhăn, bai, sạc</option>
+                  <option>534 hỏng bờ</option>
+                  <option>542 lè vải</option>
+                  <option>558 chỉ dài</option>
+                  <option>570 lè thun</option>
+                  <option>600 tưa vải</option>
+                  <option>601 chờ phụ tùng</option>
+                  <option>620 máy auto bind panel không xếp được</option>
+                  <option>630 lỗi PAD</option>
+                  <option>PM</option>
+                  <option>Gay_Kim (thay kim gãy)</option>
+                  <option>Sửa bàn đạp</option>
+                  <option>Hộp đứng - Hư bo mạch</option>
+                  <option>PM máy tại chuyền</option>
+                  <option>PM máy chuyển đổi</option>
+                  <option>Cân chỉnh độ cân bằng, chiều cao máy</option>
+                  <option>Chuẩn bị máy chuyển đổi</option>
+                  <option>di chuyển máy vào chuyền / trả kho</option>
+                  <option>Lỗi khác</option>
+                </select>
+                <p>---------------------</p>
+                <label class="form-control w3-left">Quét mã thẻ thợ máy:</label>
+                <input class="form-control w3-center" style="background-color: rgb(230, 231, 206);" onkeypress="get_mec_name3()" placeholder="đưa chuột vào và quét thẻ" type="number" name="id_nvtm3" id="id_nvtm3">
+                <p>---------------------</p>
+                <label class="form-control w3-left" id="name_nvtm3">Tên thợ máy</label>
+                <p>---------------------</p>
+                <!-- <label class="form-control w3-left">yêu cầu spare part:</label>
+                <input class="form-control w3-center" style="background-color: rgb(230, 231, 206);" placeholder="nhập vào id part" type="number" name="id_part" id="id_part"> -->
+              </div>
+              <div class="modal-body" id="nvclose" style="display: none;">
+                <label class="form-control w3-left">Quét mã thẻ nhân viên chốt giờ:</label>
+                <input class="form-control w3-center" style="background-color: rgb(230, 231, 206);" onkeypress="get_name2()" placeholder="đưa chuột vào và quét thẻ" type="number" name="employee_id3" id="employee_id3">
+                <label class="form-control w3-left" id="emp_name3">Tên nhân viên</label>
+                <input class="form-control w3-center" style="background-color: rgb(230, 231, 206); display: none;" placeholder="check pm" type="text" name="checkPM" id="checkPM">
+              </div>
+              <p>---------------------</p>
+              <div class="modal-footer">
+                <div class="col-md-5">
+                  <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="finish_repair()"><span class="glyphicon glyphicon-ok-sign"></span> đóng ticket</button>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                  <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="req_part()"><span class="glyphicon glyphicon-lock"></span> yêu cầu part</button>
+                </div>
+              </div>
+              
+              <br>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="close_dialog3" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+    <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+    <button id="dialog_req" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#RModal">Open Modal</button>
+    <!-- Modal -->
+    <div class="modal fade" id="RModal" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><strong>Thông tin yêu cầu spare part</strong><span >.</span></h4>
+          </div>
+          <div class="modal-body">
+            <form id="req_part_form" action="javascript:">
+              <label for="idmc4">mã máy:</label><br>
+              <input class="form-control w3-left" type="text" name="idmc4" id="idmc4">
+              <input class="form-control w3-left" type="text" name="line4" id="line4" style="display: none;">
+              <label id="mc_type4">loại máy:</label>
+              <select class="form-control" name="mc_type4_sel" id="mc_type4_sel" style="background-color: yellow;" onchange="change_type()">
+              </select>
+              <label id="broken_code4" style="display: none;">lỗi:</label><br>
+              <label class="form-control w3-left" for="part_code">chọn tên part:</label>
+              <select class="form-control" name="part_code_sel" id="part_code_sel" style="background-color: yellow;" onchange="change_part()">
+              </select>
+              <br>
+              <label for="idpart4">mã part:</label><br>
+              <input class="form-control w3-left" type="text" name="idpart" id="idpart" onkeypress="typing_part()">
+              <br>
+              <label id="partname">tên part:</label><br>
+              <label for="qty_req">Số lượng:</label><br>
+              <input class="form-control w3-left" value="1" type="number" name="qty_req" id="qty_req" style="background-color: yellow;">
+              <p>---------------------</p>
+              <label class="form-control w3-left">Quét mã thẻ thợ máy:</label>
+              <input class="form-control w3-center" style="background-color: rgb(230, 231, 206);" onkeypress="get_mec_name4()" placeholder="đưa chuột vào và quét thẻ" type="number" name="id_nvtm4" id="id_nvtm4">
+              <label class="form-control w3-left" id="name_nvtm4">Tên thợ máy</label>
+              <p>---------------------</p>
+              <div class="modal-footer">
+                <div class="w3-container">
+                  <div class="col-md-5">
+                    <button type="button" class="btn btn-primary" style="background-color: #4B0082;" onclick="send_req()"><span class="glyphicon glyphicon-lock"></span>Gửi yêu cầu</button>
+                  </div>
+                </div>
+                <div class="w3-container">
+                  <p>---list đã yêu cầu---</p>
+                  <p id="part_requested" style="text-align: left;"></p>
+                </div>
+              </div>
+              <br>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="close_dialog4" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->    
+    
+    
+    
+    
+    
+    
+    <!-- Footer -->
+    <footer class="w3-row-padding w3-padding-32 w3-center">
+    </footer>
+
+</body> 
+
+<script type="text/javascript">
+
+          window.addEventListener('load', function () {
+            get_mc_stt()
+          })
+          setInterval(function(){ 
+            load_group()
+          }, 300000);
+          $('#FModal').on('shown.bs.modal', function () {
+            document.getElementById("employee_id3").value="";
+            document.getElementById("emp_name3").innerText="Tên nhân viên";
+            document.getElementById("name_nvtm3").innerText="Tên thợ máy";
+            document.getElementById("id_nvtm3").value="";
+            document.getElementById("id_nvtm3").disabled=false;
+            document.getElementById("id_nvtm3").focus();
+          })  
+
+          $('#myModal').on('shown.bs.modal', function () {
+            document.getElementById("closeB").style.display="inline";
+            document.getElementById("closeA").style.display="none";
+            document.getElementById("employee_id4").value="";
+            document.getElementById("emp_name4").innerText="Tên nhân viên";
+            document.getElementById("name_nvtm").innerText="Tên thợ máy";
+            document.getElementById("id_nvtm").value="";
+            document.getElementById("id_nvtm").disabled=false;
+            document.getElementById("id_nvtm").focus();
+          })  
+
+          $('#RModal').on('shown.bs.modal', function () {
+            document.getElementById("part_requested").innerText="";
+            document.getElementById("name_nvtm4").innerText="Tên thợ máy";
+            document.getElementById("qty_req").value="1";
+            document.getElementById("id_nvtm4").value="";
+            document.getElementById("partname").innerText="Tên part";
+            document.getElementById("id_nvtm4").disabled=false;
+            document.getElementById("id_nvtm4").focus();
+          })  
+          function open_reg(){
+            document.getElementById("downtime_reg").style.display="inline";
+            document.getElementById("employee_id").value="";
+            document.getElementById("emp_name").innerText="Tên nhân viên";
+            document.getElementById("employee_id").focus();
+          }
+          function close_reg(){
+            document.getElementById("machine_id").value=""
+            document.getElementById("downtime_reg").style.display="none";
+          }
+
+          // Script to open and close sidebar
+          var list_mc=JSON.stringify("");
+
+          function send_req(){
+            if (document.getElementById("part_code_sel").value=="-"){
+              if(document.getElementById("idpart").value==""){
+                alert("vui lòng chọn part")
+                return
+              } else{
+                alert("Bạn đang yêu cầu part bằng mã nhập tay vào \n Thông tin sẽ được chuyển tiếp tới clerk kho")
+              }
+
+            }
+
+            if (parseInt(document.getElementById("qty_req").value)<0){
+              alert("vui lòng nhập vào số lượng >0");
+              return;
+            }
+
+            // alert("open ticket")
+            event.preventDefault();
+            if(document.getElementById("name_nvtm4").innerText=="Tên thợ máy"){
+              alert("mã số nhân viên thợ máy không đúng");
+              document.getElementById("id_nvtm4").value="";
+              return
+            }
+            document.getElementById("id_nvtm4").disabled=false;
+            document.getElementById("idmc4").disabled=false;
+            var main_url="/mec/send_req_part"
+            var frm = $('#req_part_form');
+            $.ajax({
+                type: "post",
+                url: main_url,
+                data: frm.serialize(),
+                success: function (data) {
+                  alert(data);
+                  var list_send=document.getElementById("part_requested").innerText;
+                  if (document.getElementById("idpart").value==""){
+                    document.getElementById("part_requested").innerText=list_send+document.getElementById("qty_req").value+"_"+document.getElementById("part_code_sel").value+"\n";
+                    document.getElementById("part_code_sel").value="-"
+                    document.getElementById("idpart").value="";
+                  } else{
+                    document.getElementById("part_requested").innerText=list_send+document.getElementById("qty_req").value+"_"+document.getElementById("idpart").value+"\n";
+                    document.getElementById("part_code_sel").value="-"
+                    document.getElementById("idpart").value="";
+                  }
+
+                },
+                error: function () {
+                            alert("submit failed")
+                },
+            })
+
+          }
+          
+          function change_type(){
+            var mc_type=document.getElementById('mc_type4_sel').value
+            if (mc_type=="Top yêu cầu"){ mc_type="Sub"}
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false"){
+                  alert("thư viện không có sẵn")
+                } else{
+                  sessionStorage.setItem('list_part',res_result);
+                  nv=JSON.parse(res_result);
+                  console.log(nv[0].type)
+                  var x = document.getElementById("part_code_sel");
+                  while (x.length >0){
+                      x.options.remove(0);
+                      var x = document.getElementById("part_code_sel");
+                  }
+                  var x = document.getElementById("part_code_sel");
+                  var option = document.createElement("option");
+                  option.text ="-";
+                  x.add(option);
+                  for (i=0;i<nv.length;i++){
+                    var x = document.getElementById("part_code_sel");
+                    var option = document.createElement("option");
+                    option.text =nv[i].vendor_part+" --> "+nv[i].vie_name;
+                    x.add(option);
+                  }
+                }
+              }
+            };
+            xhttp.open("get", "/mec/getpart/"+mc_type, true);
+            xhttp.send();
+          }
+
+          function change_part(){
+            var part_id=document.getElementById("part_code_sel").value
+            if (part_id=="-"){
+              document.getElementById("idpart").value=""
+              document.getElementById("partname").value=""
+            } else{
+              var res=part_id.split(" --> ");
+              document.getElementById("idpart").value=res[0]
+              document.getElementById("partname").innerText=res[1].toString()
+            }
+          }
+
+          function req_part(){
+            document.getElementById("idmc4").value=document.getElementById("idmc3").value
+            var mctype=document.getElementById("mc_type3").innerText;
+            mctype=mctype.substr(10,mctype.length-10);
+            var x = document.getElementById("mc_type4_sel");
+            while (x.length >0){
+                x.options.remove(0);
+                var x = document.getElementById("mc_type4_sel");
+            }
+            var x = document.getElementById("mc_type4_sel");
+            var option = document.createElement("option");
+            option.text ="Top yêu cầu";
+            x.add(option);
+            var x = document.getElementById("mc_type4_sel");
+            var option = document.createElement("option");
+            option.text =mctype;
+            x.add(option);
+            change_type()
+
+            document.getElementById("close_dialog3").click();
+            document.getElementById("dialog_req").click();
+            // return
+            // var thomay=document.getElementById("name_nvtm3").innerText;
+            // if (thomay=="Tên thợ máy"){
+            //   document.getElementById("f_nvtm").style.display="inline";
+            //   return;
+            // }
+          }
+        
+          function close_advance(){
+            alert("chức năng chưa được bật \nVui lòng thử lại sau")
+            return
+            document.getElementById("closeB").style.display="none";
+            document.getElementById("closeA").style.display="inline";
+            if (document.getElementById("emp_name4").innerText=="Tên nhân viên"){
+              alert("vui lòng quét thẻ nhân viên để đóng ticket")
+              document.getElementById("employee_id4").focus();
+              return
+            } else{
+                      document.getElementById("close_dialog2").click();
+                      // document.getElementById("id_nvtm").disabled=false;
+                      document.getElementById("idmc2").disabled=false;
+                      document.getElementById("employee_id4").disabled=false;
+                      // alert("open ticket")
+                      event.preventDefault();
+                      var main_url="/mec/closeadvance"
+                      var frm = $('#reg_repair');
+                      $.ajax({
+                          type: "post",
+                          url: main_url,
+                          data: frm.serialize(),
+                          success: function (data) {
+                            alert(data);
+                            load_group();
+                          },
+                          error: function () {
+                                      alert("submit failed")
+                          },
+                      })
+
+
+
+            }
+          }
+
+          function logout(){
+            alert('log out');
+            document.getElementById("logout_ref").click();
+          }
+
+          function get_mc_stt(){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false"){
+                  
+                } else{
+                  sessionStorage.setItem('res_mc_stt',res_result);
+                  Draw_map();
+                }
+                }
+              };
+              var login_user=document.getElementById("username").innerText
+              xhttp.open("get", "/mec/stt/"+login_user, true);
+              xhttp.send();
+          }
+
+          function load_group(){
+            // alert('load group')
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false"){
+                  alert("thông tin nhóm chuyền nhập vào bị lỗi!")
+                } else{
+                  sessionStorage.setItem('res_mc_stt',res_result);
+                  Draw_map();
+                }
+                }
+              };
+              var login_group=document.getElementById("sel_group").value;
+              console.log(login_group)
+              xhttp.open("get", "/mec/group/"+login_group, true);
+              xhttp.send();
+          }
+
+          function start_repair(){
+            document.getElementById("close_dialog2").click();
+            document.getElementById("id_nvtm").disabled=false;
+            document.getElementById("idmc2").disabled=false;
+            // alert("open ticket")
+            event.preventDefault();
+            if(document.getElementById("name_nvtm").innerText=="Tên thợ máy"){
+              alert("mã số nhân viên không đúng");
+              document.getElementById("id_nvtm").value="";
+              return
+            }
+            var main_url="/mec/reg_repair"
+            var frm = $('#reg_repair');
+            $.ajax({
+                type: "post",
+                url: main_url,
+                data: frm.serialize(),
+                success: function (data) {
+                  alert(data);
+                  load_group();
+                },
+                error: function () {
+                            alert("submit failed")
+                },
+            })
+
+          }
+
+          function finish_repair(){
+            
+            document.getElementById("id_nvtm3").disabled=false;
+            document.getElementById("idmc3").disabled=false;
+            document.getElementById("employee_id3").disabled=false;
+            // alert("open ticket")
+            event.preventDefault();
+            if(document.getElementById("emp_name3").innerText=="Tên nhân viên"){
+              alert("mã số nhân viên không đúng hoặc chưa quét mã nhân viên");
+              document.getElementById("employee_id3").value="";
+              return;
+            }
+            var brcode3=document.getElementById("broken_code3").innerText;
+            var mccode_sel=document.getElementById("mccode").value
+            if (brcode3.indexOf(7)>-1){
+              if(mccode_sel=="-"){
+                alert("Vui lòng chọn mã máy hỏng cho lỗi an toàn")
+                return;
+              }
+            }
+            var main_url="/mec/finish_repair"
+            var frm = $('#finish_repair');
+            $.ajax({
+                type: "post",
+                url: main_url,
+                data: frm.serialize(),
+                success: function (data) {
+                  document.getElementById("close_dialog3").click();
+                  alert(data);
+                  load_group();
+                },
+                error: function () {
+                            alert("submit failed")
+                },
+            })
+
+          }
+
+          function typing_part(){
+            document.getElementById("part_code_sel").value="-";
+
+          }
+
+          function click_map(idmc){
+            // document.getElementById("dialog2").click();
+            console.log(idmc)
+            var Mc_model='';
+            var stt=0;
+            var line="linexxx"
+            var pos=1
+            var i=0;
+            var br="";
+            var nv_reg="";
+            var ds=JSON.parse(sessionStorage.getItem('res_mc_stt'));
+            for (i=0;i<ds.length;i++){
+              if (ds[i].IDMC==idmc){
+                Mc_model=ds[i].MachineModel
+                stt=ds[i].status;
+                line=ds[i].Line;
+                pos=ds[i].Pos;
+                br=ds[i].broken_code_nv;
+                nv_reg=ds[i].tennv;
+                break;
+              }
+            }
+            console.log(pos)
+            if (stt==0 || stt==null || stt==6){
+              document.getElementById("employee_id").disabled=false;
+              document.getElementById("employee_id").value="";
+              document.getElementById('machine_type').innerText=Mc_model;
+              document.getElementById("machine_id").value=idmc;
+              document.getElementById("linesew").value=line;
+              document.getElementById("sel_pos").value=pos;
+              line_qco(line)
+              open_reg()
+            }
+            if (stt==1||stt==5){
+              document.getElementById("closeA").style.display="none";
+              document.getElementById("idmc2").value=idmc;
+              document.getElementById("idmc2").disabled=true;
+              document.getElementById("mc_type").innerText="Loại máy: "+Mc_model;
+              document.getElementById("nv_reg").innerText="tên nhân viên mở tk: "+nv_reg;
+              document.getElementById("broken_code").innerText=br;
+              document.getElementById("dialog2").click();
+            }
+            if (stt==2||stt==4){
+              document.getElementById("idmc3").value=idmc;
+              document.getElementById("line4").value=line;
+              document.getElementById("idmc3").disabled=true;
+              document.getElementById("mc_type3").innerText="Loại máy: "+Mc_model;
+              document.getElementById("broken_code3").innerText=br;
+              // xoa mccode
+              var x = document.getElementById("mccode");
+              while (x.length > 0) {
+                x.remove(x.length-1);
+                var x = document.getElementById("mccode");
+              }
+              if (br.indexOf("7")>-1){
+                var x = document.getElementById("mccode");
+                while (x.length > 0) {
+                  x.remove(x.length-1);
+                  var x = document.getElementById("mccode");
+                }
+                var x = document.getElementById("mccode");
+                var option = document.createElement("option");
+                option.text = "-";
+                x.add(option);
+                var x = document.getElementById("mccode");
+                var option = document.createElement("option");
+                option.text = "Hỏng bảo hộ kim";
+                x.add(option);
+                var x = document.getElementById("mccode");
+                var option = document.createElement("option");
+                option.text = "Hỏng bảo hộ dao";
+                x.add(option);
+                var x = document.getElementById("mccode");
+                var option = document.createElement("option");
+                option.text = "Hỏng đèn máy may";
+                x.add(option);
+                var x = document.getElementById("mccode");
+                var option = document.createElement("option");
+                option.text = "Rò điện, giật điện";
+                x.add(option);
+                var x = document.getElementById("mccode");
+                var option = document.createElement("option");
+                option.text = "Đinh, vít sắc nhọn";
+                x.add(option);
+                var x = document.getElementById("mccode");
+                var option = document.createElement("option");
+                option.text = "Gãy mặt bàn";
+                x.add(option);
+                var x = document.getElementById("mccode");
+                var option = document.createElement("option");
+                option.text = "Lỗi khác";
+                x.add(option);
+                var x = document.getElementById("mccode");
+                var option = document.createElement("option");
+                option.text = "Chưa sửa chữa do thiếu phụ tùng…..";
+                x.add(option);
+
+              }
+              else{
+                // alert("code thuong")
+                var x = document.getElementById("mccode");
+                var option = document.createElement("option");
+                option.text = "-";
+                x.add(option);
+                const o = [];
+                // o[0]="001 (Chuyển đổi mã hàng bó đầu tiên)"
+                o[0]="002 không an toàn (thiếu bảo hộ/ rò điện...)"
+                o[1]="003 máy bị gãy kim"
+                o[2]="100 đổi máy - chuyển đổi mã hàng"
+                o[3]="401 lỗ kim"
+                o[4]="500 sụp mí"
+                o[5]="502 sai mật độ mũi chỉ"
+                o[6]="503 bỏ mũi"
+                o[7]="504 máy nghiến"
+                o[8]="505 đứt chỉ / bung chỉ"
+                o[9]="520 Xì"
+                o[10]="521 kẹp vải"
+                o[11]="522 máy chả dầu"
+                o[12]="528 nhăn, bai, sạc"
+                o[13]="534 hỏng bờ"
+                o[14]="542 lè vải"
+                o[15]="558 chỉ dài"
+                o[16]="570 lè thun"
+                o[17]="600 tưa vải"
+                o[18]="601 chờ phụ tùng"
+                o[19]="620 máy auto bind panel không xếp được"
+                o[20]="630 lỗi PAD"
+                o[21]="PM"
+                o[22]="Gay_Kim (thay kim gãy)"
+                o[23]="Sửa bàn đạp"
+                o[24]="Hộp đứng - Hư bo mạch"
+                o[25]="PM máy tại chuyền"
+                o[26]="PM máy chuyển đổi"
+                o[27]="Cân chỉnh độ cân bằng, chiều cao máy"
+                o[28]="Chuẩn bị máy chuyển đổi"
+                o[29]="di chuyển máy vào chuyền / trả kho"
+                o[30]="Lỗi khác"
+                for (i = 0; i < 31; i++)
+                { 
+                    $('#mccode').append($('<option>',
+                    {
+                        value: o[i],
+                        text : o[i] 
+                    }));
+                }
+                // $("#mccode").innerHTML="<option>001 (Chuyển đổi mã hàng bó đầu tiên)</option><option>002 không an toàn (thiếu bảo hộ/ rò điện...)</option>"
+
+              }
+              document.getElementById("nvclose").style.display="None";
+              document.getElementById("checkPM").value="";
+
+
+
+
+
+              if (stt==4){
+                document.getElementById("checkPM").value="PM";
+              }
+              document.getElementById("dialog_finish").click();
+            }
+
+            Draw_map();
+
+          };
+
+          function line_qco(lineqco){
+            console.log(lineqco)
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("post", '/cs/line_open', true);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
+            data = {
+                lineopen: lineqco
+                };
+  
+            xmlhttp.send(JSON.stringify(data));
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    kq=this.responseText;
+                    if (kq=="open"){
+                      console.log("line changeing")
+                      jQuery("#sel_code option:contains('001 (Chuyển đổi mã hàng bó đầu tiên)')").remove();
+                      console.log('remove and re add')
+                      // var x = document.getElementById("sel_code");
+                      // var option = document.createElement("option");
+                      // option.text = '001 (Chuyển đổi mã hàng bó đầu tiên)'
+                      // x.add(option,x.options[0]);
+                      // x.selectedIndex='0'
+                    } else{
+                      jQuery("#sel_code option:contains('001 (Chuyển đổi mã hàng bó đầu tiên)')").remove();
+                    }
+                }
+            };
+            
+
+
+
+
+
+          }
+
+          function Draw_map(){
+            var sel_machine=document.getElementById("machine_id").value;
+            var ds=JSON.parse(sessionStorage.getItem('res_mc_stt'));
+            var pre=ds[0].Line.substr(5,3);
+            var last=ds[0].Line.substr(5,3)
+            console.log(ds)
+            if (pre=="201"||pre=="232"||pre=="035"|| parseInt(pre)==35){
+              var NumMc=ds.length;
+              var flex_map=document.getElementById("MapMC")
+              console.log(ds[0].IDMC)
+              console.log(ds.length);
+              var c = document.getElementById("myCanvas");
+              var ctx = c.getContext("2d");
+              ctx.clearRect(0, 0, 2192, 900);
+              flex_map.innerHTML='';
+              var mc=0
+              var i=1
+              var j=1
+              var c=0
+              var pos=0
+              var rest_infor=""
+              var hong=0
+              var repair=0
+              var realmc=0
+              for (i=0;i<10;i++){
+                if (mc==NumMc){break}
+                var linename=ds[mc].Line
+                var last=ds[mc].Line.substr(5,3)
+                ctx.font = "18px Verdana";
+                ctx.fillText(linename, 60+220*i, 20);
+                ctx.fillText(linename, 60+220*i, 860);
+                ctx.strokeStyle = "blue";
+                ctx.strokeRect(10+i*220, 30, 200, 810);
+                c=0
+                ctx.font = "30px Verdana";
+                ctx.fillText("MR", 40+220*i, 800);
+                ctx.font = "14px Verdana";
+                ctx.fillStyle = "black"; 
+                // dãy bên trái
+                for (j=0;j<=8;j++){
+                  var linename=ds[mc].Line
+                  if (ds[mc].Pos>8){continue}
+                  if (ds[mc].status==0||ds[mc].status==null){
+                    ctx.fillStyle ="cyan"; // mau XANH - may tot
+                  }
+                  if (ds[mc].status==1){
+                    ctx.fillStyle = "red"; // mau DO - may hong
+                    console.log('loi may')
+                    hong=hong+1
+                  }
+                  if (ds[mc].status==2){
+                    ctx.fillStyle = "yellow"; // mau vang - may dang sua
+                    hong=hong+1
+                    repair=repair+1
+                  }
+                  if (ds[mc].status==4){
+                    ctx.fillStyle = "green"; // PM 
+                  }
+                  if (ds[mc].status==5){
+                    ctx.fillStyle = "#4d94ff"; // mau tim - chuyen doi ma hang
+                  }
+                  
+                  if (ds[mc].status==6){
+                    ctx.fillStyle = "#ff1aff"; // mau hong - dong cuoi ca
+                  }
+
+                  br=ds[mc].broken_code_nv
+                  if (br==null){
+                    br=""
+                  }
+                  if (br.indexOf("7 Nh")>=0 && ds[mc].status> 0){
+                      ctx.fillStyle = "blue"; // mau xanh duong => may loi an toan
+                      console.log(br)
+                    }
+                  if (sel_machine==ds[mc].IDMC){
+                    ctx.fillStyle = "pink"; // mau hong => may dang dc chon
+                  }
+                  pos=ds[mc].Pos-1
+                  ctx.fillRect(12+i*220, 40+(pos)*100, 96, 90);
+                  ctx.fillStyle = "black";
+                  ctx.fillText(ds[mc].IDMC,15+i*220,60+pos*100)
+                  var op=""
+                  if (ds[mc].operation==null){
+                    op=""
+                  }
+                  else {
+                    op=ds[mc].operation
+                  }
+                  op=op.toString()
+                  op=op.substring(0,12)
+                  ctx.fillText(op,12+i*220,75+pos*100)
+                  var model=''
+                  model=ds[mc].MachineModel
+                  if (model!="NOMC"){
+                    realmc=realmc+1;
+                  }
+                  model=model.substring(0,12)
+                  ctx.fillText(model,12+i*220,90+pos*100)
+                  if (ds[mc].status==1 || ds[mc].status==2){
+                    ctx.fillText(ds[mc].starttime,12+i*220,105+pos*100)
+                  }
+                  // tạo map
+                  x_co=12+i*220;
+                  y_co=40+(pos)*100
+                  x_co2=x_co+96;
+                  y_co2=y_co+80;
+                  var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                  var element = document.createElement( "AREA" );
+                  element.shape = "Rect";
+                  element.coords = rec;
+                  element.href="#";
+                  element.setAttribute("id",ds[mc].IDMC)
+                  element.setAttribute("onclick","click_map(this.id)")
+                  flex_map.appendChild(element)
+                  // thêm vào map
+                  mc=mc+1
+                  if (mc==NumMc){break}
+                  if (linename!=ds[mc].Line){
+                    c=1
+                    break;
+                  }
+                }
+                if (c==1){ continue; }
+                // dãy bên phải
+                for (j=0;j<20;j++){
+                  if (ds[mc].status==0||ds[mc].status==null){
+                    ctx.fillStyle = "cyan"; // mau XANH - may tot
+                  }
+                  if (ds[mc].status== 1){
+                    ctx.fillStyle = "red"; // mau DO - may hong
+                    hong=hong+1
+                  }
+                  if (ds[mc].status==2){
+                    ctx.fillStyle = "yellow"; // mau vang - may dang sua
+                    hong=hong+1
+                    repair=repair+1
+                  }
+                  if (ds[mc].status==4){
+                    ctx.fillStyle = "green"; // mau xanh la - may PM
+                  }
+                  if (ds[mc].status==5){
+                    ctx.fillStyle = "#4d94ff"; // mau tim - may chuyen doi
+                  }
+                  if (ds[mc].status==6){
+                    ctx.fillStyle = "#ff1aff"; // mau hong - may dong cuoi ca
+                  }
+                  pos=ds[mc].Pos-9
+                  // if (pos>6){
+                  //   ctx.fillStyle = "orange"; // mau CAM - NGOAI LAYOUT
+                  // }
+                  
+                  br=ds[mc].broken_code_nv
+                  if (br==null){
+                    br=""
+                  }
+                  if (br.indexOf("7 Nh")>=0 && ds[mc].status> 0){
+                      ctx.fillStyle = "blue"; // mau xanh duong => may loi an toan
+                      console.log(br)
+                    }
+
+                  if (sel_machine==ds[mc].IDMC){
+                    ctx.fillStyle = "pink"; // xanh duong => may dang dc chon
+                  }
+
+                  
+                  // console.log(pos)
+                  ctx.fillRect(112+i*220, 40+pos*100, 96, 90);
+                  ctx.fillStyle = "black";
+                  ctx.fillText(ds[mc].IDMC,112+i*220,60+pos*100)
+                  var op=""
+                  if (ds[mc].operation==null){
+                    op=""
+                  }
+                  else {
+                    op=ds[mc].operation
+                  }
+                  op=op.toString()
+                  op=op.substring(0,12)
+                  ctx.fillText(op,112+i*220,75+pos*100)
+                  model=ds[mc].MachineModel
+                  if (model!="NOMC"){
+                    realmc=realmc+1;
+                  }
+                  model=model.substring(0,12)
+                  ctx.fillText(model,112+i*220,90+pos*100)
+                  if (ds[mc].status==1 || ds[mc].status==2 || ds[mc].status==4|| ds[mc].status==5){
+                    ctx.fillText(ds[mc].starttime,112+i*220,105+pos*100)
+                  }
+                  //tạo map
+                  x_co=112+i*220;
+                  x_co2=x_co+96;
+                  y_co=40+pos*100;
+                  y_co2=y_co+90;
+                  var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                  var element = document.createElement( "AREA" );
+                  element.shape = "Rect";
+                  element.coords = rec;
+                  element.href="#";
+                  // element.addEventListener("click",click_map);
+                  element.setAttribute("id",ds[mc].IDMC)
+                  element.setAttribute("onclick","click_map(this.id)")
+                  flex_map.appendChild(element)
+                  // thêm vào map
+                  mc=mc+1
+                  if (mc==NumMc){break}
+                  if (linename!=ds[mc].Line){
+                    c=1
+                    break;
+                  }
+                }
+                ctx.font = "20px Verdana";
+                ctx.fillStyle = "red"; 
+                ctx.fillText("1",85+(i)*220,60+(1-1)*100)
+                ctx.fillText("2",85+(i)*220,60+(2-1)*100)
+                ctx.fillText("3",85+(i)*220,60+(3-1)*100)
+                ctx.fillText("4",85+(i)*220,60+(4-1)*100)
+                ctx.fillText("5",85+(i)*220,60+(5-1)*100)
+                ctx.fillText("6",85+(i)*220,60+(6-1)*100)
+                ctx.fillText("7",85+(i)*220,60+(7-1)*100)
+                ctx.fillText("8",85+(i)*220,60+(8-1)*100)
+                ctx.fillText("9",185+(i)*220,60+(1-1)*100)
+                ctx.fillText("10",185+(i)*220,60+(2-1)*100)
+                ctx.fillText("11",185+(i)*220,60+(3-1)*100)
+                ctx.fillText("12",185+(i)*220,60+(4-1)*100)
+                ctx.fillText("13",185+(i)*220,60+(5-1)*100)
+                ctx.fillText("14",185+(i)*220,60+(6-1)*100)
+                ctx.fillText("15",185+(i)*220,60+(7-1)*100)
+                ctx.fillText("16",185+(i)*220,60+(8-1)*100)
+                ctx.font = "14px Verdana";
+                ctx.fillStyle = "black"; 
+              }
+              var gr=pre+'-'+last
+              if (pre=="201"||pre=="232"){
+                  gr="201-203"
+                }
+              if (pre=="099"){
+                  gr="NSI"
+                }
+              if (pre=="865"){
+                  gr="WHPM2"
+                }
+              if (pre=="858"){
+                  gr="WHPM1"
+                }
+              if (pre=="171"){
+                  gr="SMED PB1 TEST"
+                }
+              if (pre=="971"){
+                  gr="SMED PB2 TEST"
+                }
+              document.getElementById("sel_group").value=gr;
+              rest_infor="tổng máy = "+realmc.toString()+" ; máy hỏng = "+hong.toString()+" ; máy đang sửa = "+repair.toString();
+              // console.log(rest_infor)
+              document.getElementById("detail_infor").innerText=rest_infor;
+
+            } else {
+                // normal line layout
+              if (pre=="298" ||pre=="319"||parseInt(pre)<355||pre=="043"||pre=="022"||pre=="028"||pre=="008"||pre=="015"||pre=="333"){
+                var NumMc=ds.length;
+                var flex_map=document.getElementById("MapMC")
+                console.log(ds[0].IDMC)
+                console.log(ds.length);
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+                ctx.clearRect(0, 0, 2192, 900);
+                flex_map.innerHTML='';
+                var mc=0
+                var i=1
+                var j=1
+                var c=0
+                var pos=0
+                var rest_infor=""
+                var hong=0
+                var repair=0
+                var realmc=0
+                for (i=0;i<10;i++){
+                  if (mc==NumMc){break}
+                  var linename=ds[mc].Line
+                  var last=ds[mc].Line.substr(5,3)
+                  ctx.font = "18px Verdana";
+                  ctx.fillText(linename, 60+220*i, 20);
+                  ctx.fillText(linename, 60+220*i, 760);
+                  ctx.strokeStyle = "blue";
+                  ctx.strokeRect(10+i*220, 30, 200, 700);
+                  c=0
+                  ctx.font = "30px Verdana";
+                  ctx.fillText("MR", 40+220*i, 690);
+                  ctx.font = "14px Verdana";
+                  ctx.fillStyle = "black"; 
+                  // dãy bên trái
+                  for (j=0;j<=7;j++){
+                    var linename=ds[mc].Line
+                    if (ds[mc].Pos>7){continue}
+                    if (ds[mc].status==0||ds[mc].status==null){
+                      ctx.fillStyle ="cyan"; // mau XANH - may tot
+                    }
+                    if (ds[mc].status==1){
+                      ctx.fillStyle = "red"; // mau DO - may hong
+                      console.log('loi may')
+                      hong=hong+1
+                    }
+                    if (ds[mc].status==2){
+                      ctx.fillStyle = "yellow"; // mau vang - may dang sua
+                      hong=hong+1
+                      repair=repair+1
+                    }
+                    if (ds[mc].status==4){
+                      ctx.fillStyle = "green"; // PM - may dang sua
+                    }
+                    if (ds[mc].status==5){
+                    ctx.fillStyle = "#4d94ff"; // mau tim - may chuyen doi
+                    }
+                    if (ds[mc].status==6){
+                    ctx.fillStyle = "#ff1aff"; // mau hong - may dong cuoi ca
+                    }
+
+                    br=ds[mc].broken_code_nv
+                    if (br==null){
+                    br=""
+                    }
+                    if (br.indexOf("7 Nh")>=0 && ds[mc].status> 0){
+                      ctx.fillStyle = "blue"; // mau xanh duong => may loi an toan
+                      console.log(br)
+                    }
+
+                    if (sel_machine==ds[mc].IDMC){
+                      ctx.fillStyle = "pink"; // xanh duong => may dang dc chon
+                    }
+                    pos=ds[mc].Pos-1
+                    ctx.fillRect(12+i*220, 40+(pos)*100, 96, 90);
+                    ctx.fillStyle = "black";
+                    ctx.fillText(ds[mc].IDMC,15+i*220,60+pos*100)
+                    var op=""
+                    if (ds[mc].operation==null){
+                      op=""
+                    }
+                    else {
+                      op=ds[mc].operation
+                    }
+                    op=op.toString()
+                    op=op.substring(0,12)
+                    ctx.fillText(op,12+i*220,75+pos*100)
+                    var model=''
+                    model=ds[mc].MachineModel
+                    if (model!="NOMC"){
+                      realmc=realmc+1;
+                    }
+                    model=model.substring(0,12)
+                    ctx.fillText(model,12+i*220,90+pos*100)
+                    if (ds[mc].status==1 || ds[mc].status==2 || ds[mc].status==5){
+                      ctx.fillText(ds[mc].starttime,12+i*220,105+pos*100)
+                    }
+                    // tạo map
+                    x_co=12+i*220;
+                    y_co=40+(pos)*100
+                    x_co2=x_co+96;
+                    y_co2=y_co+80;
+                    var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                    var element = document.createElement( "AREA" );
+                    element.shape = "Rect";
+                    element.coords = rec;
+                    element.href="#";
+                    element.setAttribute("id",ds[mc].IDMC)
+                    element.setAttribute("onclick","click_map(this.id)")
+                    flex_map.appendChild(element)
+                    // thêm vào map
+                    mc=mc+1
+                    if (mc==NumMc){break}
+                    if (linename!=ds[mc].Line){
+                      c=1
+                      break;
+                    }
+                  }
+                  if (c==1){ continue; }
+                  // dãy bên phải
+                  for (j=0;j<20;j++){
+                    if (ds[mc].status==0||ds[mc].status==null){
+                      ctx.fillStyle = "cyan"; // mau XANH - may tot
+                    }
+                    if (ds[mc].status== 1){
+                      ctx.fillStyle = "red"; // mau DO - may hong
+                      hong=hong+1
+                    }
+                    if (ds[mc].status==2){
+                      ctx.fillStyle = "yellow"; // mau vang - may dang sua
+                      hong=hong+1
+                      repair=repair+1
+                    }
+                    if (ds[mc].status==4){
+                      ctx.fillStyle = "green"; // mau xanh la cay - PM
+                    }
+                    if (ds[mc].status==5){
+                    ctx.fillStyle = "#4d94ff"; // mau tim - may chuyen doi
+                    }
+                    if (ds[mc].status==6){
+                    ctx.fillStyle = "#ff1aff"; // mau hong - may dong cuoi ca
+                    }
+                    pos=ds[mc].Pos-8
+                    // if (pos>6){
+                    //   ctx.fillStyle = "orange"; // mau CAM - NGOAI LAYOUT
+                    // }
+
+                    br=ds[mc].broken_code_nv
+                    if (br==null){
+                    br=""
+                    }
+    
+                    if (br.indexOf("7 Nh")>=0 && ds[mc].status> 0){
+                      ctx.fillStyle = "blue"; // mau xanh duong => may loi an toan
+                      console.log(br)
+                    }
+                    if (sel_machine==ds[mc].IDMC){
+                      ctx.fillStyle = "pink"; // xanh duong => may dang dc chon
+                    }
+                    // console.log(pos)
+                    ctx.fillRect(112+i*220, 40+pos*100, 96, 90);
+                    ctx.fillStyle = "black";
+                    ctx.fillText(ds[mc].IDMC,112+i*220,60+pos*100)
+                    var op=""
+                    if (ds[mc].operation==null){
+                      op=""
+                    }
+                    else {
+                      op=ds[mc].operation
+                    }
+                    op=op.toString()
+                    op=op.substring(0,12)
+                    ctx.fillText(op,112+i*220,75+pos*100)
+                    model=ds[mc].MachineModel
+                    if (model!="NOMC"){
+                      realmc=realmc+1;
+                    }
+                    model=model.substring(0,12)
+                    ctx.fillText(model,112+i*220,90+pos*100)
+                    if (ds[mc].status==1 || ds[mc].status==2 || ds[mc].status==4 || ds[mc].status==5){
+                      ctx.fillText(ds[mc].starttime,112+i*220,105+pos*100)
+                    }
+                    //tạo map
+                    x_co=112+i*220;
+                    x_co2=x_co+96;
+                    y_co=40+pos*100;
+                    y_co2=y_co+90;
+                    var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                    var element = document.createElement( "AREA" );
+                    element.shape = "Rect";
+                    element.coords = rec;
+                    element.href="#";
+                    // element.addEventListener("click",click_map);
+                    element.setAttribute("id",ds[mc].IDMC)
+                    element.setAttribute("onclick","click_map(this.id)")
+                    flex_map.appendChild(element)
+                    // thêm vào map
+                    mc=mc+1
+                    if (mc==NumMc){break}
+                    if (linename!=ds[mc].Line){
+                      c=1
+                      break;
+                    }
+                  }
+                  ctx.font = "20px Verdana";
+                  ctx.fillStyle = "red"; 
+                  ctx.fillText("1",85+(i)*220,60+(1-1)*100)
+                  ctx.fillText("2",85+(i)*220,60+(2-1)*100)
+                  ctx.fillText("3",85+(i)*220,60+(3-1)*100)
+                  ctx.fillText("4",85+(i)*220,60+(4-1)*100)
+                  ctx.fillText("5",85+(i)*220,60+(5-1)*100)
+                  ctx.fillText("6",85+(i)*220,60+(6-1)*100)
+                  ctx.fillText("7",85+(i)*220,60+(7-1)*100)
+                  ctx.fillText("8",185+(i)*220,60+(1-1)*100)
+                  ctx.fillText("9",185+(i)*220,60+(2-1)*100)
+                  ctx.fillText("10",185+(i)*220,60+(3-1)*100)
+                  ctx.fillText("11",185+(i)*220,60+(4-1)*100)
+                  ctx.fillText("12",185+(i)*220,60+(5-1)*100)
+                  ctx.fillText("13",185+(i)*220,60+(6-1)*100)
+                  ctx.fillText("14",185+(i)*220,60+(7-1)*100)
+                  ctx.font = "14px Verdana";
+                  ctx.fillStyle = "black"; 
+                }
+                var gr=pre+'-'+last
+                if (pre=="201"||pre=="232"){
+                  gr="201-203"
+                }
+                if (pre=="099"){
+                    gr="NSI"
+                  }
+                if (pre=="865"){
+                    gr="WHPM2"
+                  }
+                if (pre=="858"){
+                    gr="WHPM1"
+                  }
+                if (pre=="171"){
+                  gr="SMED PB1 TEST"
+                }
+                if (pre=="971"){
+                  gr="SMED PB2 TEST"
+                }
+                document.getElementById("sel_group").value=gr;
+                rest_infor="tổng máy = "+realmc.toString()+" ; máy hỏng = "+hong.toString()+" ; máy đang sửa = "+repair.toString();
+                // console.log(rest_infor)
+                document.getElementById("detail_infor").innerText=rest_infor;
+            } else{
+              var NumMc=ds.length;
+              console.log(NumMc)
+              var flex_map=document.getElementById("MapMC")
+              console.log(ds[0].IDMC)
+              console.log(ds.length);
+              var c = document.getElementById("myCanvas");
+              var ctx = c.getContext("2d");
+              ctx.clearRect(0, 0, 2192, 900);
+              flex_map.innerHTML='';
+              var mc=0
+              var i=1
+              var j=1
+              var c=0
+              var pos=0
+              var rest_infor=""
+              var hong=0
+              var repair=0
+              var realmc=0;
+              for (i=0;i<10;i++){
+                if (mc==NumMc){break}
+                var linename=ds[mc].Line
+                var last=ds[mc].Line.substr(5,3)
+                ctx.font = "18px Verdana";
+                ctx.fillText(linename, 60+220*i, 20);
+                ctx.fillText(linename, 60+220*i, 660);
+                ctx.strokeStyle = "blue";
+                ctx.strokeRect(10+i*220, 30, 200, 610);
+                c=0
+                ctx.font = "30px Verdana";
+                ctx.fillText("MR", 40+220*i, 600);
+                ctx.font = "14px Verdana";
+                ctx.fillStyle = "black"; 
+                // dãy bên trái
+                for (j=0;j<=6;j++){
+                  var linename=ds[mc].Line
+                  if (ds[mc].Pos>6){continue}
+                  if (ds[mc].status==0||ds[mc].status==null){
+                    ctx.fillStyle ="cyan"; // mau XANH - may tot
+                  }
+                  if (ds[mc].status==1){
+                    ctx.fillStyle = "red"; // mau DO - may hong
+                    console.log('loi may')
+                    hong=hong+1
+                  }
+                  if (ds[mc].status==2){
+                    ctx.fillStyle = "yellow"; // mau vang - may dang sua
+                    hong=hong+1
+                    repair=repair+1
+                  }
+                  if (ds[mc].status==4){
+                    ctx.fillStyle = "green"; // mau trang - may dang sua
+                  }
+                  if (ds[mc].status==5){
+                    ctx.fillStyle = "#4d94ff"; // mau trang - may chuyen doi
+                  }
+                  if (ds[mc].status==6){
+                    ctx.fillStyle = "#ff1aff"; // mau trang - dong cuoi ca
+                  }
+
+                  br=ds[mc].broken_code_nv
+                  if (br==null){
+                    br=""
+                  }
+                  if (br.indexOf("7 Nh")>=0 && ds[mc].status> 0){
+                      ctx.fillStyle = "blue"; // mau xanh duong => may loi an toan
+                      console.log(br)
+                    }
+                  if (sel_machine==ds[mc].IDMC){
+                    ctx.fillStyle = "pink"; // xanh duong => may dang dc chon
+                  }
+                  pos=ds[mc].Pos-1
+                  ctx.fillRect(12+i*220, 40+(pos)*100, 96, 90);
+                  ctx.fillStyle = "black";
+                  ctx.fillText(ds[mc].IDMC,15+i*220,60+pos*100)
+                  var op=""
+                  if (ds[mc].operation==null){
+                    op=""
+                  }
+                  else {
+                    op=ds[mc].operation
+                  }
+                  op=op.toString()
+                  op=op.substring(0,12)
+                  ctx.fillText(op,12+i*220,75+pos*100)
+                  var model=''
+                  model=ds[mc].MachineModel
+                  if (model!="NOMC"){
+                    realmc=realmc+1;
+                  }
+                  model=model.substring(0,12)
+                  ctx.fillText(model,12+i*220,90+pos*100)
+                  if (ds[mc].status==1 || ds[mc].status==2 || ds[mc].status==4 || ds[mc].status==5){
+                    ctx.fillText(ds[mc].starttime,12+i*220,105+pos*100)
+                  }
+                  // tạo map
+                  x_co=12+i*220;
+                  y_co=40+(pos)*100
+                  x_co2=x_co+96;
+                  y_co2=y_co+80;
+                  var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                  var element = document.createElement( "AREA" );
+                  element.shape = "Rect";
+                  element.coords = rec;
+                  element.href="#";
+                  element.setAttribute("id",ds[mc].IDMC)
+                  element.setAttribute("onclick","click_map(this.id)")
+                  flex_map.appendChild(element)
+                  // thêm vào map
+                  mc=mc+1
+                  if (mc==NumMc){break}
+                  if (linename!=ds[mc].Line){
+                    c=1
+                    break;
+                  }
+                }
+                if (c==1){ continue; }
+                // dãy bên phải
+                for (j=0;j<20;j++){
+                  if (ds[mc].status==0||ds[mc].status==null){
+                    ctx.fillStyle = "cyan"; // mau XANH - may tot
+                  }
+                  if (ds[mc].status==1){
+                    ctx.fillStyle = "red"; // mau DO - may hong
+                    hong=hong+1
+                  }
+                  if (ds[mc].status==2){
+                    ctx.fillStyle = "yellow"; // mau vang - may dang sua
+                    hong=hong+1
+                    repair=repair+1
+                  }
+                  if (ds[mc].status==4){
+                    ctx.fillStyle = "green"; // mau trang - may dang sua
+                  }
+                  if (ds[mc].status==5){
+                    ctx.fillStyle = "#4d94ff"; // mau trang - may chuyen doi
+                  }
+                  if (ds[mc].status==6){
+                    ctx.fillStyle = "#ff1aff"; // mau trang - may chuyen doi
+                  }
+                  pos=ds[mc].Pos-7
+                  // if (pos>5){
+                  //   ctx.fillStyle = "orange"; // mau CAM - NGOAI LAYOUT
+                  // }
+
+
+                  br=ds[mc].broken_code_nv
+                  if (br==null){
+                    br=""
+                  }
+                  if (br.indexOf("7 Nh")>=0 && ds[mc].status> 0){
+                      ctx.fillStyle = "blue"; // mau xanh duong => may loi an toan
+                      console.log(br)
+                    }
+                  if (sel_machine==ds[mc].IDMC){
+                    ctx.fillStyle = "pink"; // xanh duong => may dang dc chon
+                  }
+                  console.log(pos)
+                  ctx.fillRect(112+i*220, 40+pos*100, 96, 90);
+                  ctx.fillStyle = "black";
+                  ctx.fillText(ds[mc].IDMC,112+i*220,60+pos*100)
+                  var op=""
+                  if (ds[mc].operation==null){
+                    op=""
+                  }
+                  else {
+                    op=ds[mc].operation
+                  }
+                  op=op.toString()
+                  op=op.substring(0,12)
+                  ctx.fillText(op,112+i*220,75+pos*100)
+                  model=ds[mc].MachineModel
+                  if (model!="NOMC"){
+                    realmc=realmc+1;
+                  }
+                  model=model.substring(0,12)
+                  ctx.fillText(model,112+i*220,90+pos*100)
+                  if (ds[mc].status==1 || ds[mc].status==2){
+                    ctx.fillText(ds[mc].starttime,112+i*220,105+pos*100)
+                  }
+                  //tạo map
+                  x_co=112+i*220;
+                  x_co2=x_co+96;
+                  y_co=40+pos*100;
+                  y_co2=y_co+90;
+                  var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                  var element = document.createElement( "AREA" );
+                  element.shape = "Rect";
+                  element.coords = rec;
+                  element.href="#";
+                  // element.addEventListener("click",click_map);
+                  element.setAttribute("id",ds[mc].IDMC)
+                  element.setAttribute("onclick","click_map(this.id)")
+                  flex_map.appendChild(element)
+                  // thêm vào map
+                  mc=mc+1
+                  if (mc==NumMc){break}
+                  if (linename!=ds[mc].Line){
+                    c=1
+                    break;
+                  }
+                }
+                ctx.font = "20px Verdana";
+                ctx.fillStyle = "red"; 
+                ctx.fillText("1",85+(i)*220,60+(1-1)*100)
+                ctx.fillText("2",85+(i)*220,60+(2-1)*100)
+                ctx.fillText("3",85+(i)*220,60+(3-1)*100)
+                ctx.fillText("4",85+(i)*220,60+(4-1)*100)
+                ctx.fillText("5",85+(i)*220,60+(5-1)*100)
+                ctx.fillText("6",85+(i)*220,60+(6-1)*100)
+                ctx.fillText("7",185+(i)*220,60+(1-1)*100)
+                ctx.fillText("8",185+(i)*220,60+(2-1)*100)
+                ctx.fillText("9",185+(i)*220,60+(3-1)*100)
+                ctx.fillText("10",185+(i)*220,60+(4-1)*100)
+                ctx.fillText("11",185+(i)*220,60+(5-1)*100)
+                ctx.fillText("12",185+(i)*220,60+(6-1)*100)
+                ctx.font = "14px Verdana";
+                ctx.fillStyle = "black"; 
+              }
+              var gr=pre+'-'+last
+              if (pre=="201"||pre=="232"){
+                  gr="201-203"
+                }
+              if (pre=="099"){
+                  gr="NSI"
+                }
+              if (pre=="865"){
+                  gr="WHPM2"
+                }
+              if (pre=="858"){
+                  gr="WHPM1"
+                }
+              if (pre=="171"){
+                  gr="SMED PB1 TEST"
+                }
+              if (pre=="971"){
+                  gr="SMED PB2 TEST"
+                }
+              document.getElementById("sel_group").value=gr;
+              rest_infor="tổng máy = "+realmc.toString()+" ; máy hỏng = "+hong.toString()+" ; máy đang sửa = "+repair.toString();
+              // console.log(rest_infor)
+              document.getElementById("detail_infor").innerText=rest_infor;
+              }
+              // done normal line layout
+            }
+          }
+
+          function get_mec_name3(){
+            var msnv=document.getElementById('id_nvtm3').value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false6"){
+                  alert("vui lòng quét thẻ chứ không nhập tay")
+                  document.getElementById('id_nvtm3').value=""
+                  return
+                }
+                if (res_result=="false"){
+                  alert("something wrong happen!")
+                } else{
+                  nv=JSON.parse(res_result);
+                  console.log(nv[0].type)
+                  if (nv[0].dept=="MEC" ||nv[0].employeeid=="080928"||nv[0].employeeid=="130085" || nv[0].employeeid=="150442"|| nv[0].employeeid=="160211"|| nv[0].employeeid=="118327"){
+                    document.getElementById("name_nvtm3").innerText=nv[0].name;
+                    document.getElementById("id_nvtm3").value=nv[0].employeeid;
+                    document.getElementById("id_nvtm3").disabled=true;
+                    document.getElementById("nvclose").style.display="inline";
+                    var checkpm=document.getElementById("checkPM").value
+                    if (checkpm.indexOf("PM")>-1){
+                      document.getElementById("employee_id3").value=nv[0].employeeid
+                      document.getElementById("emp_name3").innerText=nv[0].name;
+                    }
+                    
+                  }else{
+                    alert("Mã số nhập vào không phải thợ máy")
+                  }
+                }
+                }
+              };
+            if (msnv.length>=6 && event.keyCode === 13){
+                xhttp.open("get", "/mec/idnv/"+msnv, true);
+                xhttp.send();
+            }
+          }
+
+          function get_mec_name4(){
+            var msnv=document.getElementById('id_nvtm4').value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false6"){
+                  alert("vui lòng quét thẻ chứ không nhập tay")
+                  document.getElementById('id_nvtm4').value=""
+                  return
+                }
+                if (res_result=="false"){
+                  alert("something wrong happen!")
+                } else{
+                  nv=JSON.parse(res_result);
+                  console.log(nv[0].type)
+                  if (nv[0].dept=="MEC"||nv[0].employeeid=="080928"||nv[0].employeeid=="130085" || nv[0].employeeid=="160211"|| nv[0].employeeid=="118327"){
+                    document.getElementById("name_nvtm4").innerText=nv[0].name;
+                    document.getElementById("id_nvtm4").value=nv[0].employeeid;
+                    document.getElementById("id_nvtm4").disabled=true;
+                    document.getElementById("employee_id4").focus();
+                  }else{
+                    alert("Mã số nhập vào không phải thợ máy")
+                  }
+                }
+                }
+              };
+              if (msnv.length>=6 && event.keyCode === 13){
+                  xhttp.open("get", "/mec/idnv/"+msnv, true);
+                  xhttp.send();
+              }
+          }
+
+          function get_mec_name(){
+            var msnv=document.getElementById('id_nvtm').value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false6"){
+                  alert("vui lòng quét thẻ chứ không nhập tay")
+                  document.getElementById('id_nvtm').value=""
+                  return
+                }
+                if (res_result=="false"){
+                  alert("mã số không đúng")
+                } else{
+                  nv=JSON.parse(res_result);
+                  console.log(nv[0].type)
+                  if (nv[0].dept=="MEC"||nv[0].employeeid=="080928"||nv[0].employeeid=="130085" || nv[0].employeeid=="160211"|| nv[0].employeeid=="118327"){
+                    document.getElementById("name_nvtm").innerText=nv[0].name;
+                    document.getElementById("id_nvtm").value=nv[0].employeeid;
+                    document.getElementById("id_nvtm").disabled=true;
+                  }else{
+                    alert("Mã số nhập vào không phải thợ máy")
+                  }
+                }
+                }
+              };
+              if (msnv.length>=6 && event.keyCode === 13){
+                  xhttp.open("get", "/mec/idnv/"+msnv, true);
+                  xhttp.send();
+              }
+          }
+          
+          function change_line(){
+            group=document.getElementById("sel_group").value
+            fr=parseInt(group.substring(0,3));
+            to=parseInt(group.substring(4,7));
+            console.log(fr)
+            console.log(to)
+            var x = document.getElementById("sel_line");
+
+                  while (x.length >0){
+                      x.options.remove(0);
+                      var x = document.getElementById("sel_line");
+                  }
+            for (i=fr;i<=to;i++){
+                  var x = document.getElementById("sel_line");
+                  var option = document.createElement("option");
+                  var lineno="00"+i.toString();
+                  lineno=lineno.substr(lineno.length-3,3);
+                  console.log("Line "+lineno)
+                  option.text ="Line "+ lineno;
+                  x.add(option);
+            }
+            var x=document.getElementById("sel_line");
+            var option = document.createElement("option");
+            option.text ="Line 199";
+            x.add(option);
+            var x=document.getElementById("sel_line");
+            var option = document.createElement("option");
+            option.text ="Line 922";
+            x.add(option);
+            
+          }
+          
+          function get_name_Function(){
+            var msnv=document.getElementById('employee_id').value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false6"){
+                  alert("vui lòng quét thẻ chứ không nhập tay")
+                  document.getElementById('employee_id').value=""
+                  return
+                }
+                if (res_result=="false"){
+                  alert("mã số không đúng")
+                } else{
+                  nv=JSON.parse(res_result);
+                  console.log(nv[0].type)
+                  if (nv[0].type=="DR"){
+                    document.getElementById("emp_name").innerText=nv[0].name;
+                    document.getElementById("employee_id").value=nv[0].employeeid;
+                    document.getElementById("employee_id").disabled=true;
+                    var x = document.getElementById("sel_op");
+                    while (x.length >0){
+                        x.options.remove(0);
+                        var x = document.getElementById("sel_op");
+                    }
+                    var x = document.getElementById("sel_op");
+                    var option = document.createElement("option");
+                    option.text ="-";
+                    x.add(option);
+                    for (i=0;i<nv.length;i++){
+                          var x = document.getElementById("sel_op");
+                          var option = document.createElement("option");
+                          option.text =nv[i].operation_name;
+                          x.add(option);
+                    }
+                  }else{
+                    if ((nv[0].type=="IN"&&nv[0].dept=="MEC" ||nv[0].employeeid=="080928"||nv[0].employeeid=="130085" || nv[0].employeeid=="160211"|| nv[0].employeeid=="118327")){
+                      document.getElementById("emp_name").innerText=nv[0].name;
+                      document.getElementById("employee_id").value=nv[0].employeeid;
+                      document.getElementById("employee_id").disabled=true;
+                      var x = document.getElementById("sel_op");
+                      while (x.length >0){
+                          x.options.remove(0);
+                          var x = document.getElementById("sel_op");
+                      }
+                      var x = document.getElementById("sel_op");
+                      var option = document.createElement("option");
+                      option.text ="PM";
+                      x.add(option);
+                      var x = document.getElementById("sel_op");
+                      var option = document.createElement("option");
+                      option.text ="PM - Vệ sinh motor";
+                      x.add(option);
+
+                    } else{
+                      alert("Mã số nhập vào không phải nhân viên trực tiếp hoặc thợ máy")
+                    }
+
+
+
+                  }
+                }
+
+              }
+            };
+            if (event.keyCode === 13){
+                xhttp.open("get", "/mec/idnv_opentk/"+msnv, true);
+                xhttp.send();
+            }
+          }
+
+          function get_name2(){
+            var msnv=document.getElementById('employee_id3').value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false6"){
+                  alert("vui lòng quét thẻ chứ không nhập tay")
+                  document.getElementById('employee_id3').value=""
+                  return
+                }
+                if (res_result=="wrong_id"){
+                  alert("something wrong happen!")
+                } else{
+                  nv=JSON.parse(res_result);
+                  console.log(nv[0].type)
+                  if (nv[0].type=="DR"||nv[0].employeeid=="160210"||nv[0].employeeid=="103950"){
+                    document.getElementById("emp_name3").innerText=nv[0].name;
+                    document.getElementById("employee_id3").value=nv[0].employeeid;
+                    document.getElementById("employee_id3").disabled=true;
+                  }else{
+                    alert("Mã số nhập vào không phải nhân viên trực tiếp hoặc ca trưởng thợ máy")
+                  }
+                }
+                }
+              };
+              if (msnv.length>=6 && event.keyCode === 13){
+                  xhttp.open("get", "/mec/idnv/"+msnv, true);
+                  xhttp.send();
+              }
+          }
+
+          function get_name4(){
+            var msnv=document.getElementById('employee_id4').value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false6"){
+                  alert("vui lòng quét thẻ chứ không nhập tay")
+                  document.getElementById('employee_id4').value=""
+                  return
+                }
+                if (res_result=="wrong_id"){
+                  alert("something wrong happen!")
+                } else{
+                  nv=JSON.parse(res_result);
+                  console.log(nv[0].type)
+                  if (nv[0].type=="DR"){
+                    document.getElementById("emp_name4").innerText=nv[0].name;
+                    document.getElementById("employee_id4").value=nv[0].employeeid;
+                    document.getElementById("employee_id4").disabled=true;
+                  }else{
+                    alert("Mã số nhập vào không phải nhân viên trực tiếp")
+                  }
+                }
+                }
+              };
+              if (msnv.length>=6 && event.keyCode === 13){
+                  xhttp.open("get", "/mec/idnv/"+msnv, true);
+                  xhttp.send();
+              }
+          }
+
+          function w3_open() {
+            w3_close();
+            document.getElementById("mySidebar").style.display = "block";
+          }
+
+          function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("mySidebar_right").style.display = "none";
+            
+          }
+
+          function open_signup(){
+            w3_close();
+            document.getElementById("mySidebar_right").style.display = "block";
+          }
+
+          function submit_form_openticket(){
+                document.getElementById("employee_id").disabled=false;
+                event.preventDefault();
+                if(document.getElementById("emp_name").innerText=="Tên nhân viên"){
+                  alert("mã số nhân viên không đúng");
+                  document.getElementById("employee_id").value="";
+                  return
+                }
+                if(document.getElementById("sel_op").value=="-"){
+                  alert("Vui lòng chọn công đoạn")
+                  return
+                }
+                document.getElementById("machine_id").disabled=false;
+                document.getElementById("linesew").disabled=false;
+                document.getElementById("sel_pos").disabled=false;
+
+                alert("open ticket")
+                var main_url="/mec/openticket"
+                var frm = $('#form_reg');
+                $.ajax({
+                    type: "post",
+                    url: main_url,
+                    data: frm.serialize(),
+                    success: function (data) {
+                      console.log(data)
+                      if (data=="sc"){
+                        document.getElementById("machine_id").value=""
+                        document.getElementById("employee_id").value=""
+                        document.getElementById("emp_name").value="Tên nhân viên"
+                        document.getElementById("machine_id").disabled=true;
+                        document.getElementById("linesew").disabled=true;
+                        document.getElementById("sel_pos").disabled=true;
+                        close_reg();
+                        load_group();
+                      }
+                      else {
+                        alert(data);
+                        document.getElementById("machine_id").disabled=true;
+                        document.getElementById("linesew").disabled=true;
+                        document.getElementById("sel_pos").disabled=true;
+                      }
+                    },
+                    error: function () {
+                                alert("submit failed")
+                                document.getElementById("machine_id").disabled=true;
+                                document.getElementById("linesew").disabled=true;
+                                document.getElementById("sel_pos").disabled=true;
+                    },
+                })
+          }
+
+          function get_detail(){
+                        event.preventDefault();
+                        get_week();
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                console.log(this.response)
+                                if (this.responseText=="ID không đăng nhập được"){
+                                  alert('ID đăng nhập lần đầu tiên')
+                                  document.getElementById("t_login").innerText="1"
+                                } else{
+                                  var ds=JSON.parse(this.response);
+                                  var i;
+                                  var trHTML_ds='';
+                                  var dn=0;
+                                  for (i = 0; i < ds.length; i++) {
+                                    trHTML_ds += '<tr><td >' + ds[i].user + '</td><td >' + ds[i].date + '</td><td >' + ds[i].week + '</td><td >' + ds[i].login+ '</td><td >' + ds[i].score+'</td></tr>';
+                                    if (parseInt(ds[i].week)==parseInt(document.getElementById("week_login").innerText)){
+                                      dn=parseInt(ds[i].login)+1
+                                    }
+                                  };
+                                  $('#table_detail tbody').html(trHTML_ds)
+                                  if (dn==0) {
+                                    document.getElementById("t_login").innerText="1"
+                                  } else {
+                                    document.getElementById("t_login").innerText=dn
+                                  }
+                                  document.getElementById("infor").click();
+                                }
+                                
+                            }
+                          };
+                          var login_status=document.getElementById("bt_signup").innerText;
+                          var user_sign_up=document.getElementById("idnv").value
+                          xhttp.open("get", "/lead/detail/"+user_sign_up, true);
+                          xhttp.send();
+          }
+          
+          function get_week(){
+                        event.preventDefault();
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                console.log(this.response)
+                                if (this.responseText=="ID không đăng nhập được"){
+                                  alert('ID đăng nhập lần đầu tiên')
+                                } else{
+                                  var ds=JSON.parse(this.response);
+                                  document.getElementById("week_login").innerText=ds[0].week
+                                }
+                            }
+                          };
+                          xhttp.open("get", "/lead/get_week", true);
+                          xhttp.send();
+          }
+          
+          function show_history(){
+            w3_close()
+            document.getElementById("home_page").style.display="none";
+            document.getElementById("test").style.display="none";
+            document.getElementById("history").style.display="block";
+          }
+          
+          function next_question(){
+              document.getElementById("sel_answer").value="-";
+              var nq=parseInt(document.getElementById("question_number").innerText)
+              if (nq<5){
+                start_answer()
+              } else{
+                alert("bạn đã hoàn thành trả lời 5 câu hỏi của lượt này!")
+                document.getElementById("div_question").style.display="none"
+                document.getElementById("start_answer").style.display="none"
+                get_detail();
+              }  
+          }
+          
+          function submit_answer(){
+            if(document.getElementById("sel_answer").value=="-"){
+              alert('Bạn chưa chọn câu trả lời!')
+              return;
+            }
+            document.getElementById("a_confirm").innerText="Bạn đã trả lời sai!"
+            if (document.getElementById("sel_answer").value==document.getElementById("ans").value){
+              var score=parseInt(document.getElementById("score").innerText)+2
+              document.getElementById("score").innerText=score
+              document.getElementById("a_confirm").innerText="Bạn đã trả lời đúng!"
+            }
+            document.getElementById("dialog2").click();
+            document.getElementById("next_q").disabled=false;
+            document.getElementById("submit_ans").disabled=true;
+            document.getElementById("guide").innerText=". nhấn nút tiếp theo để chuyển sang câu tiếp theo!"
+            var score=parseInt(document.getElementById("score").innerText)
+            var week=document.getElementById("week_login").innerText
+            var user=document.getElementById("idnv").value
+            var t_log=document.getElementById("t_login").innerText
+                        event.preventDefault();
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                console.log(this.response)
+                                if (this.responseText=="ID không đăng nhập được"){
+                                  document.getElementById("sys_confirm").innerText=" Chưa được cập nhật _ Lỗi hệ thống"
+                                } else{
+                                  document.getElementById("sys_confirm").innerText=" Đã được cập nhật"
+                                }
+                            }
+                          };
+                          xhttp.open("get", "/lead/submit/"+user+"/"+week+"/"+t_log+"/"+score, true);
+                          xhttp.send();
+          }
+          
+          function start_answer(){
+              event.preventDefault();
+              var login_status=document.getElementById("bt_signup").innerText;
+              var user_sign_up=document.getElementById("idnv").value
+              if (login_status=="Đăng nhập"){
+                alert("Vui lòng đăng nhập để bắt đầu!")
+                return;
+              }
+              if (document.getElementById("t_login").innerText=="6"){
+                alert("Bạn đã trả lời quá 5 lần trong tuần!\nVui lòng quay trở lại sau!");
+                return;
+              }
+              document.getElementById("div_question").style.display="grid"
+              document.getElementById("start_answer").style.display="none"
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      console.log(this.response)
+                      if (this.responseText=="error"){
+                        alert('Hệ thống đang bị lỗi \n Vui lòng quay trở lại sau')
+                      } else{
+                        var q=JSON.parse(this.response);
+                        document.getElementById("question").innerHTML="<b>Câu hỏi: "+q[0].question+"</b>";
+                        document.getElementById("answerA").innerText="Câu A: "+q[0].answerA;
+                        document.getElementById("answerB").innerText="Câu B: "+q[0].answerB;
+                        document.getElementById("answerC").innerText="Câu C: "+q[0].answerC;
+                        document.getElementById("answerD").innerText="Câu D: "+q[0].answerD;
+                        document.getElementById("a_result").innerText="Câu trả lời là: "+q[0].answer;
+                        if (q[0].answerA==q[0].answer){
+                          document.getElementById("ans").value="Câu A";
+                        }
+                        if (q[0].answerB==q[0].answer){
+                          document.getElementById("ans").value="Câu B";
+                        }
+                        if (q[0].answerC==q[0].answer){
+                          document.getElementById("ans").value="Câu C";
+                        }
+                        if (q[0].answerD==q[0].answer){
+                          document.getElementById("ans").value="Câu D";
+                        }
+                        console.log(document.getElementById("ans").value)
+                        var qu=parseInt(document.getElementById("question_number").innerText)+1
+                        document.getElementById("question_number").innerText=qu
+                        document.getElementById("next_q").disabled=true;
+                        document.getElementById("submit_ans").disabled=false;
+                        document.getElementById("guide").innerText=". Chọn câu trả lời của bạn và nhấn nút trả lời"
+                      }  
+                  }
+                };
+                xhttp.open("get", "/lead/get_question/"+user_sign_up, true);
+                xhttp.send();
+          };
+          
+          function show_home(){
+            w3_close()
+            document.getElementById("home_page").style.display="block";
+            document.getElementById("test").style.display="none";
+            document.getElementById("history").style.display="none";
+          }
+          
+          function show_test(){
+            w3_close()
+            document.getElementById("home_page").style.display="none";
+            document.getElementById("history").style.display="none";
+            document.getElementById("test").style.display="block";
+          }
+
+</script>
+
+</html>

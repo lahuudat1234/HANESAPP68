@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en", dir="ltr">
+  <head>
+        <title>TEAM KỸ THUẬT</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="../css/Login_KT_System.css">  
+        
+        <script src="http://kit.fontawesome.com/a076d05399.js"></script>   
+        <script src="http://code.jquery.com/jquery-3.4.1.js"></script>   
+        <script >
+          $(document).ready(function(){
+            $('#icon').click(function(){
+              $('ul').toggleClass('show');
+
+
+            });
+
+          });  
+          
+        </script>   
+     
+        <link rel="shortcut icon" type="image/ico" href="../images/HanesLogo.png"/>
+     
+  </head>
+
+  <body>
+   <nav>
+      <label class="logo">CHÀO MỪNG ĐẾN VỚI TEAM KỸ THUẬT PHÚ BÀI</label>
+      
+      <label id="icon">
+       
+        <i class="fas fa-bars"></i>
+      </label>
+
+   </nav>
+  <section>
+    <font><marquee align="center" onmouseover="this.stop()" onmouseout="this.start()" height="50" >  Vui lòng đăng nhập trước khi vào hệ thống  </marquee>
+    </font>
+    
+    <main>
+        <div class="container">
+        <div class="login-form">
+            <form action="/KT_System" method="post">
+                <h1>Đăng nhập vào hệ thống</h1>
+                <div class="input-box">
+                    <i ></i>
+                    <input type="text" name="username" placeholder="Nhập tên">
+                </div>
+                <div class="input-box">
+                    <i ></i>
+                    <input type="password" name="password" id="passworDN" placeholder="Nhập mật khẩu">
+                </div>
+                <div class="msCaplock">
+
+                </div>
+                <div class="btn-box">
+                    <button type="submit" name="abc">
+                        Đăng nhập
+                    </button>
+                </div>
+               
+                
+            </form>
+        </div>
+        </div>
+    </main>
+  </section>    
+    
+     
+  </body>
+  <script>
+    const password = document.querySelector('#passworDN');
+     const message = document.querySelector('.msCaplock');
+     password.addEventListener('keyup', function (e) {
+  if (e.getModifierState('CapsLock')) {
+      message.textContent = 'Capslock đang bật';
+  } else {
+      message.textContent = '';
+  }
+});
+</script>
+   
+
+</html>

@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<header>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>CCS - Order</title>
+</header>
+
+<body style="background-color:lightgray;" onload="init_month_year()">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title">TẠO PURCHASING REQUEST</span>
+                <div class="mdl-layout-spacer"></div>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                    id="btn_template" style="background-color: yellow; color: green; margin-right: 20px;">
+                    <i class="material-icons">download</i>
+                    Template
+                </button>
+                <div id="div_cbb_month"
+                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                    style="width: 100px; margin-left: 10px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_month" readonly>
+                    <input type="hidden" value="" name="cbb_month">
+                    <label for="cbb_month" class="mdl-textfield__label" style="color:white">Tháng</label>
+                    <ul for="cbb_month" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                        id="list_cbb_month">
+                        <li class="mdl-menu__item" data-val="01">ALL</li>
+                        <li class="mdl-menu__item" data-val="01">1</li>
+                        <li class="mdl-menu__item" data-val="02">2</li>
+                        <li class="mdl-menu__item" data-val="03">3</li>
+                        <li class="mdl-menu__item" data-val="04">4</li>
+                        <li class="mdl-menu__item" data-val="05">5</li>
+                        <li class="mdl-menu__item" data-val="06">6</li>
+                        <li class="mdl-menu__item" data-val="07">7</li>
+                        <li class="mdl-menu__item" data-val="08">8</li>
+                        <li class="mdl-menu__item" data-val="09">9</li>
+                        <li class="mdl-menu__item" data-val="10">10</li>
+                        <li class="mdl-menu__item" data-val="11">11</li>
+                        <li class="mdl-menu__item" data-val="12">12</li>
+                    </ul>
+                </div>
+                <div id="div_cbb_year"
+                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                    style="width: 100px; margin-left: 10px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_year" readonly>
+                    <input type="hidden" value="" name="cbb_year">
+                    <label for="cbb_year" class="mdl-textfield__label" style="color:white">Năm</label>
+                    <ul for="cbb_year" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                        id="list_cbb_year">
+                        <li class="mdl-menu__item" data-val="2020">2020</li>
+                        <li class="mdl-menu__item" data-val="2021">2021</li>
+                        <li class="mdl-menu__item" data-val="2022">2022</li>
+                        <li class="mdl-menu__item" data-val="2023">2023</li>
+                        <li class="mdl-menu__item" data-val="2024">2024</li>
+                        <li class="mdl-menu__item" data-val="2025">2025</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Tabs -->
+            <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+                <a href="#scroll-tab-1" class="mdl-layout__tab is-active">TẠO PR</a>
+                <a href="#scroll-tab-2" class="mdl-layout__tab" onclick="func_tab_create_po(this)">CHI TIẾT</a>
+            </div>
+        </header>
+        <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+                    <div class="page-content">
+                        <div style=" width: 100%;">
+                            <table class="mdl-data-table mdl-js-data-table mdl-shadow--6dp"
+                                style="border: none; width: 90%; margin: 10px auto; margin-top: 20px; border-radius: 10px;">
+                                <colgroup>
+                                    <col span="1" style="width: 10px;">
+                                    <col span="1" style="width: 80px;">
+                                </colgroup>
+                                <thead style="background-color: red;">
+                                    <tr style=" height: 60px;">
+                                        <th style="color: white;">STT</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">PO CODE</th>
+                                        <th style="color: white;">SỐ ITEM</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">DỰ ÁN</th>
+                                        <th style="color: white;">TỔNG TIỀN</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">T.T</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">TÀI KHOẢN
+                                        </th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;" id="txt_as">
+                                            AS</th>
+                                        <div class="mdl-tooltip" for="txt_as">Trợ lý giám đốc duyệt</div>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;" id="txt_hd">
+                                            HD</th>
+                                        <div class="mdl-tooltip" for="txt_hd">Giám đốc bộ phận duyệt</div>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;" id="txt_fi">
+                                            FI</th>
+                                        <div class="mdl-tooltip" for="txt_fi">Kế toán duyệt<br>(Phan, Phước)</div>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;" id="txt_op">
+                                            OP</th>
+                                        <div class="mdl-tooltip" for="txt_op">Giám đốc vận hành duyệt<br>(Lê, Tân /
+                                            Đặng, Loan)</div>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;" id="txt_pm">
+                                            PM</th>
+                                        <div class="mdl-tooltip" for="txt_pm">Giám đốc nhà máy duyệt<br>(Võ, Lưu)</div>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;" id="txt_od">
+                                            OD</th>
+                                        <div class="mdl-tooltip" for="txt_od">Giám đốc vùng duyệt<br>(Phan, Tuấn)</div>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;" id="txt_pr"
+                                            id="txt_pr">PR</th>
+                                        <div class="mdl-tooltip" for="txt_pr">Bộ phận mua hàng</div>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body_PO">
+                                </tbody>
+                            </table>
+                        </div>
+                        <form id="upload_form_attach" method='POST' action='CCS/Update_PO_File_Attach'
+                            submit='return false;' style="display: none;">
+                            <input type='file' name='file_attach' id='file_attach' style='display: none;'>
+                            <input type='submit' id='submit_attach' style='display: none;'>
+                            <button
+                                class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                                id="btn_upload_attach"
+                                style="position: fixed; right: 50px; bottom: 190px; background-color: orangered; z-index: 10;">
+                                <i class="material-icons">upload</i>
+                            </button>
+                            <div class="mdl-tooltip" data-mdl-for="btn_upload_attach">
+                                Upload<br>Done Bidding
+                            </div>
+                        </form>
+                    </div>
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                        id="btn_new_PO" style="position: fixed; bottom: 50px; right: 50px; background-color:green;">
+                        <i class="material-icons">add</i>
+                    </button>
+                    <div class="mdl-tooltip" for="btn_new_PO">Create PO</div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+                    <div class="page-content">
+                        <div class="mdl-grid" style="width: 100%; padding:0; margin-top: 20px;">
+                            <div class="mdl-cell mdl-cell--3-col" style="padding: 0;">
+                                <div class="mdl-card mdl-shadow--2dp" style="width: 100%; padding: 0;">
+                                    <div class="mdl-card__title"
+                                        style="background-color: orangered; color: white; font-size: 13px;">
+                                        <h6 class="mdl-card__title-text" id="txt_create_PO_ID"></h6>
+                                    </div>
+                                    <div class="mdl-card__supporting-text">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="text" id="txt_create_PO_project"
+                                                style="color:black" readonly>
+                                            <label class="mdl-textfield__label" for="txt_create_PO_project">Tên
+                                                Project</label>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="text" id="txt_create_PO_PIC"
+                                                style="color:black" readonly>
+                                            <label class="mdl-textfield__label" for="txt_create_PO_PIC">PIC</label>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="text" id="txt_create_PO_account"
+                                                style="color:black" readonly>
+                                            <label class="mdl-textfield__label"
+                                                for="txt_create_PO_account">Account</label>
+                                        </div>
+                                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+                                            for="checkbox-overbudget">
+                                            <input type="checkbox" id="checkbox-overbudget" class="mdl-checkbox__input"
+                                                style="color:black" disabled>
+                                            <span class="mdl-checkbox__label" style="color:black">Over Budget</span>
+                                        </label>
+                                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+                                            for="checkbox-urgent">
+                                            <input type="checkbox" id="checkbox-urgent" class="mdl-checkbox__input"
+                                                style="color:black">
+                                            <span class="mdl-checkbox__label" style="color:black">Urgent</span>
+                                        </label>
+                                        <div class="mdl-grid" style="padding: 0; margin-top: 20px;">
+                                            <div class="mdl-cell mdl-cell--3-col" style="padding: 0;">
+                                                <div style="color: indigo; font-weight: bold; font-size: 15px;">BUDGET:
+                                                </div>
+                                            </div>
+                                            <div class="mdl-cell mdl-cell--9-col">
+                                                <div id="txt_account_available"
+                                                    style="float: right; color: indigo; font-weight: bold; font-size: 15px;">
+                                                    $0</div>
+                                            </div>
+                                        </div>
+                                        <div class="mdl-grid" style="padding: 0;">
+                                            <div class="mdl-cell mdl-cell--3-col" style="padding: 0;">
+                                                <div style="color: indigo; font-weight: bold; font-size: 15px;">TOTAL:
+                                                </div>
+                                            </div>
+                                            <div class="mdl-cell mdl-cell--9-col">
+                                                <div id="txt_total_price"
+                                                    style="float: right; color: indigo; font-weight: bold; font-size: 15px;">
+                                                    $0</div>
+                                            </div>
+                                        </div>
+                                        <div class="mdl-grid" style="padding: 0;">
+                                            <div class="mdl-cell mdl-cell--3-col" style="padding: 0;">
+                                                <div style="color: indigo; font-weight: bold; font-size: 15px;">BUDGET:
+                                                </div>
+                                            </div>
+                                            <div class="mdl-cell mdl-cell--9-col">
+                                                <div id="txt_account_left"
+                                                    style="float: right; color: indigo; font-weight: bold; font-size: 15px;">
+                                                    $0</div>
+                                            </div>
+                                        </div>
+                                        <!-- <h5 style="color: indigo;">TOTAL: <div id="txt_total_price">$0</div> </h5>
+                                        <h5 style="color: indigo;">CÒN LẠI: <div id="txt_account_left">$0</div> </h5> -->
+                                    </div>
+                                    <div class="mdl-card__actions mdl-card--border">
+                                        <button
+                                            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                                            id="btn_create_PO_load"
+                                            style="background-color: green; color: white; border-radius: 20px; margin-left: 10px;">
+                                            LOAD
+                                            <i class="material-icons">refresh</i>
+                                        </button>
+                                        <button
+                                            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                                            id="btn_create_PO_send"
+                                            style="background-color: indigo; color: white; border-radius: 20px; margin-left: 10px;">
+                                            GỬI PO
+                                            <i class="material-icons">send</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--9-col">
+                                <table class="mdl-data-table mdl-js-data-table mdl-shadow--6dp"
+                                    style="border: none; width: 100%">
+                                    <colgroup>
+                                        <col span="1" style="width: 10px;">
+                                        <col span="1" style="width: 100px;">
+                                    </colgroup>
+                                    <thead style="background-color:blue;">
+                                        <tr style=" height: 60px;">
+                                            <th style="color: white;">STT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">ITEM
+                                            </th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">TIẾNG
+                                                ANH</th>
+                                            <th style="color: white;">SỐ LƯỢNG</th>
+                                            <th style="color: white;">ĐƠN GIÁ</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">TIỀN TỆ
+                                            </th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">ACTION
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_body_PO_temp">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                        id="btn_search" disabled
+                        style="position: fixed; bottom: 50px; right: 50px; background-color: red;">
+                        <i class="material-icons">search</i>
+                    </button>
+                    <div class="mdl-tooltip" for="btn_search">Tìm Item</div>
+                    <form id="upload_form" method='POST' action='CCS/Upload_PO_File' submit='return false;'>
+                        <input type='file' name='file' id='file' style='display: none;'>
+                        <input type='submit' id='submit' style='display: none;'>
+                        <button
+                            class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--6dp"
+                            id="btn_upload"
+                            style="position: fixed; bottom: 120px; right: 50px; background-color: green;" disabled>
+                            <i class="material-icons">upload</i>
+                        </button>
+                    </form>
+                    <div class="mdl-tooltip" for="btn_upload">Upload PO</div>
+                </section>
+            </main>
+    </div>
+</body>
+<dialog class="mdl-dialog" id="dialog_item_search"
+    style="width: 90%; height: 90%; padding:0; border-radius: 10px; border: none;">
+    <div class="mdl-grid" style="margin: 0px auto; width: 90%; height: 95%;">
+        <div style="margin: 0 auto;">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="txt_item_search" style="color: black;">
+                <label class="mdl-textfield__label" for="txt_item_search">Item or PR ID</label>
+            </div>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                id="btn_search_specific" style="margin-left: 20px; background-color: green; border-radius: 20px;">
+                <i class="material-icons">search</i>
+                Tìm kiếm
+            </button>
+            <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                style="margin-left: 20px; background-color: blue; border-radius: 20px;"
+                href="../Python/Finance/CCS/Template/ccs_po_template_official.xlsm" download="CCS_Search_Item.xlsm">
+                <i class="material-icons">sell</i>
+                Tải Excel
+            </a>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                id="btn_search_item_close" style="margin-left: 20px; background-color: red; border-radius: 20px;">
+                <i class="material-icons">close</i>
+                Đóng
+            </button>
+        </div>
+        <div class="mdl-grid mdl-shadow--6dp"
+            style="width: 100%; padding: 0; height: 90%; overflow:hidden; overflow-y: scroll; overflow-x: scroll;">
+            <table class="mdl-data-table mdl-js-data-table" style="border: none; width: 100%; height: 90%;">
+                <colgroup>
+                    <col span="1" style="width: 10px;">
+                </colgroup>
+                <thead style="background-color: indigo;">
+                    <tr style=" height: 60px;">
+                        <th style="color: white;">STT</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">ACTION</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">PR</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">ITEM</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">TIẾNG VIỆT</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">TIẾNG ANH</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">ĐVT</th>
+                        <th style="color: white;">Đ.G</th>
+                        <th style="color: white;">C.K</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">T.T</th>
+                        <th style="color: white;">S.L</th>
+                        <th style="color: white;">C.P</th>
+                        <th style="color: white;">L.T</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">G.C</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">H.H</th>
+                    </tr>
+                </thead>
+                <tbody id="table_body_quotation">
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 10px;">
+            Ghi chú: ĐVT: Đơn vị tính, Đ.G: Đơn giá, C.K: Chiết khấu, T.T: Tiền tệ, S.L: Số lượng, C.P: Số lượng tối
+            thiểu phải đặt, L.T: thời gian giao hàng, G.C: Ghi chú, H.H: Ngày hết hạn báo giá.
+        </div>
+    </div>
+</dialog>
+<dialog style="border-radius: 10px; border: none; padding: 0; background-color: transparent;" id="dialog_add_PO">
+    <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="width: 400px; border-radius: 10px;">
+        <div class="mdl-card__title" style="background-color: indigo; color: white; ">
+            <h3 class="mdl-card__title-text" id="txt_PO_ID_new"></h3>
+            <!-- <div id="txt_PO_ID"></div>
+                </h2> -->
+        </div>
+        <div class="mdl-card__supporting-text" style=" height: 360px;">
+            <div id="div_cbb_category_mtn"
+                class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                style="width: 350px; display: inline-block;">
+                <input type="text" value="" class="mdl-textfield__input" id="cbb_category_mtn" readonly
+                    style="color:black;">
+                <input type="hidden" value="" name="cbb_category_mtn">
+                <label for="cbb_category_mtn" class="mdl-textfield__label">Maintenance Category</label>
+                <ul for="cbb_category_mtn" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                    id="list_cbb_category_mtn" style="height: 150px;">
+                    <li class="mdl-menu__item" data-val="OHMA" data-selected="true">OHMA - Outside Maintenance</li>
+                    <li class="mdl-menu__item" data-val="IHMA">IHMA - Inhouse Maintenance</li>
+                    <li class="mdl-menu__item" data-val="SEUP">SEUP - Setup</li>
+                    <li class="mdl-menu__item" data-val="AUTO">AUTO - Automation</li>
+                    <li class="mdl-menu__item" data-val="OTHS">OTHS - Others</li>
+                </ul>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 350px;">
+                <input class="mdl-textfield__input" type="text" id="txt_PO_project" style="color: black;">
+                <label class="mdl-textfield__label" for="txt_PO_project">Tên Dự án</label>
+            </div>
+            <div id="div_cbb_category"
+                class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                style="width: 350px;">
+                <input type="text" value="" class="mdl-textfield__input" id="cbb_category" readonly
+                    style="color:black;">
+                <input type="hidden" value="" name="cbb_category">
+                <label for="cbb_category" class="mdl-textfield__label">Category</label>
+                <ul for="cbb_category" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                    id="list_cbb_category" style="height: 150px;">
+                </ul>
+            </div>
+            <div id="div_cbb_account"
+                class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                style="width: 350px;">
+                <input type="text" value="" class="mdl-textfield__input" id="cbb_account" readonly
+                    style="color: black;">
+                <input type="hidden" value="" name="cbb_account">
+                <label for="cbb_account" class="mdl-textfield__label">Tài khoản</label>
+                <ul for="cbb_account" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                    id="list_cbb_account" style="height:100px;">
+                </ul>
+            </div>
+            <div style="color: indigo; margin-bottom: 10px; font-size: 15px; width: 350px;" id="txt_pic_infor"
+                style="width: 350px;">PIC:</div>
+            <div id="txt_budget_note" style="color: indigo; font-size: 15px;">Budget: $0</div>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_add_done">
+                <i class="material-icons">done</i>
+                TẠO MỚI
+            </button>
+        </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="btn_add_close"
+                style="background-color: red; color: white;">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+    </div>
+</dialog>
+<dialog class="mdl-dialog"
+    style="width: 400px; border-radius: 10px; border-radius: 10px; overflow: hidden; border: none; padding: 0; background-color: transparent;"
+    id="dialog_item_detail">
+    <div class="mdl-card mdl-shadow--6dp" style="width: 100%;">
+        <div class="mdl-card__title" style="background-color: indigo; color: white;">
+            <h2 class="mdl-card__title-text" id="txt_item_detail"></h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <div class="mdl-grid" style="color: indigo; margin-top:10px; font-size: 15px;">
+                <i class="material-icons">credit_card</i>
+                <div id="txt_pr_detail" style="margin-left: 20px; margin-top:5px;"></div>
+            </div>
+            <div class="mdl-grid" style="color: indigo; margin-top:10px; font-size: 15px;">
+                <i class="material-icons">toggle_off</i>
+                <div id="txt_vietnamese_detail" style="margin-left: 20px; margin-top:5px;"></div>
+            </div>
+            <div class="mdl-grid" style="color: indigo; margin-top:10px; font-size: 15px;">
+                <i class="material-icons">toggle_on</i>
+                <div id="txt_english_detail" style="margin-left: 20px; margin-top:5px;"></div>
+            </div>
+            <div class="mdl-grid" style="color: indigo; margin-top:10px; font-size: 15px;">
+                <i class="material-icons">attach_money</i>
+                <div id="txt_price_detail" style="margin-left: 20px; margin-top:5px;"></div>
+            </div>
+            <div class="mdl-grid" style="color: indigo; margin-top:10px; font-size: 15px;">
+                <i class="material-icons">assignment_ind</i>
+                <div id="txt_vendor_detail" style="margin-left: 20px; margin-top:5px;"></div>
+            </div>
+            <div class="mdl-grid" style="color: indigo; margin-top:10px; font-size: 15px;">
+                <i class="material-icons">book_online</i>
+                <div id="txt_expried_detail" style="margin-left: 20px; margin-top:5px;"></div>
+            </div>
+            <div class="mdl-grid" style="color: indigo; margin-top:10px; font-size: 15px;">
+                <i class="material-icons">event_available</i>
+                <div id="txt_leadtime_detail" style="margin-left: 20px; margin-top:5px;"></div>
+            </div>
+        </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+                style="background-color: red; color: white;" id="btn_item_detail_close">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+    </div>
+</dialog>
+<dialog class="mdl-dialog" id="dialog_change_infor" style="padding: 0; border-radius: 10px; width: 90%;">
+    <div class=" mdl-card" style="width: 100%;">
+        <div class="mdl-card__title" style="background-color: indigo;">
+            <h2 class="mdl-card__title-text" id="txt_change_ycbg" style="color: white;">#YCBG_ID</h2>
+        </div>
+        <div class="mdl-card__supporting-text" style="width: 98%;">
+            <div class="mdl-grid" style="padding: 0;">
+                <div style="color: black; margin-top: 20px; display: inline;">Tháng dự kiến: </div>
+                <div style="color: black; margin-top: 20px; margin-left: 10px;" id="txt_old_date"></div>
+            </div>
+            <div style="color: black; display: inline;">Tháng thay đổi theo PR: </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder"
+                style="width:150px; margin-top: 10px; margin-left: 10px;">
+                <input class="mdl-textfield__input" type="date" id="txt_new_date">
+                <label class="mdl-textfield__label" for="txt_new_date">Chọn tháng</label>
+            </div>
+            <div style="color: black;">Tháng thay đổi theo item: </div>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp"
+                style="border: none; width: 100%; margin: 0px auto; margin-top: 10px;">
+                <thead style="background-color: indigo;">
+                    <tr style=" height: 60px;">
+                        <th style="color: white;">STT</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">ITEM</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">SPEC</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">PR_LINE</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">PO_NUMBER</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">PO_LINE</th>
+                        <th style="color: white;">LW_QTY</th>
+                        <th style="color: white;">RECEIVED</th>
+                        <th style="color: white;">CANCELED</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">EXP_MONTH</th>
+                        <th style="color: white;">EXP_QTY</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">Last update</th>
+                    </tr>
+                </thead>
+                <tbody id="table_body_receive">
+                </tbody>
+            </table>
+        </div>
+        <script>
+            function load_receive() {
+                table_body_receive = document.getElementById('table_body_receive');
+                PO_ID = document.getElementById('txt_change_ycbg').innerHTML;
+                var xsend = new XMLHttpRequest();
+                xsend.open("POST", "/CCS/Get_PR_Received", true);
+                xsend.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        data = JSON.parse(xsend.responseText);
+                        while (table_body_receive.childNodes.length > 0) table_body_receive.removeChild(table_body_receive.childNodes[0])
+                        for (var i = 0; i < data.length; i++) {
+                            var tr = document.createElement("tr");
+                            //stt
+                            var tdSTT = document.createElement("td");
+                            var node = document.createTextNode(i + 1);
+                            tdSTT.setAttribute('style', 'color: black')
+                            tdSTT.appendChild(node);
+                            tr.appendChild(tdSTT);
+                            //Item name
+                            var tdItem = document.createElement("td");
+                            tdItem.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(data[i].Item);
+                            tdItem.setAttribute('style', 'color: black')
+                            tdItem.appendChild(node);
+                            tr.appendChild(tdItem);
+                            //Item name
+                            var tdItem = document.createElement("td");
+                            tdItem.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(data[i].Vietnamese.substring(0, 25) + '...');
+                            tdItem.setAttribute('style', 'color: black')
+                            tdItem.appendChild(node);
+                            tr.appendChild(tdItem);
+                            //Item name
+                            var tdItem = document.createElement("td");
+                            tdItem.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(data[i].PR_LINE);
+                            if (data[i].PR_LINE == null) node = document.createTextNode('');
+                            tdItem.setAttribute('style', 'color: black')
+                            tdItem.appendChild(node);
+                            tr.appendChild(tdItem);
+                            //Item name
+                            var tdItem = document.createElement("td");
+                            tdItem.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(data[i].LW_PO_NUMBER);
+                            if (data[i].LW_PO_NUMBER == null) node = document.createTextNode('');
+                            tdItem.setAttribute('style', 'color: black')
+                            tdItem.appendChild(node);
+                            tr.appendChild(tdItem);
+                            //Item name
+                            var tdItem = document.createElement("td");
+                            tdItem.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(data[i].LW_PO_LINE);
+                            if (data[i].LW_PO_LINE == null) node = document.createTextNode('');
+                            tdItem.setAttribute('style', 'color: black')
+                            tdItem.appendChild(node);
+                            tr.appendChild(tdItem);
+                            //Item name
+                            var tdItem = document.createElement("td");
+                            var node = document.createTextNode(data[i].LW_QTY);
+                            if (data[i].LW_QTY == null) node = document.createTextNode('');
+                            tdItem.setAttribute('style', 'color: black')
+                            tdItem.appendChild(node);
+                            tr.appendChild(tdItem);
+                            //Item name
+                            var tdItem = document.createElement("td");
+                            var node = document.createTextNode(data[i].LW_REC_QTY);
+                            if (data[i].LW_REC_QTY == null) node = document.createTextNode('');
+                            tdItem.setAttribute('style', 'color: black')
+                            tdItem.appendChild(node);
+                            tr.appendChild(tdItem);
+                            //Item name
+                            var tdItem = document.createElement("td");
+                            var node = document.createTextNode(data[i].LW_CXL_QTY);
+                            if (data[i].LW_CXL_QTY == null) node = document.createTextNode('');
+                            tdItem.setAttribute('style', 'color: black')
+                            tdItem.appendChild(node);
+                            tr.appendChild(tdItem);
+                            //ITEMS
+                            var tdUnit = document.createElement("td");
+                            var node = document.createTextNode(data[i].EXP_PR);
+                            tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            if (data[i].EXP_MONTH != null) node = document.createTextNode(data[i].EXP_MONTH);
+                            tdUnit.setAttribute('style', 'color: black')
+                            tdUnit.appendChild(node);
+                            tr.appendChild(tdUnit);
+                            //ProjectName
+                            var tdUnit = document.createElement("td");
+                            var node = document.createTextNode(data[i].LW_QTY);
+                            if (data[i].LW_QT == null) node = document.createTextNode(data[i].Expect_Qty);
+                            if (data[i].Expect_Qty == null) node = document.createTextNode(data[i].Quantity);
+                            if (data[i].Expect_Qty == 0) continue;
+                            tdUnit.setAttribute('style', 'color: black')
+                            tdUnit.appendChild(node);
+                            tr.appendChild(tdUnit);
+                            //ProjectName
+                            var tdUnit = document.createElement("td");
+                            tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            node = document.createTextNode('');
+                            tdUnit.setAttribute('style', 'color: black')
+                            if (data[i].TimeUpdate != null) {
+                                var timeUpdate = (new Date(data[i].TimeUpdate)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" }).split(',')[0];
+                                node = document.createTextNode(timeUpdate);
+                            }
+                            tdUnit.appendChild(node);
+                            tr.appendChild(tdUnit);
+                            table_body_receive.appendChild(tr);
+                            componentHandler.upgradeElement(tr);
+                        }
+                    }
+                }
+                xsend.setRequestHeader("Content-type", "application/json");
+                data = { PR_ID: PO_ID }
+                console.log(data)
+                xsend.send(JSON.stringify(data));
+            }
+        </script>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+            style="background-color: green;" onclick="fnc_change_estimate_date(this)">
+            <i class="material-icons">done</i>
+            TẤT CẢ
+        </button>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+            style="margin-left: 10px; background-color: orange;" onclick="download_received_file()">
+            <i class="material-icons">download</i>
+            Xuất File
+        </button>
+        <form id="upload_form_receive" method='POST' action='CCS/Upload_Receive_File' submit='return false;'
+            style="display: inline;">
+            <input type='file' name='file_receive' id='file_receive' style='display: none;'>
+            <input type='submit' id='submit_receive' style='display: none;'>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                style="margin-left: 10px; background-color: red;" id="btn_upload_receive">
+                <i class="material-icons">update</i>
+                Cập nhật nhận hàng
+            </button>
+        </form>
+        <script>
+            function fnc_change_estimate_date(x) {
+                new_date = document.getElementById('txt_new_date').value;
+                if (new_date == '') {
+                    alert('Hãy chọn tháng mới cho PR!');
+                    return
+                }
+                year = new_date.substring(0, 4);
+                month = new_date.substring(5, 7);
+                day = new_date.substring(8, 10);
+                new_date_txt = month;
+                PO_ID = document.getElementById('txt_change_ycbg').innerHTML;
+                console.log(PO_ID);
+                console.log(new_date_txt)
+                var xsend = new XMLHttpRequest();
+                xsend.open("POST", "/CCS/Update_Month_Estimate", true);
+                xsend.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        data = JSON.parse(xsend.responseText);
+                        if (data == 'done') {
+                            alert('Tháng dự kiến đã được cập nhật mới!');
+                            document.getElementById('dialog_change_infor').close();
+                            month = document.getElementById('cbb_month').value;
+                            year = document.getElementById('cbb_year').value;
+                            load_order_PO(month, year);
+                        }
+                    }
+                }
+                xsend.setRequestHeader("Content-type", "application/json");
+                data = { PO_ID: PO_ID, new_month: new_date_txt }
+                xsend.send(JSON.stringify(data));
+            }
+            function download_received_file() {
+                PO_ID = document.getElementById('txt_change_ycbg').innerHTML;
+                var xsend = new XMLHttpRequest();
+                xsend.open("POST", "/CCS/Download_Received_PR", true);
+                xsend.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        data = xsend.responseText;
+                        if (data != 'fail') {
+                            a = document.createElement('a');
+                            a.setAttribute('href', '../Python/Finance/CCS/Export/' + data);
+                            a.click();
+                        }
+                        else {
+                            alert('File xuất bị lỗi, xin vui lòng thử lại sau!');
+                        }
+                    }
+                }
+                xsend.setRequestHeader("Content-type", "application/json");
+
+                data = { poID: PO_ID }
+                // console.log(data)
+                xsend.send(JSON.stringify(data));
+            }
+            var form_receive = document.getElementById('upload_form_receive');
+            form_receive.addEventListener('submit', e => {
+                e.preventDefault();
+                return false;
+            });
+            document.getElementById('btn_upload_receive').addEventListener('click', function () {
+                document.getElementById('file_receive').click();
+                document.getElementById('file_receive').onchange = function () {
+                    if (document.getElementById('file_receive').value != '') document.getElementById('submit_receive').click();
+                }
+                var form = document.getElementById('upload_form_receive');
+                form.addEventListener('submit', e => {
+                    if (document.getElementById('file_receive').value != '') {
+                        e.preventDefault();
+                        var xsend = new XMLHttpRequest();
+                        xsend.onreadystatechange = function () {
+                            if (this.readyState == 4 && this.status == 200) {
+                                //done
+                                result = xsend.responseText;
+                                console.log(result);
+                                if (result == 'done') {
+                                    alert('Cập nhật file thành công!');
+                                    load_receive();
+                                    return
+                                } else {
+                                    alert('Đã có lỗi xảy ra! Vui lòng kiểm tra lại file!');
+                                    return
+                                }
+                            }
+                        }
+                        var fileInput = document.getElementById('file_receive');
+                        var file;
+                        file = fileInput.files[0];
+                        console.log(file['name']);
+                        var formData = new FormData();
+                        formData.append('file', file);
+                        if (file != null) {
+                            xsend.open('POST', '/CCS/Upload_Receive_File', true);
+                            xsend.send(formData);
+                        }
+                    }
+                    return false;
+                })
+            });
+        </script>
+    </div>
+    <div class="mdl-card__menu" style="z-index: 10;">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+            style="background-color: red; color: white;" onclick="btn_close_change_ycbg()">
+            <i class="material-icons">close</i>
+        </button>
+        <script>
+            function btn_close_change_ycbg() {
+                document.getElementById('dialog_change_infor').close();
+            }
+        </script>
+    </div>
+    </div>
+</dialog>
+<script>
+    sessionStorage.clear();
+    table_body_PO = document.getElementById('table_body_PO');
+    var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1).substring(0, 10);
+    var rawTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    function init_month_year() {
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+        var month = localISOTime.substring(5, 7);
+        var year = localISOTime.substring(0, 4);
+        $('ul[for="cbb_month"] li[data-val="' + month + '"]').attr('data-selected', true);
+        $('ul[for="cbb_year"] li[data-val="' + year + '"]').attr('data-selected', true);
+        // get_employee_infor(month, quater, year);
+        load_order_PO(month, year);
+        load_category();
+    }
+    function load_budget(dept) {
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Get_Account_List", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                console.log(data)
+                for (i = 0; i < data.length; i++) {
+                    sessionStorage.setItem(data[i].Account.split('-')[0], data[i].BUDGET - data[i].TOTAL_USD);
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        month = document.getElementById('cbb_month').value;
+        year = document.getElementById('cbb_year').value;
+        data = { dept: dept, month: month, year: year }
+        console.log(data)
+        xsend.send(JSON.stringify(data));
+    }
+    document.getElementById('cbb_month').addEventListener('change', function () {
+        month = document.getElementById('cbb_month').value;
+        year = document.getElementById('cbb_year').value;
+        load_order_PO(month, year);
+    })
+    document.getElementById('cbb_year').addEventListener('change', function () {
+        month = document.getElementById('cbb_month').value;
+        year = document.getElementById('cbb_year').value;
+        load_order_PO(month, year);
+    })
+    document.getElementById('cbb_category').addEventListener('change', function () {
+        category = document.getElementById('cbb_category').value;
+        pic = JSON.parse(sessionStorage.getItem(category)).PIC;
+        console.log(JSON.parse(sessionStorage.getItem(category)))
+        document.getElementById('txt_pic_infor').innerHTML = "PIC: " + pic;
+    });
+    function load_category() {
+        dept = document.getElementById('txt_PO_ID_new').innerHTML.split('_')[0];
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Get_Category", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                // console.log(data)
+                cbb_category = document.getElementById('list_cbb_category')
+                while (cbb_category.childNodes.length > 0) cbb_category.removeChild(cbb_category.childNodes[0])
+                for (var i = 0; i < data.length; i++) {
+                    li = document.createElement('li');
+                    li.setAttribute('class', 'mdl-menu__item');
+                    li.innerHTML = data[i].CATEGORY;
+                    li.setAttribute('data-val', data[i].CATEGORY);
+                    sessionStorage.setItem(data[i].CATEGORY, JSON.stringify(data[i]))
+                    console.log(data[i].CATEGORY)
+                    cbb_category.appendChild(li);
+                }
+                getmdlSelect.init('#div_cbb_category');
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { dept: dept }
+        xsend.send(JSON.stringify(data));
+    }
+    function load_order_PO(month, year) {
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Load_created_PO", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                console.log(data)
+                while (table_body_PO.childNodes.length > 0)
+                    table_body_PO.removeChild(table_body_PO.childNodes[0]);
+                for (var i = 0; i < data.length; i++) {
+                    var tr = document.createElement("tr");
+                    //stt
+                    var tdSTT = document.createElement("td");
+                    var node = document.createTextNode(i + 1);
+                    tdSTT.appendChild(node);
+                    tr.appendChild(tdSTT);
+                    //Item name
+                    var tdItem = document.createElement("td");
+                    tdItem.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].ID);
+                    tdItem.appendChild(node);
+                    if (data[i].Attached_File != '' && data[i].Attached_File != null) {
+                        // tdItem.setAttribute('href', '../Python/Finance/CCS/Upload/Attachment/'+data[i].Attached_File)
+                        tdItem.setAttribute('style', 'cursor: pointer; color: green; font-weight: bold');
+                        tdItem.setAttribute('onclick', 'func_download_attached("' + data[i].Attached_File + '")')
+                    }
+                    tr.appendChild(tdItem);
+                    sessionStorage.setItem(data[i].ID + '_PO_infor', JSON.stringify(data[i]))
+                    sessionStorage.setItem(data[i].ID + '_urgent', data[i].Urgent);
+                    sessionStorage.setItem(data[i].ID + '_overbudget', data[i].OverBudget);
+                    sessionStorage.setItem(data[i].ID + '_PIC', data[i].Purchaser);
+                    sessionStorage.setItem(data[i].ID + '_infor', JSON.stringify(data[i]))
+                    //ITEMS
+                    var tdUnit = document.createElement("td");
+                    var node = document.createTextNode(data[i].ITEMS);
+                    tdUnit.appendChild(node);
+                    tr.appendChild(tdUnit);
+                    //ProjectName
+                    var tdUnit = document.createElement("td");
+                    tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    // var node=document.createTextNode(data[i].ProjectName.substring(0, 40)+'...');
+                    var node = document.createElement('div');
+                    node.innerHTML = data[i].ProjectName.substring(0, 30) + '...';
+                    tdUnit.setAttribute('onmouseover', 'display_project(this)');
+                    tdUnit.setAttribute('onmouseout', 'hide_project(this)');
+                    tdUnit.appendChild(node);
+                    tr.appendChild(tdUnit);
+                    //total
+                    var tdUnit = document.createElement("td");
+                    var node = document.createTextNode('0');
+                    total = Math.round(data[i].TOTAL * 100) / 100;
+                    total = total.toLocaleString('en-US', { minimumFractionDigits: 0 });
+                    if (data[i].TOTAL != null) node = document.createTextNode(total);
+                    tdUnit.appendChild(node);
+                    tr.appendChild(tdUnit);
+                    //currency
+                    var tdUnit = document.createElement("td");
+                    tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Currency);
+                    if (data[i].Currency == null) node = document.createTextNode('');
+                    tdUnit.appendChild(node);
+                    tr.appendChild(tdUnit);
+                    //AccountName
+                    var tdUnit = document.createElement("td");
+                    tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].AccountName);
+                    tdUnit.appendChild(node);
+                    tr.appendChild(tdUnit);
+                    //AS
+                    var tdQuan = document.createElement("td");
+                    tdQuan.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    if (data[i].Assistan_Result == 'Y') tdQuan.innerHTML = '<i class="material-icons" style="color: green;">done</i>';
+                    else if (data[i].Assistan_Result == 'N') tdQuan.innerHTML = '<i class="material-icons" style="color: red;">close</i>';
+                    else if (data[i].Status != 'PO') tdQuan.innerHTML = '<i class="material-icons" style="color: blue;">remove</i>';
+                    tr.appendChild(tdQuan);
+                    //HD
+                    var tdQuan = document.createElement("td");
+                    tdQuan.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    if (data[i].HeadDept_Result == 'Y') tdQuan.innerHTML = '<i class="material-icons" style="color: green;">done</i>';
+                    else if (data[i].HeadDept_Result == 'N') tdQuan.innerHTML = '<i class="material-icons" style="color: red;">close</i>';
+                    tr.appendChild(tdQuan);
+                    //FI
+                    var tdQuan = document.createElement("td");
+                    tdQuan.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    if (data[i].Finance_Result == 'Y') tdQuan.innerHTML = '<i class="material-icons" style="color: green;">done</i>';
+                    else if (data[i].Finance_Result == 'N') tdQuan.innerHTML = '<i class="material-icons" style="color: red;">close</i>';
+                    tr.appendChild(tdQuan);
+                    //OP
+                    var tdQuan = document.createElement("td");
+                    tdQuan.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    if (data[i].OperationMng_Result == 'Y') tdQuan.innerHTML = '<i class="material-icons" style="color: green;">done</i>';
+                    else if (data[i].OperationMng_Result == 'N') tdQuan.innerHTML = '<i class="material-icons" style="color: red;">close</i>';
+                    tr.appendChild(tdQuan);
+                    //PL
+                    var tdQuan = document.createElement("td");
+                    tdQuan.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    if (data[i].SubPlant_Result == 'Y') tdQuan.innerHTML = '<i class="material-icons" style="color: green;">done</i>';
+                    else if (data[i].SubPlant_Result == 'N') tdQuan.innerHTML = '<i class="material-icons" style="color: red;">close</i>';
+                    tr.appendChild(tdQuan);
+                    //OD
+                    var tdQuan = document.createElement("td");
+                    tdQuan.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    if (data[i].PlantMng_Result == 'Y') tdQuan.innerHTML = '<i class="material-icons" style="color: green;">done</i>';
+                    else if (data[i].PlantMng_Result == 'N') tdQuan.innerHTML = '<i class="material-icons" style="color: red;">close</i>';
+                    tr.appendChild(tdQuan);
+                    //PR
+                    var tdQuan = document.createElement("td");
+                    tdQuan.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    if (data[i].Purchasing_Result == 'Y') tdQuan.innerHTML = '<i class="material-icons" style="color: green;">done</i>';
+                    else if (data[i].Purchasing_Result == 'N') tdQuan.innerHTML = '<i class="material-icons" style="color: red;">close</i>';
+                    tr.appendChild(tdQuan);
+                    //btn more
+                    var tdMore = document.createElement("td");
+                    tdMore.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var div = document.createElement("div");
+                    var button = document.createElement("button");
+                    button.setAttribute("class", "mdl-button mdl-js-button mdl-button--icon");
+                    button.setAttribute("id", "button_more_rq" + i);
+                    var icon = document.createElement("i");
+                    icon.setAttribute("class", "material-icons");
+                    icon.innerHTML = "more_vert";
+                    componentHandler.upgradeElement(icon);
+                    button.appendChild(icon);
+                    componentHandler.upgradeElement(button);
+                    var ul = document.createElement("ul");
+                    ul.setAttribute("class", "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect");
+                    ul.setAttribute("for", "button_more_rq" + i);
+                    // ul.setAttribute("style", "overflow: visible")
+                    var li0 = document.createElement("li");
+                    li0.setAttribute("class", "mdl-menu__item");
+                    li0.setAttribute("onclick", "function_update_rq(this)");
+                    li0.innerHTML = "<i class='material-icons' style='vertical-align: middle; margin-right:10px; color: orange'>update</i>Cập nhật";
+                    var li1 = document.createElement("li");
+                    li1.setAttribute("class", "mdl-menu__item");
+                    li1.setAttribute("onclick", "function_tab_detail_po(this)");
+                    li1.innerHTML = "<i class='material-icons' style='vertical-align: middle; margin-right:10px; color: green'>insert_comment</i>Chi tiết";
+                    var li2 = document.createElement("li");
+                    li2.setAttribute("class", "mdl-menu__item");
+                    li2.innerHTML = "<i class='material-icons' style='vertical-align: middle; margin-right:10px; color: indigo'>send</i>Đặt hàng";
+                    var li3 = document.createElement("li");
+                    li3.setAttribute("class", "mdl-menu__item");
+                    li3.innerHTML = "<i class='material-icons' style='vertical-align: middle; margin-right:10px; color: red'>delete</i>Xóa";
+                    var li5 = document.createElement("li");
+                    li5.setAttribute("class", "mdl-menu__item");
+                    li5.innerHTML = "<i class='material-icons' style='vertical-align: middle; margin-right:10px; color: green'>attachment</i>Đính kèm";
+                    componentHandler.upgradeElement(li0);
+                    componentHandler.upgradeElement(li1);
+
+                    ul.appendChild(li0);
+                    ul.appendChild(li1);
+                    if (data[i].Status == 'TEMP') {
+                        li3.setAttribute("onclick", "fnc_delete_po(this)");
+                        li2.setAttribute("onclick", "fnc_send_po(this)");
+                        li5.setAttribute("onclick", "function_attach_file(this)");
+                        ul.appendChild(li5)
+                    } else {
+                        li2.setAttribute('disabled', true);
+                        li3.setAttribute('disabled', true);
+                    }
+                    // var li3=document.createElement("li");
+                    // li3.setAttribute("class", "mdl-menu__item");
+                    // li3.setAttribute("onclick", "remove_kaizen(this)");
+                    // li3.innerHTML="<i class='material-icons' style='vertical-align: middle; margin-right:10px; color: red'>delete</i>Remove";
+
+                    componentHandler.upgradeElement(li2);
+                    componentHandler.upgradeElement(li3);
+                    componentHandler.upgradeElement(li5);
+
+                    ul.appendChild(li2);
+                    ul.appendChild(li3);
+                    tdMore.appendChild(button);
+                    tdMore.appendChild(ul);
+                    tr.appendChild(tdMore);
+                    table_body_PO.appendChild(tr);
+                    componentHandler.upgradeElement(tr);
+                    componentHandler.upgradeDom('MaterialMenu', 'mdl-menu');
+                }
+            }
+        }
+        // month=document.getElementById('cbb_month').value;
+        // year=document.getElementById('cbb_year').value;
+        xsend.setRequestHeader("Content-type", "application/json");
+        if (year == '') year = '2021';
+        if (month == 'ALL') month = 0;
+        data = { month: month, year: year }
+        console.log(data)
+        xsend.send(JSON.stringify(data));
+    }
+    function display_project(x) {
+        orderID = x.parentNode.childNodes[1].innerHTML;
+        po_infor = sessionStorage.getItem(orderID + '_PO_infor');
+        x.parentNode.childNodes[3].innerHTML = JSON.parse(po_infor).ProjectName;
+    }
+    function hide_project(x) {
+        orderID = x.parentNode.childNodes[1].innerHTML;
+        po_infor = sessionStorage.getItem(orderID + '_PO_infor');
+        x.parentNode.childNodes[3].innerHTML = JSON.parse(po_infor).ProjectName.substr(0, 30) + '...';
+    }
+    function function_attach_file(x) {
+        requestID = x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML;
+        sessionStorage.setItem('attach_name', requestID);
+        document.getElementById('btn_upload_attach').click();
+    }
+    var form_attach = document.getElementById('upload_form_attach');
+    form_attach.addEventListener('submit', e => {
+        e.preventDefault();
+        return false;
+    });
+    function func_download_attached(file) {
+        a = document.createElement('a');
+        a.setAttribute('href', '../Python/Finance/CCS/Upload/Attachment/' + file);
+        a.click();
+    }
+    document.getElementById('btn_upload_attach').addEventListener('click', function () {
+        document.getElementById('file_attach').click();
+        document.getElementById('file_attach').onchange = function () {
+            if (document.getElementById('file_attach').value != '') document.getElementById('submit_attach').click();
+        }
+        var form_attach = document.getElementById('upload_form_attach');
+        form_attach.addEventListener('submit', e => {
+            if (document.getElementById('file_attach').value != '') {
+                e.preventDefault();
+                var xsend = new XMLHttpRequest();
+                xsend.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        //done
+                        result = xsend.responseText;
+                        console.log(result);
+                        if (result == 'done') {
+                            alert('File đính kèm đã được cập nhật!');
+                            document.getElementById('file_attach').value = '';
+                            month = document.getElementById('cbb_month').value;
+                            year = document.getElementById('cbb_year').value;
+                            load_order_PO(month, year);
+                        }
+                    }
+                }
+                var fileInput = document.getElementById('file_attach');
+                var file;
+                file = fileInput.files[0];
+                extention = file['name'].split('.').pop();
+                console.log(file['name'].split('.').pop());
+                new_name = sessionStorage.getItem('attach_name') + '.' + extention;
+                var formData = new FormData();
+                formData.append('file', file, new_name);
+                if (file != null) {
+                    xsend.open('POST', '/CCS/Update_PO_File_Attach', true);
+                    xsend.send(formData);
+                }
+            }
+            return false;
+        })
+    })
+
+    function function_update_rq(x) {
+        PO_ID = x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML.replace(new RegExp("&lt;", "g"), '<').replace(new RegExp("&gt;", "g"), '>');
+        old_date = document.getElementById('cbb_month').value;
+        document.getElementById('txt_change_ycbg').innerHTML = PO_ID;
+        document.getElementById('txt_old_date').innerHTML = old_date;
+        // document.getElementById('txt_old_date').value=null;
+        load_receive();
+        document.getElementById('dialog_change_infor').showModal();
+    }
+    function function_tab_detail_po(x) {
+        PO_ID = x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML.replace(new RegExp("&lt;", "g"), '<').replace(new RegExp("&gt;", "g"), '>');
+        po_id_infor = JSON.parse(sessionStorage.getItem(PO_ID + '_PO_infor'))
+        dept = PO_ID.split('_')[0];
+        load_budget(dept);
+        projectName = po_id_infor.ProjectName;//x.parentNode.parentNode.parentNode.parentNode.childNodes[3].innerHTML;
+        accountName = po_id_infor.AccountName;//x.parentNode.parentNode.parentNode.parentNode.childNodes[5].innerHTML;
+        document.getElementById('txt_create_PO_ID').innerHTML = PO_ID;
+        document.getElementById('txt_create_PO_project').value = projectName;
+        document.getElementById('txt_create_PO_project').parentNode.classList.add('is-dirty');
+        document.getElementById('txt_create_PO_account').value = accountName;
+        document.getElementById('txt_create_PO_account').parentNode.classList.add('is-dirty');
+        pic = sessionStorage.getItem(PO_ID + '_PIC');
+        document.getElementById('txt_create_PO_PIC').value = pic;
+        document.getElementById('txt_create_PO_PIC').parentNode.classList.add('is-dirty');
+        budget = sessionStorage.getItem(accountName);
+
+        status = po_id_infor.Status;//sessionStorage.getItem(PO_ID+'status');
+        total = Math.round(budget * 100) / 100;
+        total = total.toLocaleString('en-US', { minimumFractionDigits: 0 });
+        document.getElementById('txt_account_available').innerHTML = '$' + total;
+        urgent_status = po_id_infor.Urgent;//sessionStorage.getItem(PO_ID+'_urgent');//
+        overbudget_status = po_id_infor.OverBudget;//sessionStorage.getItem(PO_ID+'_overbudget');//
+        if (urgent_status == 'Y') {
+            document.getElementById('checkbox-urgent').parentNode.classList.add("is-checked");
+            document.getElementById('checkbox-urgent').checked = true;
+        }
+        if (overbudget_status == 'Y') {
+            document.getElementById('checkbox-overbudget').parentNode.classList.add("is-checked");
+            document.getElementById('checkbox-overbudget').checked = true;
+        }
+
+        // console.log(PO_ID+'_PO_infor', po_id_infor.Status)
+        if (status != 'TEMP') {
+            document.getElementById('btn_create_PO_send').setAttribute('disabled', 'true');
+            document.getElementById('btn_create_PO_send').style.backgroundColor = "gray";
+        } else {
+            document.getElementById('btn_create_PO_send').removeAttribute('disabled');
+            document.getElementById('btn_create_PO_send').style.backgroundColor = "indigo";
+        }
+        document.querySelectorAll("a[href='#scroll-tab-2']")[0].click();
+        document.getElementById('btn_create_PO_load').click();
+
+    }
+    document.getElementById('btn_item_detail_close').addEventListener('click', function () {
+        document.getElementById('dialog_item_detail').close();
+    })
+    document.getElementById('btn_add_close').addEventListener('click', function () {
+        document.getElementById('dialog_add_PO').close();
+    });
+    function get_right_dept(dept) {
+        right_dept = '';
+        switch (dept) {
+            case 'F&M':
+                right_dept = 'FM';
+                break;
+            case 'IECT':
+                right_dept = 'CUT_IE';
+                break;
+            case 'CT':
+                right_dept = 'CUT_Opr';
+                break;
+            default:
+                right_dept = dept;
+        }
+        return right_dept;
+    }
+    document.getElementById('btn_new_PO').addEventListener('click', function () {
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Get_User_Infor", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                if (data.length > 0) {
+                    dept = get_right_dept(data[0].Department);
+                    console.log(data[0].Department);
+                    if (dept.length > 3) dept = dept.substring(0, 3);
+                    // if (dept=='F&M') dept='FM';
+                    // if (dept=='IECT') dept='CUT_IE';
+                    // if (dept=='CT') dept='CUT_Opr';
+                    year = localISOTime.split('-')[0].substring(2, 4);
+                    month = localISOTime.split('-')[1];
+                    day = localISOTime.split('-')[2];
+                    hh = rawTime.split('T')[1].split(':')[0];
+                    mm = rawTime.split('T')[1].split(':')[1];
+                    ss = rawTime.split('T')[1].split(':')[2].split('.')[0];
+                    user = data[0].User.toUpperCase();
+                    requestID = dept + '_' + year + month + day + '-' + hh + mm;
+                    // load_request_item_temp(requestID);
+                    document.getElementById('txt_PO_ID_new').innerHTML = requestID;
+                    if (dept == "FM" || data[0].Department == "IECT") document.getElementById('div_cbb_category_mtn').style.display = 'inline-block';
+                    else document.getElementById('div_cbb_category_mtn').style.display = 'none';
+                    document.getElementById('dialog_add_PO').showModal();
+                    func_change_account(dept);
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        xsend.send();
+    });
+    document.getElementById('btn_add_done').addEventListener('click', function () {
+        PO_ID = document.getElementById('txt_PO_ID_new').innerHTML.replace('"', '`').replace("'", "`");
+        projectName = document.getElementById('txt_PO_project').value.replace('"', '`').replace("'", "`");
+        if (document.getElementById('div_cbb_category_mtn').style.display == 'inline-block') {
+            setup_mtn = document.getElementById('cbb_category_mtn').value.split(' - ')[0];
+            projectName = setup_mtn + '-' + projectName;
+        }
+        console.log(projectName)
+        // return;
+        if (projectName == '') {
+            alert('Bạn chưa nhập Tên dự án!');
+            return;
+        }
+        accountName = document.getElementById('cbb_account').value.split('-')[0];
+        if (accountName == '') {
+            alert('Bạn chưa chọn Account mua!');
+            return;
+        }
+        category = document.getElementById('cbb_category').value.replace('"', '`').replace("'", "`");
+        if (category == '') {
+            alert('Bạn chưa chọn Loại đơn hàng!');
+            return;
+        }
+        pic = document.getElementById('txt_pic_infor').innerHTML.split(': ')[1];
+        if (pic == '' || pic == null) {
+            alert('Bạn chưa chọn Purchaser mua hàng!');
+            return;
+        }
+        month_estimate = document.getElementById('cbb_month').value;
+        if (month_estimate == '') {
+            alert('Bạn chưa chọn Tháng cần về!');
+            return;
+        }
+        year_estimate = document.getElementById('cbb_year').value;
+        if (year_estimate == "") {
+            alert('Bạn chưa chọn Năm cần về!');
+            return;
+        }
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Add_new_PO", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = xsend.responseText;
+                if (data == 'done') {
+                    alert('Đã tạo PO thành công!');
+                    document.getElementById('btn_add_close').click();
+                    document.getElementById('txt_create_PO_ID').innerHTML = PO_ID;
+                    document.getElementById('txt_create_PO_project').value = projectName;
+                    document.getElementById('txt_create_PO_project').parentNode.classList.add('is-dirty');
+                    document.getElementById('txt_create_PO_account').value = accountName;
+                    document.getElementById('txt_create_PO_account').parentNode.classList.add('is-dirty');
+                    pic = sessionStorage.getItem(PO_ID + '_PIC');
+                    document.getElementById('txt_create_PO_PIC').value = pic;
+                    document.getElementById('txt_create_PO_PIC').parentNode.classList.add('is-dirty');
+                    budget = sessionStorage.getItem(accountName);
+                    sessionStorage.setItem(PO_ID + '_status', 'TEMP');
+                    // document.getElementById('btn_upload').style.display="grid";
+                    // document.getElementById('btn_satus=JSON.parse(sessionStorage.getItem(orderID+'_infor')).Status;earch').style.display="grid";
+                    total = Math.round(budget * 100) / 100;
+                    total = total.toLocaleString('en-US', { minimumFractionDigits: 0 });
+                    document.getElementById('txt_account_available').innerHTML = '$' + total;
+                    document.querySelectorAll("a[href='#scroll-tab-2']")[0].click();
+                    document.getElementById('btn_create_PO_load').click();
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        sessionStorage.setItem(PO_ID + '_PIC', pic);
+        data = { PO_ID: PO_ID, projectName: projectName, accountName: accountName, month_estimate: month_estimate, year_estimate: year_estimate, purchaser: pic, category: category }
+        console.log(data)
+        xsend.send(JSON.stringify(data));
+    });
+    document.getElementById('txt_item_search').addEventListener('keyup', function (event) {
+        document.getElementById('btn_search_specific').click();
+    })
+    document.getElementById('btn_search_specific').addEventListener('click', function () {
+        item = document.getElementById('txt_item_search').value;
+        // prID=document.getElementById('txt_pr_search').value;
+        // dept=document.getElementById('cbb_dept').value;
+        load_item_quotation(item);
+    });
+    document.getElementById('btn_search').addEventListener('click', function () {
+        document.getElementById('dialog_item_search').showModal();
+    });
+    document.getElementById('btn_search_item_close').addEventListener('click', function () {
+        document.getElementById('dialog_item_search').close();
+    });
+    function load_item_quotation(item = '') {
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Get_Item_Quotation", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                while (table_body_quotation.childNodes.length > 0)
+                    table_body_quotation.removeChild(table_body_quotation.childNodes[0]);
+                for (var i = 0; i < data.length; i++) {
+                    var tr = document.createElement("tr");
+                    //stt
+                    var tdSTT = document.createElement("td");
+                    var node = document.createTextNode(i + 1);
+                    tdSTT.appendChild(node);
+                    tr.appendChild(tdSTT);
+                    //btn more
+                    var tdMore = document.createElement("td");
+                    tdMore.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var div = document.createElement("div");
+                    var button = document.createElement("button");
+                    button.setAttribute("class", "mdl-button mdl-js-button mdl-button--icon");
+                    button.setAttribute("id", "button_more_rq" + i);
+                    button.setAttribute("onclick", "add_item_to_PO(this)");
+                    var icon = document.createElement("i");
+                    icon.setAttribute("style", "color: green;")
+                    icon.setAttribute("class", "material-icons");
+                    icon.innerHTML = "add";
+                    componentHandler.upgradeElement(icon);
+                    button.appendChild(icon);
+                    componentHandler.upgradeElement(button);
+                    tdMore.appendChild(button);
+                    tr.appendChild(tdMore);
+                    //RequestID
+                    var tdItem = document.createElement("td");
+                    tdItem.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    // tdItem.setAttribute("style", "display: none;")
+                    var node = document.createTextNode(data[i].RequestID);
+                    tdItem.appendChild(node);
+                    tr.appendChild(tdItem);
+                    sessionStorage.setItem(data[i].ID + '_PR_infor', JSON.stringify(data[i]))
+                    //Item
+                    var tdUnit = document.createElement("td");
+                    tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Item);
+                    tdUnit.appendChild(node);
+                    tr.appendChild(tdUnit);
+                    //Vietnamese
+                    var tdUnit = document.createElement("td");
+                    tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Vietnamese.substring(0, 50));
+                    tdUnit.appendChild(node);
+                    tr.appendChild(tdUnit);
+                    //English
+                    var tdUnit = document.createElement("td");
+                    tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].English.substring(0, 50));
+                    tdUnit.appendChild(node);
+                    tr.appendChild(tdUnit);
+                    //Unit
+                    var tdQuan = document.createElement("td");
+                    tdQuan.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Unit);
+                    tdQuan.appendChild(node);
+                    tr.appendChild(tdQuan);
+                    //Price
+                    var tdQuan = document.createElement("td");
+                    total = data[i].Price.toLocaleString('en-US', { minimumFractionDigits: 0 });
+                    var node = document.createTextNode(total);
+                    tdQuan.appendChild(node);
+                    tr.appendChild(tdQuan);
+                    //Discount
+                    var tdQuan = document.createElement("td");
+                    var node = document.createTextNode(data[i].Discount);
+                    if (data[i].Discount == null) node = document.createTextNode(0);
+                    tdQuan.appendChild(node);
+                    tr.appendChild(tdQuan);
+                    //Currency
+                    var tdQuan = document.createElement("td");
+                    tdQuan.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Currency);
+                    tdQuan.appendChild(node);
+                    tr.appendChild(tdQuan);
+                    //Quantity
+                    var tdQuan = document.createElement("td");
+                    // tdQuan.setAttribute("class","mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Quantity);
+                    tdQuan.appendChild(node);
+                    tr.appendChild(tdQuan);
+                    //Allowance
+                    var tdQuan = document.createElement("td");
+                    // tdQuan.setAttribute("class","mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Allowance);
+                    if (data[i].Allowance == null) node = document.createTextNode(0);
+                    tdQuan.appendChild(node);
+                    tr.appendChild(tdQuan);
+                    //Leadtime
+                    var tdEs = document.createElement("td");
+                    // tdEs.setAttribute("class","mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Leadtime);
+                    tdEs.appendChild(node);
+                    tr.appendChild(tdEs);
+                    //Notice
+                    var tdEs = document.createElement("td");
+                    tdEs.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Notice);
+                    if (data[i].Notice == null) node = document.createTextNode("");
+                    tdEs.appendChild(node);
+                    tr.appendChild(tdEs)
+                    //Expired
+                    var tdEs = document.createElement("td");
+                    tdEs.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var timeUpdate = (new Date(data[i].ExpiredDate)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" }).split(',')[0];
+                    var node = document.createTextNode(timeUpdate);
+                    tdEs.appendChild(node);
+                    tr.appendChild(tdEs)
+
+                    componentHandler.upgradeElement(tr);
+                    table_body_quotation.appendChild(tr);
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { item: item };
+        console.log(data)
+        xsend.send(JSON.stringify(data));
+    }
+    function add_item_to_PO(x) {
+        PR_ID = x.parentNode.parentNode.childNodes[2].innerHTML;
+        item = x.parentNode.parentNode.childNodes[3].innerHTML.toString().replace(new RegExp("&lt;", "g"), '<').replace(new RegExp("&gt;", "g"), '>');
+        pr_infor = JSON.parse(sessionStorage.getItem(PR_ID + ';' + item + '_PR_infor'));
+        console.log(PR_ID + ';' + item + '_PR_infor');
+        quantity = pr_infor.Quantity;
+        price = pr_infor.Price;//x.parentNode.parentNode.childNodes[7].innerHTML;
+        currency = pr_infor.Currency;//x.parentNode.parentNode.childNodes[8].innerHTML;
+        price_usd = pr_infor.USD;
+        purchaser = document.getElementById('txt_create_PO_PIC').value;
+        PO_ID = document.getElementById('txt_create_PO_ID').innerHTML;
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Add_Order_Item_Temp", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = xsend.responseText;
+                x.setAttribute('disabled', true);
+                x.childNodes[0].setAttribute('style', 'color: red');
+                x.childNodes[0].innerHTML = 'done'
+                load_order_item_temp();
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { PO_ID: PO_ID, PR_ID: PR_ID + ';' + item, price: price, currency: currency, purchaser: purchaser, USD: price_usd, quantity: quantity }
+
+        console.log(data)
+        xsend.send(JSON.stringify(data));
+    }
+    document.getElementById('btn_create_PO_load').addEventListener('click', function () {
+        load_order_item_temp();
+    });
+    function load_order_item_temp() {
+        orderID = document.getElementById('txt_create_PO_ID').innerHTML;
+        status = '';
+        if (sessionStorage.getItem(orderID + '_infor') == null) status = 'TEMP';
+        else status = JSON.parse(sessionStorage.getItem(orderID + '_infor')).Status;
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Get_Order_Item_Temp", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                console.log(data);
+                while (table_body_PO_temp.childNodes.length > 0)
+                    table_body_PO_temp.removeChild(table_body_PO_temp.childNodes[0]);
+                for (var i = 0; i < data.length; i++) {
+                    var tr = document.createElement("tr");
+                    //stt
+                    var tdSTT = document.createElement("td");
+                    var node = document.createTextNode(i + 1);
+                    tdSTT.appendChild(node);
+                    tr.appendChild(tdSTT);
+                    sessionStorage.setItem(orderID + '_' + i, data[i].RequestID);
+                    // console.log(orderID+'_'+i, data[i].PR_ID)
+                    //tdUnit
+                    var tdUnit = document.createElement("td");
+                    tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Item);
+                    tdUnit.appendChild(node);
+                    tr.appendChild(tdUnit);
+                    sessionStorage.setItem(data[i].Item + '_infor', JSON.stringify(data[i]));
+                    //tdUnit
+                    var tdUnit = document.createElement("td");
+                    tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Vietnamese.substring(0, 50));
+                    tdUnit.appendChild(node);
+                    tr.appendChild(tdUnit);
+                    //Quantity
+                    var tdRelease = document.createElement("td");
+                    // tdRelease.setAttribute("class","mdl-data-table__cell--non-numeric");
+                    var div1 = document.createElement('div');
+                    div1.setAttribute('class', 'mdl-textfield mdl-js-textfield');
+                    div1.setAttribute('style', 'width: 50px;')
+                    var input1 = document.createElement('input');
+                    input1.setAttribute('class', 'mdl-textfield__input');
+                    input1.setAttribute('type', 'number');
+                    input1.setAttribute('id', 'txt_quantity' + i);
+                    input1.setAttribute('onkeyup', 'fnc_quantity_update(this)');
+                    input1.value = data[i].Quantity;
+                    if (status != 'TEMP') input1.setAttribute('readonly', 'true')
+                    var label1 = document.createElement('label');
+                    label1.setAttribute('class', 'mdl-textfield__label');
+                    label1.setAttribute('for', 'txt_quantity' + i);
+                    label1.innerHTML = 'Số lượng';
+                    componentHandler.upgradeElement(input1);
+                    componentHandler.upgradeElement(label1);
+                    div1.appendChild(input1);
+                    div1.appendChild(label1);
+                    componentHandler.upgradeElement(div1);
+                    tdRelease.appendChild(div1);
+                    tr.appendChild(tdRelease);
+                    //tdQuan
+                    var tdQuan = document.createElement("td");
+                    total = data[i].Price.toLocaleString('en-US', { minimumFractionDigits: 0 });
+                    var node = document.createTextNode(total);
+                    tdQuan.appendChild(node);
+                    tr.appendChild(tdQuan);
+                    tdEs
+                    var tdEs = document.createElement("td");
+                    tdEs.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].Currency_PR);
+                    tdEs.appendChild(node);
+                    tr.appendChild(tdEs)
+                    //btn more
+                    var tdMore = document.createElement("td");
+                    tdMore.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var div = document.createElement("div");
+                    var button = document.createElement("button");
+                    button.setAttribute("class", "mdl-button mdl-js-button mdl-button--icon");
+                    button.setAttribute("id", "button_more" + i);
+                    var icon = document.createElement("i");
+                    icon.setAttribute("class", "material-icons");
+                    icon.innerHTML = "more_vert";
+                    componentHandler.upgradeElement(icon);
+                    button.appendChild(icon);
+                    componentHandler.upgradeElement(button);
+                    var ul = document.createElement("ul");
+                    ul.setAttribute("class", "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect");
+                    ul.setAttribute("for", "button_more" + i);
+                    var li1 = document.createElement("li");
+                    li1.setAttribute("class", "mdl-menu__item");
+                    li1.setAttribute("onclick", "function_detail_po(this)");
+                    li1.innerHTML = "<i class='material-icons' style='vertical-align: middle; margin-right:10px; color: green'>insert_comment</i>Chi tiết";
+                    var li3 = document.createElement("li");
+                    li3.setAttribute("class", "mdl-menu__item");
+                    li3.setAttribute("onclick", "function_delete_item(this)");
+                    li3.innerHTML = "<i class='material-icons' style='vertical-align: middle; margin-right:10px; color: red'>delete</i>Xóa Item";
+                    if (status != 'TEMP') li3.setAttribute('disabled', 'true');
+                    componentHandler.upgradeElement(li1);
+                    componentHandler.upgradeElement(li3);
+                    ul.appendChild(li1);
+                    ul.appendChild(li3);
+                    tdMore.appendChild(button);
+                    tdMore.appendChild(ul);
+                    tr.appendChild(tdMore);
+                    table_body_PO_temp.appendChild(tr);
+                    componentHandler.upgradeElement(tr);
+                    componentHandler.upgradeDom('MaterialMenu', 'mdl-menu');
+                }
+                isOrdered = false;
+                if (status != 'TEMP') {
+                    isOrdered = true;
+                    document.getElementById('btn_search').disabled = true;
+                    document.getElementById('btn_search').style.display = "none";
+                    document.getElementById('btn_upload').disabled = true;
+                    document.getElementById('btn_upload').style.display = "none";
+                    // document.getElementById('checkbox-overbudget').readonly=true;
+                    document.getElementById('checkbox-urgent').disabled = true;
+
+                } else {
+                    isOrdered = false;
+                    document.getElementById('btn_search').removeAttribute('disabled');
+                    document.getElementById('btn_search').style.display = "grid";
+                    document.getElementById('btn_upload').removeAttribute('disabled');
+                    document.getElementById('btn_upload').style.display = "grid";
+                    // document.getElementById('checkbox-overbudget').readonly=false;
+                    document.getElementById('checkbox-urgent').removeAttribute('disabled');
+                }
+                get_total_cost(isOrdered);
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { orderID: orderID }
+        xsend.send(JSON.stringify(data));
+    };
+    function function_detail_po(x) {
+        item = x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML.replace(new RegExp("&lt;", "g"), '<').replace(new RegExp("&gt;", "g"), '>');
+        item_infor = JSON.parse(sessionStorage.getItem(item + '_infor'));
+        document.getElementById('txt_item_detail').innerHTML = item_infor.RequestID.split(';')[1]
+        document.getElementById('txt_pr_detail').innerHTML = '<i>PR: </i>' + item_infor.RequestID.split(';')[0];
+        document.getElementById('txt_vietnamese_detail').innerHTML = item_infor.Vietnamese;
+        document.getElementById('txt_english_detail').innerHTML = item_infor.English;
+        document.getElementById('txt_price_detail').innerHTML = '<i>Đơn giá: </i>' + item_infor.Price + ' ' + item_infor.Currency;
+        document.getElementById('txt_vendor_detail').innerHTML = '<i>Vendor: </i>' + item_infor.Vendor;
+        var timeUpdate = (new Date(item_infor.ExpiredDate)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" }).split(',')[0];
+        document.getElementById('txt_expried_detail').innerHTML = '<i>Hết hạn: </i>' + timeUpdate;
+        document.getElementById('txt_leadtime_detail').innerHTML = '<i>Thời gian đặt: </i>' + item_infor.Leadtime + ' tuần';
+        document.getElementById('dialog_item_detail').showModal();
+    }
+    document.getElementById('checkbox-urgent').addEventListener('change', function () {
+        console.log(document.getElementById('checkbox-urgent').checked)
+        PO_ID = document.getElementById('txt_create_PO_ID').innerHTML;
+        result = 'N';
+        reason = '';
+        if (document.getElementById('checkbox-urgent').checked == true) {
+            var reason = prompt("Lý do Urgent:");
+            if (reason == null) return;
+            if (reason == "") {
+                alert('Lý do không được để trống!');
+                document.getElementById('checkbox-urgent').checked == false;
+                return;
+            } else {
+                result = 'Y';
+            }
+        }
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/User_approve_PO_Urgent", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = xsend.responseText;
+                if (data == 'done') {
+                    alert('Đã cập nhật trạng thái Urgent!');
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { PO_ID: PO_ID, result: result, reason: reason }
+        // console.log(data)
+        xsend.send(JSON.stringify(data));
+    });
+    function update_overbudget(PO_ID, reason, result) {
+        // if (document.getElementById('checkbox-overbudget').checked==false) {
+        //     return;
+        // }
+        // if (document.getElementById('checkbox-overbudget').checked==true) {
+        //     result='Y';
+        // }
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/User_approve_PO_OverBudget", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = xsend.responseText;
+                if (data == 'done') {
+                    console.log(result)
+                    if (result == 'N') {
+                        document.getElementById('checkbox-overbudget').checked = false;
+                        document.getElementById('checkbox-overbudget').parentNode.classList.remove('is-checked');
+                    }
+                    else {
+                        document.getElementById('checkbox-overbudget').checked = true;
+                        document.getElementById('checkbox-overbudget').parentNode.classList.add('is-checked');
+                    }
+
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { PO_ID: PO_ID, result: result, reason: reason }
+        // console.log(data)
+        xsend.send(JSON.stringify(data));
+    }
+    function update_over3000(PO_ID, reason, result) {
+        // if (document.getElementById('checkbox-overbudget').checked==false) {
+        //     return;
+        // }
+        // if (document.getElementById('checkbox-overbudget').checked==true) {
+        //     result='Y';
+        // }
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/User_approve_PO_Over3000", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = xsend.responseText;
+                if (data == 'done') {
+                    alert('Đã cập nhật lý do!');
+                    // console.log(result)
+                    // if (result=='N') {
+                    //     document.getElementById('checkbox-overbudget').checked=false;
+                    //     document.getElementById('checkbox-overbudget').parentNode.classList.remove('is-checked');
+                    // }
+                    // else {
+                    //     document.getElementById('checkbox-overbudget').checked=true;
+                    //     document.getElementById('checkbox-overbudget').parentNode.classList.add('is-checked');
+                    // }
+
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { PO_ID: PO_ID, result: result, reason: reason }
+        // console.log(data)
+        xsend.send(JSON.stringify(data));
+    }
+    document.getElementById('checkbox-overbudget').addEventListener('change', function () {
+        PO_ID = document.getElementById('txt_create_PO_ID').innerHTML;
+        update_overbudget(PO_ID, '', '');
+    });
+    function fnc_quantity_update(x) {
+        PO_ID = document.getElementById('txt_create_PO_ID').innerHTML;
+        stt = parseInt(x.parentNode.parentNode.parentNode.childNodes[0].innerHTML) - 1;
+        quantity = document.getElementById('txt_quantity' + stt).value;
+        if (quantity == '') quantity = 0;
+        PR_ID = ';' + sessionStorage.getItem(PO_ID + '_' + stt);
+        item = x.parentNode.parentNode.parentNode.childNodes[1].innerHTML.replace(new RegExp("&lt;", "g"), '<').replace(new RegExp("&gt;", "g"), '>');
+        pr_infor = JSON.parse(sessionStorage.getItem(item + '_infor'))
+        if (pr_infor.Quantity * pr_infor.Allowance > quantity) {
+            alert('Không thể đặt với số lượng thấp hơn yêu cầu (' + Math.round(pr_infor.Quantity * pr_infor.Allowance - 0.5) + ')');
+            document.getElementById('txt_quantity' + stt).value = pr_infor.Quantity;
+            return;
+        }
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Update_Order_Item_Quantity", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = xsend.responseText;
+                console.log(data)
+                if (data == 'done') {
+                    get_total_cost(false, x);
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { PO_ID: PO_ID, PR_ID: PR_ID, item: item, quantity: quantity }
+        console.log(data)
+        xsend.send(JSON.stringify(data));
+    }
+    function function_delete_item(x) {
+        PO_ID = document.getElementById('txt_create_PO_ID').innerHTML;
+        stt = parseInt(x.parentNode.parentNode.parentNode.parentNode.childNodes[0].innerHTML) - 1;
+        quantity = document.getElementById('txt_quantity' + stt).value;
+        PR_ID = sessionStorage.getItem(PO_ID + '_' + stt);
+        item = '';//x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Delete_Order_Item_Temp", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = xsend.responseText;
+                if (data == 'done') {
+                    load_order_item_temp();
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { PO_ID: PO_ID, PR_ID: PR_ID, item: item }
+        console.log(data)
+        xsend.send(JSON.stringify(data));
+    }
+    function fnc_send_po(x) {
+        var r = confirm("Bạn có chắc muốn gửi PO này?");
+        if (r != true) return;
+        PO_ID = x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML.replace(new RegExp("&lt;", "g"), '<').replace(new RegExp("&gt;", "g"), '>');
+        dept = PO_ID.split('_')[0];
+        load_budget(dept);
+        accountName = x.parentNode.parentNode.parentNode.parentNode.childNodes[5].innerHTML;
+        budget = sessionStorage.getItem(accountName);
+        reason = '';
+        if (budget < 0) {
+            var reason = prompt("Lý do Over Budget:");
+            if (reason == null) return;
+            else if (reason == '') {
+                alert('Hãy giảm hoặc hủy bớt Item của PO!');
+                document.getElementById('checkbox-urgent').checked == false;
+                return;
+            } else {
+                update_overbudget(PO_ID, reason, 'Y');
+
+            }
+        }
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/User_approve_PO", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = xsend.responseText;
+                if (data == 'done') {
+                    alert('PO đã được chuyển đến chờ Manager Approve!');
+                    month = document.getElementById('cbb_month').value;
+                    year = document.getElementById('cbb_year').value;
+                    load_order_PO(month, year);
+                    location.reload();
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { PO_ID: PO_ID }
+        xsend.send(JSON.stringify(data));
+    }
+    document.getElementById('btn_create_PO_send').addEventListener('click', function () {
+        var r = confirm("Bạn có chắc muốn gửi PO này?");
+        if (r != true) return;
+        PO_ID = document.getElementById('txt_create_PO_ID').innerHTML;//x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML;
+        dept = PO_ID.split('_')[0];
+        load_budget(dept);
+        accountName = document.getElementById('txt_create_PO_account').value;//x.parentNode.parentNode.parentNode.parentNode.childNodes[5].innerHTML;
+        budget = sessionStorage.getItem(accountName);
+        console.log(budget)
+        if (budget < 0) {
+            var r = prompt('Lý do OverBudget:');
+            if (r == null) return;
+            else if (r == '') {
+                alert('Hãy giảm hoặc hủy bớt Item của PO!');
+                return;
+            } else {
+                update_overbudget(PO_ID, r, 'Y');
+            }
+        }
+        total_cost = sessionStorage.getItem(PO_ID + '_total_cost')
+        if (total_cost >= 3000) {
+            var r = prompt('Lý do Mua hàng trên $3000:');
+            if (r == null) return;
+            else if (r == '') {
+                alert('Hãy giảm hoặc hủy bớt Item của PO!');
+                return;
+            } else {
+                update_over3000(PO_ID, r, 'Y');
+            }
+        }
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/User_approve_PO", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = xsend.responseText;
+                if (data == 'done') {
+                    alert('PO đã được chuyển đến chờ Manager Approve!');
+                    month = document.getElementById('cbb_month').value;
+                    year = document.getElementById('cbb_year').value;
+                    load_order_PO(month, year);
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { PO_ID: PO_ID }
+        xsend.send(JSON.stringify(data));
+    });
+    function fnc_delete_po(x) {
+        var r = confirm("Bạn có chắc muốn xóa PO?");
+        if (r == true) {
+            PO_ID = x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML.replace(new RegExp("&lt;", "g"), '<').replace(new RegExp("&gt;", "g"), '>');
+            var xsend = new XMLHttpRequest();
+            xsend.open("POST", "/CCS/User_delete_PO", true);
+            xsend.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    data = xsend.responseText;
+                    if (data == 'done') {
+                        alert('PO đã được xóa thành công!');
+                        location.reload();
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data = { PO_ID: PO_ID }
+            xsend.send(JSON.stringify(data));
+        }
+    }
+    function get_total_cost(isOrdered, x = '') {
+        total = 0;
+        for (var i = 0; i < table_body_PO_temp.childNodes.length; i++) {
+            quantity = parseFloat(document.getElementById('txt_quantity' + i).value);
+            if (quantity.toString() == 'NaN') quantity = 0;
+            item = table_body_PO_temp.childNodes[i].childNodes[1].innerHTML.replace(new RegExp("&lt;", "g"), '<').replace(new RegExp("&gt;", "g"), '>');
+            item_infor = JSON.parse(sessionStorage.getItem(item + '_infor'));
+            console.log(item)
+            usd = parseFloat(item_infor.USD_PR);
+
+            // price=parseFloat(table_body_PO_temp.childNodes[i].childNodes[4].innerHTML);
+            total += (quantity * usd);
+        }
+        total = Math.round(total * 100) / 100;
+        sessionStorage.setItem(document.getElementById('txt_create_PO_ID').innerHTML + '_total_cost', total);
+        total_str = total;
+        total_str = total_str.toLocaleString('en-US', { minimumFractionDigits: 0 });
+        document.getElementById('txt_total_price').innerHTML = '$' + total_str;
+        budget = parseFloat(document.getElementById('txt_account_available').innerHTML.split('$')[1].replace(/,/g, ''));
+        if (isOrdered == true) {
+            total_left = Math.round(budget * 100) / 100;
+            total_str = total_left.toLocaleString('en-US', { minimumFractionDigits: 0 });
+            document.getElementById('txt_account_left').innerHTML = '$' + total_str;
+        }
+        else {
+            total_left = Math.round((budget - Math.round(total, 2)) * 100) / 100;
+            total_str = total_left;
+            total_str = total_str.toLocaleString('en-US', { minimumFractionDigits: 0 });
+            document.getElementById('txt_account_left').innerHTML = '$' + total_str;
+            console.log(budget, total_left)
+            console.log(x)
+            if (x != '') {
+                item = x.parentNode.parentNode.parentNode.childNodes[1].innerHTML.replace(new RegExp("&lt;", "g"), '<').replace(new RegExp("&gt;", "g"), '>');
+                line = x.parentNode.parentNode.parentNode.childNodes[0].innerHTML - 1;
+            }
+            pr_infor = JSON.parse(sessionStorage.getItem(item + '_infor'))
+            if (Math.round(total_left * 100) / 100 < 0) {
+                alert('PO đã vượt Budget Account cho phép!');
+                r = prompt('Lý do OverBudget: ');
+                if (r == null || r == '') r = 'Không lý do';
+                PO_ID = document.getElementById('txt_create_PO_ID').innerHTML;
+                update_overbudget(PO_ID, r, 'Y')
+                document.getElementById('txt_account_left').style.color = "red";
+            } else {
+                update_overbudget(PO_ID, '', 'N')
+                document.getElementById('txt_account_left').style.color = "green";
+            }
+        }
+    }
+    function func_change_account(dept) {
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Get_Account_List", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                console.log(data);
+                list_cbb_account = document.getElementById('list_cbb_account');
+                while (list_cbb_account.childNodes.length > 0) list_cbb_account.removeChild(list_cbb_account.childNodes[0]);
+                for (i = 0; i < data.length; i++) {
+                    li = document.createElement('li');
+                    li.setAttribute('class', 'mdl-menu__item');
+                    var textNode = document.createTextNode(data[i].Account);
+                    li.appendChild(textNode);
+                    li.setAttribute('data-val', data[i].Account);
+                    sessionStorage.setItem(data[i].Account.split('-')[0], data[i].BUDGET - data[i].TOTAL_USD);
+                    list_cbb_account.appendChild(li);
+                }
+                getmdlSelect.init('#div_cbb_account');
+                // document.getElementById('dialog_account').showModal();
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        month = document.getElementById('cbb_month').value;
+        year = document.getElementById('cbb_year').value;
+        data = { dept: dept, month: month, year: year }
+        xsend.send(JSON.stringify(data));
+    }
+    document.getElementById('cbb_account').addEventListener('change', function () {
+        account = document.getElementById('cbb_account').value.split('-')[0];
+        budget = sessionStorage.getItem(account);
+        total = Math.round(budget * 100) / 100;
+        total = total.toLocaleString('en-US', { minimumFractionDigits: 0 });
+        document.getElementById('txt_budget_note').innerHTML = 'Budget: $' + total;
+        if (Math.round(budget * 100) / 100 < 0) document.getElementById('txt_budget_note').setAttribute('style', 'color: red; font-size: 15px; font-weight: bold; margin-top: 15px;');
+        else document.getElementById('txt_budget_note').setAttribute('style', 'color: green; font-size: 15px; font-weight: bold; margin-top: 15px;');
+    });
+    document.getElementById('btn_template').addEventListener('click', function () {
+        po_id = document.getElementById('txt_create_PO_ID').innerHTML;
+        if (po_id == '') {
+            alert('Hãy vào một PO để tải template!');
+            return;
+        }
+        // a=document.createElement('a');
+        // a.setAttribute('href', '../Python/Finance/CCS/Template/ccs_po_template.xlsx');
+        // a.setAttribute('download', po_id+'.xlsx');
+        // a.click();
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Get_PR_Template", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = xsend.responseText;
+                console.log(data);
+                a = document.createElement('a');
+                a.setAttribute('href', '../Python/Finance/CCS/Export/' + data);
+                a.setAttribute('download', data);
+                a.click();
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { pr_id: po_id }
+        console.log(data)
+        xsend.send(JSON.stringify(data));
+    });
+    var form = document.getElementById('upload_form');
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        return false;
+    });
+    document.getElementById('btn_upload').addEventListener('click', function () {
+        document.getElementById('file').click();
+        document.getElementById('file').onchange = function () {
+            if (document.getElementById('file').value != '') document.getElementById('submit').click();
+        }
+        var form = document.getElementById('upload_form');
+        form.addEventListener('submit', e => {
+            if (document.getElementById('file').value != '') {
+                e.preventDefault();
+                var xsend = new XMLHttpRequest();
+                xsend.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        //done
+                        result = xsend.responseText;
+                        console.log(result);
+                        if (result == 'done') {
+                            alert('File PO đã được cập nhật!');
+                            year = document.getElementById('cbb_year').value;
+                            month = document.getElementById('cbb_month').value;
+                            load_order_PO(month, year);
+                            document.getElementById('file').value = "";
+                            document.getElementById('btn_create_PO_load').click();
+                        } else {
+                            alert('Đã có lỗi: ' + result);
+                            year = document.getElementById('cbb_year').value;
+                            month = document.getElementById('cbb_month').value;
+                            load_order_PO(month, year);
+                            document.getElementById('file').value = "";
+                            document.getElementById('btn_create_PO_load').click();
+                        }
+                    }
+                }
+                var fileInput = document.getElementById('file');
+                var file;
+                file = fileInput.files[0];
+                console.log(file['name']);
+                var formData = new FormData();
+                formData.append('file', file);
+                if (file != null) {
+                    xsend.open('POST', '/CCS/Upload_PO_File', true);
+                    xsend.send(formData);
+                }
+            }
+            return false;
+        })
+    });
+    function func_tab_create_po(x) {
+        item = document.getElementById('txt_create_PO_ID').innerHTML;
+        if (item == '' || item == null) {
+            alert('Hãy tạo mới PO hoặc vào xem thông tin PO đã có!');
+            document.querySelectorAll("a[href='#scroll-tab-1']")[0].click();
+            return;
+        }
+    }
+</script>
+
+</html>

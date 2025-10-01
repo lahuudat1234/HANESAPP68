@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<header>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>IT - Nhiệt độ</title>
+
+</header>
+
+<body style="background-color: white;" onload="TempSCADA()">
+    <style>
+        body{
+        background-image: url('../image/14.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        }
+    </style>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header" style="background-color: rgb(42, 0, 71);;">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">IT-Giám sát nhiệt độ thời gian thực</span>
+                <div class="mdl-layout-spacer"></div>
+                <div style="margin-right:20px;">
+                    <button id="btn_exportExcel" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                        style="background-color: green; border-radius: 10px;">
+                        Export to Excel
+                        <i class="material-icons">fact_check</i>
+                    </button>
+                </div>
+            </div>
+
+        </header>
+        <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    <div class="mdl-grid" style="width: 100%; margin-top:5px auto;">
+                        <div  class="mdl-grid" id="div_tong" style="margin:10px auto;">
+                        </div>
+                    </div>
+                    
+                </div>
+            </main>
+            <dialog style="border-radius: 20px; border: none; padding: 0; background-color: transparent;" id="get-history">
+                <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="width: 1080px; border-radius: 20px;">
+                    <div class="mdl-card__title" style="background-color: indigo; color: white;">
+                        <h3 class="mdl-card__title-text" id="id-location"></h3>
+                    </div>
+                    <div class="mdl-card__supporting-text" style="width: fit-content;padding: 0;margin-top: 0;margin-left: 0;margin-right: 0; width: 100%;"id="card-content">
+                        <canvas id="myChart" style="width:100%;height: 660px;"></canvas>
+                    </div>
+                    <div class="mdl-card__menu">
+                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="btn_close" style="background-color: red; color: white;">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+                </div>
+            </dialog>
+            <dialog style="border-radius: 20px; border: none; padding: 0; background-color: transparent;" id="dialog_exportExcel">
+                <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="width: 380px; border-radius: 20px;">
+                    <div class="mdl-card__title" style="background-color: indigo; color: white; ">
+                        <h3 class="mdl-card__title-text">Xuất báo cáo nhiệt độ</h3>
+                    </div>
+                    <div class="mdl-card__supporting-text mdl-grid" style="width: 100%;height: 120px;padding: 0;">
+                        <div style="margin: 5px auto;">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder" style="width:150px;margin-right: 20px;">
+                                <input class="mdl-textfield__input" type="date" id="date_report">
+                                <label class="mdl-textfield__label" for="date_report">Chọn ngày</label>
+                            </div>
+                            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_Download">
+                                <i class="material-icons">file_download</i>
+                                DOWNLOAD
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mdl-card__menu">
+                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="btn_close_report" style="background-color: red; color: white;">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+                </div>
+            </dialog>
+    </div>
+    <script>
+        setInterval('TempSCADA()', 15000 );
+        function getRandomColor2() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        var colors = ['red', 'green', 'blue','Teal','Purple'];
+        
+        function TempSCADA(){
+            // document.getElementById('get-history').close();
+            var divgrid = document.getElementById('div_tong');
+            document.getElementById("div_tong").innerHTML = "";
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("post", '/IT/generateTemp', true);
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    console.log(data);
+                    if (data.result=='empty'){
+                        alert("Không có thông tin cập nhật");
+                        return;
+                    }
+                    else{     
+                        for (var i = 0; i < data.length; i++) {
+                            var Location=data[i].LocationName;
+                            var Temp=data[i].Temp;
+                            if (Location==null) Location='';
+                            if (Temp==null) Temp=0;
+
+                            var divgrid4 = document.createElement("div");
+                            divgrid4.setAttribute('class', 'mdl-cell mdl-cell--4-col demo-card-wide mdl-card mdl-shadow--2dp');
+                            divgrid4.style.width='360px';
+                            divgrid4.style.borderRadius='30px';
+                            divgrid4.style.marginLeft='50px';
+                            divgrid4.style.marginRight='30px';
+                            divgrid4.style.marginBottom='10px';
+                            divgrid4.style.marginTop='60px';
+                            divgrid4.style.padding='0px';
+
+                            var divCard = document.createElement("div");
+
+                            var divTitle = document.createElement("div");
+                            divTitle.setAttribute('class', 'mdl-card__title');
+                            // divTitle.style.backgroundColor=colors[Math.floor(Math.random() * colors.length)];
+                            if(data[i].Temp==null) {divTitle.style.backgroundColor='red';}
+                            else {divTitle.style.backgroundColor='green';}
+                            divTitle.style.color='white';
+                            let h1 = document.createElement('h1');
+                            h1.setAttribute('class', 'mdl-card__title-text');
+                            h1.style.height='40px';
+                            h1.style.fontWeight='bold';
+                            h1.textContent = 'Nhiệt độ - '+Location;
+                            divTitle.appendChild(h1);
+
+                            var divText = document.createElement("div");
+                            divText.setAttribute('class', 'mdl-card__supporting-text');
+                            divText.style.height='200px';
+                            divText.style.display='flex';
+                            divText.style.justifyContent='center';
+                            divText.style.alignItems='center';
+
+                            var p=document.createElement("p");
+                            p.style.fontFamily='Helvetica';
+                            p.style.fontSize="60px";
+                            p.style.color="black";
+                            var node = document.createTextNode(Temp+"\u2103");
+                            p.appendChild(node);
+                            divText.appendChild(p);
+                            
+                            var divAction = document.createElement("div");
+                            divAction.setAttribute('class', 'mdl-card__actions mdl-card--border');
+                            divAction.style.float='right';
+                            var button = document.createElement("Button");
+                            button.setAttribute('class', 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect');
+                            var textForButton = document.createTextNode('Chi tiết');
+                            button.style.background='blue';
+                            button.style.color='white';
+                            button.style.borderRadius='15px';
+                            button.style.float='right';
+                            button.setAttribute("id","btn-"+Location);
+                            button.setAttribute('onclick','getHistory(this.id);');
+                            button.appendChild(textForButton);
+
+                            var spantext=document.createElement('label');
+                            spantext.style.color='black';
+                            spantext.style.marginLeft="15px";
+                            var timeString;
+                            if(data[i].TimeUpdate==null) timeString='_______';
+                            else timeString=String(data[i].TimeUpdate).replace('T',' ').slice(0,16);
+                            spantext.innerHTML='Cập nhật: '+timeString;
+                            divAction.appendChild(spantext);
+                            divAction.appendChild(button);
+
+                            divCard.appendChild(divTitle);
+                            divCard.appendChild(divText);
+                            divCard.appendChild(divAction);
+
+                            divgrid4.appendChild(divCard);
+                            divgrid.appendChild(divgrid4);
+                        }
+                    }
+                }
+            };
+            xmlhttp.setRequestHeader("Content-type", "application/json");
+            xmlhttp.send();
+        }
+
+        
+        function getHistory(idbutton){
+            console.log(idbutton);
+            var today=new Date().toISOString().substr(0,10);
+            
+            var Location=idbutton.split('-')[1];
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/IT/init_TempChart",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    console.log(data);
+                    if(data.result=='empty'){
+                        alert('Không có thông tin ngày hôm nay');
+                        return;
+                    }
+                   if(data.length>0){       
+                    document.getElementById('id-location').innerHTML="Thông tin lịch sử nhiệt độ ngày "+today+" khu vực: "+Location;
+                    document.getElementById('get-history').showModal();
+                    var xLabelData=[];
+                    var yTempData=[];
+                    var yTempSet=[];
+                    for (i=0; i<data.length; i++){
+                        xLabelData.push(data[i].Xlabel);
+                        yTempData.push(data[i].Temp);
+                        yTempSet.push(data[i].setTemp);
+                    }
+                    $('#myChart').remove();
+                    $('#card-content').append('<canvas  id="myChart" style="width:100%;height: 660px;padding:30px;"><canvas>');
+                    var ctx = document.getElementById("myChart").getContext('2d');
+                    var chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: xLabelData,
+                            datasets: [{
+                                label: Location,
+                                data: yTempData, 
+                                fill: false,
+                                borderColor: '#2196f3', 
+                                backgroundColor: '#2196f3', 
+                                borderWidth: 4
+                            },
+                            {
+                                label: "Nhiệt độ giới hạn",
+                                data: yTempSet, 
+                                fill: false,
+                                borderColor: 'red', 
+                                backgroundColor: 'red', 
+                                borderWidth: 4
+                            }]},
+                            
+                        options: {
+                        responsive: true, // Instruct chart js to respond nicely.
+                        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+                        }
+                        
+                    }
+                    );
+                    chart.update();
+                   
+                   }
+                }
+            }
+            data={  
+                Location:Location,
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+
+        document.getElementById('btn_close').addEventListener('click', function(){
+            document.getElementById('get-history').close();
+        });
+
+        document.getElementById('btn_exportExcel').addEventListener('click', function () {
+            console.log('Export to Excel File');
+            var today=new Date();
+            document.getElementById('date_report').value=today.toISOString().substr(0,10);
+            document.getElementById('dialog_exportExcel').showModal();
+        });
+        document.getElementById('btn_close_report').addEventListener('click', function(){
+            document.getElementById('dialog_exportExcel').close();
+        });
+        document.getElementById('btn_Download').addEventListener('click', function(){
+            console.log("download file");
+            var date_report=document.getElementById('date_report').value;
+            var xmlhttp    = new XMLHttpRequest();
+            xmlhttp.open("POST","/IT/Report/Download",true);
+            xmlhttp.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    document.getElementById('dialog_exportExcel').close();
+                    fileName=xmlhttp.responseText;
+                    console.log(fileName)
+                    a=document.createElement('a');
+                    a.setAttribute('href', '../downloadFMReport/saveReportFile/'+fileName);
+                    a.setAttribute('download', fileName);
+                    a.click();
+                }
+            }
+            xmlhttp.setRequestHeader("Content-type", "application/json");
+            data = { date_report: date_report}
+            console.log(data);
+            xmlhttp.send(JSON.stringify(data));
+        });
+
+    </script>
+
+</body>
+
+</html>

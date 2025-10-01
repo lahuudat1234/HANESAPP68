@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <title>Auto Kanban PB1</title>
+    </header>
+    <style>
+        #page-mask {
+            background: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            /* z-index: 10; */
+        }
+    </style>
+    <div id="page-mask"></div>
+    <!-- <body> -->
+    <body style="background-image: url('../Image/11.jpg');">
+        <!-- Always shows a header, even in smaller screens. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout-title">AUTO KANBAN PB1</span>
+                    <%- include ("partials/headerTemplate.ejs"); -%>
+                    <div class="mdl-layout-spacer"></div>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent mdl-shadow--2dp"
+                                style="background-color: rgb(220, 118, 51); color:white; font-size: 15px;">
+                        Chuẩn bị hàng tại kho
+                    </button>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent mdl-shadow--2dp" 
+                                style="background-color: red; color: white; margin-left: 10px; font-size: 15px;">
+                        GỌI HÀNG
+                    </button>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent mdl-shadow--2dp" 
+                                style="background-color: Green; color:white; margin-left: 10px; font-size: 15px;">
+                        Chuyển Cutpart ra chuyền
+                    </button>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent mdl-shadow--2dp" 
+                                style="background-color: indigo; color:white; margin-left: 10px; font-size: 15px;">
+                        Hoàn Tất
+                    </button>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent mdl-shadow--2dp" 
+                                style="background-color: black; color: white; margin-left: 10px; font-size: 15px;">
+                        Hàng Pending
+                    </button>
+                </div>
+            </header>
+            <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <!-- <style>
+                    .blink-text{
+                        color: #000;
+                        font-weight: bold;
+                        font-size: 2rem;
+                        animation: blinkingText 2s infinite;
+                    }
+                    @keyframes blinkingText{
+                        0%		{ color: #10c018;}
+                        25%		{ color: #1056c0;}
+                        50%		{ color: #ef0a1a;}
+                        75%		{ color: #254878;}
+                        100%	{ color: #04a1d5;}
+                    }
+                </style> -->
+                <div class="page-content">
+                    <!-- <button id="send">Send</button>
+                    <div id="chat-content" style="font-size: 20px;">Test here</div> -->
+                    
+                </div>
+                <div class="mdl-grid" id="group_list">
+                </div>
+                <!-- <div class="mdl-grid" style="width: 100%; background-color: white; position:absolute; bottom: 0;">
+                    <div style="margin: 10px auto;">
+                        
+                    </div>
+                </div> -->
+            </main>
+        </div>
+        <script>
+            window.onload=init();
+            group_list=document.getElementById('group_list');
+            var group_infor=new Array();
+            function init(){
+                console.log('hello')
+                var xsend= new XMLHttpRequest();
+                xsend.open("POST","/Production/GetGroupKanban",true);
+                xsend.onreadystatechange= function(){
+                    if (this.readyState==4 && this.status==200) {
+                        result=JSON.parse(xsend.responseText);
+                        console.log(result)
+                        group_infor=[]
+                        while (group_list.childNodes.length>0) group_list.removeChild(group_list.childNodes[0])
+                        for (var i=0; i<result.length; i++){
+                            if (result[i].NAMEGROUP=='075-082') result[i].PLAN='PB01';
+                            if (result[i].PLAN=='PB01' && result[i].NAMEGROUP!=null) {
+                                group_infor.push(result[i]);
+                                grid_element=document.createElement('div');
+                                grid_element.setAttribute('class', 'mdl-cell mdl-cell--2-col');
+                                card=document.createElement('div');
+                                card.setAttribute("style","background-color: HoneyDew; width: 200px; margin: 20px auto; boder-radius: 10px; overflow: visible;");
+                                card.setAttribute("class","mdl-card mdl-shadow--4dp");
+                                header=document.createElement('div');
+                                header.setAttribute("class", "mdl-card__title");
+                                header.setAttribute("id", "header_"+result[i].NAMEGROUP);
+                                header.setAttribute("style", "background-color: Indigo; color: white; overflow: visible;")
+                                header.innerHTML="<h2 class='mdl-card__title-text' style='color: white;'><b>"+result[i].NAMEGROUP+"</b></h2>";
+                                body=document.createElement('div');
+                                body.setAttribute('class', 'mdl-card__supporting-text');
+                                if (result[i].HQAS!=null){
+                                    console.log(result[i].NAMEGROUP)
+                                    if (result[i].HQAS.length>10){
+                                        ass_lot_list=result[i].HQAS.split('+');
+                                        s='';
+                                        s+='<div id="worklot_'+result[i].NAMEGROUP+'">';
+                                        for (var j=0; j<ass_lot_list.length; j++){
+                                            if ((result[i].ASS_STATUS=="PENDING"||result[i].ASS_STATUS=="SUSPEND")&&j==0){
+                                                s+='<div style="font-size: 25px; color: black; font-weight: bold; margin-bottom: 15px;"><s> '+ass_lot_list[j]+' </s></div>';
+                                            } else
+                                            s+='<div style="font-size: 25px; color: black; font-weight: bold; margin-bottom: 15px;"> '+ass_lot_list[j]+' </div>';
+                                        }
+                                        s+='</div>';
+                                        body.innerHTML=s;
+                                    } else 
+                                    body.innerHTML='<div style="font-size: 25px; color: black; font-weight: bold; width: 100%;" id="worklot_'+result[i].NAMEGROUP+'">'+result[i].HQAS+'</div>';
+                                    switch (result[i].ASS_STATUS){
+                                        case 'NOTIFY':
+                                            header.setAttribute("style", "background-color: rgb(220, 118, 51); color: white; overflow: visible;");
+                                            break;
+                                        case 'CALL':
+                                            header.setAttribute("style", "background-color: Red; color: white; overflow: visible;");
+                                            break;
+                                        case 'SEND':
+                                            header.setAttribute("style", "background-color: Green; color: white; overflow: visible;")
+                                            break;
+                                        case 'RECEIVE':
+                                            header.setAttribute("style", "background-color: Green; color: white; overflow: visible;")
+                                            break;
+                                        case 'SUPPLIES':
+                                            header.setAttribute("style", "background-color: Blue; color: white; overflow: visible;")
+                                            break;
+                                        case 'PENDING':
+                                            header.setAttribute("style", "background-color: Black; color: white; overflow: visible;")
+                                            break;
+                                    }
+                                }
+                                else{
+                                    card.setAttribute("style","background-color: HoneyDew; width: 200px; margin: 20px auto; boder-radius: 10px; overflow: visible;");
+                                    body.innerHTML='<div style="font-size: 25px; color: black; font-weight: bold;" id="worklot_'+result[i].NAMEGROUP+'"></div>';
+                                }
+                                if (result[i].ASS_STATUS=='CALL'){
+                                    timeCall=new Date(change_time(result[i].ASS_CALL));//);
+                                    timeCurr=new Date(get_current());
+                                    timeSpan=15-Math.round((timeCurr-timeCall)/1000/60);
+                                    timeSpanSupply=45-Math.round((timeCurr-timeCall)/1000/60);
+                                    body.innerHTML+='<div style="font-size: 20px; color: black; margin-top: 30px; width: 100%;" id="cutpart_'+result[i].NAMEGROUP+'">CUTPART: '+timeSpan.toString()+' min</div>'
+                                    body.innerHTML+='<div style="font-size: 20px; color: black; margin-top: 15px;" id="supplies_'+result[i].NAMEGROUP+'">SUPPLIES: '+timeSpanSupply.toString()+' min</div>';
+                                }
+                                else {
+                                    body.innerHTML+='<div style="font-size: 20px; color: black; margin-top: 30px; width: 100%;" id="cutpart_'+result[i].NAMEGROUP+'">CUTPART: 0 min</div>'
+                                    body.innerHTML+='<div style="font-size: 20px; color: black; margin-top: 15px;" id="supplies_'+result[i].NAMEGROUP+'">SUPPLIES: 0 min</div>';
+                                }
+                                footer=document.createElement('div');
+                                footer.setAttribute('class', 'mdl-card__menu');
+                                button=document.createElement('button');
+                                button.setAttribute('class', 'mdl-button mdl-js-button mdl-button--icon');
+                                button.id='btn_more_'+i;
+                                var icon=document.createElement("i");
+                                icon.setAttribute("class", "material-icons");
+                                icon.setAttribute("style", "color: white;")
+                                icon.innerHTML="more_vert";
+                                componentHandler.upgradeElement(icon);
+                                button.appendChild(icon);
+                                componentHandler.upgradeElement(button);
+                                var ul=document.createElement("ul");
+                                ul.setAttribute("class", "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect");
+                                ul.setAttribute("for", 'btn_more_'+i);
+                                ul.innerHTML='<li class="mdl-menu__item" style="color: Green;" onclick="fnc_asslot_cutpart(this)"><i class="material-icons" style="vertical-align: middle; margin-right: 10px;">folder</i>CẤP CUTPART</li>';
+                                // ul.innerHTML+='<li class="mdl-menu__item" style="color: blue;"  onclick="fnc_asslot_supplies(this)"><i class="material-icons" style="vertical-align: middle; margin-right: 10px;">attachment</i>CẤP SUPPLIES</li>';
+                                ul.innerHTML+='<li class="mdl-menu__item" style="color:Black;"   onclick="fnc_asslot_pending(this)"><i class="material-icons" style="vertical-align: middle; margin-right: 10px;">cancel</i>PENDING</li>';
+                                // ul.innerHTML+='<li class="mdl-menu__item" style="color: purple; display: none;" onclick="fnc_asslot_done(this)"><i class="material-icons" style="vertical-align: middle; margin-right: 10px;">done</i>HOÀN TẤT</li>';
+                                componentHandler.upgradeElement(button);
+                                
+                                footer.appendChild(button);
+                                footer.appendChild(ul);
+                                action=document.createElement('div');
+                                action.setAttribute('class','mdl-card__actions mdl-card--border');
+                                action.setAttribute('id', 'div_supply'+i);
+                                action.setAttribute('style', 'height: 25px;');
+                                componentHandler.upgradeElement(action);
+                                componentHandler.upgradeElement(header);
+                                componentHandler.upgradeElement(body);
+                                componentHandler.upgradeElement(footer);
+                                card.appendChild(header);
+                                card.appendChild(body);
+                                // card.appendChild(action);
+                                card.appendChild(footer);
+                                componentHandler.upgradeElement(card);
+                                grid_element.appendChild(card);
+                                componentHandler.upgradeElement(grid_element);
+                                group_list.appendChild(grid_element);
+                            }
+                            componentHandler.upgradeDom('MaterialMenu', 'mdl-menu');
+                        }
+                        refresh_page();
+                    }
+                }
+                xsend.setRequestHeader("Content-type", "application/json");
+                xsend.send();
+            }
+            var socket=io({transports: ['websocket']});
+            socket.on('warehouse-receive-kanban', function(data){
+                init();
+            });
+            // $(document).ready(function(){
+            //     $('#send').click(function(){
+            //         socket.emit('client-send-data', 'hello server');
+            //     });
+            // });
+            function fnc_asslot_done(x){
+                group=x.parentNode.parentNode.parentNode.parentNode.childNodes[0].childNodes[0].childNodes[0].innerHTML;
+                asslot=x.parentNode.parentNode.parentNode.parentNode.childNodes[1].childNodes[0].innerHTML;
+                var xsend= new XMLHttpRequest();
+                xsend.open("POST","/Production/AutoKanban/DoneAsslot6",true);
+                xsend.onreadystatechange= function(){
+                    if (this.readyState==4 && this.status==200) {
+                        result=xsend.responseText;
+                        if (result=='done'){
+                            alert('Đã cập nhật trạng thái Hoàn tất!');
+                            socket.emit('warehouse-send-kanban', {asslot: asslot, group: group, status: 'done'});
+                            init();
+                        }
+                    }
+                }
+                xsend.setRequestHeader("Content-type", "application/json");
+                data={asslot: asslot, group: group}
+                xsend.send(JSON.stringify(data));
+            }
+            function fnc_asslot_cutpart(x){
+                group=x.parentNode.parentNode.parentNode.parentNode.childNodes[0].childNodes[0].childNodes[0].innerHTML;
+                asslot_split=document.getElementById('worklot_'+group).innerHTML.split(' ');//x.parentNode.parentNode.parentNode.parentNode.childNodes[1].childNodes[0].innerHTML;
+                asslot='';
+                for (var i=0; i<asslot_split.length; i++){
+                    if (isNaN(asslot_split[i])==false) asslot+=asslot_split[i]+';';
+                }
+                asslot=asslot.substring(0, asslot.length-1);
+                if (asslot==null||asslot==''){
+                    alert('Không có Worklot đang chờ!');
+                    return;
+                }
+            
+                var xsend= new XMLHttpRequest();
+                xsend.open("POST","/Production/AutoKanban/SendAsslots6",true);
+                xsend.onreadystatechange= function(){
+                    if (this.readyState==4 && this.status==200) {
+                        result=xsend.responseText;
+                        if (result=='done') {
+                            alert('Đã cập nhật trạng thái Cấp hàng!');
+                            socket.emit('warehouse-send-kanban', {asslot: asslot, group: group, status: 'send'});
+                            init();
+                        }
+                    }
+                }
+                xsend.setRequestHeader("Content-type", "application/json");
+                data={asslot: asslot, group: group}
+                console.log(data);
+                xsend.send(JSON.stringify(data));
+            }
+            function fnc_asslot_supplies(x){
+                group=x.parentNode.parentNode.parentNode.parentNode.childNodes[0].childNodes[0].childNodes[0].innerHTML;
+                asslot_split=document.getElementById('worklot_'+group).innerHTML.split(' ');//x.parentNode.parentNode.parentNode.parentNode.childNodes[1].childNodes[0].innerHTML;
+                asslot='';
+                for (var i=0; i<asslot_split.length; i++){
+                    if (isNaN(asslot_split[i])==false) asslot+=asslot_split[i]+';';
+                }
+                asslot=asslot.substring(0, asslot.length-1);
+                var xsend= new XMLHttpRequest();
+                xsend.open("POST","/Production/AutoKanban/SuppliesAsslots6",true);
+                xsend.onreadystatechange= function(){
+                    if (this.readyState==4 && this.status==200) {
+                        result=xsend.responseText;
+                        if (result=='done') {
+                            alert('Đã gửi thông tin đến kho!');
+                            socket.emit('warehouse-send-kanban', {asslot: asslot, group: group, status: 'supplies'});
+                            init();
+                        }
+                    }
+                }
+                xsend.setRequestHeader("Content-type", "application/json");
+                data={asslot: asslot, group: group}
+                xsend.send(JSON.stringify(data));
+            }
+            function fnc_asslot_pending(x){
+                var r = confirm("BẠN CÓ CHẮC HÀNG BỊ PENDING (CHƯA NHẬP KHO CUTPART TỪ CUTTING)?");
+                if (r == false) {
+                    return;
+                } else {
+                    group=x.parentNode.parentNode.parentNode.parentNode.childNodes[0].childNodes[0].childNodes[0].innerHTML;
+                    asslot_split=document.getElementById('worklot_'+group).innerHTML.split(' ');//=x.parentNode.parentNode.parentNode.parentNode.childNodes[1].childNodes[0].innerHTML;
+                    asslot='';
+                    for (var i=0; i<asslot_split.length; i++){
+                        if (isNaN(asslot_split[i])==false) asslot+=asslot_split[i]+';';
+                    }
+                    asslot=asslot.substring(0, asslot.length-1);
+                    var xsend= new XMLHttpRequest();
+                    xsend.open("POST","/Production/AutoKanban/PendingAsslots6",true);
+                    xsend.onreadystatechange= function(){
+                        if (this.readyState==4 && this.status==200) {
+                            result=xsend.responseText;
+                            if (result=='done') {
+                                alert('Đã cập nhật trạng thái Pending!');
+                                socket.emit('warehouse-send-kanban', {asslot: asslot, group: group, status: 'pending'});
+                                init();
+                            }
+                        }
+                    }
+                    xsend.setRequestHeader("Content-type", "application/json");
+                    data={asslot: asslot, group: group}
+                    xsend.send(JSON.stringify(data));
+                }
+                
+            }
+            function refresh_page(){
+                
+                for (i=0; i<group_infor.length; i++){
+                    if (group_infor[i].ASS_STATUS=='CALL'){
+                        timeCall=new Date(change_time(group_infor[i].ASS_CALL));//);
+                        timeCurr=new Date(get_current());
+                        timeSpan=15-Math.round((timeCurr-timeCall)/1000/60);
+                        timeSpanSupply=45-Math.round((timeCurr-timeCall)/1000/60);
+                        document.getElementById('cutpart_'+group_infor[i].NAMEGROUP).innerHTML="CUTPART: "+timeSpan.toString()+ " min";
+                        document.getElementById('supplies_'+group_infor[i].NAMEGROUP).innerHTML="SUPPLIES: "+timeSpanSupply.toString()+ " min";
+                    }
+                }
+            }
+            setInterval(function(){ 
+                refresh_page();
+                location.reload();
+            }, 60000);//set every in a span time millisecond => 1 minute=60000
+            function get_current(){
+                var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+                var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+                return change_time(localISOTime);
+            }
+            function change_time(time){
+                return (new Date(time)).toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
+            }
+        </script>
+    </body>
+    
+</html>

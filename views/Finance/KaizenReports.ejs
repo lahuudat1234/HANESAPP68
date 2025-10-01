@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <title>Kaizen Reports</title>
+    </header>
+    <body style="background-image: url('../Image/2.jpg');" id="tbody"> 
+        <style>
+            #page-mask {
+                background: rgba(0, 0, 0, 0.5);
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                /* z-index: 10; */
+            }
+        </style>
+        <div id="page-mask"></div>
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">Kaizen Reports</span>
+                <%- include ("partials/headerTemplate.ejs"); -%>
+                <div id="cbb_plant_search_div" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                    style="width: 120px; margin-right: 20px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_plant_search" readonly>
+                    <input type="hidden" value="" name="cbb_plant_search">
+                    <label for="cbb_plant_search" class="mdl-textfield__label" style="color: white;">Plant</label>
+                    <ul for="cbb_plant_search" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="cbb_plant_search_list">
+                        <li class="mdl-menu__item">All</li>
+                        <li class="mdl-menu__item">Phu Bai</li>
+                        <li class="mdl-menu__item">ROH</li>
+                        <li class="mdl-menu__item">Hung Yen</li>
+                        <li class="mdl-menu__item">Surin</li>
+                        <li class="mdl-menu__item">VCO</li>
+                        <li class="mdl-menu__item">Piplay</li>
+                        <li class="mdl-menu__item">Indonesia</li>
+                        <li class="mdl-menu__item">Hong Kong</li>
+                    </ul>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder" style="width:150px; margin-right: 20px;">
+                    <input class="mdl-textfield__input" type="date" id="date_from">
+                    <label class="mdl-textfield__label" for="date_from">Date from</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder" style="width:150px; margin-right: 20px;">
+                    <input class="mdl-textfield__input" type="date" id="date_to">
+                    <label class="mdl-textfield__label" for="date_to">Date To</label>
+                </div>
+                <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" style="background-color: orange; margin-right: 20px;" id="btn_search">
+                    <i class="material-icons">search</i>
+                </button>
+                <!-- <button id="btn_template" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    Template
+                </button> -->
+            </div>
+            </header>
+            <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                        mdl-js-ripple-effect mdl-button--colored" style="position: fixed; bottom: 50px; right:40px; z-index: 10; background-color: orange;" id="btn_manual">
+                        <i class="material-icons">add</i>
+                    </button>
+                    <div class="mdl-tooltip" for="btn_manual" style="z-index: 11;">
+                        <p style="font-size:12px;">MANUAL INPUT</p>
+                    </div>
+                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                        mdl-js-ripple-effect mdl-button--colored" style="position: fixed; bottom: 120px; right:40px; z-index: 10; background-color: green;" id="btn_export_excel">
+                        <i class="material-icons">library_books</i>
+                    </button>
+                    <div class="mdl-tooltip" for="btn_export_excel" style="z-index: 11;">
+                        <p style="font-size:12px;">EXPORT EXCEL</p>
+                    </div>
+                    <!-- <form id='upload_form' method="POST" action='/Finance/Kaizen_Upload_Excel' submit='return false;'>
+                        <input type='file' name='file' id='file' style='display: none;'>
+                        <input type='submit' id='submit' style='display: none;'>
+                    </form> -->
+                    
+                    <form id='upload_form' method='POST' action='/Finance/Upload_Kaizen_Excel' submit='return false;'>
+                        <input type='file' name='file' id='file' style="display: none;">
+                        <input type='submit' id='submit' style='display: none;'>
+                    <!-- </button>
+                    <button id="upload_item" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" 
+                            style="right: 32px; bottom: 50px; position: fixed; z-index: 10; background-color: green;">
+                        <i class="material-icons">cloud_upload</i>
+                        <div class="mdl-tooltip" data-mdl-for="upload_item">
+                            Upload Excel
+                        </div> -->
+                        <!-- <button class="mdl-button mdl-js-button mdl-button--fab 
+                            mdl-js-ripple-effect mdl-button--colored" style="position: fixed; bottom: 120px; right:40px; z-index: 10; background-color: green;" id="btn_excel">
+                            <i class="material-icons">cloud_upload</i>
+                        </button>
+                        <div class="mdl-tooltip" for="btn_excel" style="z-index: 11;">
+                            <p style="font-size:12px;">EXCEL INPUT</p>
+                        </div> -->
+                    </form>
+                    <!-- <button class="mdl-button mdl-js-button mdl-button--fab 
+                        mdl-js-ripple-effect mdl-button--colored" style="position: fixed; bottom: 50px; right:40px; z-index: 10;" id="btn_template">
+                        <i class="material-icons">file_copy</i>
+                    </button>
+                    <div class="mdl-tooltip" for="btn_template" style="z-index: 11;">
+                        <p style="font-size:12px;">Tempate</p>
+                    </div> -->
+                </div>
+                <div class="page-content">
+                    <style>
+                        table {
+                            table-layout: fixed;
+                            width: 100%;
+                        }
+                        .table-hover tbody tr:hover td {
+                            background-color: rgb(92, 92, 92);
+                            color: white;
+                            border: none;
+                            width: 100%;
+                        }
+                        .th-style {
+                            color: white;
+                            text-align: center;
+                           
+                        }
+                    </style>
+                    <!-- <div class="mdl-card mdl-shadow--6dp" style="width: 90%; margin: 10px auto; margin-top: 20px; border-radius: 10px; border: none;"> -->
+                        <table class="mdl-data-table mdl-js-data-table table-hover" style="width: 90%; margin: 10px auto; margin-top: 20px; border: none;">
+                            <col style="width: 5%">
+                            <col style="width: 5%">
+                            <col style="width: 15%">
+                            <col style="width: 25%">
+                            <col style="width: 10%">
+                            <col style="width: 18%">
+                            <col style="width: 12%">
+                            <col style="width: 5%">
+                            <col style="width: 5%">
+                            <!-- <col style="width: 5%"> -->
+                            <thead  STYLE="background-color: orangered;">
+                                <style>
+                                    .btn_attach_class:hover{
+                                        color: white;
+                                    }
+                                </style>
+                                <tr style=" border-radius: 10px; ">
+                                    <th class="mdl-data-table__cell--non-numeric" style="color: white; vertical-align: middle;">BENCH<br>MARK</th>
+                                    <th class="mdl-data-table__cell--non-numeric" style="color: white; vertical-align: middle;">PLANT</th>
+                                    <th class="mdl-data-table__cell--non-numeric" style="color: white; vertical-align: middle;">KAIZEN NAME</th>
+                                    <th class="mdl-data-table__cell--non-numeric" style="color: white; vertical-align: middle;">DESCRIPTION</th>
+                                    <th style="color: white; vertical-align: middle;">COST<br>SAVING ($)</th>
+                                    <th class="mdl-data-table__cell--non-numeric" style="color: white; vertical-align: middle;">OTHER IMPROVEMENT</th>
+                                    <th class="mdl-data-table__cell--non-numeric" style="color: white; vertical-align: middle;">TIME UPDATE</th>
+                                    <th class="mdl-data-table__cell--non-numeric" style="color: white; vertical-align: middle;">USER</th>
+                                    <th class="mdl-data-table__cell--non-numeric" style="color: white; vertical-align: middle;">MORE</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_kaizen_body">
+                                
+                            </tbody>
+                        </table>
+                    <!-- </div> -->
+                </div>
+            </main>
+        </div>
+    </body>
+    <dialog id="dialog_manual_input" style="width: 600px; border: none; border-radius: 10px;">
+        <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+            <div class="mdl-tabs__tab-bar">
+                <a href="#new_kaizen" class="mdl-tabs__tab is-active">New Kaizen</a>
+                <a href="#benchmark" class="mdl-tabs__tab">Benchmark</a>
+                <!-- <a href="#targaryens-panel" class="mdl-tabs__tab">Targaryens</a> -->
+            </div>
+            <div class="mdl-tabs__panel is-active" id="new_kaizen">
+                <div class="mdl-grid" style="margin:0;">
+                    <div class="mdl-cell mdl-cell--4-col" style="margin:0;">
+                        <i class="material-icons" style="margin-left: 10px; color:indigo; vertical-align: middle;">business</i>
+                        <div id="cbb_plant_div" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                            style="width: 120px; margin-left: 10px;">
+                            <input type="text" value="" class="mdl-textfield__input" id="cbb_plant" readonly>
+                            <input type="hidden" value="" name="cbb_plant">
+                            <!-- <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i> -->
+                            <label for="cbb_plant" class="mdl-textfield__label">Plant</label>
+                            <ul for="cbb_plant" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="cbb_plant_list">
+                                <li class="mdl-menu__item">Phu Bai</li>
+                                <li class="mdl-menu__item">ROH</li>
+                                <li class="mdl-menu__item">Hung Yen</li>
+                                <li class="mdl-menu__item">Surin</li>
+                                <li class="mdl-menu__item">VCO</li>
+                                <li class="mdl-menu__item">Piplay</li>
+                                <li class="mdl-menu__item">Indonesia</li>
+                                <li class="mdl-menu__item">Hong Kong</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--8-col" style="margin:0;">
+                        <i class="material-icons" style="margin-left: 20px; color:indigo; vertical-align: middle;">credit_card</i>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-left: 10px;" id="div_kaizenName">
+                            <input class="mdl-textfield__input" type="text" id="txt_kaizenName" onblur="check_kaizen_name()">
+                            <label class="mdl-textfield__label" for="txt_kaizenName">Kaizen Name</label>
+                            <span class="mdl-textfield__error" id="span_kaizenName">Kaizen Name with Plant Existed!/nPlease Choose Another Kaizen Name!</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-grid" style="margin:0;">
+                    <div class="mdl-cell mdl-cell--4-col" style="margin:0;">
+                        <i class="material-icons" style="margin-left: 10px; color:indigo; vertical-align: middle;">money</i>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 120px; margin-left: 10px;">
+                            <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="txt_costSaving">
+                            <label class="mdl-textfield__label" for="txt_costSaving">Cost saving ($)</label>
+                            <span class="mdl-textfield__error">Input is not a number!</span>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--8-col" style="margin:0;">
+                        <i class="material-icons" style="margin-left: 20px; color:indigo; vertical-align: middle;">send</i>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-left: 10px;">
+                            <input class="mdl-textfield__input" type="text" id="txt_otherImprove">
+                            <label class="mdl-textfield__label" for="txt_otherImprove">Other Improvement</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-grid" style="margin:0; padding-top: 0; padding-bottom: 0;">
+                    <div class="mdl-cell mdl-cell--12-col">
+                        <label for="file_1" id="lable_file_1"><i class="material-icons" style="margin-left: 10px; margin:0px auto; color:indigo; vertical-align: middle; cursor: pointer;">attach_file</i></label>
+                        <div class="mdl-tooltip" data-mdl-for="lable_file_1" style="font-size: 11px;">Click here</div>
+                        <form id='upload_form_attach' method='POST' action='/Finance/Upload_Kaizen_Attach' style="width: fit-content; display: none;">
+                            <input type='file' name='file_1' id='file_1' style="width: 80%; display: none;" onchange="load_file_attach(this)">
+                            <input type='submit' id='submit_1' style='display: none;'>
+                        </form>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-left: 10px; width: 80%;">
+                            <input class="mdl-textfield__input" type="text" id="txt_attach_link">
+                            <label class="mdl-textfield__label" for="txt_attach_link">Attach File</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-grid" style="margin:0; padding-top: 0; padding-bottom: 0;">
+                    <i class="material-icons" style="margin-left: 10px; color:indigo; vertical-align: middle; margin-top: 20px;">comment</i>
+                    <div class="mdl-textfield mdl-js-textfield" style="width: 80%; height: 100px; margin-left: 10px;">
+                        <textarea class="mdl-textfield__input" type="text" rows= "3" id="txt_description" ></textarea>
+                        <label class="mdl-textfield__label" for="txt_description">Description</label>
+                    </div>
+                </div>
+                <div style="float:right; margin-right: 10px;">
+                    <button id="btn_update_manual" style="margin-bottom: 10px; margin-right: 10px; background-color: green;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        <i class="material-icons">done</i>
+                        Done
+                    </button>
+                    <button id="btn_modify_manual" style="margin-bottom: 10px; margin-right: 10px; background-color: indigo; color: white; display: none;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        <i class="material-icons">update</i>
+                        Update
+                    </button>
+                    <button id="btn_close_manual" style="margin-bottom: 10px; margin-right: 10px; background-color: gray;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        <i class="material-icons">cancel</i>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+            <div class="mdl-tabs__panel" id="benchmark">
+                <div class="mdl-grid" style="margin:0;">
+                    <div class="mdl-cell mdl-cell--4-col" style="margin:0;">
+                        <i class="material-icons" style="margin-left: 10px; color:indigo; vertical-align: middle;">business</i>
+                        <div id="cbb_plant_bm_div" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                            style="width: 120px; margin-left: 10px;">
+                            <input type="text" value="" class="mdl-textfield__input" id="cbb_plant_bm" readonly>
+                            <input type="hidden" value="" name="cbb_plant_bm">
+                            <!-- <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i> -->
+                            <label for="cbb_plant_bm" class="mdl-textfield__label update_bm">Plant Benchmark</label>
+                            <ul for="cbb_plant_bm" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="cbb_plant_list_bm">
+                                <li class="mdl-menu__item" data-val="Phu Bai">Phu Bai</li>
+                                <li class="mdl-menu__item" data-val="ROH">ROH</li>
+                                <li class="mdl-menu__item" data-val="Hung Yen">Hung Yen</li>
+                                <li class="mdl-menu__item" data-val="Surin">Surin</li>
+                                <li class="mdl-menu__item" data-val="VCO">VCO</li>
+                                <li class="mdl-menu__item" data-val="Piplay">Piplay</li>
+                                <li class="mdl-menu__item" data-val="Indonesia">Indonesia</li>
+                                <li class="mdl-menu__item" data-val="Hong Kong">Hong Kong</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- <div class="mdl-cell mdl-cell--8-col" style="margin:0;">
+                        <i class="material-icons" style="margin-left: 20px; color:indigo; vertical-align: middle;">credit_card</i>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-left: 10px;">
+                            <input class="mdl-textfield__input" type="text" id="txt_kaizenName_bm">
+                            <label class="mdl-textfield__label" for="txt_kaizenName_bm">Kaizen Benchmark</label>
+                        </div>
+                    </div> -->
+                    <div class="mdl-cell mdl-cell--8-col" style="margin:0;">
+                        <i class="material-icons" style="margin-left: 20px; color:indigo; vertical-align: middle;">credit_card</i>
+                        <div id="cbb_kaizenName_bm_div" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                            style="margin-left: 10px;">
+                            <input type="text" value="" class="mdl-textfield__input" id="cbb_kaizenName_bm" readonly>
+                            <input type="hidden" value="" name="cbb_kaizenName_bm">
+                            <!-- <i class="mdl-icon-toggle__label material-icons" for="cbb_kaizenName_bm" >keyboard_arrow_down</i> -->
+                            <label for="cbb_kaizenName_bm" class="mdl-textfield__label update_bm">Plant Benchmark</label>
+                            <ul for="cbb_kaizenName_bm" class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="cbb_kaizenName_bm_list">
+                                <!-- <li class="mdl-menu__item">Phubai</li>
+                                <li class="mdl-menu__item">Hung Yen</li>
+                                <li class="mdl-menu__item">Surin</li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-grid" style="margin:0;">
+                    <div class="mdl-cell mdl-cell--4-col" style="margin:0;">
+                        <i class="material-icons" style="margin-left: 10px; color:indigo; vertical-align: middle;">file_copy</i>
+                        <div id="cbb_plant_benchmark_div" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                            style="width: 120px; margin-left: 10px;">
+                            <input type="text" value="" class="mdl-textfield__input" id="cbb_plant_benchmark" readonly>
+                            <input type="hidden" value="" name="cbb_plant_benchmark">
+                            <label for="cbb_plant_benchmark" class="mdl-textfield__label">Plant</label>
+                            <ul for="cbb_plant_benchmark" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="cbb_plant_benchmark_list">
+                                <li class="mdl-menu__item" data-val="Phu Bai">Phu Bai</li>
+                                <li class="mdl-menu__item" data-val="Hung Yen">Hung Yen</li>
+                                <li class="mdl-menu__item" data-val="Surin">Surin</li>
+                                <li class="mdl-menu__item" data-val="VCO">VCO</li>
+                                <li class="mdl-menu__item" data-val="Piplay">Piplay</li>
+                                <li class="mdl-menu__item" data-val="Indonesia">Indonesia</li>
+                                <li class="mdl-menu__item" data-val="Hong Kong">Hong Kong</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--8-col" style="margin:0;">
+                        <i class="material-icons" style="margin-left: 20px; color:indigo; vertical-align: middle;">topic</i>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-left: 10px;">
+                            <input class="mdl-textfield__input" type="text" id="txt_kaizenBenchmark">
+                            <label class="mdl-textfield__label" for="txt_kaizenBenchmark">Kaizen Name</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-grid" style="margin:0;">
+                    <div class="mdl-cell mdl-cell--4-col" style="margin:0;">
+                        <i class="material-icons" style="margin-left: 10px; color:indigo; vertical-align: middle;">money</i>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 120px; margin-left: 10px;">
+                            <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="txt_costSaving_bm">
+                            <label class="mdl-textfield__label" for="txt_costSaving_bm">Cost saving ($)</label>
+                            <span class="mdl-textfield__error">Input is not a number!</span>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--8-col" style="margin:0;">
+                        <i class="material-icons" style="margin-left: 20px; color:indigo; vertical-align: middle;">send</i>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-left: 10px;">
+                            <input class="mdl-textfield__input" type="text" id="txt_otherImprove_bm">
+                            <label class="mdl-textfield__label" for="txt_otherImprove_bm">Other Improvement</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-grid" style="margin:0; padding-top: 0; padding-bottom: 0;">
+                    <div class="mdl-cell mdl-cell--12-col">
+                        <label for="file_2" id="lable_file_2"><i class="material-icons" style="margin-left: 10px; margin:0px auto; color:indigo; vertical-align: middle; cursor: pointer;">attach_file</i></label>
+                        <div class="mdl-tooltip" data-mdl-for="lable_file_2" style="font-size: 11px;">Click here</div>
+                        <form id='upload_form_attach_bm' method='POST' action='/Finance/Upload_Kaizen_Attach' style="display: none;">
+                            <input type='file' name='file_2' id='file_2' style="width: 80%; display: none;" onchange="load_file_attach_bm(this)">
+                            <input type='submit' id='submit_2' style='display: none;'>
+                        </form>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-left:10px; width: 80%;">
+                            <input class="mdl-textfield__input" type="text" id="txt_attach_link_bm">
+                            <label class="mdl-textfield__label" for="txt_attach_link_bm">File Link</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-grid" style="margin:0; padding-top: 0; padding-bottom: 0;">
+                    <i class="material-icons" style="margin-left: 10px; color:indigo; vertical-align: middle; margin-top: 20px;">comment</i>
+                    <div class="mdl-textfield mdl-js-textfield" style="width: 80%; height: 100px; margin-left: 10px;">
+                        <textarea class="mdl-textfield__input" type="text" rows= "3" id="txt_description_bm" ></textarea>
+                        <label class="mdl-textfield__label" for="txt_description_bm">Description</label>
+                    </div>
+                </div>
+                <div style="float:right; margin-right: 10px;">
+                    <button id="btn_update_manual_bm" style="margin-bottom: 10px; margin-right: 10px; background-color: green;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        <i class="material-icons">done</i>
+                        Done
+                    </button>
+                    <button id="btn_modify_manual_bm" style="margin-bottom: 10px; margin-right: 10px; background-color: indigo; color: white; display: none;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        <i class="material-icons">update</i>
+                        Update
+                    </button>
+                    <button id="btn_close_manual_bm" style="margin-bottom: 10px; margin-right: 10px; background-color: gray;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        <i class="material-icons">cancel</i>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+    </dialog> 
+    <dialog id="dialog_filer" style="width: 600px; border: none; border-radius: 10px;">
+        <h2>Filter Kaizen History</h2>
+    </dialog>
+    <script>
+        window.onload=function(){
+            // add_kaizen();
+            load_kaizen();
+        }
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+        var today= localISOTime;
+        var table_group_search=document.getElementById('date_from');
+        document.getElementById('date_from').value=today.substr(0,10);
+        document.getElementById('date_to').value=today.substr(0,10);
+        function set_flag_benchmark(result){
+            if (result==true) {
+                document.getElementById('div_benchmark').style.display="none";
+            } else {
+                document.getElementById('div_benchmark').style.display='grid';
+            }
+        }
+        function clear_form(){
+            document.getElementById('txt_kaizenName').value='';
+            document.getElementById('txt_costSaving').value='';
+            document.getElementById('txt_description').value='';
+            document.getElementById('txt_otherImprove').value='';
+            document.getElementById('txt_kaizenBenchmark').value='';
+            // document.getElementById('txt_kaizenName_bm').value='';
+            document.getElementById('txt_costSaving_bm').value='';
+            document.getElementById('txt_description_bm').value='';
+            document.getElementById('txt_otherImprove_bm').value='';
+            document.getElementById('file_1').value=null;
+            document.getElementById('txt_attach_link').value='';
+            document.getElementById('file_2').value=null;
+            document.getElementById('txt_attach_link_bm').value='';
+        }
+        function check_kaizen_name(){
+            console.log("blur")
+            plant=document.getElementById('cbb_plant').value;
+            kaizen_name=document.getElementById('txt_kaizenName').value;
+            is_exist_kaizen(plant, kaizen_name);
+        }       
+        document.getElementById('btn_update_manual').addEventListener('click', function(){
+            plant=document.getElementById('cbb_plant').value;
+            if (plant==''){
+                alert('Plant must not be empty!');
+                return;
+            }
+            kaizen_name=document.getElementById('txt_kaizenName').value;
+            if (kaizen_name==''){
+                alert('Kaizen name must not be empty!');
+                return;
+            }
+            kaizen_name=kaizen_name.replace("'",'`')
+            kaizen_name=kaizen_name.replace('"','`');
+            costsaving=document.getElementById('txt_costSaving').value;
+            if (costsaving=="") costsaving="0";
+            if (isNaN(costsaving)==true) {
+                alert('Cost Saving must be a Number!');
+                return;
+            }
+            other=document.getElementById('txt_otherImprove').value;
+            other=other.replace("'",'`')
+            other=other.replace('"','`');
+            des=document.getElementById('txt_description').value;
+            if (des==''){
+                alert('New Kaizen must bave a description!');
+                return;
+            }
+            des=des.replace("'",'`');
+            des=des.replace('"','`');
+            attachfile='';
+            if (document.getElementById("txt_attach_link").value!="") {
+                extend=document.getElementById("txt_attach_link").value.split('.')[1];
+                attachfile=plant+';'+kaizen_name+'.'+extend;
+                document.getElementById('submit_1').click();
+            }
+            insert_kaizen(plant, kaizen_name, costsaving, other, des, plant, kaizen_name, 'N', attachfile);
+            
+        });
+        function insert_table(plant, kaizen, description, cost, other, timeUpdate, userUpdate, i, is_check){
+            var tr=document.createElement("tr");
+            //benchmark
+            var tdBenchmark=document.createElement("td");
+            tdBenchmark.setAttribute("class","mdl-data-table__cell--non-numeric");
+            //checkbox
+            if (is_check==2) {
+                var label=document.createElement("label");
+                label.setAttribute("class", "mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect");
+                label.setAttribute("for", "checkbox"+i);
+                var input=document.createElement("input");
+                input.setAttribute("class", "mdl-checkbox__input");
+                input.setAttribute("type", "checkbox");
+                input.setAttribute("id", "checkbox"+i);
+                input.checked=true;
+                componentHandler.upgradeElement(input);
+                label.appendChild(input);
+                componentHandler.upgradeElement(label);
+                tdBenchmark.appendChild(label);
+            } else if (is_check==1) {
+                var label=document.createElement("label");
+                label.setAttribute("class", "mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect");
+                label.setAttribute("for", "checkbox"+i);
+                var input=document.createElement("input");
+                input.setAttribute("class", "mdl-checkbox__input");
+                input.setAttribute("type", "checkbox");
+                input.setAttribute("id", "checkbox"+i);
+                var span=document.createElement("span");
+                span.setAttribute("class","mdl-checkbox__label");
+                input.checked=false;
+                componentHandler.upgradeElement(input);
+                label.appendChild(input);
+                componentHandler.upgradeElement(span);
+                label.appendChild(span);
+                componentHandler.upgradeElement(label);
+                tdBenchmark.appendChild(label);
+            } else {
+                var node=document.createTextNode('');
+                tr.style.backgroundColor="rgb(241, 241, 241)";
+                tdBenchmark.appendChild(node);
+            }
+            tr.appendChild(tdBenchmark);
+            //plant
+            var tdPlant=document.createElement("td");
+            tdPlant.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var node=document.createTextNode(plant);
+            tdPlant.appendChild(node);
+            tr.appendChild(tdPlant);
+            //kaizen
+            var tdKaizen=document.createElement("td");
+            tdKaizen.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var node=document.createTextNode(kaizen);
+            tdKaizen.appendChild(node);
+            tr.appendChild(tdKaizen);
+            //des
+            var tdDes=document.createElement("td");
+            tdDes.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var tdDesDiv=document.createElement("div");
+            var node=document.createTextNode(description);
+            tdDesDiv.style.overflow="hidden";
+            tdDesDiv.appendChild(node);
+            tdDes.appendChild(tdDesDiv);
+            tr.appendChild(tdDes);
+            //cost
+            var tdCost=document.createElement("td");
+            // tdCost.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var node=document.createTextNode(cost);
+            tdCost.appendChild(node);
+            tr.appendChild(tdCost);
+            //other
+            var tdOther=document.createElement("td");
+            tdOther.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var tdOtherDiv=document.createElement("div");
+            var node=document.createTextNode(other);
+            tdOtherDiv.style.overflow="hidden";
+            tdOtherDiv.appendChild(node);
+            tdOther.appendChild(tdOtherDiv);
+            // var node=document.createTextNode(other);
+            // tdOther.appendChild(node);
+            tr.appendChild(tdOther);
+            //timeupdate
+            var tdTimeUpdate=document.createElement("td");
+            tdTimeUpdate.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var node=document.createTextNode((new Date(data[i].TimeUpdate)).toLocaleString("en-US", {timeZone: "Asia/Bangkok"}));
+            tdTimeUpdate.appendChild(node);
+            tr.appendChild(tdTimeUpdate);
+            //userupdate
+            var tdUserUpdate=document.createElement("td");
+            tdUserUpdate.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var node=document.createTextNode(userUpdate);
+            tdUserUpdate.appendChild(node);
+            tr.appendChild(tdUserUpdate);
+            //btn more
+            var tdMore=document.createElement("td");
+            tdMore.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var div=document.createElement("div");
+            var button=document.createElement("button");
+            button.setAttribute("class", "mdl-button mdl-js-button mdl-button--icon");
+            button.setAttribute("id", "button_more"+i);
+            // button.setAttribute("onclick", "attach_file_download(this)");
+            var icon=document.createElement("i");
+            icon.setAttribute("class", "material-icons");
+            icon.innerHTML="more_vert";
+            componentHandler.upgradeElement(icon);
+            button.appendChild(icon);
+            componentHandler.upgradeElement(button);
+            var ul=document.createElement("ul");
+            ul.setAttribute("class", "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect");
+            ul.setAttribute("for", "button_more"+i);
+            // ul.setAttribute("style", "overflow: visible")
+            var li1=document.createElement("li");
+            li1.setAttribute("class", "mdl-menu__item");
+            li1.setAttribute("onclick", "attach_file_download(this)");
+            li1.innerHTML="<i class='material-icons' style='vertical-align: middle; margin-right:10px; color: green'>cloud_download</i>Attach File";
+            var li2=document.createElement("li");
+            li2.setAttribute("class", "mdl-menu__item");
+            li2.setAttribute("onclick", "edit_kaizen(this)");
+            li2.innerHTML="<i class='material-icons' style='vertical-align: middle; margin-right:10px; color: indigo'>edit</i>Modify";
+            var li3=document.createElement("li");
+            li3.setAttribute("class", "mdl-menu__item");
+            li3.setAttribute("onclick", "remove_kaizen(this)");
+            li3.innerHTML="<i class='material-icons' style='vertical-align: middle; margin-right:10px; color: red'>delete</i>Remove";
+            componentHandler.upgradeElement(li1);
+            componentHandler.upgradeElement(li2);
+            componentHandler.upgradeElement(li3);
+            ul.appendChild(li1);
+            ul.appendChild(li2);
+            ul.appendChild(li3);
+            tdMore.appendChild(button);
+            tdMore.appendChild(ul);
+            tr.appendChild(tdMore);
+            componentHandler.upgradeElement(tr);
+            table_kaizen_body.appendChild(tr);
+            componentHandler.upgradeDom('MaterialMenu', 'mdl-menu');
+        }
+        
+        function load_kaizen(ID='0000'){
+            while (table_kaizen_body.childNodes.length>0)
+            table_kaizen_body.removeChild(table_kaizen_body.childNodes[0]);
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Finance/Kaizen_Report/Load_Kaizen",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    console.log(data);
+                    for (var i=0; i<data.length; i++){
+                        sessionStorage.setItem(data[i].ID, data[i].ATTACH_FILE);
+                        plant=data[i].PLANT;
+                        kaizen=data[i].KAIZEN;
+                        description=data[i].DESCRIPTION;
+                        cost=data[i].COST_SAVING;
+                        other=data[i].OTHER_IMP;
+                        benchmark=data[i].BENCHMARK;
+                        timeUpdate=data[i].TimeUpdate;
+                        userUpdate=data[i].UserUpdate;
+                        is_check=0;//0: kaizen small, 1: kaizen with checkbox (no check), 2: kaizen witch checkbox (check)
+                        if (data[i].PLANT==data[i].PLANT_BM && data[i].KAIZEN==data[i].KAIZEN_BM && data[i].BENCHMARK=="Y") is_check=2;
+                        else if (data[i].PLANT==data[i].PLANT_BM && data[i].KAIZEN==data[i].KAIZEN_BM && data[i].BENCHMARK=="N") is_check=1;
+                        console.log(data[i].PLANT, data[i].PLANT_BM, data[i].PLANT==data[i].PLANT_BM, data[i].KAIZEN==data[i].KAIZEN_BM, is_check);
+                        insert_table(plant, kaizen, description, cost, other, timeUpdate, userUpdate, i, is_check);
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            datefrom=document.getElementById('date_from').value.substring(0,10);
+            dateto=document.getElementById('date_to').value.substring(0,10);
+            plant =document.getElementById('cbb_plant_search').value;
+            data={datefrom:datefrom, dateto: dateto, plant: plant};
+            console.log(data)
+            xsend.send(JSON.stringify(data));
+        }
+        function insert_kaizen(plant, kaizen_name, costsaving, other, des, plant_bm, kaizen_name_bm, benchmark, attachfile){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Finance/Kaizen_Report/Insert_New_Kaizen",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=xsend.responseText;
+                    console.log(data);
+                    if (data=='done1') alert('New Kaizen Was Updated Successfully!');
+                    if (data=='done2') alert('Benchmark Kaizen Updated Was Updated Successfully!');
+                    document.getElementById('dialog_manual_input').close();
+                    load_kaizen();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={plant: plant, kaizen_name: kaizen_name, costsaving: costsaving, other:other, des:des, plant_bm: plant_bm, kaizen_name_bm: kaizen_name_bm, benchmark: benchmark, attachfile: attachfile}
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+        function remove_kaizen_ID(ID){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Finance/Kaizen_Report/Remove_Kaizen",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    result=xsend.responseText;
+                    console.log(result);
+                    load_kaizen();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={ID:ID}
+            console.log(data)
+            xsend.send(JSON.stringify(data));
+        }
+        function update_kaizen(){
+
+        }
+        function is_exist_kaizen(plant, kaizen_name){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Finance/Kaizen_Report/Find_Kaizen",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    result=JSON.parse(xsend.responseText);
+                    console.log(result)
+                    if (result.result!='fail'){
+                        document.getElementById("div_kaizenName").classList.add("is-invalid");
+                        document.getElementById("div_kaizenName").classList.add("is-dirty");
+                        document.getElementById("span_kaizenName").innerText="Kaizen Name and Plant Existed!";
+                        document.getElementById("span_kaizenName").style.color="Red";
+                        document.getElementById("btn_update_manual").disabled=true;
+                    } else {
+                        document.getElementById("div_kaizenName").classList.add("is-invalid");
+                        document.getElementById("div_kaizenName").classList.add("is-dirty");
+                        document.getElementById("span_kaizenName").innerText="Kaizen Name is Available!";
+                        document.getElementById("span_kaizenName").style.color="Green";
+                        document.getElementById("btn_update_manual").disabled=false;
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={plant:plant, kaizen_name:kaizen_name}
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+        function attach_file_download(x){
+            // console.log(x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML)
+            ID=x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML+';'+x.parentNode.parentNode.parentNode.parentNode.childNodes[2].innerHTML;
+            attachfile=sessionStorage.getItem(ID);
+            extend=attachfile.split('.')[1];
+            var a=document.createElement('a');
+            a.setAttribute('href', '../Python/Finance/KaizenReport/Upload_Files/Attach/'+attachfile);
+            a.download='Kaizen_'+x.parentNode.parentNode.parentNode.parentNode.childNodes[2].innerHTML+'.'+extend;
+            a.click();
+        }
+        function remove_kaizen(x){
+            ID=x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML+';'+x.parentNode.parentNode.parentNode.parentNode.childNodes[2].innerHTML;
+            user_kaizen=x.parentNode.parentNode.parentNode.parentNode.childNodes[7].innerHTML;
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/login_user",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    result=xsend.responseText;
+                    if (user_kaizen==result){
+                        var txt;
+                        var r = confirm("Are you sure?");
+                        if (r == true) {
+                            remove_kaizen_ID(ID);
+                        }
+                    } else {
+                        alert("You don\'t have permission to remove this Kaizen!");
+                        return;
+                    }
+                    console.log(result);
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send();
+            
+        }
+        function edit_kaizen_ID(ID, is_bm){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Finance/Kaizen_Report/Load_Kaizen_By_ID",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    result=JSON.parse(xsend.responseText);
+                    document.getElementById('btn_manual').click();
+                    if (is_bm==0){
+                        document.querySelectorAll("a[href='#new_kaizen']")[0].click();
+                        document.getElementById('cbb_plant').value=result[0].PLANT;
+                        document.getElementById('cbb_plant').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_kaizenName').value=result[0].KAIZEN;
+                        document.getElementById('txt_kaizenName').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_costSaving').value=result[0].COST_SAVING;
+                        document.getElementById('txt_costSaving').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_otherImprove').value=result[0].OTHER_IMP;
+                        document.getElementById('txt_otherImprove').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_description').value=result[0].DESCRIPTION;
+                        document.getElementById('txt_description').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_attach_link').value=result[0].ATTACH_FILE;
+                        document.getElementById('txt_attach_link').parentNode.classList.add('is-dirty');
+                        document.getElementById('btn_modify_manual').style.display='inline';
+                        document.getElementById('btn_update_manual').style.display='none';
+                        // getmdlSelect.init("#cbb_kaizenName_bm_div");
+                    } else {
+                        document.querySelectorAll("a[href='#benchmark']")[0].click();
+                        document.getElementById('cbb_plant_bm').value=result[0].PLANT_BM;
+                        cbb_plant_bm=document.getElementsByClassName('mdl-menu__item');
+                        document.getElementById('cbb_plant_bm').parentNode.classList.add('is-dirty');
+                        document.getElementById('cbb_kaizenName_bm').value=result[0].KAIZEN_BM;
+                        document.getElementById('cbb_kaizenName_bm').parentNode.classList.add('is-dirty');
+                        document.getElementById('cbb_plant_benchmark').value=result[0].PLANT;
+                        document.getElementById('cbb_plant_benchmark').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_kaizenBenchmark').value=result[0].KAIZEN;
+                        document.getElementById('txt_kaizenBenchmark').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_costSaving_bm').value=result[0].COST_SAVING;
+                        document.getElementById('txt_costSaving_bm').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_otherImprove_bm').value=result[0].OTHER_IMP;
+                        document.getElementById('txt_otherImprove_bm').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_description_bm').value=result[0].DESCRIPTION;
+                        document.getElementById('txt_description_bm').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_attach_link_bm').value=result[0].ATTACH_FILE;
+                        document.getElementById('txt_attach_link_bm').parentNode.classList.add('is-dirty');
+                        document.getElementById('btn_modify_manual_bm').style.display='inline';
+                        document.getElementById('btn_update_manual_bm').style.display='none';
+                        //pre select data
+                        $('ul[for="cbb_kaizenName_bm"] li[data-val="'+result[0].KAIZEN_BM+'"]').attr('data-selected',true); 
+                        $('ul[for="cbb_plant_bm"] li[data-val="'+result[0].PLANT+'"]').attr('data-selected',true); 
+                        $('ul[for="cbb_plant_benchmark"] li[data-val="'+result[0].PLANT_BM+'"]').attr('data-selected',true); 
+                        //disable default parameter
+                        document.getElementById('cbb_plant_bm').disabled=true;
+                        document.getElementById('txt_kaizenBenchmark').disabled=true;
+                        document.getElementById('cbb_kaizenName_bm').disabled=true;
+                        document.getElementById('cbb_plant_benchmark').disabled=true;
+                        document.getElementById('txt_attach_link_bm').disabled=true;
+                        //upgrade element
+                        getmdlSelect.init('#cbb_kaizenName_bm_div');
+                        getmdlSelect.init("#cbb_plant_bm_div");
+                        getmdlSelect.init("#cbb_plant_benchmark_div");
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={ID:ID}
+            console.log(data)
+            xsend.send(JSON.stringify(data));
+        }
+        function edit_kaizen(x){
+            ID=x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML+';'+x.parentNode.parentNode.parentNode.parentNode.childNodes[2].innerHTML;
+            user_kaizen=x.parentNode.parentNode.parentNode.parentNode.childNodes[7].innerHTML;
+            is_bm=0;//parent kaizen
+            if (x.parentNode.parentNode.parentNode.parentNode.childNodes[0].innerHTML=='') is_bm=1;//child kaizen
+            console.log(x.parentNode.parentNode.parentNode.parentNode.childNodes[0].innerHTML=='');
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/login_user",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    result=xsend.responseText;
+                    if (user_kaizen==result){
+                        edit_kaizen_ID(ID, is_bm);
+                    } else {
+                        alert("You don\'t have permission to remove this Kaizen!");
+                        return;
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send();
+        }
+        document.getElementById('btn_search').addEventListener('click', function(){
+            load_kaizen();
+        })
+
+        //=======================ORIGINAL=============================
+        document.getElementById('btn_manual').addEventListener('click', function(){
+            clear_form();
+            document.getElementById('btn_update_manual').style.display='inline';
+            document.getElementById('btn_update_manual_bm').style.display='inline';
+            document.getElementById('btn_modify_manual').style.display='none';
+            document.getElementById('btn_modify_manual_bm').style.display='none';
+            //disable default parameter
+            document.getElementById('cbb_plant_bm').disabled=false;
+            document.getElementById('cbb_kaizenName_bm').disabled=false;
+            document.getElementById('cbb_plant_benchmark').disabled=false;
+            document.getElementById('txt_kaizenBenchmark').disabled=false;
+            document.getElementById('txt_attach_link_bm').disabled=false;
+            //update 
+            var list_kaizen=document.getElementById('cbb_kaizenName_bm_list');
+            while (list_kaizen.childNodes.length>0) list_kaizen.removeChild(list_kaizen.childNodes[0]);
+            for (var i=0; i<table_kaizen_body.childNodes.length; i++) {
+                var li=document.createElement("li");
+                li.setAttribute("class","mdl-menu__item");
+                if  (table_kaizen_body.childNodes[i].childNodes[0].innerHTML!=''){
+                    var textNode=document.createTextNode(table_kaizen_body.childNodes[i].childNodes[2].innerHTML);
+                    li.appendChild(textNode);
+                    li.setAttribute('data-val', table_kaizen_body.childNodes[i].childNodes[2].innerHTML);
+                    list_kaizen.appendChild(li);
+                }
+                getmdlSelect.init("#cbb_kaizenName_bm_div");
+            }
+            document.getElementById('dialog_manual_input').showModal();
+        });
+        document.getElementById('btn_close_manual').addEventListener('click', function(){
+            document.getElementById('dialog_manual_input').close();
+        });
+        function load_file_attach(x) {
+            document.getElementById('txt_attach_link').value=x.files.item(0).name;
+            document.getElementById('txt_attach_link').parentNode.classList.add('is-dirty');
+        }
+        var form1=document.getElementById("upload_form_attach");
+        form1.addEventListener("submit", e=>{
+            if (document.getElementById('file_1').value!=''){
+                e.preventDefault();
+                var xsend=new XMLHttpRequest();
+                xsend.onreadystatechange=function(){
+                    if (this.readyState==4 && this.status==200){
+                        var data=xsend.responseText;
+                    }
+                }
+                var fileInput = document.getElementById('file_1');
+                var file;
+                plant=document.getElementById('cbb_plant').value;
+                kaizen_name=document.getElementById('txt_kaizenName').value;
+                extension=fileInput.files[0].name.substring(fileInput.files[0].name.lastIndexOf('.')+1);
+                newName=plant+';'+kaizen_name+'.'+extension;
+                file=fileInput.files[0];
+                var formData = new FormData();
+                formData.append('file', file, newName);
+                if (file!=null){
+                    xsend.open('POST','/Finance/Upload_Kaizen_Attach', true);
+                    xsend.send(formData);
+                }
+            }
+            return false;
+        });
+        //=======================BENCHMARK============================
+        document.getElementById('btn_update_manual_bm').addEventListener('click', function(){
+            plant=document.getElementById('cbb_plant_benchmark').value;
+            if (plant=='') {
+                alert('Plant Benchmark is not acceptable!');
+                return;
+            }
+            kaizen_name=document.getElementById('txt_kaizenBenchmark').value;
+            if (kaizen_name=='') {
+                alert('Kaizen Name is not acceptable!');
+                return;
+            }
+            kaizen_name=kaizen_name.replace("'",'`');
+            kaizen_name=kaizen_name.replace('"','`');
+            plant_bm=document.getElementById('cbb_plant_bm').value;
+            if (plant_bm=='') {
+                alert('Plant must not be empty!');
+                return;
+            }
+            kaizen_name_bm=document.getElementById('cbb_kaizenName_bm').value;
+            if (kaizen_name_bm=='') {
+                alert('New Kaizen must not be empty!');
+                return;
+            }
+            kaizen_name_bm=kaizen_name_bm.replace("'",'`');
+            kaizen_name_bm=kaizen_name_bm.replace('"','`');
+            costsaving=document.getElementById('txt_costSaving_bm').value;
+            if (isNaN(costsaving)==true) {
+                alert('Cost Saving must be a Number!');
+                return;
+            }
+            other=document.getElementById('txt_otherImprove_bm').value;
+            other=other.replace("'",'`');
+            other=other.replace('"','`');
+            des=document.getElementById('txt_description_bm').value;
+            if (des=='') {
+                alert('New Kaizen must have a description!');
+                return;
+            }
+            des=des.replace("'",'`');
+            des=des.replace('"','`');
+            attachfile='';
+            if (document.getElementById("txt_attach_link_bm").value!="") {
+                extend=document.getElementById("txt_attach_link_bm").value.split('.')[1];
+                attachfile=plant+';'+kaizen_name+'.'+extend;
+                document.getElementById('submit_2').click();
+            }
+            insert_kaizen(plant, kaizen_name, costsaving, other, des, plant_bm, kaizen_name_bm,'Y', attachfile);
+        });
+        document.getElementById('btn_close_manual_bm').addEventListener('click', function(){
+            document.getElementById('dialog_manual_input').close();
+        });
+        function load_file_attach_bm(x) {
+            document.getElementById('txt_attach_link_bm').value=x.files.item(0).name;
+            document.getElementById('txt_attach_link_bm').parentNode.classList.add('is-dirty');
+        }
+        var form2=document.getElementById("upload_form_attach_bm");
+        form2.addEventListener("submit", e=>{
+            if (document.getElementById('file_2').value!=''){
+                e.preventDefault();
+                var xsend=new XMLHttpRequest();
+                xsend.onreadystatechange=function(){
+                    if (this.readyState==4 && this.status==200){
+                        var data=xsend.responseText;
+                    }
+                }
+                var fileInput = document.getElementById('file_2');
+                var file;
+                plant=document.getElementById('cbb_plant_benchmark').value;
+                kaizen_name=document.getElementById('txt_kaizenBenchmark').value;
+                extension=fileInput.files[0].name.substring(fileInput.files[0].name.lastIndexOf('.')+1);
+                newName=plant+';'+kaizen_name+'.'+extension;
+                file=fileInput.files[0];
+                var formData = new FormData();
+                formData.append('file', file, newName);
+                if (file!=null){
+                    xsend.open('POST','/Finance/Upload_Kaizen_Attach', true);
+                    xsend.send(formData);
+                }
+            }
+            return false;
+        });
+        document.getElementById('btn_modify_manual_bm').addEventListener('click', function(){
+            plant=document.getElementById('cbb_plant_benchmark').value;
+            if (plant=='') {
+                alert('Plant Benchmark is not acceptable!');
+                return;
+            }
+            kaizen_name=document.getElementById('txt_kaizenBenchmark').value;
+            if (kaizen_name=='') {
+                alert('Kaizen Name is not acceptable!');
+                return;
+            }
+            plant_bm=document.getElementById('cbb_plant_bm').value;
+            if (plant_bm=='') {
+                alert('Plant must not be empty!');
+                return;
+            }
+            kaizen_name_bm=document.getElementById('cbb_kaizenName_bm').value;
+            if (kaizen_name_bm=='') {
+                alert('New Kaizen must not be empty!');
+                return;
+            }
+            costsaving=document.getElementById('txt_costSaving_bm').value;
+            if (isNaN(costsaving)==true) {
+                alert('Cost Saving must be a Number!');
+                return;
+            }
+            other=document.getElementById('txt_otherImprove_bm').value;
+            
+            des=document.getElementById('txt_description_bm').value;
+            if (des=='') {
+                alert('New Kaizen must have a description!');
+                return;
+            }
+            attachfile='';
+            if (document.getElementById("txt_attach_link_bm").value!="") {
+                extend=document.getElementById("txt_attach_link_bm").value.split('.')[1];
+                attachfile=plant+';'+kaizen_name+'.'+extend;
+                console.log(document.getElementById('file_2').value!='')
+                if (document.getElementById('file_2').value!='')
+                    document.getElementById('submit_2').click();
+            }
+            update_kaizen(plant, kaizen_name, costsaving, other, des);
+        });
+        document.getElementById('btn_modify_manual').addEventListener('click', function(){
+            plant=document.getElementById('cbb_plant').value;
+            if (plant=='') {
+                alert('Plant is not acceptable!');
+                return;
+            }
+            kaizen_name=document.getElementById('txt_kaizenName').value;
+            if (kaizen_name=='') {
+                alert('Kaizen Name is not acceptable!');
+                return;
+            }
+            costsaving=document.getElementById('txt_costSaving').value;
+            if (isNaN(costsaving)==true) {
+                alert('Cost Saving must be a Number!');
+                return;
+            }
+            other=document.getElementById('txt_otherImprove').value;
+            des=document.getElementById('txt_description').value;
+            if (des=='') {
+                alert('Kaizen must have a description!');
+                return;
+            }
+            attachfile='';
+            if (document.getElementById("txt_attach_link").value!="") {
+                extend=document.getElementById("txt_attach_link").value.split('.')[1];
+                attachfile=plant+';'+kaizen_name+'.'+extend;
+                document.getElementById('submit').click();
+            }
+            update_kaizen(plant, kaizen_name, costsaving, other, des);
+        });
+        function update_kaizen(plant, kaizen_name, costsaving, other, des){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Finance/Kaizen_Report/Update_Kaizen",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=xsend.responseText;
+                    console.log(data);
+                    if (data=='done') alert('Kaizen Was Updated Successfully!');
+                    document.getElementById('dialog_manual_input').close();
+                    load_kaizen();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={plant: plant, kaizen_name: kaizen_name, costsaving: costsaving, other:other, des:des}
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+        document.getElementById('btn_export_excel').addEventListener('click', function(){
+            datefrom=document.getElementById('date_from').value.substring(0,10);
+            dateto=document.getElementById('date_to').value.substring(0,10);
+            plant =document.getElementById('cbb_plant_search').value;
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Finance/Kaizen_Report/Export_Kaizen",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    data=xsend.responseText;
+                    console.log(data);
+                    if (data!='fail') {
+                        var a=document.createElement('a');
+                        a.setAttribute('href', '../Python/Finance/KaizenReport/Export_Files/'+data);
+                        a.download=data;
+                        a.click();
+                    } else {
+                        alert('Không tìm thấy data trong dữ liệu!');
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={datefrom:datefrom, dateto: dateto, plant: plant};
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        })
+    </script>
+</html> 
+
+

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <title>CCS</title>
+    </header>
+    <body style="background-image: url('../Image/3.jpg');">
+        <main style="width: 100%; height: 100%;">
+            <div class="page-content" style="width: 100%; height: 100%;">
+                <div class="mdl-grid" style="width: 100%; height: 100%;">
+                    <div style="width: 400px; height: 200px; background-color: white; margin: 10px auto; margin-top:200px; border-radius: 10px;">
+                        <div class="mdl-grid" style="padding: 0; border-radius: 10px; overflow: visible; height: 100%;">
+                            <div class="mdl-grid" style="padding: 0; height: 50px; margin:0 auto; background-color: orangered; color: white; width: 100%; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                                <div style="margin: 10px auto; font-size: 20px; margin-top: 15px;">COST CONTROL SYSTEM</div>
+                            </div>
+                            <div id="div_cbb_role" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                style="margin-left: 10px; z-index: 10; overflow:visible;">
+                                <input type="text" value="" class="mdl-textfield__input" id="cbb_role" style="color:black" readonly>
+                                <input type="hidden" value="" name="cbb_role">
+                                <label for="cbb_role" class="mdl-textfield__label">Bạn là...</label>
+                                <ul for="cbb_role" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="list_cbb_role" style="height: 200px;">
+                                    <li class="mdl-menu__item">Tạo yêu cầu báo giá</li>
+                                    <li class="mdl-menu__item">Tạo yêu cầu mua hàng</li>
+                                    <li class="mdl-menu__item">Trưởng bộ phận</li>
+                                    <li class="mdl-menu__item">Giám đốc nhà máy</li>
+                                    <li class="mdl-menu__item">Kế toán</li>
+                                    <li class="mdl-menu__item">Bộ phận mua hàng</li>
+                                </ul>
+                            </div>
+                            <div class="mdl-grid" style="width: 100%;">
+                                <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" 
+                                    style="background-color: indigo; color: white; float: right; margin-right: 20px; border-radius: 20px;" id="btn_login">
+                                    ĐỒNG Ý
+                                    <i class="material-icons">east</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+    <script>
+        document.getElementById('btn_login').addEventListener('click', function(){
+            role=document.getElementById('cbb_role').value;
+            a=document.createElement('a')
+            switch (role){
+                case 'Tạo yêu cầu báo giá':
+                    a.setAttribute('href', 'http://pbvweb01v/CCS/Request');
+                    break;
+                case 'Tạo yêu cầu mua hàng':
+                    a.setAttribute('href', 'http://pbvweb01v/CCS/Order');
+                    break;
+                case 'Trưởng bộ phận':
+                    a.setAttribute('href', 'http://pbvweb01v/CCS/HeadDepartment_Approve');
+                    break;
+                case 'Giám đốc nhà máy':
+                    a.setAttribute('href', 'http://pbvweb01v/CCS/PlantManager_Approve');
+                    break;
+                case 'Kế toán':
+                    a.setAttribute('href', 'http://pbvweb01v/CCS/Finance');
+                    break;
+                case 'Bộ phận mua hàng':
+                    a.setAttribute('href', 'http://pbvweb01v/CCS/Purchasing');
+                    break;
+                default:
+                    alert('Bạn là ai?');
+                    document.getElementById('cbb_role').focus();
+            }
+            a.click();
+        });
+    </script>
+</html>

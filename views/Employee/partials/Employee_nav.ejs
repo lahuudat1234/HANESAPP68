@@ -1,0 +1,95 @@
+<style>
+    .mdl-layout__drawer {
+        width: 420px;
+        left: -250px;
+    }
+
+    .mdl-layout__drawer.is-visible {
+        left: 0;
+    }
+</style>
+<div class="mdl-layout__drawer"  style="border: none; background-color: white;">
+    <!-- class="mdl-layout-title" -->
+    <!-- background-image: url('https://cdn.clipart.email/b2f7a538d5d324b85f87c30fff789114_user-icon-clipart_600-600.svg');  -->
+    <div style="width: 200px; height: 200px; margin: 10px auto; overflow: hidden; border-radius: 100px;">
+        <img style="
+            background-image: url('../Image/Hanes.png'); 
+            height: 200px;"
+            id="img_avatar">
+        </img>
+    </div>
+    
+    <div style="color: black; margin: 10px auto; font-family: Roboto; font-size: 20px;" id="txt_name">NAME</div>
+    <div style="color: black; margin: 10px auto; font-family: Roboto; font-size: 20px;" id='txt_id'>ID</div>
+    <nav class="mdl-navigation">
+        <hr>
+        <ul class="demo-list-icon mdl-list">
+            <div style="margin-left: 20px; font-size: 18;"><b>THÔNG TIN</b></div>
+            <li class="mdl-list__item">
+                <span class="mdl-list__item-primary-content" style="margin-left: 20px; color: red;">
+                    <i class="material-icons mdl-list__item-icon" style=' color:red'>settings</i>
+                    BỘ PHẬN: <div  id='txt_dept' style='margin-left: 5px;'></div>
+                </span>
+            </li>
+            <li class="mdl-list__item">
+                <span class="mdl-list__item-primary-content" style="margin-left: 20px; color: green">
+                    <i class="material-icons mdl-list__item-icon" style="color: green;">location_on</i>
+                    VỊ TRÍ: <div  id='txt_pos' style='margin-left: 5px;'></div>
+                </span>
+            </li>
+            <li class="mdl-list__item">
+                <span class="mdl-list__item-primary-content" style="margin-left: 20px; color: blue;">
+                    <i class="material-icons mdl-list__item-icon" style="color: blue;">send</i>
+                    NHÂN VIÊN: <div  id='txt_type' style='margin-left: 5px;'></div>
+                </span>
+            </li>
+            <li class="mdl-list__item">
+                <span class="mdl-list__item-primary-content" style="margin-left: 20px; color: orange;">
+                    <i class="material-icons mdl-list__item-icon" style="color: orange">grade</i>
+                    CHUYỀN: <div  id='txt_line' style='margin-left: 5px;'></div>
+                </span>
+            </li>
+            <li class="mdl-list__item">
+                <span class="mdl-list__item-primary-content" style="margin-left: 20px; color: purple;">
+                    <i class="material-icons mdl-list__item-icon" style="color: purple;">check_circle</i>
+                    CA: <div  id='txt_shift' style='margin-left: 5px;'></div>
+                </span>
+            </li>
+            <li class="mdl-list__item">
+                <span class="mdl-list__item-primary-content" style="margin-left: 20px; color:chocolate;">
+                    <i class="material-icons mdl-list__item-icon" style="color:chocolate;">business</i>
+                    NHÀ MÁY: <div  id='txt_plant' style='margin-left: 5px;'></div>
+                </span>
+            </li>
+            <hr>
+            <div style="margin-left: 20px;"><b>KPI</b></div>
+            <a class="mdl-navigation__link" href="/KPI" style="color:black;">
+                <i class="material-icons mdl-list__item-icon" style="margin-right: 20px; color:green;">insert_chart</i>
+                TỰ ĐÁNH GIÁ KPI
+            </a>
+            <a class="mdl-navigation__link" style="color: black; font-size: 14px;" href="/KPI/Sup_Evaluate">
+                <i class="material-icons" style="margin-right: 20px;">description</i>
+                QUẢN LÝ ĐÁNH GIÁ
+            </a>
+            <!-- <a class="mdl-navigation__link" href="/Employee/Talent_Development" style="color:black;">
+                <i class="material-icons mdl-list__item-icon" style="margin-right: 20px; color:red;">card_membership</i>
+                TALENT DEVELOPMENT
+            </a> -->
+            <hr>
+            <div style="margin-left: 40px; color: white;">Contact</div>
+            <a class="mdl-navigation__link" style="color: white; font-size: 14px;" href="/">
+                <i class="material-icons" style="margin-right: 20px">info</i>
+                IT -HBI PHUBAI
+            </a>
+            <a class="mdl-navigation__link" style="color: white; font-size: 14px;" href="/">
+                hbi_phubai_IT@hanes.com
+            </a>
+            <hr>
+            <div style="margin-left: 20px;"><b>TRỞ VỀ</b></div>
+            <a class="mdl-navigation__link" href="/" style="color:black;">
+                <i class="material-icons mdl-list__item-icon" style="margin-right: 20px; color:black;">keyboard_backspace</i>
+                TRANG CHỦ
+            </a>
+        </ul>
+    </nav>
+</div>

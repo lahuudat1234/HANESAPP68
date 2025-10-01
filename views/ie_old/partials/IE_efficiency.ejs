@@ -1,0 +1,74 @@
+<!-- <div class="mdl-card mdl-shadow--6dp" style="width: 80%; min-height:fit-content; margin: 10px auto; border-radius: 10px;"> -->
+    <div class="mdl-grid">
+        
+    </div>
+<!-- </div> -->
+<div class="mdl-card mdl-shadow--6dp" style="width: 80%; min-height:fit-content; margin: 10px auto; border-radius: 10px;">
+    <div class="mdl-card__title" style="background: rgb(255, 168, 55);">
+        <h2 class="mdl-card__title-text">LE QUANG DUNG</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+        <div class="mdl-grid">
+            
+            <ul>
+                <li>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="text" id="empID">
+                        <label class="mdl-textfield__label" for="empID">Nhập ID. Ví dụ 051235</label>
+                    </div>
+                </li>
+                <li>
+                    <div style="width: 30%;">Họ & Tên: LE QUANG DUNG</div>
+                </li>
+                <li>
+                    <div style="width: 30%;">Ca: Hành Chính</div>
+                    <div style="width: 30%;">Line: Line 220</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div style="width: 80%; height: 500px; margin: 10px auto;">
+    <canvas id="myChart" ></canvas>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script> -->
+    <script src="/JS/chart/Chart.min.js"></script>
+    <script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                // label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                // backgroundColor: [
+                //     'rgba(255, 99, 132, 0.2)',
+                //     'rgba(54, 162, 235, 0.2)',
+                //     'rgba(255, 206, 86, 0.2)',
+                //     'rgba(75, 192, 192, 0.2)',
+                //     'rgba(153, 102, 255, 0.2)',
+                //     'rgba(255, 159, 64, 0.2)'
+                // ],
+                // borderColor: [
+                //     'rgba(255, 99, 132, 1)',
+                //     'rgba(54, 162, 235, 1)',
+                //     'rgba(255, 206, 86, 1)',
+                //     'rgba(75, 192, 192, 1)',
+                //     'rgba(153, 102, 255, 1)',
+                //     'rgba(255, 159, 64, 1)'
+                // ],
+                // borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
+    </div>
+</div>

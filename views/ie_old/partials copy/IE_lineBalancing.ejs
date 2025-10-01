@@ -1,0 +1,177 @@
+<!-- <script defer src="/JS/chart/Chart.min.js"></script> -->
+<script defer type="text/javascript" src="/JS/chart/Chart.js"></script>
+<!-- <script defer type="text/javascript" src="/JS/chart/chartjs-plugin-colorschemes.js"></script> -->
+<div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+    <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 10px;">
+        <div style="margin: 10px auto;">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" style="margin: 10px; width: 100px;">
+                <input type="text" value="" class="mdl-textfield__input" id="group" readonly>
+                <input type="hidden" value="" name="group">
+                <label for="group" class="mdl-textfield__label">Group</label>
+                <ul for="group" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="group_array">
+                    <%for (var i=0; i< group_list.length; i++){%>
+                        <%if (i==0){%> 
+                            <li class="mdl-menu__item" data-selected="true"><%= group_list[i].Line%></li>
+                        <%}else{%>
+                            <li class="mdl-menu__item"><%= group_list[i].Line%></li>
+                        <%}%>
+                    <%}%>
+                </ul>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"  style="margin: 10px; width: 80px;">
+                <input type="text" value="" class="mdl-textfield__input" id="shift" readonly>
+                <input type="hidden" value="" name="shift">
+                <label for="shift" class="mdl-textfield__label">Ca</label>
+                <ul for="shift" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="shift_list">
+                    <li class="mdl-menu__item" data-selected="true">RIT</li>
+                    <li class="mdl-menu__item">BALI</li>
+                </ul>
+            </div>
+            <div id="cbb_wc" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height getmdl-select__is-dirty"  style="margin: 10px; width: 300px;">
+                <input type="text" value="" class="mdl-textfield__input" id="WC" readonly>
+                <input type="hidden" value="" name="WC">
+                <label for="WC" class="mdl-textfield__label">WC</label>
+                <ul for="WC" class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id ="wc_list"></ul>
+            </div>
+            <div id="cbb_style" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"  style="margin: 10px; width: 100px;">
+                <input type="text" value="" class="mdl-textfield__input" id="style" readonly>
+                <input type="hidden" value="" name="style">
+                <label for="style" class="mdl-textfield__label">Style</label>
+                <ul for="style" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="style_list">
+                </ul>
+            </div>
+            <div id="cbb_size" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"  style="margin: 10px; width: 100px;">
+                <input type="text" value="" class="mdl-textfield__input" id="size" readonly>
+                <input type="hidden" value="" name="size">
+                <label for="size" class="mdl-textfield__label">Size</label>
+                <ul for="size" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="size_list">
+                </ul>
+            </div>
+            <div id="cbb_weekCBC" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" style="margin: 10px; width: 100px;">
+                <input type="text" value="" class="mdl-textfield__input" id="weekCbc" readonly>
+                <input type="hidden" value="" name="weekCbc">
+                <label for="weekCbc" class="mdl-textfield__label">Tuần CBC</label>
+                <ul for="weekCbc" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="weekCBC">
+                    <li class="mdl-menu__item" data-val="BY" data-selected="true" id="nextWeek">W13</li>
+                    <!-- <li class="mdl-menu__item" data-val="BY" id="thisWeek"></li> -->
+                </ul>
+            </div>
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="emp_load" style="margin: 10px;">
+                <i class="material-icons" id="emp_load">search</i>
+            </button>
+            <div>
+                <div id="process_spinner" style="margin: 10px auto; width: 300px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect" id="lineBalancing_tab">
+    <div class="mdl-tabs__tab-bar" style="border: none;">
+        <a href="#employee_data_panel" id="employee_data_panel_1" class="mdl-tabs__tab is-active" style="color: white;">CÔNG NHÂN</a>
+        <a href="#operation_data_panel" id="operation_data_panel_1" class="mdl-tabs__tab" style="color: white;">Công Đoạn</a>
+        <a href="#config_panel" id="config_panel_1" class="mdl-tabs__tab" style="color: white;">Thay đổi</a>
+    </div>
+    <div class="mdl-tabs__panel is-active" id="employee_data_panel">
+        <div class="mdl-card mdl-shadow--6dp" style="width: 95% ; margin: 10px auto; overflow-x:auto; border-radius: 10px; ">
+            <table class="mdl-data-table mdl-js-data-table"  id="emp_data">
+                <col width="21px">
+                <thead>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric">STT</th>
+                        <th class="mdl-data-table__cell--non-numeric">ID</th>
+                        <th class="mdl-data-table__cell--non-numeric">Họ và Tên</th>
+                        <th class="mdl-data-table__cell--non-numeric">Line</th>
+                        <th class="mdl-data-table__cell--non-numeric">Ca</th>
+                        <th class="mdl-data-table__cell--non-numeric">Công Đoạn 1</th>
+                        <th class="mdl-data-table__cell--non-numeric">Hiệu Suất 1</th>
+                        <th class="mdl-data-table__cell--non-numeric">Công Đoạn 2</th>
+                        <th class="mdl-data-table__cell--non-numeric">Hiệu Suất 2</th>
+                        <th class="mdl-data-table__cell--non-numeric">Công Đoạn Khác</th>
+                        <!-- <th class="mdl-data-table__cell--non-numeric">Ghi Chú</th> -->
+                    </tr>
+                </thead>
+                <tbody id="table_emp_body"> 
+                </tbody>
+            </table>
+        </div>
+        <button id="btn_cbc" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" 
+                style="right: 32px; bottom: 50px; position: fixed; z-index: 10; background-color: orangered;">
+            <i class="material-icons">send</i>
+            <div class="mdl-tooltip" data-mdl-for="btn_cbc">
+                Cân Bằng Chuyền
+            </div>
+        </button>
+        <!-- <button id="btn_export" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" 
+                style="right: 32px; bottom: 118px; position: fixed; z-index: 10; background-color: green; size: 30px;">
+            <i class="material-icons">cloud_download</i>
+            <div class="mdl-tooltip" data-mdl-for="btn_export">
+                Xuất file Excel
+            </div>
+        </button>
+        <button id="btn_add_specific" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" 
+                style="right: 32px; bottom: 186px; position: fixed; z-index: 10; background-color: blue; size: 30px;">
+            <i class="material-icons">person_add</i>
+            <div class="mdl-tooltip" data-mdl-for="btn_add_specific">
+                Thêm người đặc biệt
+            </div>
+        </button>
+        <button id="btn_edit" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" 
+                style="right: 32px; bottom: 254px; position: fixed; z-index: 10; background-color: darkorchid; size: 30px;">
+            <i class="material-icons">create</i>
+            <div class="mdl-tooltip" data-mdl-for="btn_edit">
+                Chỉnh sửa
+            </div>
+        </button> -->
+    </div>
+    <div class="mdl-tabs__panel" id="operation_data_panel">
+        <div>
+            <div id="lineBalancing_spinner" style="margin-left: 50%; margin-top: 20px;"></div>
+        </div>
+        <div id="op_div" class="mdl-card mdl-shadow--6dp" style="width: 95% ; margin: 10px auto; overflow-x:auto; border-radius: 10px; display:none;">
+            <table class="mdl-data-table mdl-js-data-table"  id="op_data">
+                <col width="21px">
+                <thead>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric">CÔNG ĐOẠN</th>
+                        <th class="mdl-data-table__cell--non-numeric">SAM</th>
+                        <th class="mdl-data-table__cell--non-numeric">MAT</th>
+                        <th class="mdl-data-table__cell--non-numeric">HC</th>
+                        <th class="mdl-data-table__cell--non-numeric">HIỆU SUẤT</th>
+                        <th class="mdl-data-table__cell--non-numeric">GIẢM GIỜ</th>
+                        <th class="mdl-data-table__cell--non-numeric">HIỆU SUẤT</th>
+                        <th class="mdl-data-table__cell--non-numeric">TĂNG GIỜ</th>
+                        <th class="mdl-data-table__cell--non-numeric">HIỆU SUẤT</th>
+                        <th class="mdl-data-table__cell--non-numeric">SẢN LƯỢNG</th>
+                        <th class="mdl-data-table__cell--non-numeric">SỐ MÁY</th>
+                        <!-- <th class="mdl-data-table__cell--non-numeric">WIP</th> -->
+                        <th class="mdl-data-table__cell--non-numeric">CHÚ THÍCH</th>
+                    </tr>
+                </thead>
+                <tbody id="table_op_body"> 
+                </tbody>
+            </table>
+        </div>
+        <div class="mdl-grid mdl-cell mdl-cell--8-col mdl-shadow--6dp mdl-color--white" style="width: 95% ; margin: 10px auto; border-radius: 10px;">
+            <div style="background-color: white;" id="headCount_chart_div" class="mdl-cell mdl-cell--4-col">
+                <canvas id="headCount_chart"></canvas>
+            </div>
+            <div style="background-color: white;" id="eff_chart_div" class="mdl-cell mdl-cell--4-col">
+                <canvas id="eff_chart"></canvas>
+            </div>
+            <div style="background-color: white;" id="output_chart_div" class="mdl-cell mdl-cell--4-col">
+                <canvas id="output_chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="mdl-tabs__panel" id="config_panel">
+    </div>
+</div>
+
+<script defer>
+    window.onload=function() {
+        var element=document.createElement("script");
+        element.src="/JS/IE/LineBalancing/IE_get_employee_data.js"
+        element.async=true;
+        document.body.appendChild(element);
+    }
+</script>

@@ -1,0 +1,55 @@
+
+<style>
+    .mdl-layout__drawer {
+        width: 350px;
+        left: -250px;
+    }
+    .mdl-layout__drawer.is-visible {
+        left: 0;
+    }
+    .abc {
+        color:black;
+    }
+</style>
+<div class="mdl-layout__drawer" style="border: none;">
+    <div style="max-width: 100%; min-height: 80px; background-image: url('../Image/2.jpg');
+        background-size: 400px auto;">
+        <span class="mdl-layout-title" style="color: white; font-size: 30px; margin: 50px 20px;">Sản Xuất</span>
+        <div class="mdl-layout-spacer"></div>
+    </div>
+    
+    <nav class="mdl-navigation">
+        <style>
+            .abc:hover{
+                color:indigo;
+            }
+        </style>
+        <div style="margin-left: 40px;"><b>Vận Hành</b></div>
+        <a class="mdl-navigation__link" style="color: black; font-size: 14px;" href="/Cutting/PayrollCheck">
+            <i class="material-icons" style="margin-right: 20px;">attach_money</i>
+            Kiểm Tra Tem Lương
+        </a>
+        <a class="mdl-navigation__link" style="color: black; font-size: 14px;" href="http://10.113.90.40/cutting/off_standard">
+            <i class="material-icons" style="margin-right: 20px;">work_off</i>
+            Off Standard
+        </a>
+        <a class="mdl-navigation__link" style="color: black; font-size: 14px;" href="http://10.113.90.40/cut_kanban_pro">
+            <i class="material-icons" style="margin-right: 20px;">question_answer</i>
+            Phát Tem & Auto Kanban
+        </a>
+        <hr>
+        <!-- <h5>Thông tin</h5> -->
+        <div style="margin-left: 40px;"><b>Thông Tin</b></div>
+        <a class="mdl-navigation__link" style="color: black; font-size: 14px;" href="/Cutting/Reports">
+            <i class="material-icons" style="margin-right: 20px;">description</i>
+            Báo Cáo Khác
+        </a>
+        <hr>
+        <!-- <h5>Trở Về</h5> -->
+        <div style="margin-left: 40px;"><b>Trở Về</b></div>
+        <a class="mdl-navigation__link" style="color: black; font-size: 14px;" href="/">
+            <i class="material-icons" style="margin-right: 20px;">keyboard_backspace</i>
+            Trang Chủ
+        </a>
+    </nav>
+</div>

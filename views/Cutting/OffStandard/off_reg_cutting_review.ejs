@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Cutting webserver</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<!-- day picker -->
+<!-- Include jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+<script>
+    $(document).ready(function(){
+        var date_input=$('input[name="date"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+            format: 'dd/mm/yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+        })
+    });
+
+</script>
+
+<!-- day picker -->
+<style>
+  /* The side navigation menu */
+  .sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #6C3483 ; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  }
+  
+  /* The navigation menu links */
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  /* When you mouse over the navigation links, change their color */
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  /* Position and style the close button (top right corner) */
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+  #main {
+    transition: margin-left .5s;
+    padding: 2px;
+  }
+  
+  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+  .modal {
+     /* position: absolute; */
+     top: 10px;
+     right: 100px;
+     bottom: 0;
+     left: 0;
+     z-index: 10040;
+     overflow: auto;
+     overflow-y: auto;
+  }
+  /* spin */
+  .loader{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    position: relative;
+    margin: 0 auto;
+  }
+  
+  /* LOADER 1 */
+  
+  #loader-1:before, #loader-1:after{
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    border: 10px solid transparent;
+    border-top-color: #3498db;
+  }
+  
+  #loader-1:before{
+    z-index: 100;
+    animation: spin 1s infinite;
+  }
+  
+  #loader-1:after{
+    border: 10px solid #ccc;
+  }
+  
+  @keyframes spin{
+    0%{
+      -webkit-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+  
+    100%{
+      -webkit-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  
+  
+  /* tab */
+  * {box-sizing: border-box}
+  
+  /* Set height of body and the document to 100% */
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial;
+  }
+  
+  /* Style tab links */
+  .tablink {
+    background-color: #6C3483 ;
+    color: whitesmoke;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 20%;
+  }
+  
+  .tablink:hover {
+    background-color: #B3E5FC;
+  }
+  
+  /* Style the tab content (and add height:100% for full page content) */
+  .tabcontent {
+    color: black;
+    display: none;
+    padding: 100px 20px;
+    height: 100%;
+  }
+  
+  #Home {background-color: #B3E5FC;}
+  #News {background-color: #B3E5FC;}
+  #Contact {background-color: #B3E5FC;}
+  #About {background-color: #B3E5FC;}
+  
+  
+  
+  
+  /* Just for styling */
+  .styling {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    /* height: 150px;
+    overflow: auto; */
+  }
+  table, th, td {
+    border: 1px solid black;
+  }
+  
+  .fixed_header{
+      width: 400px;
+      table-layout: fixed;
+      border-collapse: collapse;
+  }
+  
+  .fixed_header tbody{
+    display:block;
+    width: 100%;
+    overflow: auto;
+    height: 100px;
+  }
+  
+  .fixed_header thead tr {
+     display: block;
+  }
+  
+  .fixed_header thead {
+    background: #314261;
+    color:#6C3483 ;
+  }
+  
+  .fixed_header th, .fixed_header td {
+    padding: 5px;
+    text-align: left;
+    width: 200px;
+  }
+    div.round1 {
+    border: 2px solid #6C3483 ;
+    border-radius: 5px;
+    }
+    body {
+      background-color: rgb(252, 250, 255);
+      font: 400 15px Lato, Lato;
+      line-height: 1.8;
+      color: #210b3a;
+    }
+    h2 {
+      font-size: 24px;
+      text-transform: uppercase;
+      color: #303030;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+    h4 {
+      font-size: 19px;
+      line-height: 1.375em;
+      color: #303030;
+      font-weight: 400;
+      margin-bottom: 30px;
+    }  
+    .jumbotron {
+      background-color: #f4511e;
+      color: #fff;
+      padding: 25px 25px;
+      font-family: times, serif;
+    }
+    .bg-grey {
+      background-color: #f6f6f6;
+    }
+    .thumbnail {
+      padding: 0 0 15px 0;
+      border: none;
+      border-radius: 0;
+    }
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      margin-bottom: 10px;
+    }
+    .carousel-control.right, .carousel-control.left {
+      background-image: none;
+      color: #f4511e;
+    }
+    .carousel-indicators li {
+      border-color: #f4511e;
+    }
+    .carousel-indicators li.active {
+      background-color: #f4511e;
+    }
+    .item h4 {
+      font-size: 19px;
+      line-height: 1.375em;
+      font-weight: 400;
+      font-style: italic;
+      margin: 70px 0;
+    }
+    .item span {
+      font-style: normal;
+    }
+    .panel {
+      border: 1px solid #6C3483 ; 
+      border-radius:0 !important;
+      transition: box-shadow 0.5s;
+    }
+    .panel:hover {
+      box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+    }
+    .panel-footer .btn:hover {
+      border: 1px solid #6C3483 ;
+      background-color: #fff !important;
+      color: #6C3483 ;
+    }
+    .panel-heading {
+      color: #fff !important;
+      background-color: #6C3483  !important;
+      padding: 25px;
+      border-bottom: 1px solid transparent;
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .panel-footer {
+      background-color: white !important;
+    }
+    .panel-footer h3 {
+      font-size: 32px;
+    }
+    .panel-footer h4 {
+      color: #aaa;
+      font-size: 14px;
+    }
+    .panel-footer .btn {
+      margin: 15px 0;
+      background-color: #f4511e;
+      color: #fff;
+    }
+    .navbar {
+      margin-bottom: 0;
+      background-color: #6C3483 ;
+      z-index: 9999;
+      border: 0;
+      font-size: 12px !important;
+      line-height: 1.42857143 !important;
+      letter-spacing: 4px;
+      border-radius: 0;
+      font-family: Arial;
+    }
+    .navbar li a, .navbar .navbar-brand {
+      color: black !important;
+    }
+    .navbar-nav li a:hover, .navbar-nav li.active a {
+      color: #6C3483  !important;
+      background-color: #fff !important;
+    }
+    .navbar-default .navbar-toggle {
+      border-color: transparent;
+      color: #fff !important;
+    }
+    footer .glyphicon {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #f4511e;
+    }
+  
+    @keyframes slide {
+      0% {
+        opacity: 0;
+        transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        transform: translateY(0%);
+      }
+    }
+    @-webkit-keyframes slide {
+      0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .col-sm-4 {
+        text-align: center;
+        margin: 25px 0;
+      }
+      .btn-lg {
+        width: 100%;
+        margin-bottom: 35px;
+      }
+    }
+    @media screen and (max-width: 480px) {
+      .logo {
+        font-size: 150px;
+      }
+    }
+</style>
+<div class="container">
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <br>
+        <span style="font-size:30px;cursor:pointer; color: white;" onclick="openNav()">&#9776; Menu</span>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+          <li><a><span class="glyphicon glyphicon-user"></span> User:</a></li>
+          <li><a><input name="user_sign_up" type="text" id="user_sign_up"></a></li>
+          <li><a><span class="glyphicon glyphicon-log-in"></span> Pass:</a></li>
+          <li><a><input name="pass_sign_up" type="password" id="pass_sign_up"></a></li>
+          <li onclick="login()" id="login"><a><span class="glyphicon glyphicon-log-in"id="login_status"> Login</span></a></li>
+      </ul>
+    </div>
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="/cutting/off_standard">quét thẻ cutting</a>
+      <a href="/cutting/off_standard_review">phê duyệt offstd</a>
+      <a href="/cutting/off_standard_export">Xem báo cáo Offstd</a>
+      <a href="/cutting/off_standard_updatelist">Cập nhập DS offstd</a>
+      <a href="/cutting/SAH_adj">Cập nhật bù SAh</a>
+      <a href="http://pbvweb01v/Cutting/PayrollCheck">Web Scan Tem</a>
+    </div>
+  </nav>
+</div>
+</head>
+<div id="main" onclick="closeNav()">
+<body class="container" style="margin: 10px auto; width: 100%;">
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-md-6">
+      <h2> Chương trình ghi nhận giờ ngừng việc cutting</h2>
+    </div>
+    <div class="col-md-6">
+      <div class="container" style="margin: 0px; width: 100%; position: relative; align-items:right; float: right;">
+        <form id="form_group" method="GET" style="width: 100%;">
+          <div  class="col-md-4">
+              <!-- DAY PICKUP -->
+              <div class="bootstrap-iso">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-9 col-xs-3 col-lg-12">
+                    <!-- Form code begins -->
+                        <div class="form-group"> <!-- Date input -->
+                          <div>
+                            <label class="control-label" for="date"><span class="glyphicon glyphicon-calendar"></span> chọn ngày:</label>
+                          </div>
+                          <div>
+                            <input class="form-control" id="date" name="date" placeholder="DD/MM/YYYY" type="text" value="<%= dat %>"/>
+                          </div>
+                        </div>
+                    </div>
+                  </div>    
+                </div>
+              </div>
+              <!-- DAY PICKUP -->
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="sel_group">Chọn Chuyền:</label>
+              <select class="form-control" name="sel_group" id="sel_group">
+                <option></option>
+                <option>TUB1</option>
+                <option>TUB2</option>
+                <option>GERBER1</option>
+                <option>GERBER2</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="sel_shift">Ca:</label>
+              <select class="form-control" name="sel_shift" id="sel_shift">
+                <option></option>
+                <option>BLC</option>
+                <option>CPC</option>
+                <option>RMC</option>
+                <option>PLC</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <br/>
+            <div>
+              <!-- Submit button -->
+              <button id="search_data" class="btn btn-primary" style="background-color: #4B0082;" type="button" onclick="get_data_tracking()"><span class="glyphicon glyphicon-search"></span> TÌM KIẾM</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-1">
+    <label style="color: red;">Target:</label><br>
+  </div>
+  <div class="col-md-1">
+    <label id="target" style="color: red;">-:-</label><br>
+  </div>
+  <div class="col-md-5">
+    <label id="status" style="color: red;">-</label><br>
+  </div>
+  <div class="col-md-2">
+    <label id="d_in" style="color: red;">-</label><br>
+  </div>
+  <div class="col-md-2">
+    <label id="t_in" style="color: red;">-</label>
+  </div>
+
+  <div class="row" style="margin: 10px auto;">
+
+      <div class="col-md-12" style="border: 2px solid rgb(43, 39, 39); border-radius: 5px;">
+        <div style="color: #f4511e;">Kết quả duyệt:_____   0: chưa phê duyệt.  ______ /  ______ 1: không phê duyệt._______  / _______  2: đã phê duyệt</div>
+        <div class="row">
+          <div class="table-responsive" style="height: 535px;width: 100%;">
+            <table id="table_content" class="table" style="width: 100%;" onclick="review_Off()">
+              <!-- <table id="table_content"> style="height: 310px;" -->
+              <thead>
+                <tr >
+                  <th >ID</th>
+                  <th >TÊN NHÂN VIÊN</th>
+                  <th >MÃ DỪNG VIỆC</th>
+                  <th>CÔNG ĐOẠN 1</th>
+                  <th>CÔNG ĐOẠN 2</th>
+                  <th >GIỜ BẮT ĐẦU</th>
+                  <th>THỜI GIAN</th>
+                  <th>KẾT QUẢ DUYỆT</th>
+                  <th>IE</th>
+                  <th>GHI CHÚ</th>
+                </tr>
+              </thead>  
+              <tbody style="height: 395px;">
+                <%- table_body %>
+              </tbody>
+              </table>
+          </div>
+          <button id="dialog1" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">Open Modal</button>
+          <!-- Modal -->
+          <div class="modal fade" id="myModal2" role="dialog">
+            <div class="modal-dialog">
+            
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"><strong>Phê duyệt OffStandard</strong></h4>
+                </div>
+                <div class="modal-body">
+                  <form id="form_approve_offstd">
+                    <label for="d1_id">ID:</label>
+                    <input class="form-control" type="text" id="d1_id" name="d1_id">
+                    <label for="d1_name">Tên</label>
+                    <input class="form-control" type="text" id="d1_name" name="d1_name">
+                    <label for="d1_offcode">Mã dừng việc</label>
+                    <input class="form-control" type="text" id="d1_offcode" name="d1_offcode">
+                    <label for="d1_start">thời gian bắt đầu</label>
+                    <input class="form-control" type="text" id="d1_start" name="d1_start">
+                    <label for="d1_dur">Giờ OffStandard:</label>
+                    <input class="form-control" type="number" id="d1_dur" name="d1_dur">
+                    <label for="d1_sel_approve">phê duyệt:</label>
+                    <select class="form-control" name="d1_sel_approve" id="d1_sel_approve">
+                      <option>1: Không phê duyệt</option>
+                      <option>2: đồng ý phê duyệt</option>
+                    </select>
+                    <input class="form-control" style="display:none;" type="text" id="d1_user" name="d1_user">
+                    <br>
+                    <label >1: Không phê duyệt    /    2: đồng ý phê duyệt</label>
+                    <br>
+                    <input type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke;" value="Cập nhật" onclick="approveoff()">
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button id="close_dialog1" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+
+
+
+          <script type="text/javascript">
+            function approveoff(){
+                document.getElementById("close_dialog1").click();
+                document.getElementById("d1_id").disabled=false;
+                document.getElementById("d1_name").disabled=false;
+                document.getElementById("d1_offcode").disabled=false;
+                document.getElementById("d1_start").disabled=false;
+                document.getElementById("d1_dur").disabled=false;
+                document.getElementById("d1_user").value=document.getElementById("user_sign_up").value
+                var main_url = "/cutting/off_std_approved_submit";
+                var referrer = "/";
+                // e.preventDefault();
+                var frm = $('#form_approve_offstd');
+                $.ajax({
+                    type: "post",
+                    url: main_url,
+                    data: frm.serialize(),
+                    // headers: {'X-Alt-Referer': referrer },
+                    success: function (data) {
+                        alert(data);
+                        document.getElementById("search_data").click()
+                    },
+                    error: function () {
+                        alert("submit failed")
+                    },
+                  })
+
+              }
+            function review_Off(){
+                        login_status=document.getElementById("login_status").innerText
+                        if (login_status==" Login"){
+                          return
+                        }
+                        // var wks=document.getElementById("sel_week").value;
+                        // if (wks==0){
+                        //   alert('chọn tuần để lưu dữ liệu');
+                        //   return;
+                        // }
+                        var table = document.getElementById("table_content");
+                        event.stopImmediatePropagation;
+                        if (table) {
+                          for (var i = 0; i < table.rows.length; i++) {
+                            table.rows[i].ondblclick = function(e) {
+                              tableText(this);
+                            };
+                          };
+                        };
+                      };
+
+            function tableText(tableRow) {
+
+                var idnv = tableRow.childNodes[0].innerText;
+                var tennv = tableRow.childNodes[1].innerText;
+                var manv = tableRow.childNodes[2].innerText;
+                var sttime=tableRow.childNodes[5].innerText;
+                var gionv = tableRow.childNodes[6].innerText;
+                if(gionv==""){
+                  alert("thông tin chưa đầy đủ để phê duyệt!");
+                  return;
+                }
+                document.getElementById("d1_id").value=idnv;
+                document.getElementById("d1_id").disabled=true;
+                document.getElementById("d1_name").value=tennv;
+                document.getElementById("d1_name").disabled=true;
+                document.getElementById("d1_offcode").value=manv;
+                document.getElementById("d1_offcode").disabled=true;
+                document.getElementById("d1_start").value=sttime;
+                document.getElementById("d1_start").disabled=true;
+                document.getElementById("d1_dur").value=gionv;
+                document.getElementById("d1_dur").disabled=true;
+                document.getElementById("dialog1").click();
+            };
+
+            function get_data_tracking(){
+              var sel_group=document.getElementById("sel_group").value;
+              if (sel_group=="-"){
+                alert("Vui lòng chọn nhóm chuyền để xem data");
+                return;
+              };
+              event.preventDefault(); //prevent default action 
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var trHTML='';
+                const jsonObject = JSON.parse(this.response)
+                // console.log(jsonObject);
+                var i;
+                var spa,iea;
+                for (i = 0; i < jsonObject.length; i++) {
+                  if (jsonObject[i].spantime==null){
+                    spa=""
+                  } else{
+                    spa=jsonObject[i].spantime
+                  }
+                  if (jsonObject[i].ieapproveduser==null){
+                    iea=""
+                  } else{
+                    iea=jsonObject[i].ieapproveduser
+                  }
+                  trHTML += '<tr><td >' + jsonObject[i].id + '</td><td >' + jsonObject[i].name + '</td><td >' + jsonObject[i].code + '</td><td >'+ jsonObject[i].op_reg + '</td><td >'+ jsonObject[i].op_tran + '</td><td >' + jsonObject[i].regtime + '</td><td >' + spa + '</td><td >' + jsonObject[i].ieapprovedresult + '</td><td >' + iea+ '</td><td >' + jsonObject[i].note +'</td></tr>';
+                };
+                $('#table_content tbody').html(trHTML);
+                };
+              };
+              var d=document.getElementById("date").value;
+              var sel_shift=document.getElementById("sel_shift").value;
+              xhttp.open("GET", "/cutting/get_off_data/"+d.toString("%DD/%MM/%YYYY")+"/"+sel_group+"/"+sel_shift, true);
+              xhttp.send();
+            };
+
+            function login() {
+              var user_ie=document.getElementById("user_sign_up").value
+              if (user_ie=="singuyen"||user_ie=="ngmai1"||user_ie=="hungo1"||user_ie=="lobui"||user_ie=="vaduong"||user_ie=="trnguye4"||user_ie=="letuan"||user_ie=="ngtap"||user_ie=="vohanh" ||user_ie=="phbe"||user_ie=="banguyen"||user_ie=="tonguye3"||user_ie=="lidang"||user_ie=="bale1"||user_ie=="tunguy10"||user_ie=="thvo"||user_ie=="bale"||user_ie=="ththan"||user_ie=="sale1"||user_ie=="lavo"||user_ie=="minguye3"||user_ie=="vupham1"){
+
+              } else{
+                alert("User - "+user_ie+" -  không được cấp quyền duyệt offstd")
+                return;
+              }
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                  var result_login=this.responseText
+                  if (result_login=="success"){
+                    document.getElementById("user_sign_up").disabled = true;
+                    document.getElementById("pass_sign_up").disabled = true;
+                    document.getElementById("login_status").innerHTML=" Login_success"
+                    alert("bạn đã đăng nhập thành công")
+                  } else{
+                      alert(result_login);
+                  }
+                  }
+                };
+                var login_status=document.getElementById("login_status").innerText
+                var user_sign_up=document.getElementById("user_sign_up").value
+                var pass_sign_up=document.getElementById("pass_sign_up").value
+                if (login_status==" Login"){
+                    if (user_sign_up==''){
+                    alert('Bạn chưa nhập User');
+                    return;
+                    }
+                    if (pass_sign_up==''){
+                        alert('Bạn chưa nhập password');
+                        return;
+                    }
+                    xhttp.open("get", "/off_reg/login/"+user_sign_up+"/"+pass_sign_up, true);
+                    xhttp.send();
+                }
+                };
+
+            </script>
+          <br>
+        </div>
+      </div>
+
+  </div>
+  <script type="text/javascript">
+
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "300px";
+        document.getElementById("main").style.marginLeft = "300px";
+        // document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+      }
+
+      /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+      }
+    
+    function submit_form(){
+    // frm.submit(function (e) {
+    //  type="text/javascript"
+        // var input = document.getElementById("employee_id");
+        // input.addEventListener("keyup", function(event) {
+        //     event.preventDefault();
+        //     if (event.keyCode === 13) {
+        //         alert("yes it works,I'm happy ");
+        //         return;
+        //     }
+        // });
+        document.getElementById("employee_id").disabled=false;
+        var id_reg=document.getElementById("employee_id").value;
+        if (id_reg.length!=6){
+          alert("ID của bạn không chính xác")
+          return;
+        }
+        var name_reg=document.getElementById("name_ajax").innerHTML;
+        if (name_reg=="invalid"){
+          alert("ID không có trong hệ thống!");
+          document.getElementById('employee_id').value="";
+                    document.getElementById('name_ajax').innerHTML="Quét thẻ hoặc nhập mã số và nhấn Enter";
+                    var x = document.getElementById("sel_code");
+                    while (x.length >0){
+                        x.options.remove(0);
+                        var x = document.getElementById("sel_code");
+                    }
+                    var x = document.getElementById("sel_code");
+                    var option = document.createElement("option");
+                    option.text ="09 (Không sản xuất)";
+                    x.add(option);
+                    var x = document.getElementById("sel_op1");
+                    while (x.length >0){
+                        x.options.remove(0);
+                        var x = document.getElementById("sel_op1");
+                    }
+                    var x = document.getElementById("sel_op2");
+                    while (x.length >0){
+                        x.options.remove(0);
+                        var x = document.getElementById("sel_op2");
+                    }
+                    document.getElementById("r09").style.display="grid"
+                    document.getElementById("r0308").style.display="none"
+                    document.getElementById("target").innerHTML="-";
+                    document.getElementById("d_in").innerHTML="-";
+                    document.getElementById("status").innerHTML="-";
+                    document.getElementById("t_in").innerHTML="-";
+          return;
+        }
+        var type_reg=document.getElementById("t_in").innerHTML;
+        if (type_reg!="DR"){
+            alert("Bạn không phải nhân viên trực tiếp!");
+                    document.getElementById('employee_id').value="";
+                    document.getElementById('name_ajax').innerHTML="Quét thẻ hoặc nhập mã số và nhấn Enter";
+                    var x = document.getElementById("sel_code");
+                    while (x.length >0){
+                        x.options.remove(0);
+                        var x = document.getElementById("sel_code");
+                    }
+                    var x = document.getElementById("sel_code");
+                    var option = document.createElement("option");
+                    option.text ="09 (Không sản xuất)";
+                    x.add(option);
+                    var x = document.getElementById("sel_op1");
+                    while (x.length >0){
+                        x.options.remove(0);
+                        var x = document.getElementById("sel_op1");
+                    }
+                    var x = document.getElementById("sel_op2");
+                    while (x.length >0){
+                        x.options.remove(0);
+                        var x = document.getElementById("sel_op2");
+                    }
+                    document.getElementById("r09").style.display="grid"
+                    document.getElementById("r0308").style.display="none"
+                    document.getElementById("target").innerHTML="-";
+                    document.getElementById("d_in").innerHTML="-";
+                    document.getElementById("status").innerHTML="-";
+                    document.getElementById("t_in").innerHTML="-";
+            return;
+        };
+        var status=document.getElementById("status").innerHTML;
+        var groupto=document.getElementById("sel_group").value;
+        if (groupto=="" && status!="Bạn đã mở ticket trước đó"){
+          alert("vui lòng chọn chuyền điều chuyển")
+          return;
+        }
+        // var login_stt=document.getElementById("login_status").innerHTML
+        // if (login_stt==" Login" && status!="Bạn đã mở ticket trước đó"){
+        //   alert("Vui lòng đăng nhập trước!");
+        //   return;
+        // }
+        var user_reg=document.getElementById("user_sign_up").value
+        document.getElementById("user_reg").value=user_reg;
+        document.getElementById("groupto").value=groupto;
+        document.getElementById("name_text").value=document.getElementById("name_ajax").innerHTML;
+        var tg=document.getElementById("target").innerHTML;
+        if (tg=="-"){
+          tg="0"
+        }
+        document.getElementById("target_t").value=tg;
+        document.getElementById("start_time").value=document.getElementById("d_in").innerHTML;
+        var main_url = "/cutting/off_std_reg_new";
+        if (status=="Bạn chưa mở ticket"){
+          var main_url = "/cutting/off_std_reg_new";
+        }
+        if (status=="Bạn đã mở ticket trước đó"){
+          var main_url = "/cutting/off_std_reg_close";
+        }
+        var referrer = "/";
+        // e.preventDefault();
+        var frm = $('#form_reg');
+        $.ajax({
+            type: "post",
+            url: main_url,
+            data: frm.serialize(),
+            // headers: {'X-Alt-Referer': referrer },
+            success: function (data) {
+                    document.getElementById('employee_id').value="";
+                    document.getElementById('name_ajax').innerHTML="Quét thẻ hoặc nhập mã số và nhấn Enter";
+                    var x = document.getElementById("sel_code");
+                    while (x.length >0){
+                        x.options.remove(0);
+                        var x = document.getElementById("sel_code");
+                    }
+                    var x = document.getElementById("sel_code");
+                    var option = document.createElement("option");
+                    option.text ="09 (Không sản xuất)";
+                    x.add(option);
+                    var x = document.getElementById("sel_op1");
+                    while (x.length >0){
+                        x.options.remove(0);
+                        var x = document.getElementById("sel_op1");
+                    }
+                    var x = document.getElementById("sel_op2");
+                    while (x.length >0){
+                        x.options.remove(0);
+                        var x = document.getElementById("sel_op2");
+                    }
+                    document.getElementById("r09").style.display="grid"
+                    document.getElementById("r0308").style.display="none"
+                    document.getElementById("target").innerHTML="-";
+                    document.getElementById("d_in").innerHTML="-";
+                    document.getElementById("status").innerHTML="-";
+                    document.getElementById("t_in").innerHTML="-";
+                alert(data);
+                if (document.getElementById("sel_group")!=""){
+                  document.getElementById("search_data").click();
+                }
+                // document.getElementById("refresh_link").click();
+                // this.unbind(e);
+                // window.location.href = '/'; 
+
+            },
+            error: function () {
+                alert("submit failed")
+            },
+        });
+    };
+    // function Submit_offstandard(){
+    //   alert("you clicked submit")
+    //   event.preventDefault(); //prevent default action 
+    //   var xhttp = new XMLHttpRequest();
+    //   xhttp.onreadystatechange = function() {
+    //   if (this.readyState == 4 && this.status == 200) {
+    //       alert(this.responseText);
+    //       document.getElementById("employee_id").innerText=""
+    //       document.getElementById("text_note").innerText=""
+    //     };
+    //   }
+    //   xhttp.open("POST","/off_std_reg", true);
+    //   xhttp.send();
+    // };
+  </script>
+</body>
+</html>

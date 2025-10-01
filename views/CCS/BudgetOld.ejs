@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<header>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>CCS - Budget</title>
+</header>
+
+<body style="background-color: white;" onload="init_loadingPage()">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title">BUDGET CONTROL</span>
+                <div class="mdl-layout-spacer"></div>
+                <div id="div_cbb_dept"
+                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                    style="margin: 0 auto; width: 150px; margin-right: 20px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_dept" readonly>
+                    <input type="hidden" value="" name="cbb_dept">
+                    <label for="cbb_dept" class="mdl-textfield__label" style="color: white;">Department</label>
+                    <ul for="cbb_dept" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                        id="list_cbb_dept">
+                        <li class="mdl-menu__item" data-val="0">ALL</li>
+                        <li class="mdl-menu__item" data-val="IE">IE</li>
+                        <li class="mdl-menu__item" data-val="IND">IND</li>
+                        <li class="mdl-menu__item" data-val="QA">QA</li>
+                        <li class="mdl-menu__item" data-val="PL">PL</li>
+                        <li class="mdl-menu__item" data-val="IT">IT</li>
+                        <li class="mdl-menu__item" data-val="HR">HR</li>
+                        <li class="mdl-menu__item" data-val="FI">FI</li>
+                        <li class="mdl-menu__item" data-val="PR">PR</li>
+                        <li class="mdl-menu__item" data-val="CT">CT</li>
+                        <li class="mdl-menu__item" data-val="LP">LP</li>
+                        <li class="mdl-menu__item" data-val="MEC">MEC</li>
+                        <li class="mdl-menu__item" data-val="PAD">PAD</li>
+                        <li class="mdl-menu__item" data-val="FM">FM</li>
+                        <li class="mdl-menu__item" data-val="LOG">LOG</li>
+                        <li class="mdl-menu__item" data-val="CPL">CPL</li>
+                        <li class="mdl-menu__item" data-val="IECT">CUT_IE</li>
+                        <li class="mdl-menu__item" data-val="OPCT">CUT_OPR</li>
+
+                    </ul>
+                </div>
+                <div id="div_cbb_account"
+                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                    style="width: 200px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_account" readonly>
+                    <input type="hidden" value="" name="cbb_account">
+                    <label for="cbb_account" class="mdl-textfield__label" style="color: white;">Account</label>
+                    <ul for="cbb_account" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                        id="list_cbb_account">
+                        <!-- <li class="mdl-menu__item" data-val="0">ALL</li> -->
+                    </ul>
+                </div>
+                <div id="div_cbb_month"
+                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                    style="width: 50px; margin-left: 20px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_month" readonly>
+                    <input type="hidden" value="" name="cbb_month">
+                    <label for="cbb_month" class="mdl-textfield__label" style="color:white">Tháng</label>
+                    <ul for="cbb_month" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                        id="list_cbb_month">
+                        <li class="mdl-menu__item" data-val="0">ALL</li>
+                        <li class="mdl-menu__item" data-val="1">1</li>
+                        <li class="mdl-menu__item" data-val="2">2</li>
+                        <li class="mdl-menu__item" data-val="3">3</li>
+                        <li class="mdl-menu__item" data-val="4">4</li>
+                        <li class="mdl-menu__item" data-val="5">5</li>
+                        <li class="mdl-menu__item" data-val="6">6</li>
+                        <li class="mdl-menu__item" data-val="7">7</li>
+                        <li class="mdl-menu__item" data-val="8">8</li>
+                        <li class="mdl-menu__item" data-val="9">9</li>
+                        <li class="mdl-menu__item" data-val="10">10</li>
+                        <li class="mdl-menu__item" data-val="11">11</li>
+                        <li class="mdl-menu__item" data-val="12">12</li>
+                    </ul>
+                </div>
+                <div id="div_cbb_year"
+                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                    style="width: 70px; margin-left: 20px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_year" readonly>
+                    <input type="hidden" value="" name="cbb_year">
+                    <label for="cbb_year" class="mdl-textfield__label" style="color:white">Năm</label>
+                    <ul for="cbb_year" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                        id="list_cbb_year">
+                        <li class="mdl-menu__item" data-val="2020">2020</li>
+                        <li class="mdl-menu__item" data-val="2021">2021</li>
+                        <li class="mdl-menu__item" data-val="2022">2022</li>
+                        <li class="mdl-menu__item" data-val="2023">2023</li>
+                        <li class="mdl-menu__item" data-val="2024">2024</li>
+                        <li class="mdl-menu__item" data-val="2025">2025</li>
+                    </ul>
+                </div>
+                <div style="margin-left:20px;">
+                    <button id="btn_exportExcel" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                        style="background-color: green; border-radius: 10px;">
+                        Export to Excel
+                        <i class="material-icons">fact_check</i>
+                    </button>
+                </div>
+
+
+            </div>
+            <!-- Tabs -->
+            <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+                <a href="#scroll-tab-1" class="mdl-layout__tab" is-active>SUMMARY</a>
+                <a href="#scroll-tab-2" class="mdl-layout__tab">BY DEPARTMENT</a>
+            </div>
+
+        </header>
+        <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <!-- Tab1 -->
+                <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+                    <div class="page-content" style="width:100%;height: 100%;">
+
+                        <div style="width: 95%; margin: 10px auto; border-radius: 20px;">
+                            <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 20px;">
+                                <div class="mdl-card mdl-shadow--6dp"
+                                    style="width: 98% ; margin: 10px auto; overflow-x:auto; border-radius: 20px;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                        <thead style="background-color:#0066CC;">
+                                            <tr>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    DEPARTMENT</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    ACCOUNT</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    COSTNATURE</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    PLANT</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    MONTH</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">YEAR
+                                                </th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    BUDGET</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    TOTAL RQ</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    RECEIVED</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    CANCEL</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    ON-GOING</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    BALANCE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+                <!-- Tab2 -->
+                <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+                    <div class="page-content" style="width:100%;height: 100%;">
+
+                        <div style="width: 95%; margin: 10px auto; border-radius: 20px;">
+                            <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 20px;">
+                                <div class="mdl-card mdl-shadow--6dp"
+                                    style="width: 98% ; margin: 10px auto; overflow-x:auto; border-radius: 20px;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                        <thead style="background-color:#cc005f;">
+                                            <tr>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    MONTH</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">YEAR
+                                                </th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    PLANT</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">DEPT
+                                                </th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    ORDER ID</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    ACCOUNT</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    QUANITY</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    AMOUNT(USD)</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">PO
+                                                </th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    RECEPT</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    CANCEL</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    ON-GOING</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body_byDept">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+                <dialog style="border-radius: 10px; border: none; padding: 0; background-color: transparent;"
+                    id="dialog_exportExcel">
+                    <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="width: 660px; border-radius: 10px;">
+                        <div class="mdl-card__title" style="background-color: indigo; color: white; ">
+                            <h3 class="mdl-card__title-text">Export to Excel File</h3>
+                        </div>
+                        <div class="mdl-card__supporting-text" style=" height:260px;width: 100%;">
+                            <div id="div_cbb_dept_export "
+                                class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                                style="margin: 0 auto; width: 180px; margin:auto;">
+                                <input type="text" value="" class="mdl-textfield__input" id="cbb_dept_export" readonly>
+                                <input type="hidden" value="" name="cbb_dept_export">
+                                <label for="cbb_dept" class="mdl-textfield__label"
+                                    style="color: green;">Department</label>
+                                <ul for="cbb_dept_export"
+                                    class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                                    id="list_cbb_dept_export" style="color: black;height: 120px;overflow-y: scroll;" ">
+                                    <li class=" mdl-menu__item" data-val="0">ALL</li>
+                                    <li class="mdl-menu__item" data-val="IE">IE</li>
+                                    <li class="mdl-menu__item" data-val="IND">IND</li>
+                                    <li class="mdl-menu__item" data-val="QA">QA</li>
+                                    <li class="mdl-menu__item" data-val="PL">PL</li>
+                                    <li class="mdl-menu__item" data-val="IT">IT</li>
+                                    <li class="mdl-menu__item" data-val="HR">HR</li>
+                                    <li class="mdl-menu__item" data-val="FI">FI</li>
+                                    <li class="mdl-menu__item" data-val="PR">PR</li>
+                                    <li class="mdl-menu__item" data-val="CT">CT</li>
+                                    <li class="mdl-menu__item" data-val="LP">LP</li>
+                                    <li class="mdl-menu__item" data-val="MEC">MEC</li>
+                                    <li class="mdl-menu__item" data-val="FM">FM</li>
+                                    <li class="mdl-menu__item" data-val="LOG">LOG</li>
+                                    <li class="mdl-menu__item" data-val="CPL">CPL</li>
+                                    <li class="mdl-menu__item" data-val="IECT">CUT_IE</li>
+                                    <li class="mdl-menu__item" data-val="OPCT">CUT_OPR</li>
+                                </ul>
+                            </div>
+
+                            <!-- From -->
+                            <div class="mdl-grid" style="width: 100%;margin: auto;">
+                                <div class="mdl-cell mdl-cell--2-col" style="padding: 0;">
+                                    <div class="mdl-textfield mdl-js-textfield"
+                                        style="margin-top: auto;margin-bottom: auto;">
+                                        <label class="mdl-textfield__label"
+                                            style="color:green;text-align: left;height: 40px;margin-top: auto;margin-bottom: auto;">From</label>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--2-col">
+                                    <div id="div_cbb_month_from"
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                                        style="width: 80px; margin:auto;">
+                                        <input type="text" value="" class="mdl-textfield__input" id="cbb_month_from"
+                                            readonly>
+                                        <input type="hidden" value="" name="cbb_month_from">
+                                        <label for="cbb_month_export" class="mdl-textfield__label"
+                                            style="color: black;">Tháng</label>
+                                        <ul for="cbb_month_from"
+                                            class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                                            id="list_cbb_month_from" style="height: 120px;overflow-y: scroll">
+                                            <!-- <li class="mdl-menu__item" data-val="0">ALL</li> -->
+                                            <li class="mdl-menu__item" data-val="1">1</li>
+                                            <li class="mdl-menu__item" data-val="2">2</li>
+                                            <li class="mdl-menu__item" data-val="3">3</li>
+                                            <li class="mdl-menu__item" data-val="4">4</li>
+                                            <li class="mdl-menu__item" data-val="5">5</li>
+                                            <li class="mdl-menu__item" data-val="6">6</li>
+                                            <li class="mdl-menu__item" data-val="7">7</li>
+                                            <li class="mdl-menu__item" data-val="8">8</li>
+                                            <li class="mdl-menu__item" data-val="9">9</li>
+                                            <li class="mdl-menu__item" data-val="10">10</li>
+                                            <li class="mdl-menu__item" data-val="11">11</li>
+                                            <li class="mdl-menu__item" data-val="12">12</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--2-col">
+                                    <div id="div_cbb_year_from"
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                                        style="width: 50px; margin:auto;">
+                                        <input type="text" value="" class="mdl-textfield__input" id="cbb_year_from"
+                                            readonly>
+                                        <input type="hidden" value="" name="cbb_year_from">
+                                        <label for="cbb_year_from" class="mdl-textfield__label"
+                                            style="color:black">Năm</label>
+                                        <ul for="cbb_year_from"
+                                            class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                                            id="list_cbb_year_from" style="height: 120px;overflow-y: scroll">
+                                            <li class="mdl-menu__item" data-val="2020">2020</li>
+                                            <li class="mdl-menu__item" data-val="2021">2021</li>
+                                            <li class="mdl-menu__item" data-val="2022">2022</li>
+                                            <li class="mdl-menu__item" data-val="2023">2023</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                <div class="mdl-cell mdl-cell--2-col" style="padding: 0;">
+                                    <div class="mdl-textfield mdl-js-textfield"
+                                        style="margin-top: auto;margin-bottom: auto;">
+                                        <label class="mdl-textfield__label"
+                                            style="color:green;text-align: left;height: 40px;margin-top: auto;margin-bottom: auto;">To</label>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--2-col">
+                                    <div id="div_cbb_month_to"
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                                        style="width: 50px; margin:auto;">
+                                        <input type="text" value="" class="mdl-textfield__input" id="cbb_month_to"
+                                            readonly>
+                                        <input type="hidden" value="" name="cbb_month_to">
+                                        <label for="cbb_month_to" class="mdl-textfield__label"
+                                            style="color:black">Tháng</label>
+                                        <ul for="cbb_month_to"
+                                            class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                                            id="list_cbb_month_to" style="height: 120px;overflow-y: scroll">
+                                            <li class="mdl-menu__item" data-val="1">1</li>
+                                            <li class="mdl-menu__item" data-val="2">2</li>
+                                            <li class="mdl-menu__item" data-val="3">3</li>
+                                            <li class="mdl-menu__item" data-val="4">4</li>
+                                            <li class="mdl-menu__item" data-val="5">5</li>
+                                            <li class="mdl-menu__item" data-val="6">6</li>
+                                            <li class="mdl-menu__item" data-val="7">7</li>
+                                            <li class="mdl-menu__item" data-val="8">8</li>
+                                            <li class="mdl-menu__item" data-val="9">9</li>
+                                            <li class="mdl-menu__item" data-val="10">10</li>
+                                            <li class="mdl-menu__item" data-val="11">11</li>
+                                            <li class="mdl-menu__item" data-val="12">12</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--2-col">
+                                    <div id="div_cbb_year_to"
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                                        style="width: 50px; margin:auto;">
+                                        <input type="text" value="" class="mdl-textfield__input" id="cbb_year_to"
+                                            readonly>
+                                        <input type="hidden" value="" name="cbb_year_to">
+                                        <label for="cbb_year_to" class="mdl-textfield__label"
+                                            style="color:black">Năm</label>
+                                        <ul for="cbb_year_to"
+                                            class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                                            id="list_cbb_year_to" style="height: 120px;overflow-y: scroll">
+                                            <li class="mdl-menu__item" data-val="2020">2020</li>
+                                            <li class="mdl-menu__item" data-val="2021">2021</li>
+                                            <li class="mdl-menu__item" data-val="2022">2022</li>
+                                            <li class="mdl-menu__item" data-val="2023">2023</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                                    id="btn_Download">
+                                    <i class="material-icons">file_download</i>
+                                    DOWNLOAD
+                                </button>
+                            </div>
+                            <div class="mdl-card__menu">
+                                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+                                    id="btn_status_close_change" style="background-color: red; color: white;">
+                                    <i class="material-icons">close</i>
+                                </button>
+                            </div>
+                        </div>
+                </dialog>
+            </main>
+    </div>
+    <script>
+        //#1 Khởi tạo các tham số mặc định dựa vào thời gian và tài khoản truy cập
+        function init_loadingPage() {
+            init_month_year();
+            init_user();
+        }
+        //#2 Lấy thông tin tháng/ năm hiện tại
+        function init_month_year() {
+            var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+            var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+            var month = localISOTime.substring(5, 7);
+            var year = localISOTime.substring(0, 4);
+            $('ul[for="cbb_month"] li[data-val="' + parseInt(month) + '"]').attr('data-selected', true);
+            $('ul[for="cbb_year"]  li[data-val="' + year + '"]').attr('data-selected', true);
+        }
+        //#3 Lấy thông tin User truy cập
+        function init_user() {
+            var xsend = new XMLHttpRequest();
+            xsend.open("POST", "/CSS/get_User", true);
+            xsend.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    data_user = JSON.parse(xsend.responseText);
+                    console.log(data_user);
+                    $('ul[for="cbb_dept"]  li[data-val="' + data_user[0].Department + '"]').attr('data-selected', true);
+                    getmdlSelect.init('#div_cbb_dept');
+
+                }
+                var sort_dept = document.getElementById('cbb_dept').value;
+                var month = document.getElementById('cbb_month').value;
+                var year = document.getElementById('cbb_year').value;
+                get_AccountBudget(sort_dept, year);
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send();
+
+        }
+        //#4 list down all account
+        function get_AccountBudget(dept, year) {
+            var xsend = new XMLHttpRequest();
+            xsend.open("POST", "/CSS/get_Account", true);
+            cbb_Account = document.getElementById('list_cbb_account');
+            xsend.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    data_Account = JSON.parse(xsend.responseText);
+                    console.log(data_Account);
+                    if (data_Account.length > 0) {
+                        while (cbb_Account.childNodes.length > 0)
+                            cbb_Account.removeChild(cbb_Account.childNodes[0]);
+                        var li = document.createElement('li');
+                        li.setAttribute('class', 'mdl-menu__item');
+                        li.setAttribute('data-val', 'ALL');
+                        li.setAttribute('data-selected', true);
+                        li.innerHTML = 'ALL';
+                        cbb_Account.appendChild(li);
+                        for (var i = 0; i < data_Account.length; i++) {
+                            var li = document.createElement('li');
+                            li.setAttribute('class', 'mdl-menu__item');
+                            li.setAttribute('data-val', data_Account[i].CODE);
+                            li.innerHTML = data_Account[i].CODE;
+                            cbb_Account.appendChild(li);
+                        }
+                        getmdlSelect.init('#div_cbb_account');
+                    }
+                    else {
+                        alert("Không có tài khoản nào");
+                        return;
+                    }
+
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            if (dept == 'ALL') dept = 0;
+            data = { dept: dept, year: year }
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+        //change dept
+        document.getElementById('cbb_dept').addEventListener('change', function () {
+            var sort_dept = document.getElementById('cbb_dept').value;
+            var month = document.getElementById('cbb_month').value;
+            var year = document.getElementById('cbb_year').value;
+            var AccountName = document.getElementById('cbb_account').value;
+            get_AccountBudget(sort_dept, year);
+            get_SummaryData(sort_dept, month, year, AccountName);
+            get_byDept(sort_dept, month, year, AccountName);
+        });
+        //change the account
+        document.getElementById('cbb_account').addEventListener('change', function () {
+            var sort_dept = document.getElementById('cbb_dept').value;
+            var month = document.getElementById('cbb_month').value;
+            var year = document.getElementById('cbb_year').value;
+            var AccountName = document.getElementById('cbb_account').value;
+            get_SummaryData(sort_dept, month, year, AccountName);
+            get_byDept(sort_dept, month, year, AccountName);
+        });
+        //change month
+        document.getElementById('cbb_month').addEventListener('change', function () {
+            var sort_dept = document.getElementById('cbb_dept').value;
+            var month = document.getElementById('cbb_month').value;
+            var year = document.getElementById('cbb_year').value;
+            var AccountName = document.getElementById('cbb_account').value;
+            get_SummaryData(sort_dept, month, year, AccountName);
+            get_byDept(sort_dept, month, year, AccountName);
+
+        });
+        //change year
+        document.getElementById('cbb_year').addEventListener('change', function () {
+            var sort_dept = document.getElementById('cbb_dept').value;
+            var month = document.getElementById('cbb_month').value;
+            var year = document.getElementById('cbb_year').value;
+            var AccountName = document.getElementById('cbb_account').value;
+            get_SummaryData(sort_dept, month, year, AccountName);
+            get_byDept(sort_dept, month, year, AccountName);
+        });
+        //click button export Report
+        document.getElementById('btn_exportExcel').addEventListener('click', function () {
+
+            console.log('Export to Excel File');
+            document.getElementById('dialog_exportExcel').showModal();
+        });
+        document.getElementById('btn_status_close_change').addEventListener('click', function () {
+            document.getElementById('dialog_exportExcel').close();
+        });
+        document.getElementById('btn_Download').addEventListener('click', function () {
+            var sort_dept = document.getElementById('cbb_dept_export').value;
+            var month_from = document.getElementById('cbb_month_from').value;
+            var year_from = document.getElementById('cbb_year_from').value;
+            var month_to = document.getElementById('cbb_month_to').value;
+            var year_to = document.getElementById('cbb_year_to').value;
+            if (month_from == '') {
+                alert("Không được để trống tháng FROM");
+                return;
+            }
+            if (year_from == '') {
+                alert("Không để trống năm FROM");
+                return;
+            }
+            if (month_to == '') {
+                alert("Không được để trống tháng TO");
+                return;
+            }
+            if (year_to == '') {
+                alert("Không để trống năm TO");
+                return;
+            }
+            download_Budget(sort_dept, month_from, year_from, month_to, year_to);
+
+        });
+        //download Excel File
+        function download_Budget(sort_dept, month_from, year_from, month_to, year_to) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "/CCS/Budget/Download", true);
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('dialog_exportExcel').close();
+                    fileName = xmlhttp.responseText;
+                    console.log(fileName)
+                    a = document.createElement('a');
+                    a.setAttribute('href', '../downloadCCS/saveReportFile/' + fileName);
+                    a.setAttribute('download', fileName);
+                    a.click();
+                }
+            }
+            xmlhttp.setRequestHeader("Content-type", "application/json");
+            if (sort_dept == 'ALL') sort_dept = 0;
+            data = {
+                month_from: month_from,
+                year_from: year_from,
+                sort_dept: sort_dept,
+                year_to: year_to,
+                month_to: month_to,
+            }
+            console.log(data);
+            xmlhttp.send(JSON.stringify(data));
+
+        };
+        // Get Sumarry Data
+        function get_SummaryData(sort_dept, month, year, AccountName) {
+            var xsend = new XMLHttpRequest();
+            xsend.open("POST", "/CSS/Budget", true);
+            xsend.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    data = JSON.parse(xsend.responseText);
+                    console.log(data);
+                    if (data.result == 'empty') {
+                        // alert("Không có thông tin nào!");
+                        return;
+                    }
+                    if (data.length > 0) {
+                        table_body = document.getElementById('table_body');
+                        while (table_body.childNodes.length > 0)
+                            table_body.removeChild(table_body.childNodes[0]);
+                        for (i = 0; i < data.length; i++) {
+                            var tr = document.createElement("tr");
+                            //Department
+                            var tdDepartment = document.createElement("td");
+                            tdDepartment.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].DEPT == null) node = document.createTextNode('');
+                            else node = document.createTextNode(data[i].DEPT);
+                            tdDepartment.appendChild(node);
+                            tr.appendChild(tdDepartment);
+                            //Account
+                            var tdAccount = document.createElement("td");
+                            tdAccount.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].AccountName == null) node = document.createTextNode('');
+                            else node = document.createTextNode(data[i].AccountName);
+                            tdAccount.appendChild(node);
+                            tr.appendChild(tdAccount);
+                            // CostNatute
+                            var tdCostNatute = document.createElement("td");
+                            tdCostNatute.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].COST_NATURE == null) node = document.createTextNode('');
+                            else node = document.createTextNode(data[i].COST_NATURE);
+                            tdCostNatute.appendChild(node);
+                            tr.appendChild(tdCostNatute);
+                            // Plant
+                            var tdPlant = document.createElement("td");
+                            tdPlant.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].PLANT == null) node = document.createTextNode('');
+                            else node = document.createTextNode(data[i].PLANT);
+                            tdPlant.appendChild(node);
+                            tr.appendChild(tdPlant);
+                            //Month
+                            var tdMonth = document.createElement("td");
+                            tdMonth.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].Month_Estimated == null) node = document.createTextNode('');
+                            else node = document.createTextNode(data[i].Month_Estimated);
+                            tdMonth.appendChild(node);
+                            tr.appendChild(tdMonth);
+                            //Year
+                            var tdYear = document.createElement("td");
+                            tdYear.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].Year_Estimated == null) node = document.createTextNode('');
+                            else node = document.createTextNode(data[i].Year_Estimated);
+                            tdYear.appendChild(node);
+                            tr.appendChild(tdYear);
+                            //Budget
+                            var formatter = new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                            });
+                            var tdBudget = document.createElement("td");
+                            tdBudget.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].BUDGET == null) node = document.createTextNode(formatter.format("0"));
+                            else node = document.createTextNode(formatter.format(data[i].BUDGET));
+                            tdBudget.appendChild(node);
+                            tr.appendChild(tdBudget);
+                            // TotalRQ
+                            var tdTotalRQ = document.createElement("td");
+                            tdTotalRQ.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].Spend_USD == null) node = document.createTextNode(formatter.format("0"));
+                            else node = document.createTextNode(formatter.format(data[i].Spend_USD));
+                            tdTotalRQ.appendChild(node);
+                            tr.appendChild(tdTotalRQ);
+                            //Receive
+                            var tdReceive = document.createElement("td");
+                            tdReceive.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].Receve_USD == null) node = document.createTextNode(formatter.format("0"));
+                            else node = document.createTextNode(formatter.format(data[i].Receve_USD));
+                            tdReceive.appendChild(node);
+                            tr.appendChild(tdReceive);
+                            // Cancel
+                            var tdCancel = document.createElement("td");
+                            tdCancel.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].Cancel_USD == null) node = document.createTextNode(formatter.format("0"));
+                            else node = document.createTextNode(formatter.format(data[i].Cancel_USD));
+                            tdCancel.appendChild(node);
+                            tr.appendChild(tdCancel);
+                            //OnGoing
+                            var tdOnGoing = document.createElement("td");
+                            tdOnGoing.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].ON_GOING == null) node = document.createTextNode(formatter.format("0"));
+                            else node = document.createTextNode(formatter.format(data[i].ON_GOING));
+                            tdOnGoing.appendChild(node);
+                            tr.appendChild(tdOnGoing);
+                            //Balance
+                            var tdBalance = document.createElement("td");
+                            tdBalance.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (parseFloat(data[i].BALANCE) < 0) {
+                                tdBalance.setAttribute("style", "color:red;");
+                            }
+                            else {
+                                tdBalance.setAttribute("style", "color:green;");
+                            }
+                            if (data[i].BALANCE == null) node = document.createTextNode(formatter.format("0"));
+                            else node = document.createTextNode(formatter.format(data[i].BALANCE));
+
+                            tdBalance.appendChild(node);
+                            tr.appendChild(tdBalance);
+                            componentHandler.upgradeElement(tr);
+                            table_body.appendChild(tr);
+                        }
+
+                    }
+                    else {
+                        // alert("Không có thông tin nào!");
+                        return;
+                    }
+
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            if (month == 'ALL') month = 0;
+            if (sort_dept == 'ALL') sort_dept = 0;
+            if (AccountName == 'ALL' || AccountName == '') AccountName = 0;
+            data = {
+                month: month,
+                year: year,
+                sort_dept: sort_dept,
+                AccountName: AccountName
+            }
+            console.log("data sending ");
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+        //getData by Department
+        function get_byDept(sort_dept, month, year, AccountName) {
+            var xsend = new XMLHttpRequest();
+            xsend.open("POST", "/CSS/Budget/byDepart", true);
+            xsend.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    data = JSON.parse(xsend.responseText);
+                    console.log(data);
+                    if (data.result == 'empty') {
+                        // alert("Không có thông tin nào!");
+                        return;
+                    }
+                    if (data.length > 0) {
+                        table_body = document.getElementById('table_body_byDept');
+                        while (table_body.childNodes.length > 0)
+                            table_body.removeChild(table_body.childNodes[0]);
+                        for (i = 0; i < data.length; i++) {
+                            var tr = document.createElement("tr");
+                            //Month
+                            var tdMonth = document.createElement("td");
+                            tdMonth.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].Month_Estimated == null) node = document.createTextNode('');
+                            else node = document.createTextNode(data[i].Month_Estimated);
+                            tdMonth.appendChild(node);
+                            tr.appendChild(tdMonth);
+                            //Year
+                            var tdYear = document.createElement("td");
+                            tdYear.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].Year_Estimated == null) node = document.createTextNode('');
+                            else node = document.createTextNode(data[i].Year_Estimated);
+                            tdYear.appendChild(node);
+                            tr.appendChild(tdYear);
+                            // Plant  
+                            var id_plant = data[i].AccountName.split(" ")[2].substring(0, 2);
+                            if (id_plant == '98') plant = 'IEC'
+                            else plant = 'PBC';
+                            var tdPlant = document.createElement("td");
+                            tdPlant.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            node = document.createTextNode(plant);
+                            tdPlant.appendChild(node);
+                            tr.appendChild(tdPlant);
+                            //Dept
+                            var id_dept = data[i].OrderID.split("_")[0]
+                            var tdDept = document.createElement("td");
+                            tdDept.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            node = document.createTextNode(id_dept);
+                            tdDept.appendChild(node);
+                            tr.appendChild(tdDept);
+                            //OrderID
+                            var tdOrderID = document.createElement("td");
+                            tdOrderID.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].OrderID == null) node = document.createTextNode('');
+                            else node = document.createTextNode(data[i].OrderID);
+                            tdOrderID.appendChild(node);
+                            tr.appendChild(tdOrderID);
+                            //Account
+                            var tdAccount = document.createElement("td");
+                            tdAccount.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].AccountName == null) node = document.createTextNode('');
+                            else node = document.createTextNode(data[i].AccountName);
+                            tdAccount.appendChild(node);
+                            tr.appendChild(tdAccount);
+                            // Quanity
+                            var tdQuanity = document.createElement("td");
+                            tdQuanity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].Quantity == null) node = document.createTextNode('');
+                            else node = document.createTextNode(data[i].Quantity);
+                            tdQuanity.appendChild(node);
+                            tr.appendChild(tdQuanity);
+                            //AmountUSD
+                            var formatter = new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                            });
+                            var tdAmountUSD = document.createElement("td");
+                            tdAmountUSD.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].AmountUSD == null) node = document.createTextNode(formatter.format("0"));
+                            else node = document.createTextNode(formatter.format(data[i].AmountUSD));
+                            tdAmountUSD.appendChild(node);
+                            tr.appendChild(tdAmountUSD);
+                            // PO
+                            var tdPO = document.createElement("td");
+                            tdPO.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].LW_PO_NUMBER == null) node = document.createTextNode("");
+                            else node = document.createTextNode(data[i].LW_PO_NUMBER);
+                            tdPO.appendChild(node);
+                            tr.appendChild(tdPO);
+                            //Receive
+                            var tdReceive = document.createElement("td");
+                            tdReceive.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].ReceptUSD == null) node = document.createTextNode(formatter.format("0"));
+                            else node = document.createTextNode(formatter.format(data[i].ReceptUSD));
+                            tdReceive.appendChild(node);
+                            tr.appendChild(tdReceive);
+                            // Cancel
+                            var tdCancel = document.createElement("td");
+                            tdCancel.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].CancelUSD == null) node = document.createTextNode(formatter.format("0"));
+                            else node = document.createTextNode(formatter.format(data[i].CancelUSD));
+                            tdCancel.appendChild(node);
+                            tr.appendChild(tdCancel);
+                            //OnGoing
+                            var tdOnGoing = document.createElement("td");
+                            tdOnGoing.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+
+                            if (data[i].ON_GOING == null) node = document.createTextNode(formatter.format("0"));
+                            else node = document.createTextNode(formatter.format(data[i].ON_GOING));
+                            tdOnGoing.appendChild(node);
+                            tr.appendChild(tdOnGoing);
+                            componentHandler.upgradeElement(tr);
+                            table_body.appendChild(tr);
+                        }
+
+                    }
+                    else {
+                        // alert("Không có thông tin nào!");
+                        return;
+                    }
+
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            if (month == 'ALL') month = 0;
+            if (sort_dept == 'ALL') sort_dept = 0;
+            if (AccountName == 'ALL' || AccountName == '') AccountName = 0;
+            data = {
+                month: month,
+                year: year,
+                sort_dept: sort_dept,
+                AccountName: AccountName
+            }
+            console.log("data sending ");
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+
+    </script>
+
+</body>
+
+</html>

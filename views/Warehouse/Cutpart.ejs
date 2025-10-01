@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <title>Cutpart Cutting</title>
+    </header>
+    <style>
+        #page-mask {
+            background: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            /* z-index: 10; */
+        }
+    </style>
+    <div id="page-mask"></div>
+    <!-- <body> -->
+    <body style="background-image: url('../Image/11.jpg');">
+        <!-- Always shows a header, even in smaller screens. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout-title">NHẬN CUTPART TỪ CUTTING</span>
+                    <%- include ("partials/headerTemplate.ejs"); -%>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+            </header>
+            <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                    <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 10px;">
+                        <div style="margin: 10px auto;">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 300px; margin-right: 50px;">
+                                <input class="mdl-textfield__input" type="text" id="txt_barcode">
+                                <label class="mdl-textfield__label" for="txt_barcode">Scan Barcode Cutpart</label>
+                            </div>
+                            <p id="txt_ticket_status"></p>
+                            <!-- <button class="mdl-button mdl-js-button mdl-button--fab 
+                                    mdl-js-ripple-effect mdl-button--colored" id="btn_ticket_delete">
+                                <i class="material-icons">delete</i>
+                            </button> -->
+                        </div>
+                        <!-- <div style="width: 100%;">
+                            <div id="table_ticket_spinner" style="margin-left: 50%; margin-top: 20px;"></div>
+                        </div> -->
+                        <div id="table_barcode" class="mdl-card mdl-shadow--6dp" style="width: 90% ; margin: 10px auto; overflow-x:auto; border-radius: 10px;">
+                            <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                <thead style="background-color: indigo;">
+                                    <tr>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">WORKLOT</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">CA</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">PRINT CODE</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">SẢN LƯỢNG</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">MOONROCK</th>  
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">MR</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">SCAN</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_barcode_body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </body>
+    <script>
+        var socket=io();
+        table_barcode_body=document.getElementById('table_barcode_body');
+        socket.on('cutpart-checkin-result', function(data){
+            console.log(data)
+            if (data=='error'){
+                alert("Không tìm thấy Barcode này tại bảo vệ Cutting!");
+                return;
+            }
+            data=JSON.parse(data)[0];
+            var tr=document.createElement("tr");
+            //worklot
+            var tdWorklot=document.createElement("td");
+            tdWorklot.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var node=document.createTextNode(data.WORKLOT);
+            tdWorklot.appendChild(node);
+            tr.appendChild(tdWorklot);
+            //shift
+            var tdShift=document.createElement("td");
+            tdShift.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var node=document.createTextNode(data.SHIFT);
+            tdShift.appendChild(node);
+            tr.appendChild(tdShift);
+            //PrintCode
+            var tdPrint=document.createElement("td");
+            tdPrint.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var node=document.createTextNode(data.PRINTCODE);
+            tdPrint.appendChild(node);
+            tr.appendChild(tdPrint);
+            //Output
+            var tdOUTPUT=document.createElement("td");
+            tdOUTPUT.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var node=document.createTextNode(data.OUTPUT);
+            tdOUTPUT.appendChild(node);
+            tr.appendChild(tdOUTPUT);
+            //MR
+            var tdMR=document.createElement("td");
+            tdMR.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var node=document.createTextNode(data.MOONROCKNUMBER);
+            tdMR.appendChild(node);
+            tr.appendChild(tdMR);
+            //TTMR
+            var tdTTMR=document.createElement("td");
+            tdTTMR.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var node=document.createTextNode(data.TOTALMOONROCK);
+            tdTTMR.appendChild(node);
+            tr.appendChild(tdTTMR);
+            //TimeScan
+            var tdTimeUpdate=document.createElement("td");
+            tdTimeUpdate.setAttribute("class","mdl-data-table__cell--non-numeric");
+            var timeUpdate=(new Date(data.TIMESCAN)).toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
+            var node=document.createTextNode(timeUpdate);
+            tdTimeUpdate.appendChild(node);
+            tr.appendChild(tdTimeUpdate);
+            componentHandler.upgradeElement(tr);
+            table_barcode_body.appendChild(tr);
+
+            document.getElementById('txt_barcode').value="";
+        });
+
+        document.getElementById('txt_barcode').addEventListener('keyup', function(){
+            if (event.keyCode === 13) {
+                barcode=document.getElementById('txt_barcode').value;
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // console.log(barcode)
+                // Trigger the button element with a click
+                socket.emit('submit-cutpart-checkin', barcode);
+            }
+        })
+    </script>
+</html>

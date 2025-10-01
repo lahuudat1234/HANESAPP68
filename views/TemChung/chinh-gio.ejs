@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/003c620c4b.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <style>
+        .container-fluid {
+            margin-top: 30px;
+        }
+
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .box-class {
+            border-top-color: #117a8b !important;
+            border-radius: 0.25rem;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+            background-color: #fff;
+            border-top: 5px solid #e9ecef;
+            margin-bottom: 1rem;
+            padding: 1rem;
+        }
+
+        .card {
+            margin-bottom: 1rem;
+        }
+
+        .card-header {
+            background-color: #117a8b;
+        }
+
+        .blue1 {
+            background-color: #17a2b8;
+        }
+
+        .blue2 {
+            background-color: #007bff;
+        }
+
+        .gray1 {
+            background-color: #6c757d;
+        }
+
+        .green1 {
+            background-color: #28a745;
+        }
+
+        .card-title {
+            float: left;
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin: 0;
+            color: white;
+        }
+
+        #wh_tb_filter {
+            text-align: right;
+        }
+
+        #wh_tb_filter label {
+            text-align: left;
+        }
+
+        #wh_tb_length select {
+            float: left;
+        }
+
+        #wh_tb_paginate {
+            float: right;
+        }
+
+        .menu-item {
+            color: black;
+        }
+
+        .menu-item:hover {
+            text-decoration: none;
+        }
+
+        .nav-link.active {
+            background-color: #007bff !important;
+            color: #fff !important;
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1540px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid"
+        style="background-color:rgb(53, 165, 209);padding-bottom: 5px;padding-top:5px;margin-top: 0px;">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>Điều chỉnh</h1>
+            </div>
+            <div class="col-sm-6">
+                <p style="float: right;margin-top: 15px;font-size: 20px;margin-right: 16px;">
+                    <span style="margin-right: 20px;">
+                        <a class="menu-item" href="../Assets/Huong dan an tem theo cum.pdf">HƯỚNG DẪN</a>
+                    </span>
+                </p>
+                <p style="float: right;margin-top: 15px;font-size: 20px;margin-right: 16px;">
+                    <span style="margin-right: 20px;">
+                        <a class="menu-item" href="/chinh-gio">ĐIỀU CHỈNH</a>
+                    </span>
+                </p>
+                <p style="float: right;margin-top: 15px;font-size: 20px;margin-right: 16px;">
+                    <span style="margin-right: 20px;">
+                        <a class="menu-item" href="/tem-chung">QUẸT THẺ</a>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Chọn ngày</h3>
+                    </div>
+                    <div class="card-body" style="padding:12px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="date" class="form-control" name="work_date" id="work_date"
+                                    value="">
+                                <!-- <select class="custom-select form-control-border border-width-2" id="SelectTypeScan">
+                                    <option value="">--</option>
+                                    <option value="GERA">GERA</option>
+                                    <option value="GERB">GERB</option>
+                                </select> -->
+                            </div>
+                            <div class="col-md-12">
+                                <button type="submit" id="SearchData" class="btn btn-primary" style="margin-top: 14px;">Tìm kiếm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Quẹt thẻ</h3>
+                    </div>
+                    <div class="card-body" style="padding:12px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="" id="user_update" placeholder="Quẹt thẻ tổ trưởng" autocomplete="off" autofocus="">
+                            </div>
+                            <div class="col-md-12" style="margin-top: 10px;margin-bottom: 10px;">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        ID tổ trưởng: <span id="idtt"></span>
+                                    </div>
+                                    <div class="col-md-7">
+                                        Họ tên tổ trưởng: <span id="namesup"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary">Xác nhận</button>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Thông tin</h3>
+                    </div>
+                    <div class="card-body" style="padding:12px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tên</th>
+                                            <th>Cụm</th>
+                                            <th>Công đoạn</th>
+                                            <th>Giờ bắt đầu</th>
+                                            <th>Giờ kết thúc</th>
+                                            <th>Số giờ</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="main-tb">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="UpdatetimeModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Điều chỉnh giờ</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            ID: <span id="idnv_up"></span>
+                        </div>
+                        <div class="col-md-6">
+                            Họ tên: <span id="name_up"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            Công đoạn: <span id="operation_up"></span>
+                        </div>
+                        <div class="col-md-6">
+                            Cụm: <span id="cluster_up"></span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span>Giờ bắt đầu:</span>
+                            <input type="datetime-local" class="form-control" id="StartTime">
+                        </div>
+                        <div class="col-md-6">
+                            <span>Giờ kết thúc:</span>
+                            <input type="datetime-local" class="form-control" id="EndTime">
+                        </div>
+                    </div>
+                    <input type="hidden" id="keyx">
+                    <input type="hidden" id="StartTimeOld">
+                    <input type="hidden" id="EndTimeOld">
+                    <!-- <h5>Bạn có chắc muốn return unipack <span id="UnipackReturnVal"></span> về kho</h5>
+                    <input type="hidden" id="unp-return">
+                    <input type="hidden" id="lot-return">
+                    <input type="hidden" id="fabric-return">
+                    <input type="hidden" id="width-return">
+                    <input type="hidden" id="color-return">
+                    <input type="hidden" id="org-qty-return">
+                    <input type="hidden" id="issue-return"> -->
+                </div>
+                <div class="modal-footer">
+                    <button id="ReturnBtn" type="button" class="btn btn-info" data-dismiss="modal" onclick="update_time()">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    $('#UpdatetimeModal').on('hide.bs.modal', function () {
+        document.activeElement.blur();
+    });
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+    const day = String(today.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    // Set the value of the input field
+    document.getElementById('work_date').value = formattedDate;
+
+    load_data(formattedDate)
+    function load_data(date) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var res_result = this.responseText;
+                list = JSON.parse(res_result);
+                var rr = "";
+                if (list.length > 0) {
+                    for (var i = 0; i < list.length; i++) {
+                        var row =
+                            "<tr><td>" +
+                            list[i]["id"] +
+                            "</td><td>" +
+                            list[i]["name"] +
+                            "</td><td>" +
+                            list[i]["cluster"] +
+                            "</td><td>" +
+                            list[i]["operation"] +
+                            "</td><td>" +
+                            list[i]["time_in_str"] +
+                            "</td><td>" +
+                            (list[i]["time_out_str"] == null ? '': list[i]["time_out_str"]) +
+                            "</td><td>" +
+                            (list[i]["diff"] == null ? '': list[i]["diff"]) +
+                            `</td><td><button data-keyx="`+list[i]["keyx"]+`" data-id="`+list[i]["id"]+`" data-name="`+list[i]["name"]+`" 
+                            data-cluster="`+list[i]["cluster"]+`" data-operation="`+list[i]["operation"]+`" data-timein="`+list[i]["time_in_str"]+`" data-timeout="`+list[i]["time_out_str"]+`"
+                            type="button" style="height:29px; margin: 1px;" class="btn btn-info btn-sm btn-update-time"><i class="fas fa-pen"></i></button></td></tr>`;
+                        rr = rr + row;
+                    }
+                    document.getElementById("main-tb").innerHTML = rr;
+                } else {
+                    document.getElementById("main-tb").innerHTML = '';
+                }
+            }
+        };
+        xhttp.open("GET", "/tem-chung/load-data-by-date?date="+date, true);
+        xhttp.send();
+    }
+
+    $(document).ready(function(){
+        $("#SearchData").click(function(){
+            load_data($('#work_date').val())
+        });
+    });
+
+    $("#user_update").on("change", function () {
+        loading_user()
+    });
+
+    function loading_user() {
+        $.ajax({
+        url: "/load-user",
+        method: "POST",
+        data: {
+            rfid : $("#user_update").val()
+        },
+        dataType: "json",
+      })
+        .done(function (response) {
+          if (response.lenth == 0) {
+            alert("Không tìm thấy nhân viên");
+            $("#idnv").text('');
+            $("#name").text('');
+            $("#shift").text('');
+            $("#sum_hrs").text('');
+            return;
+          } else {
+            try {
+              $("#user_update").val("");
+              var data = $.extend({}, response);
+              let check_position = (response[0].Position).includes("CUTTING SUPERVISOR");
+              if (check_position == true) {
+                $("#idtt").text(response[0].EmployeeID);
+                $("#namesup").text(response[0].Name);
+              } else {
+                alert('Chỉ cho phép tổ trưởng quẹt thẻ')
+              }
+            } catch {
+                $("#idtt").text('');
+                $("#namesup").text('');
+              return;
+            }
+          }
+        })
+    }
+
+    $(document).on("click", ".btn-update-time", function(e) {
+        if ($(this).data('timeout') == null) {
+            alert('Nhân viên chưa chốt giờ')
+            return
+        }
+        if ($('#idtt').text() == '') {
+            alert('Chưa quẹt thẻ tổ trưởng')
+            return
+        }
+        $('#idnv_up').text($(this).data('id'))
+        $('#name_up').text($(this).data('name'))
+        $('#operation_up').text($(this).data('operation'))
+        $('#cluster_up').text($(this).data('cluster'))
+        $('#StartTime').val($(this).data('timein'))
+        $('#EndTime').val($(this).data('timeout'))
+
+        $('#keyx').val($(this).data('keyx'))
+        $('#StartTimeOld').val($(this).data('timein'))
+        $('#EndTimeOld').val($(this).data('timeout'))
+        $('#UpdatetimeModal').modal('show')
+        // $('#ReturnUnipack').modal('show')
+    });
+
+    function update_time() {
+        $.ajax({
+            url: "/update-time",
+            method: "POST",
+            data: {
+                keyx : $("#keyx").val(),
+                timein : $("#StartTime").val(),
+                timeout : $("#EndTime").val(),
+                timeinold : $("#StartTimeOld").val(),
+                timeoutold : $("#EndTimeOld").val(),
+                user_update: $("#idtt").text()
+            },
+            dataType: "json",
+        })
+        .done(function (response) {
+            if (response.status == 'done') {
+                alert('Thành công')
+                load_data($('#work_date').val())
+            }
+        })
+    }
+
+</script>

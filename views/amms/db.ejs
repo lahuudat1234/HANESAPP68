@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Asia Machine inv Dashboard</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <link href="/css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    </head>
+    <body class="sb-nav-fixed" onload="first_load()">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-custom">
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="#">Asia Machine Inventory Monitoring</a>
+
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+
+
+        <div id="layoutSidenav">
+            <!-- Sidebar/menu -->
+            <%-include ('./db_part/menu_db');%>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Main KPI Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">machine health log</li>
+                        </ol>
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">Primary Card</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">Warning Card</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-success text-white mb-4">
+                                    <div class="card-body">Success Card</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">Danger Card</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-area me-1"></i>
+                                        Machine inventory tracking
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="myAreaChart" width="100%" height="40"></canvas>
+                                        <div class="mt-4 text-center small">
+                                            <span class="mr-2">
+                                                <i class="fas fa-circle" style="color: rgba(2,117,216,1);"></i> Active machine
+                                            </span>
+                                            <span class="mr-2">
+                                                <i class="fas fa-circle" style="color: rgba(200, 99, 132, 1);"></i> inactive machine
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>
+                                        Qty of Monthly Disposal proposal
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="myBarChart" width="100%" height="40"></canvas>
+                                        <div class="mt-4 text-center small">
+                                            <span class="mr-2">
+                                                <i class="fas fa-circle text-primary"></i> Number of Machine disposal proposal per week
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Detail by plant
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                        <tr>
+                                            <th>Year</th>
+                                            <th>Month</th>
+                                            <th>Week</th>
+                                            <th>CD</th>
+                                            <th>Company</th>
+                                            <th>total-inv</th>
+                                            <th>Automation</th>
+                                            <th>Active</th>
+                                            <th>in-active</th>
+                                            <th>Good</th>
+                                            <th>Failed</th>
+                                            <th>Poor</th>
+                                            <th>Disposal</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Year</th>
+                                            <th>Month</th>
+                                            <th>Week</th>
+                                            <th>CD</th>
+                                            <th>Company</th>
+                                            <th>total-inv</th>
+                                            <th>Automation</th>
+                                            <th>Active</th>
+                                            <th>in-active</th>
+                                            <th>Good</th>
+                                            <th>Failed</th>
+                                            <th>Poor</th>
+                                            <th>Disposal</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; innovation</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <script type="text/javascript">    
+            function first_load(){
+                // $('#sidebarToggle').click()
+                table_load()
+                chart_area_data()
+                $('#sidebarToggle').click()
+                
+            }   
+
+            function chart_area_data(){
+                var xhttp = new XMLHttpRequest();
+                event.preventDefault(); //prevent default action 
+                xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                        var res_result=this.responseText
+                        if (res_result=="err"){
+                        swal("system notification!","system error!\nPlease try again later", "error");
+                        } 
+                        else{
+                        if (res_result=="zero"){
+                            swal("system notification!","don't have available inventory", "success");
+                            $('#datatablesSimple tbody').html('')
+                        }else{
+                            ls=JSON.parse(res_result)
+                            console.log(ls)
+                                if (ls.length>0){
+                                    const week_array = [];
+                                    const active_array=[];
+                                    const inactive_array=[];
+                                    const disposal_array=[]
+                                    for (i=0;i<ls.length;i++){
+                                        week_array.push(("W"+ls[i].week))
+                                        active_array.push(ls[i].ac)
+                                        inactive_array.push(ls[i].ina)
+                                        disposal_array.push(ls[i].di)
+                                    }
+                                    chart_area("myAreaChart",week_array,active_array,inactive_array)
+                                    chart_bar("myBarChart",week_array,disposal_array)
+                                // document.getElementById("qty_tt").innerText=ac_value
+
+                                }
+                                else{
+                                    swal("system notification!","Cannot reach dash board database", "error");
+                                }  
+                        }
+                        }
+
+                    }
+                };
+                xhttp.open("post",'/AM/get_chart_area', true);
+                // var id= document.getElementById("idreq").value;
+                // send data jason
+                xhttp.setRequestHeader("Content-type", "application/json");
+                data_send = {
+                    pl: "pl",
+                    mc:"mc"
+                };
+                xhttp.send(JSON.stringify(data_send));
+            }
+
+
+            function table_load() {
+                var xhttp = new XMLHttpRequest();
+                event.preventDefault(); //prevent default action 
+                xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                        var res_result=this.responseText
+                        if (res_result=="err"){
+                        swal("system notification!","system error!\nPlease try again later", "error");
+                        } 
+                        else{
+                        if (res_result=="zero"){
+                            swal("system notification!","don't have available inventory", "success");
+                            $('#datatablesSimple tbody').html('')
+                        }else{
+                            ls=JSON.parse(res_result)
+                            console.log(ls)
+                                if (ls.length>0){
+                                var ttdt=""
+                                for (i=0;i<ls.length;i++){    
+                                    ttdt+='<tr><td >'+ ls[i].year +'</td><td>'+ls[i].month+'</td><td >' +  ls[i].week + '</td><td >'+ ls[i].plant_cd 
+                                    ttdt+= '</td><td >'+ls[i].company+'</td><td>'+ ls[i].total_inv 
+                                    ttdt+= '</td><td >' + ls[i].automation+'</td><td >'+ls[i].Active_mc+'</td><td>'+ ls[i].in_active 
+                                    ttdt+= '</td><td >' + ls[i].good+'</td><td >'+ls[i].failed+'</td><td>'+ ls[i].poor 
+                                    ttdt+= '</td><td>'+ls[i].disposal+'</td></tr>';
+                                }
+                                $('#datatablesSimple tbody').html(ttdt)
+                                const datatablesSimple = document.getElementById('datatablesSimple');
+                                if (datatablesSimple) {
+                                    new simpleDatatables.DataTable(datatablesSimple);
+                                }
+                                // document.getElementById("qty_tt").innerText=ac_value
+
+                                }
+                                else{
+                                    swal("system notification!","Cannot reach dash board database", "error");
+                                }  
+                        }
+                        }
+
+                    }
+                };
+                xhttp.open("post",'/AM/get_dashboard', true);
+                // var id= document.getElementById("idreq").value;
+                // send data jason
+                xhttp.setRequestHeader("Content-type", "application/json");
+                data_send = {
+                    pl: "pl",
+                    mc:"mc"
+                };
+                xhttp.send(JSON.stringify(data_send));
+
+            }
+        </script>
+
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="/db/js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <!-- <script src="/db/assets/demo/chart-area-demo.js"></script> -->
+        <script>
+            // Set new default font family and font color to mimic Bootstrap's default styling
+            function chart_area(area_id,label_chart,active_value,inactive_value){
+                Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+                Chart.defaults.global.defaultFontColor = '#292b2c';
+                // Area Chart Example
+                var ctx = document.getElementById(area_id);
+                var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: label_chart,
+                    datasets: [
+                    {
+                    label: "Active",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(2,117,216,0.2)",
+                    borderColor: "rgba(2,117,216,1)",
+                    pointRadius: 5,
+                    pointBackgroundColor: "rgba(2,117,216,1)",
+                    pointBorderColor: "rgba(255,255,255,0.8)",
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                    pointHitRadius: 50,
+                    pointBorderWidth: 2,
+                    data: active_value,
+                    },
+                    {
+                    label: "Inactive",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(105, 0, 132, .2)",
+                    borderColor: "rgba(200, 99, 132, .7)",
+                    pointRadius: 5,
+                    pointBackgroundColor: "rgba(2,117,216,1)",
+                    pointBorderColor: "rgba(255,255,255,0.8)",
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                    pointHitRadius: 50,
+                    pointBorderWidth: 2,
+                    data: inactive_value,
+                    }
+                ],
+                },
+                options: {
+                    scales: {
+                    xAxes: [{
+                        time: {
+                        unit: 'date'
+                        },
+                        gridLines: {
+                        display: false
+                        },
+                        ticks: {
+                        maxTicksLimit: 7
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                        min: 0,
+                        max: 10000,
+                        maxTicksLimit: 5
+                        },
+                        gridLines: {
+                        color: "rgba(0, 0, 0, .125)",
+                        }
+                    }],
+                    },
+                    legend: {
+                    display: false
+                    }
+                }
+                });
+            }
+
+
+        </script>
+        <!-- <script src="/db/assets/demo/chart-bar-demo.js"></script> -->
+        <script>
+            
+            function chart_bar(area_id,lable_chart,bar_value){
+                // Set new default font family and font color to mimic Bootstrap's default styling
+                Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+                Chart.defaults.global.defaultFontColor = '#292b2c';
+                // Bar Chart Example
+                var ctx = document.getElementById(area_id);
+                var myLineChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: lable_chart,
+                    datasets: [{
+                    label: "#MC",
+                    backgroundColor: "rgba(2,117,216,1)",
+                    borderColor: "rgba(2,117,216,1)",
+                    data: bar_value,
+                    }],
+                },
+                options: {
+                    scales: {
+                    xAxes: [{
+                        time: {
+                        unit: 'month'
+                        },
+                        gridLines: {
+                        display: false
+                        },
+                        ticks: {
+                        maxTicksLimit: 6
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                        min: 0,
+                        max: 50,
+                        maxTicksLimit: 5
+                        },
+                        gridLines: {
+                        display: true
+                        }
+                    }],
+                    },
+                    legend: {
+                    display: false
+                    }
+                }
+                });
+            }
+            
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+        <!-- <script src="/db/js/datatables-simple-demo.js"></script> -->
+    </body>
+</html>

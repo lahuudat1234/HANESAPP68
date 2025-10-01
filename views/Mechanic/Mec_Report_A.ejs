@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<title>MMS</title>
+<!-- <meta charset="UTF-8"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/JS/boostrap/w3.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<!-- day picker -->
+<!-- Include jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+
+
+
+
+<style>
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Helvetica","Arial",sans-serif;
+}
+a,li{
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+}
+.w3-bar-block .w3-bar-item {padding:20px}
+body{
+  font-family: "Helvetica","Arial",sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  /* background-image: url("/public/imgbook/bodyBG2.jpg"); */
+  background-color: whitesmoke;
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+/* Just for styling */
+.styling {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    /* height: 150px;
+    overflow: auto; */
+  }
+  table, th, td {
+    border: 1px solid black;
+  }
+  table {
+  text-align: left;
+  position: relative;
+  border-collapse: collapse; 
+}
+  th {
+  background: white;
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
+  /* .fixed_header{
+      width: 400px;
+      table-layout: fixed;
+      border-collapse: collapse;
+  }
+  
+  .fixed_header tbody{
+    display:block;
+    width: 100%;
+    overflow: auto;
+    height: 100px;
+  } */
+  
+  /* .fixed_header thead tr {
+     display: block;
+  }
+  
+  .fixed_header thead {
+    background: #314261;
+    color:#6C3483 ;
+  }
+  
+  .fixed_header th, .fixed_header td {
+    padding: 5px;
+    text-align: left;
+    width: 200px;
+  } */
+    div.round1 {
+    border: 2px solid #6C3483 ;
+    border-radius: 5px;
+    }
+    body {
+      background-color: rgb(252, 250, 255);
+      font: 400 15px Lato, Lato;
+      line-height: 1.8;
+      color: #210b3a;
+    }
+    h2 {
+      font-size: 24px;
+      text-transform: uppercase;
+      color: #303030;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+    h4 {
+      font-size: 19px;
+      line-height: 1.375em;
+      color: #303030;
+      font-weight: 400;
+      margin-bottom: 30px;
+    }  
+    .jumbotron {
+      background-color: #f4511e;
+      color: #fff;
+      padding: 25px 25px;
+      font-family: times, serif;
+    }
+    .bg-grey {
+      background-color: #f6f6f6;
+    }
+    .thumbnail {
+      padding: 0 0 15px 0;
+      border: none;
+      border-radius: 0;
+    }
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      margin-bottom: 10px;
+    }
+    .carousel-control.right, .carousel-control.left {
+      background-image: none;
+      color: #f4511e;
+    }
+    .carousel-indicators li {
+      border-color: #f4511e;
+    }
+    .carousel-indicators li.active {
+      background-color: #f4511e;
+    }
+    .item h4 {
+      font-size: 19px;
+      line-height: 1.375em;
+      font-weight: 400;
+      font-style: italic;
+      margin: 70px 0;
+    }
+    .item span {
+      font-style: normal;
+    }
+    .panel {
+      border: 1px solid #6C3483 ; 
+      border-radius:0 !important;
+      transition: box-shadow 0.5s;
+    }
+    .panel:hover {
+      box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+    }
+    .panel-footer .btn:hover {
+      border: 1px solid #6C3483 ;
+      background-color: #fff !important;
+      color: #6C3483 ;
+    }
+    .panel-heading {
+      color: #fff !important;
+      background-color: #6C3483  !important;
+      padding: 25px;
+      border-bottom: 1px solid transparent;
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .panel-footer {
+      background-color: white !important;
+    }
+    .panel-footer h3 {
+      font-size: 32px;
+    }
+    .panel-footer h4 {
+      color: #aaa;
+      font-size: 14px;
+    }
+    .panel-footer .btn {
+      margin: 15px 0;
+      background-color: #f4511e;
+      color: #fff;
+    }
+    .navbar {
+      margin-bottom: 0;
+      background-color: #6C3483 ;
+      z-index: 9999;
+      border: 0;
+      font-size: 12px !important;
+      line-height: 1.42857143 !important;
+      letter-spacing: 4px;
+      border-radius: 0;
+      font-family: Arial;
+    }
+    .navbar li a, .navbar .navbar-brand {
+      color: black !important;
+    }
+    .navbar-nav li a:hover, .navbar-nav li.active a {
+      color: #6C3483  !important;
+      background-color: #fff !important;
+    }
+    .navbar-default .navbar-toggle {
+      border-color: transparent;
+      color: #fff !important;
+    }
+    footer .glyphicon {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #f4511e;
+    }
+  
+    @keyframes slide {
+      0% {
+        opacity: 0;
+        transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        transform: translateY(0%);
+      }
+    }
+    @-webkit-keyframes slide {
+      0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .col-sm-4 {
+        text-align: center;
+        margin: 25px 0;
+      }
+      .btn-lg {
+        width: 100%;
+        margin-bottom: 35px;
+      }
+    }
+    @media screen and (max-width: 480px) {
+      .logo {
+        font-size: 150px;
+      }
+    }
+    .mdl-layout__header {
+        width: 100%;
+        height: 50px;
+        background-color: rgb(197, 37, 136);
+        color: white;
+        font-weight: bold;
+
+    }
+    .mdl-layout__drawer {
+                width: 360px;
+                left: -250px;
+            }
+
+            .mdl-layout__drawer.is-visible {
+                left: 0;
+            }
+
+            .abc {
+                color: black;
+            }
+
+</style>
+<body>
+    <!-- Sidebar (hidden by default) -->
+    <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:100;width:25%;min-width:300px; background-image: url(/public/imgbook/bodyBG.jpg);" id="mySidebar">
+      <a href="/mechome" class="w3-bar-item w3-button" ><span class="glyphicon glyphicon-home" style="padding-right: 20px;"></span>Trang Chủ</a>
+      <a href="/mechome" class="w3-bar-item w3-button w3-blue"><span class="glyphicon glyphicon-inbox" style="padding-right: 20px;"></span>Quét thẻ downtime</a>
+      <a href="/mec/updateloc" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật vị trí phiên bản 2</a>
+      <a href="/mec/machineupdate" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật thông tin máy_BM</a>
+      <a href="/mec/report" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-list-alt" style="padding-right: 20px;"></span>Báo cáo Realtime</a>
+      <a href="/get/autoclose" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-list-alt" style="padding-right: 20px;"></span>danh sách máy chốt cuối ca chưa sửa</a>
+      <a href="/mec/partissue" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-usd" style="padding-right: 20px;"></span>Cấp / Phát phụ tùng</a>
+      <a href="/mec/inventory_update" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-usd" style="padding-right: 20px;"></span>Cập nhật tồn kho phụ tùng</a>
+      <a href="/mec/machinemovelog" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>thông tin di chuyển máy</a>
+      <a href="#" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-duplicate" style="padding-right: 20px;"></span>Mechanic KPI</a>
+    </nav>
+    <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-right" style="display:none;z-index:2;width:30%;min-width:300px; right: 0;" id="mySidebar_right">
+      <a href="javascript:void(0)" class="w3-bar-item w3-button" id="name">Thông tin user đăng nhập</a>
+      <div class="w3-container w3-card-4 w3-light-grey" style="display:none;">
+        <a id="logout_ref" href="/logout" class="w3-bar-item w3-button">Logout</a>
+      </div>
+      <div class="form-group">
+        <label for="sel_shift">Ca làm việc hệ thống: <%= shift %></label>
+        <select class="form-control" name="sel_shift" id="sel_shift">
+          <option>BALI</option>
+          <option>RITMO</option>
+        </select>
+      </div>
+      <br>
+      <div class="form-group">
+        <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="logout()"><span class="glyphicon glyphicon-floppy-saved"></span> Đăng xuất</button>
+      </div>
+    </nav>
+    <!-- Top menu -->
+    <div class="w3-top w3-center">
+      <div class="w3-purple w3-xlarge" style="width: 100%;margin:auto;">
+        <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+        <div class="w3-right w3-padding-16" onclick="open_signup()" >
+        <span class="glyphicon glyphicon-user" style="padding-right: 10px;" ></span><span id="username"><%= user %></span></div>
+        <div class="w3-center w3-padding-16" style="margin: 0 auto;"><h3 style="margin: 0 auto;">HỆ THỐNG GHI NHẬN THỜI GIAN MÁY HỎNG</h3></div>
+        <a href="/mec/report" id="refresh" style="display: none;"></a>
+      </div>
+    </div>
+      
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-container w3-center" style="width: 100%;margin-top:50px; margin-left: auto;" onclick="w3_close()">
+      <hr id="about">
+      <!-- About Section -->
+      <!-- Home Page -->
+
+      <div class="w3-container" id="home_page" style="padding: 0px; margin: 0;">  
+        <!-- nhập thông tin máy hỏng -->
+      <!-- tình trạng máy trên chuyền -->
+        <div class="w3-rest" style="border: blueviolet;">
+          <div class="container" onclick="close_reg()" style="margin: auto;">
+
+            <div class="w3-row w3-center" style="background-color: white;">
+              <!-- <h2 id="detail_infor" style="color: blueviolet; margin: auto;">Báo cáo thông tin máy hỏng</h2> -->
+              <!-- <h3 id="detail_infor" style="color: blueviolet;">RITMO: Tổng thợ máy: 50 , đang sửa máy: 1, có thể giao việc: 49</h3> -->
+            </div>
+          </div>
+          <br>
+          <div class="row" style="overflow-x: scroll; padding: 0px; margin: auto; width: 100%;">
+
+            <div class="table-responsive" style="height: 615px; width: 100%; margin-left: auto; margin-right: auto;">
+              <h2 style="color: blueviolet; margin: auto;">chi tiết máy hỏng tự động chốt cuối ca:</h2>
+              <table id="table_ALL" class="w3-table w3-striped w3-bordered" style="margin-left: auto; margin-right: auto; font-size: 16px;" ondblclick="detail_group()">
+                <!-- <table id="table_content"> style="height: 310px;" -->
+                <thead class="w3-aqua">
+                  <tr >
+                    <th >IDMC</th>
+                    <th>MODEL</th>
+                    <th>OPERATION</th>
+                    <th >LINE</th>
+                    <th >pos</th>
+                    <th >STATUS</th>
+                    <th >idnv</th>
+                    <th >name</th>
+                    <th >shift</th>
+                    <th >mec_code</th>
+                    <th >starttime</th>
+                    <th >lastupdate</th>
+                    <th >TT</th>
+                  </tr>
+                </thead>  
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Footer -->
+    <footer class="w3-row-padding w3-padding-32 w3-center">
+    </footer>
+    <!-- End page content -->
+    </div>
+        <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+
+    <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+        <!-- Footer -->
+    <footer class="w3-row-padding w3-padding-32 w3-center">
+    </footer>
+
+</body> 
+
+<script type="text/javascript">
+          window.addEventListener('load', function () {
+            filterdata()
+          })
+          setInterval(function(){ 
+            filterdata_all();
+          }, 120000);
+
+          function open_reg(){
+            document.getElementById("downtime_reg").style.display="inline";
+            document.getElementById("employee_id").value="";
+            document.getElementById("emp_name").innerText="Tên nhân viên";
+            document.getElementById("employee_id").focus();
+          }
+          function close_reg(){
+            document.getElementById("machine_id").value=""
+            document.getElementById("downtime_reg").style.display="none";
+          }
+
+          function filterdata(){
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("post", '/mec/autoclose', true);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
+            data = {
+                group:"abc"
+                };
+
+            xmlhttp.send(JSON.stringify(data));
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.responseText=="0"){
+                        alert("thong tin loi")
+                        return
+                    }
+                    var jsonObject = JSON.parse(this.responseText);
+                    console.log(jsonObject)
+                    var trHTML = '';
+                    for (i = 0; i < jsonObject.length; i++) {
+                        var t = change_time(jsonObject[i].timeupdate);
+                        trHTML += '<tr><td style="text-align: center;">' + jsonObject[i].IDMC + '</td><td style="text-align: center;">' + jsonObject[i].MachineModel 
+                        trHTML+= '</td><td style="text-align: center;">' + jsonObject[i].operation + '</td><td style="text-align: center;">' + jsonObject[i].LINE 
+                        trHTML+= '</td><td style="text-align: center;">' + jsonObject[i].pos + '</td><td style="text-align: center;">' + jsonObject[i].STATUS 
+                        trHTML+= '</td><td style="text-align: center;">' + jsonObject[i].idnv + '</td><td style="text-align: center;">' + jsonObject[i].name
+                        trHTML+= '</td><td style="text-align: center;">' + jsonObject[i].shift+ '</td><td style="text-align: center;">' + jsonObject[i].mec_code
+                        trHTML+= '</td><td style="text-align: center;">' + change_time(jsonObject[i].starttime)+ '</td><td style="text-align: center;">' 
+                        trHTML+= change_time(jsonObject[i].lastupdate) + '</td><td style="text-align: center;">'+jsonObject[i].TT+'</td></tr>';
+
+                    };
+                    $('#table_ALL tbody').html(trHTML);
+                    }
+                }
+          
+          }
+
+          function change_time(time){
+                return (new Date(time)).toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
+            }
+
+          function w3_open() {
+            w3_close();
+            document.getElementById("mySidebar").style.display = "block";
+          }
+          function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("mySidebar_right").style.display = "none";
+            
+          }
+          function open_signup(){
+            w3_close();
+            document.getElementById("mySidebar_right").style.display = "block";
+          }          
+
+</script>
+
+</html>

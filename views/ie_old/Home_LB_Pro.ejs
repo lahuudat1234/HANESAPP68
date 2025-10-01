@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>IE WEB LineBalancing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<style>
+  /* The side navigation menu */
+  .sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #6C3483 ; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  }
+  
+  /* The navigation menu links */
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  /* When you mouse over the navigation links, change their color */
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  /* Position and style the close button (top right corner) */
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+  #main {
+    transition: margin-left .5s;
+    padding: 2px;
+  }
+  
+  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+  .modal {
+     /* position: absolute; */
+     top: 10px;
+     right: 100px;
+     bottom: 0;
+     left: 0;
+     z-index: 10040;
+     overflow: auto;
+     overflow-y: auto;
+  }
+  /* spin */
+  .loader{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    position: relative;
+    margin: 0 auto;
+  }
+  
+  /* LOADER 1 */
+  
+  #loader-1:before, #loader-1:after{
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    border: 10px solid transparent;
+    border-top-color: #3498db;
+  }
+  
+  #loader-1:before{
+    z-index: 100;
+    animation: spin 1s infinite;
+  }
+  
+  #loader-1:after{
+    border: 10px solid #ccc;
+  }
+  
+  @keyframes spin{
+    0%{
+      -webkit-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+  
+    100%{
+      -webkit-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  
+  
+  /* tab */
+  * {box-sizing: border-box}
+  
+  /* Set height of body and the document to 100% */
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial;
+  }
+  
+  /* Style tab links */
+  .tablink {
+    background-color: #6C3483 ;
+    color: whitesmoke;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 20%;
+  }
+  
+  .tablink:hover {
+    background-color: #B3E5FC;
+  }
+  
+  /* Style the tab content (and add height:100% for full page content) */
+  .tabcontent {
+    color: black;
+    display: none;
+    padding: 100px 20px;
+    height: 100%;
+  }
+  
+  #Home {background-color: #B3E5FC;}
+  #News {background-color: #B3E5FC;}
+  #Contact {background-color: #B3E5FC;}
+  #About {background-color: #B3E5FC;}
+  
+  
+  
+  
+  /* Just for styling */
+  .styling {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    /* height: 150px;
+    overflow: auto; */
+  }
+  table, th, td {
+    border: 1px solid black;
+  }
+  
+  .fixed_header{
+      width: 400px;
+      table-layout: fixed;
+      border-collapse: collapse;
+  }
+  
+  .fixed_header tbody{
+    display:block;
+    width: 100%;
+    overflow: auto;
+    height: 100px;
+  }
+  
+  .fixed_header thead tr {
+     display: block;
+  }
+  
+  .fixed_header thead {
+    background: #314261;
+    color:#6C3483 ;
+  }
+  
+  .fixed_header th, .fixed_header td {
+    padding: 5px;
+    text-align: left;
+    width: 200px;
+  }
+    div.round1 {
+    border: 2px solid #6C3483 ;
+    border-radius: 5px;
+    }
+    body {
+      background-color: rgb(252, 250, 255);
+      font: 400 15px Lato, Lato;
+      line-height: 1.8;
+      color: #210b3a;
+    }
+    h2 {
+      font-size: 24px;
+      text-transform: uppercase;
+      color: #303030;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+    h4 {
+      font-size: 19px;
+      line-height: 1.375em;
+      color: #303030;
+      font-weight: 400;
+      margin-bottom: 30px;
+    }  
+    .jumbotron {
+      background-color: #f4511e;
+      color: #fff;
+      padding: 25px 25px;
+      font-family: times, serif;
+    }
+    .bg-grey {
+      background-color: #f6f6f6;
+    }
+    .thumbnail {
+      padding: 0 0 15px 0;
+      border: none;
+      border-radius: 0;
+    }
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      margin-bottom: 10px;
+    }
+    .carousel-control.right, .carousel-control.left {
+      background-image: none;
+      color: #f4511e;
+    }
+    .carousel-indicators li {
+      border-color: #f4511e;
+    }
+    .carousel-indicators li.active {
+      background-color: #f4511e;
+    }
+    .item h4 {
+      font-size: 19px;
+      line-height: 1.375em;
+      font-weight: 400;
+      font-style: italic;
+      margin: 70px 0;
+    }
+    .item span {
+      font-style: normal;
+    }
+    .panel {
+      border: 1px solid #6C3483 ; 
+      border-radius:0 !important;
+      transition: box-shadow 0.5s;
+    }
+    .panel:hover {
+      box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+    }
+    .panel-footer .btn:hover {
+      border: 1px solid #6C3483 ;
+      background-color: #fff !important;
+      color: #6C3483 ;
+    }
+    .panel-heading {
+      color: #fff !important;
+      background-color: #6C3483  !important;
+      padding: 25px;
+      border-bottom: 1px solid transparent;
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .panel-footer {
+      background-color: white !important;
+    }
+    .panel-footer h3 {
+      font-size: 32px;
+    }
+    .panel-footer h4 {
+      color: #aaa;
+      font-size: 14px;
+    }
+    .panel-footer .btn {
+      margin: 15px 0;
+      background-color: #f4511e;
+      color: #fff;
+    }
+    .navbar {
+      margin-bottom: 0;
+      background-color: #6C3483 ;
+      z-index: 9999;
+      border: 0;
+      font-size: 12px !important;
+      line-height: 1.42857143 !important;
+      letter-spacing: 4px;
+      border-radius: 0;
+      font-family: Arial;
+    }
+    .navbar li a, .navbar .navbar-brand {
+      color: black !important;
+    }
+    .navbar-nav li a:hover, .navbar-nav li.active a {
+      color: #6C3483  !important;
+      background-color: #fff !important;
+    }
+    .navbar-default .navbar-toggle {
+      border-color: transparent;
+      color: #fff !important;
+    }
+    footer .glyphicon {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #f4511e;
+    }
+  
+    @keyframes slide {
+      0% {
+        opacity: 0;
+        transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        transform: translateY(0%);
+      }
+    }
+    @-webkit-keyframes slide {
+      0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .col-sm-4 {
+        text-align: center;
+        margin: 25px 0;
+      }
+      .btn-lg {
+        width: 100%;
+        margin-bottom: 35px;
+      }
+    }
+    @media screen and (max-width: 480px) {
+      .logo {
+        font-size: 150px;
+      }
+    }
+</style>
+<div class="container">
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <br>
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+          <li><a><span class="glyphicon glyphicon-user"></span> User:</a></li>
+          <li><a><input name="user_sign_up" type="text" id="user_sign_up"></a></li>
+          <li><a><span class="glyphicon glyphicon-log-in"></span> Pass:</a></li>
+          <li><a><input name="pass_sign_up" type="password" id="pass_sign_up"></a></li>
+          <li onclick="login()" id="login"><a><span class="glyphicon glyphicon-log-in"id="login_status"> Login</span></a></li>
+      </ul>
+    </div>
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="/IE/LineBalancing">CBC theo ngày</a>
+      <a href="/IE/headcountAdjust">Head count chuyền theo ngày</a>
+      <a href="/IE/LineBalancingls">CBC ca dài</a>
+      <a href="/IE/LineBalancing">CBC định hướng IE</a>
+      <a href="/IE/summaryLineBalancels">Tổng hợp CBC ca dài</a>
+      <a href="/IE/summaryLineBalance">Tổng hợp CBC IE</a>
+      <a href="/off_standard">quét thẻ</a>
+      <a href="http://pbvweb01v/Production/PayrollCheck">Web Scan Tem</a>
+    </div>
+  </nav>
+</div>
+</head>
+<div id="main" onclick="closeNav()">
+<body class="container" style="margin: 10px auto; width: 100%;">
+  <div id="exportfile" style = "display: none; position:fixed; bottom:5px;right:5px;margin:0;padding:5px 5px; background-color:yellow; z-index: 10;">
+    chức năng đang thử nghiệm
+    <input type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke;" value="Xuất Excel danh sách NV" onclick="export_excel_ds()">
+ </div>
+  <br>
+  <br>
+  <div class="container" style="margin: 10px auto; width: 100%;">
+    <div class="container" style="margin: 10px auto; width: 100%;">
+      <div class="col-md-9">
+        <h2> Chương trình tính cân bằng chuyền dành cho chuyền trưởng sản xuất</h2>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-2">
+        <label for="sel_week">chọn tuần CBC:</label>
+        <select class="form-control" name="sel_week" id="sel_week">
+          <option>0</option>
+          <%
+            var i=1;
+            for (i=1;i<53;i++)
+            { %> <option><%= i%></option>
+            <% }; %>
+        </select>
+      </div>
+      <div class="col-md-1"  style="display: none;">
+        <h1 ><a id="refresh_link" href="#">refresh page</a></h1>
+      </div>
+    </div>
+  </div>
+  <div class="loader" id="loader-1" style="display: none; margin: 5px auto;"></div>
+<!-- nhập thông tin nhóm chuyền , ca và mã hàng -->
+  <div class=" row" style="margin: auto;">
+    <form id="form_calculate" action="/IE/getbalance" method="GET">
+      <div class="col-md-1">
+        <label for="sel_shift">chọn ca:</label>
+        <select class="form-control" name="sel_shift" id="sel_shift" onchange="dis_save()">
+          <option>RIT</option>
+          <option>BALI</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label for="group_name">Chọn Chuyền:</label><br>
+        <select class="form-control" name="group_name" id="group_name" onchange="dis_save()">
+          <option><%- listgroup %></option>
+          <option> - </option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label for="sel_size">Chọn Range Size:</label>
+        <select class="form-control" name="sel_size" id="sel_size" onchange="dis_save()">
+          <option>Normal</option>
+          <option>BIG</option>
+          <!-- <option>SMALL</option> -->
+          <option>BOY</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="style_detail">chọn mã hàng chi tiết:</label><br>
+        <select class="form-control" name="style_detail" id="style_detail" onchange="dis_save()">
+          <option><%- liststyle %></option>
+          <option> - </option>
+        </select>
+      </div>
+      <div class="col-md-1">
+        <br>
+        <input type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke;" value="Tính toán" onclick="submit_form()">
+      </div>
+        <div class="col-md-2">
+          <!-- not display -->
+          <div style="display: none;">
+            <input type="text" id="ie_cbc" name="ie_cbc">
+            <input type="text" id="week_ie" name="week_ie">
+          </div>
+          <br>
+          <input type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke; display: none;" id="bt_save" value="lưu dữ liệu cân bằng chuyền" onclick="save_cbc()">
+        </div>
+    </form>
+    <br>
+  </div>
+  <div>
+    <p><strong id="cbc_result" style="color: #4B0082; font-family: Arial; font-size: x-large;">Kết quả cân bằng chuyền</strong></p>
+  </div>
+  <div class="row" style="margin: auto; width: 100%">
+    <button class="tablink" onclick="openPage('Home', this, '#D0ECE7')" >Lịch sử sản lượng</button>
+    <button class="tablink" onclick="openPage('linebalance', this, '#D0ECE7')" id="defaultOpen" >Cân bằng chuyền</button>
+    <button class="tablink" onclick="openPage('operator_list', this, '#D0ECE7')" >Danh sách chi tiết</button>
+    <button class="tablink" onclick="openPage('employee_detail', this, '#D0ECE7')" >chi tiết nhân viên</button>
+    <button class="tablink" onclick="openPage('Matrix', this, '#D0ECE7')" >Multiskill</button>
+
+    <div id="Home" class="tabcontent" style="padding-top:  75px;" >
+                <div class="row">
+                  <form id="form_output" action="/IE/getoutput" method="post">
+                    <div class="col-md-3">
+                      <label for="sel_condition_o">Điều kiện lọc:</label>
+                      <select class="form-control" name="sel_condition_o" id="sel_condition_o" onchange="hienthioutput()">
+                        <option>Lịch sử toàn bộ theo thời gian</option>
+                        <option>Theo mã hàng chi tiết</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <br>
+                      <input type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke;" value="làm mới bảng sau khi thay đổi điều kiện lọc" onclick="hienthioutput()">
+                    </div>
+                    <div class="col-md-2">
+                      <br>
+                      <input type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke;" value="Tìm Kiếm" onclick="get_output()">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="sel_r">Rate:</label>
+                      <select class="form-control" name="sel_r" id="sel_r" onchange="hienthioutput()">
+                        <option>0.6</option>
+                        <option>0.7</option>
+                        <option selected>0.8</option>
+                        <option>0.9</option>
+                        <option>1</option>
+                      </select>
+                    </div>
+                    <div style="display: none;">
+                      <input class="form-control" type="text" id="shift_o" name="shift_o">
+                      <input class="form-control" type="text" id="group_o" name="group_o">
+                      <input class="form-control" type="text" id="week_o" name="week_o">
+                      <input class="form-control" type="text" id="con_o" name="con_o">
+                    </div>
+                  </form>
+                </div>
+                <div class="row" id="summary_o">////</div>
+                <div class="row">    
+                  <div style=" width: 100%;">
+                    <div class="row" style="width:100%; margin-left: auto; margin-right: auto;">
+                      <div class="table-responsive" style="height: 415px; width: 100%; margin-left: auto; margin-right: auto;">
+                        <table id="table_output" class="table" style="margin-left: auto; margin-right: auto;">
+                          <!-- <table id="table_content"> style="height: 310px;" -->
+                          <thead>
+                            <tr >
+                              <th>NGÀY</th>
+                              <th>CA</th>
+                              <th>MÃ HÀNG CHI TIẾT</th>
+                              <th>SIZE</th>
+                              <th>SẢN LƯỢNG</th>
+                              <th>Tỉ lệ Mã Hàng</th>
+                              <th>Tỉ lệ Size</th>
+                            </tr>
+                          </thead>  
+                          <tbody style="height: 395px;">
+                          </tbody>
+                        </table>
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                </div> 
+    </div>
+    <div id="Matrix" class="tabcontent" style="padding-top:  75px;" >
+            <div class="row">
+                <form id="form_multiskill" action="/IE/getmulti1" method="GET">
+                  <div class="col-md-3">
+                    <label for="sel_condition_mul">Điều kiện lọc Đa Kỹ Năng:</label>
+                    <select class="form-control" name="sel_condition_mul" id="sel_condition_mul" onchange="change_con()">
+                      <option>Lịch sử ghi nhận 1 ngày làm việc</option>
+                      <option>Toàn bộ công đoạn có ăn tem</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <br>
+                    <input type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke;" value="Tìm Kiếm" onclick="change_con()">
+                  </div>
+                  <div style="display: none;">
+                    <input class="form-control" type="text" id="shift_m" name="shift_m">
+                    <input class="form-control" type="text" id="group_m" name="group_m">
+                    <input class="form-control" type="text" id="week_m" name="week_m">
+                    <input class="form-control" type="text" id="con_m" name="con_m">
+                  </div>
+                </form>
+            </div>
+            <div class="row">////</div>
+            <div class="row">    
+              <div style=" width: 100%;">
+                <div class="row" style="width:100%; margin-left: auto; margin-right: auto;">
+                  <div class="table-responsive" style="height: 415px; width: 100%; margin-left: auto; margin-right: auto;">
+                    <table id="table_multiskill" class="table" style="margin-left: auto; margin-right: auto;">
+                      <!-- <table id="table_content"> style="height: 310px;" -->
+                      <thead>
+                        <tr >
+                          <th>MÃ SỐ</th>
+                          <th>TÊN</th>
+                          <th>CD1</th>
+                          <th>AVG_EFF1</th>
+                          <th>KN1</th>
+                          <th>CD2</th>
+                          <th>AVG_EFF2</th>
+                          <th>KN2</th>
+                          <th>CD2=3</th>
+                          <th>AVG_EFF3</th>
+                          <th>KN3</th>
+                        </tr>
+                      </thead>  
+                      <tbody style="height: 395px;">
+                      </tbody>
+                    </table>
+                  </div>
+                  <br>
+                </div>
+              </div>
+            </div>  
+    </div>
+
+    <div id="linebalance" class="tabcontent" style="padding-top:  75px;">
+                <div style=" width: 100%; padding: 0;">
+                  <div class="row">
+                  </div>
+                  <br>
+                  <div class="row" style="width:100%; margin-left: auto; margin-right: auto;">
+                    <div class="table-responsive" style="height: 415px; width: 100%; margin-left: auto; margin-right: auto;">
+                      <table id="table_content" class="table" style="margin-left: auto; margin-right: auto;" ondblclick="eff2()">
+                        <!-- <table id="table_content"> style="height: 310px;" -->
+                        <thead>
+                          <tr >
+                            <th >THỨ TỰ</th>
+                            <th >CÔNG ĐOẠN</th>
+                            <th >SỐ LƯỢNG</th>
+                            <th >NGẮN GIỜ</th>
+                            <th >HIỆU SUẤT</th>
+                            <th >SAM</th>
+                            <th>SẢN LƯỢNG</th>
+                            <th>TĂNG NGƯỜI</th>
+                            <th>HSNV TĂNG</th>
+                            <th>GIẢM NGƯỜI</th>
+                          </tr>
+                        </thead>  
+                        <tbody style="height: 395px;">
+                          <%- table_body %>
+                        </tbody>
+                      </table>
+                    </div>
+                    <br>
+                  </div>
+                </div>
+    </div>
+   
+    <div id="operator_list" class="tabcontent" style="padding-top:  75px;">
+      <div style="width: 100%;">
+        <div class="row" style="width:100%; margin-left: auto; margin-right: auto;">
+          <div class="table-responsive" style="height: 415px; width: 100%; margin-left: auto; margin-right: auto;">
+            <table id="ds_content" class="table" style="margin-left: auto; margin-right: auto;" ondblclick="addRowHandlers()">
+              <!-- <table id="table_content"> style="height: 310px;" -->
+              <thead>
+                <tr >
+                  <th >ID</th>
+                  <th >TÊN</th>
+                  <th >CÔNG ĐOẠN</th>
+                  <th >HIỆU SUẤT</th>
+                  <th >MÃ HÀNG</th>
+                  <th >Var</th>
+                  <th>CÔNG ĐOẠN 2</th>
+                  <th>HSTB2</th>
+                  <th>CA</th>
+                  <th>IE</th>
+                </tr>
+              </thead>  
+              <tbody style="height: 395px;">
+                <%- table_body_ds %>
+              </tbody>
+            </table>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+
+    <div id="employee_detail" class="tabcontent" style="padding-top:  75px;">
+        <div class="row">
+          <form id="form_detail" action="/IE/getDetail" method="GET">
+            <div class="col-md-3">
+              <label for="idnv">Nhập Mã Số Nhân Viên:</label><br>
+              <input class="form-control" type="text" id="idnv" name="idnv">
+            </div>
+            <div class="col-md-3">
+              <label for="sel_condition">lọc dữ liệu theo:</label>
+              <select class="form-control" name="sel_condition" id="sel_condition">
+                <option>mã hàng chi tiết</option>
+                <option>workcenter</option>
+                <option>Tất cả</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <br>
+              <input type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke;" value="Tìm Kiếm" onclick="getDetail()">
+            </div>
+            <div class="col-md-3" style="display: none;">
+              <label for="style_c">style_c:</label><br>
+              <input class="form-control" type="text" id="style_c" name="style_c">
+            </div>
+          </form>
+          <br>
+          <br>
+        </div>
+        <div class="row">////</div>
+
+        <div class="row">    
+            <div style=" width: 100%;">
+              <div class="row" style="width:100%; margin-left: auto; margin-right: auto;">
+                <div class="table-responsive" style="height: 415px; width: 100%; margin-left: auto; margin-right: auto;">
+                  <table id="table_detail" class="table" style="margin-left: auto; margin-right: auto;">
+                    <!-- <table id="table_content"> style="height: 310px;" -->
+                    <thead>
+                      <tr >
+                        <th>MÃ SỐ</th>
+                        <th>TÊN</th>
+                        <th>NGÀY</th>
+                        <th>CÔNG ĐOẠN</th>
+                        <th>HIỆU SUẤT</th>
+                        <th>WORKCENTER</th>
+                        <th>MÃ HÀNG CHI TIẾT</th>
+                        <th>SIZE</th>
+                        <th>RATE</th>
+                      </tr>
+                    </thead>  
+                    <tbody style="height: 395px;">
+                    </tbody>
+                  </table>
+                </div>
+                <br>
+              </div>
+            </div>
+          </div>  
+    </div>
+  <!-- form no display -->
+    <div class="row" style="display: none;">
+      <form id="IE_update" action="/IE/updateEmployee" method="POST">
+          <input class="form-control" type="text" id="style_copy" name="style_copy">
+          <input class="form-control" type="text" id="idnv_copy" name="idnv_copy">
+          <input class="form-control" type="text" id="range_size" name="range_size">
+          <input class="form-control" type="text" id="operation" name="operation">
+          <input class="form-control" type="text" id="eff" name="eff">
+          <input class="form-control" type="text" id="IE" name="IE">
+          <input class="form-control" type="text" id="group_update" name="group_update">
+          <input class="form-control" type="text" id="week_update" name="week_update">
+          <input class="form-control" type="text" id="shift_update" name="shift_update">
+      </form>
+  </div>
+  <div style="display: none;">
+    <form id="save_cbc_form">
+      <input type="text" id="save_cbc_group" name="save_cbc_group">
+      <input type="text" id="save_cbc_size" name="save_cbc_size">
+      <input type="text" id="save_cbc_shift" name="save_cbc_shift">
+      <input type="text" id="save_cbc_style" name="save_cbc_style">
+      <input type="text" id="save_cbc_output" name="save_cbc_output">
+      <input type="text" id="save_cbc_HC" name="save_cbc_HC">
+      <input type="text" id="save_cbc_eff" name="save_cbc_eff">
+      <input type="text" id="save_cbc_rate" name="save_cbc_rate">
+      <input type="text" id="save_cbc_ie" name="save_cbc_ie">
+      <input type="text" id="save_cbc_week" name="save_cbc_week">
+      <input type="text" id="operation2" name="operation2">
+      <input type="text" id="eff2" name="eff2">
+    </form>
+  </div>
+  <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+  <button id="dialog2" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><strong>Cập nhật thông tin nhân viên</strong><br>nhập "<span style="color: red;">del</span>" để tìm thông tin nhân viên từ hệ thống</h4>
+        </div>
+        <div class="modal-body">
+          <form id="changeline">
+            <label for="d_idnv">ID nhân viên:</label>
+            <input class="form-control" type="text" id="d_idnv" name="d_idnv">
+            <label for="d_name_emp">Tên nhân viên:</label>
+            <input class="form-control" type="text" id="d_name_emp" name="d_name_emp">
+            <label for="d_op_new">Công đoạn:</label>
+            <input class="form-control" type="text" id="d_op_new" name="d_op_new">
+            <label for="d_eff_new">Hiệu suất:</label>
+            <input class="form-control" type="number" id="d_eff_new" name="d_eff_new">
+            <br>
+            <input type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke;" value="Cập nhật" onclick="change_op()">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="close_dialog2" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+  <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+  <button id="dialog1" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">Open Modal</button>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><strong>Cập nhật hiệu suất công đoạn 2 của CBC</strong></h4>
+        </div>
+        <div class="modal-body">
+          <form id="changeEff2">
+            <label for="d1_group">Group:</label>
+            <input class="form-control" type="text" id="d1_group" name="d1_group">
+            <label for="d1_style_detail">Style detail:</label>
+            <input class="form-control" type="text" id="d1_style_detail" name="d1_style_detail">
+            <label for="d1_operation">Công đoạn:</label>
+            <input class="form-control" type="text" id="d1_operation" name="d1_operation">
+            <label for="d1_eff_new">Hiệu suất 2:</label>
+            <input class="form-control" type="number" id="d1_eff_new" name="d1_eff_new">
+            <br>
+            <input type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke;" value="Cập nhật" onclick="d1_eff2()">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="close_dialog1" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+  <script type="text/javascript">
+      var login_status
+      var login_user
+      var kq_cbc=JSON.stringify("");
+
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "300px";
+        document.getElementById("main").style.marginLeft = "300px";
+        // document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+      }
+
+      /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+      }
+
+      function change_con(){
+        if (document.getElementById("sel_week").value=="0"){
+          alert("tuần 0: sẽ lấy danh sách multiskill tuần hiện tại");
+        }
+        var cond=document.getElementById("sel_condition_mul").value
+        if (cond=="Lịch sử ghi nhận 1 ngày làm việc"){
+              document.getElementById("con_m").value="1";
+              get_multiskill1();
+        } else{
+          document.getElementById("con_m").value="2";
+          get_multiskill1();
+          alert("chức năng này chỉ thống kê công đoạn và không tính hiệu suất cụ thể")
+        }
+
+      }
+      function dis_save(){
+          document.getElementById("bt_save").style.display="none";
+      }
+      function get_multiskill1(){
+        $('#table_multiskill tbody').html('')
+        document.getElementById('loader-1').style.display="grid";
+        console.log("1m")
+        document.getElementById("week_m").value=document.getElementById("sel_week").value
+        document.getElementById("group_m").value=document.getElementById("group_name").value
+        document.getElementById("shift_m").value=document.getElementById("sel_shift").value
+        event.preventDefault();
+        var main_url="/IE/multiskill"
+        var frm = $('#form_multiskill');
+        $.ajax({
+            type: "post",
+            url: main_url,
+            data: frm.serialize(),
+            success: function (data) {
+              var jsonObject=JSON.parse(data);
+              document.getElementById('loader-1').style.display="none";
+              console.log(jsonObject)
+              ds=jsonObject;
+              if (ds.length==0){
+                alert(" không có dữ liệu nhân viên theo điều kiện lọc hiện tại\n vui lòng chọn lại điều kiện lọc\n thank!")
+              }
+              var i;
+                var trHTML_ds='';
+                if (document.getElementById("con_m").value==1){
+                    for (i = 0; i < ds.length; i++) {
+                      if (ds[i].op2!=""){
+                        trHTML_ds += '<tr><td >' + ds[i].employee + '</td><td >' + ds[i].name + '</td><td >' + ds[i].op1 + '</td><td >' + ds[i].eff1 + '</td><td >' + ds[i].wk1  + '</td><td >'+ ds[i].op2 + '</td><td >' + ds[i].eff2 + '</td><td >' + ds[i].wk2 + '</td><td >' +  ds[i].op3 + '</td><td >' + ds[i].eff3 + '</td><td >' + ds[i].wk3 +  '</td></tr>';
+                      }
+                    };
+                  } else{
+                    for (i = 0; i < ds.length; i++) {
+                        trHTML_ds += '<tr><td >' + ds[i].employee + '</td><td >' + ds[i].name + '</td><td >' + ds[i].op1 + '</td><td >' + ds[i].eff1 + '</td><td >' + ds[i].wk1  + '</td><td >'+ ds[i].op2 + '</td><td >' + ds[i].eff2 + '</td><td >' + ds[i].wk2 + '</td><td >' +  ds[i].op3 + '</td><td >' + ds[i].eff3 + '</td><td >' + ds[i].wk3 +  '</td></tr>';
+                    };
+                  }
+                $('#table_multiskill tbody').html(trHTML_ds)
+
+            },
+            error: function () {
+                        alert("submit failed")
+            },
+        })
+      }
+      function addRowHandlers() {
+                event.preventDefault();
+                var login_status=document.getElementById("login_status").innerText;
+                var login_user=document.getElementById("user_sign_up").value;
+                if (login_status==" Login_success"){
+                    var table = document.getElementById("ds_content");
+                    var rows = table.getElementsByTagName("tr");
+                    for (i = 0; i < rows.length; i++) {
+                        var currentRow = table.rows[i];
+                        var createClickHandler = function(row) {
+                        return function() {
+                            var cell = row.getElementsByTagName("td")[0];
+                            var id_emp=cell.innerText;
+                            cell = row.getElementsByTagName("td")[1];
+                            var name = cell.innerText;
+                            cell = row.getElementsByTagName("td")[2];
+                            var code = cell.innerText;                            
+                            cell = row.getElementsByTagName("td")[3];
+                            var eff=cell.innerText;
+                            cell = row.getElementsByTagName("td")[4];
+                            var style=cell.innerText;
+                            // fill information IE update
+                            document.getElementById("style_copy").value=document.getElementById("style_detail").value;
+                            document.getElementById("idnv_copy").value=id_emp;
+                            document.getElementById("d_idnv").value=id_emp;
+                            document.getElementById("d_idnv").disabled=true;
+                            document.getElementById("d_name_emp").value=name;
+                            document.getElementById("d_name_emp").disabled=true;
+                            document.getElementById("IE").value=login_user;
+                            document.getElementById("d_op_new").value=code;
+                            document.getElementById("d_eff_new").value=eff;
+                            document.getElementById("range_size").value=document.getElementById("sel_size").value;
+                            document.getElementById("week_update").value=document.getElementById("sel_week").value;
+                            document.getElementById("shift_update").value=document.getElementById("sel_shift").value;
+                            document.getElementById("group_update").value=document.getElementById("group_name").value;
+                            document.getElementById("dialog2").click();
+                          };
+                        };
+                        currentRow.ondblclick = createClickHandler(currentRow);
+                    };
+                };
+              };
+      
+      function export_excel_ds(){
+        document.getElementById("loader-1").style.display="grid";
+                var main_url = "/IE/getBalancing_excel";
+                var referrer = "/IE/linebalancing";
+                event.preventDefault();
+                var frm = $('#form_calculate');
+                $.ajax({
+                    type: "post",
+                    url: main_url,
+                    data: frm.serialize(),
+                    // headers: {'X-Alt-Referer': referrer },
+                    success: function (data) {
+                      var a=document.createElement('a');
+                      a.setAttribute('href', '../public2/'+data);
+                      a.download=data;
+                      a.click();
+                      document.getElementById("loader-1").style.display="none";
+                      document.getElementById("exportfile").style.display="none";
+                    },
+                    error: function () {
+                        alert("submit failed")
+                    },
+                });
+
+      }
+
+      function change_op(){
+        if (document.getElementById("d_eff_new").value==""){
+          alert("bạn chưa nhập vào hiệu suất");
+          return;
+        }
+        if (document.getElementById("d_op_new").value==""){
+          alert("bạn chưa nhập vào công đoạn");
+          return;
+        }
+        if (document.getElementById("sel_week").value=="0"){
+          alert("chọn tuần để cập nhật");
+          return;
+        }
+        document.getElementById("close_dialog2").click()
+        var approve=document.getElementById("d_op_new").value;
+        if (approve=='del'){
+                    var frm_update = $('#IE_update');
+                    var main_url="/IE/del";
+                    $.ajax({
+                        type: "post",
+                        url: main_url,
+                        data: frm_update.serialize(),
+                        // headers: {'X-Alt-Referer': referrer },
+                        success: function (data) {
+                            alert(data)
+                          },
+                          error: function () {
+                                    alert("del failed")
+                          },
+                    });
+          return;
+        }
+        if(approve=="del_all"){
+                    var frm_update = $('#IE_update');
+                    var main_url="/IE/delcbc";
+                    $.ajax({
+                        type: "post",
+                        url: main_url,
+                        data: frm_update.serialize(),
+                        // headers: {'X-Alt-Referer': referrer },
+                        success: function (data) {
+                            alert(data)
+                          },
+                          error: function () {
+                                    alert("del failed")
+                          },
+                    });
+
+
+        }else{
+                document.getElementById("operation").value=approve;
+                document.getElementById("eff").value=document.getElementById("d_eff_new").value;
+                var frm_update = $('#IE_update');
+                var main_url="/IE/ieUpdate";
+                $.ajax({
+                    type: "post",
+                    url: main_url,
+                    data: frm_update.serialize(),
+                    // headers: {'X-Alt-Referer': referrer },
+                    success: function (data) {
+                        alert(data)
+                      },
+                      error: function () {
+                                alert("del failed")
+                      },
+                });
+                alert("cập nhật ok")
+        }
+      };
+    // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      function openPage(pageName,elmnt,color) {
+          var i, tabcontent, tablinks;
+          tabcontent = document.getElementsByClassName("tabcontent");
+          for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+          }
+          tablinks = document.getElementsByClassName("tablink");
+          for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "";
+            tablinks[i].style.color = "whitesmoke";
+          }
+          document.getElementById(pageName).style.display = "block";
+          elmnt.style.backgroundColor = color;
+          elmnt.style.color="black";
+      }
+      // Get the element with id="defaultOpen" and click on it
+      document.getElementById("defaultOpen").click();
+
+      function hienthioutput(){
+        var ds=JSON.parse(sessionStorage.getItem('result_output'));
+        $('#table_output tbody').html('')
+        var dk=document.getElementById("sel_condition_o").value
+        var mhct=document.getElementById("style_detail").value
+        var ca=document.getElementById("sel_shift").value
+        ca=ca.substr(0,1);
+        var i;
+        var trHTML_ds='';
+        var sr=parseFloat(document.getElementById("sel_r").value);
+        var nor=0
+        var big=0
+        var boy=0
+        var sln=0
+        var slb=0
+        var slboy=0
+        if (ds.length==0){
+                  alert(" không có dữ liệu output theo điều kiện lọc hiện tại\n vui lòng chọn lại điều kiện lọc\n thank!")
+        }
+        else{
+          if (dk=="Lịch sử toàn bộ theo thời gian"){
+            document.getElementById("summary_o").innerText="////"
+            for (i = 0; i < ds.length; i++) {
+              trHTML_ds += '<tr><td >' + ds[i].date + '</td><td >' + ds[i].shift + '</td><td >' + ds[i].style_detail + '</td><td >' + ds[i].Size +'</td><td >' + Math.round(ds[i].output)+'</td><td >' + ds[i].rate+'</td><td >' + ds[i].RSize+'</td></tr>';
+            };
+
+          }
+          else{
+            for (i = 0; i < ds.length; i++) {
+              if (ds[i].style_detail==mhct && parseFloat(ds[i].RSize)>sr && parseFloat(ds[i].rate)>sr && ca==ds[i].shift){
+                if(ds[i].Size=="S"||ds[i].Size=="M"||ds[i].Size=="L"||ds[i].Size=="XL"){
+                  nor+=1;
+                  sln+=Math.round(ds[i].output)
+                }
+                if(ds[i].Size=="2XL"||ds[i].Size=="3XL"||ds[i].Size=="4XL"){
+                  big+=1;
+                  slb+=Math.round(ds[i].output)
+                }
+                if(ds[i].Size=="2"||ds[i].Size=="3"||ds[i].Size=="4"){
+                  boy+=1;
+                  slboy+=Math.round(ds[i].output)
+                }
+                trHTML_ds += '<tr><td >' + ds[i].date + '</td><td >' + ds[i].shift + '</td><td >' + ds[i].style_detail + '</td><td >' + ds[i].Size +'</td><td >' + Math.round(ds[i].output)+'</td><td >' + ds[i].rate+'</td><td >' + ds[i].RSize+'</td></tr>';
+              }
+            };
+            var subo='';
+            if (nor>0){
+              var tbn=Math.round(sln/nor)
+              subo+='__Normal size = '+tbn.toString() + ' ////';
+            }
+            if (big>0){
+              var tbn=Math.round(slb/big)
+              subo+='__BIG size = '+tbn.toString() + ' ////';
+            }
+            if (boy>0){
+              var tbn=Math.round(slboy/boy)
+              subo+='__BOY size = '+tbn.toString() + ' ////';
+            }
+            document.getElementById("summary_o").innerText=subo;
+
+          }
+          $('#table_output tbody').html(trHTML_ds)
+        }
+      };
+
+      function get_output(){
+          event.preventDefault();
+          document.getElementById("loader-1").style.display="grid";
+          document.getElementById("group_o").value=document.getElementById("group_name").value
+          $('#table_output tbody').html('')
+          var frm_detail = $('#form_output');
+          var main_url="/IE/getoutput";
+          $.ajax({
+              type: "post",
+              url: main_url,
+              data: frm_detail.serialize(),
+              // headers: {'X-Alt-Referer': referrer },
+              success: function (data) {
+                document.getElementById('loader-1').style.display="none";
+                const jsonObject=JSON.parse(data);
+                sessionStorage.setItem('result_output',JSON.stringify(jsonObject));
+                var result=JSON.parse(sessionStorage.getItem('result_output'));
+                console.log(result)
+                hienthioutput();
+                },
+                error: function () {
+                          alert("submit failed")
+                },
+          });
+
+      };
+
+
+      function getDetail(){
+          var idnv=document.getElementById("idnv").value;
+          var idnvc=idnv.toString();
+          if(idnvc==''||idnvc.length!=5){
+            alert("Bạn chưa nhập mã số nhân viên hoặc mã số nhân viên không đúng");
+            return;
+          }
+          event.preventDefault();
+          document.getElementById("loader-1").style.display="grid";
+          document.getElementById("style_c").value=document.getElementById("style_detail").value
+          $('#table_detail tbody').html('')
+          var frm_detail = $('#form_detail');
+          var main_url="/IE/getDetail";
+          $.ajax({
+              type: "post",
+              url: main_url,
+              data: frm_detail.serialize(),
+              // headers: {'X-Alt-Referer': referrer },
+              success: function (data) {
+                document.getElementById('loader-1').style.display="none";
+                const jsonObject=JSON.parse(data);
+                console.log(jsonObject)
+                ds=jsonObject;
+                if (ds.length==0){
+                  alert(" không có dữ liệu nhân viên theo điều kiện lọc hiện tại\n vui lòng chọn lại điều kiện lọc\n thank!")
+                }
+                  var i;
+                  var trHTML_ds='';
+                  for (i = 0; i < ds.length; i++) {
+                    trHTML_ds += '<tr><td >' + ds[i].id + '</td><td >' + ds[i].name + '</td><td >' + ds[i].date + '</td><td >' + ds[i].operation_name + '</td><td >' + Math.round(ds[i].float_eff*100)/100 + '</td><td >' + ds[i].workcenter+ '</td><td >' + ds[i].style_detail + '</td><td >' + ds[i].size+ '</td><td >' + Math.round(ds[i].rate*100)/100+ '</td></tr>';
+                  };
+                  $('#table_detail tbody').html(trHTML_ds)
+
+                },
+                error: function () {
+                          alert("submit failed")
+                },
+          });
+
+      };
+        // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      function submit_form(){
+                document.getElementById("loader-1").style.display="grid";
+                $('#table_content tbody').html('');
+                $('#ds_content tbody').html('');
+                document.getElementById("cbc_result").innerText='Kết quả CBC';
+                kq_cbc=JSON.stringify("");
+                document.getElementById("ie_cbc").value=document.getElementById("user_sign_up").value
+                document.getElementById("week_ie").value=document.getElementById("sel_week").value
+
+                var main_url = "/pro/getBalancing";
+                var referrer = "/pro/linebalancing";
+                event.preventDefault();
+                var frm = $('#form_calculate');
+                $.ajax({
+                    type: "post",
+                    url: main_url,
+                    data: frm.serialize(),
+                    // headers: {'X-Alt-Referer': referrer },
+                    success: function (data) {
+                          document.getElementById("exportfile").style.display="grid";
+                          document.getElementById("loader-1").style.display="none";
+                          const jsonObject = JSON.parse(data);
+                          cbc=JSON.parse(jsonObject['cbc']);
+                          // console.log(cbc);
+                          var i;
+                          var trHTML='';
+                          var mat=0;
+                          for (i = 0; i < cbc.length; i++) {
+                            mat=parseInt((parseInt(cbc[i].employee)*442-parseInt(cbc[i].work_hs))/60);
+                            trHTML += '<tr><td >' + cbc[i].SQ + '</td><td >' + cbc[i].OPERATION + '</td><td >' + cbc[i].employee + '</td><td >' + mat + '</td><td >' + Math.round(cbc[i].EFF*100)/100 + '</td><td >' + cbc[i].SAM+ '</td><td >' + Math.round(cbc[i].OUTPUT*100)/100+ '</td><td >' + cbc[i].addq+ '</td><td >'+cbc[i].AFF+'</td><td >' + cbc[i].recq +'</td></tr>';
+                          };
+                          $('#table_content tbody').html(trHTML);
+                          ds=JSON.parse(jsonObject['ds']);
+                          console.log(ds);
+                          var i;
+                          var trHTML_ds='';
+                          for (i = 0; i < ds.length; i++) {
+                            trHTML_ds += '<tr><td >' + ds[i].employee + '</td><td >' + ds[i].NAME + '</td><td >' + ds[i].OPERATION + '</td><td >' + Math.round(ds[i].EFF*100)/100 + '</td><td >' + ds[i].Style+ '</td><td >' + Math.round(ds[i].Var*100)/100+ '</td><td >' + ds[i].OP2+ '</td><td >' + ds[i].EFF2 +'</td><td >'+ ds[i].shift +'</td><td >' + ds[i].IE + '</td></tr>';
+                          };
+                          $('#ds_content tbody').html(trHTML_ds);
+
+                          kq_cbc=JSON.stringify(jsonObject['kq_cbc']);
+                          var cb=JSON.parse(kq_cbc)
+                          // console.log(cb)
+                          document.getElementById("cbc_result").innerText='output = '+cb.Min + ' _ eff = ' + cb.Eff+' _HC='+cb.Head_Count+' _Rate='+cb.Rate +' _NDH = '+cb.NDH+'    _Week: '+cb.week;
+                          document.getElementById("defaultOpen").click();
+                          if (document.getElementById("login_status").innerText!=" Login_success"){
+                            document.getElementById("bt_save").style.display="none";
+                          }
+                          else{
+                            document.getElementById("bt_save").style.display="none";
+                          }
+
+                    },
+                    error: function () {
+                        alert("submit failed")
+                    },
+                });
+            };
+          // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      function tableText(tableRow) {
+              var opname = tableRow.childNodes[1].innerText;
+              var eff_2 = tableRow.childNodes[8].innerText;
+              document.getElementById("d1_group").value=document.getElementById("group_name").value
+              document.getElementById("d1_group").disabled=true;
+              document.getElementById("d1_style_detail").value=document.getElementById("style_detail").value
+              document.getElementById("d1_style_detail").disabled=true;
+              document.getElementById("d1_operation").value=opname
+              document.getElementById("d1_operation").disabled=true;
+              document.getElementById("d1_eff_new").value="";
+              document.getElementById("dialog1").click();
+      };
+      function d1_eff2(){
+              var result_cbc=JSON.parse(kq_cbc);
+              var approve=document.getElementById("d1_eff_new").value
+
+              if (approve==""){
+                alert("Bạn chưa nhập hiệu suất công đoạn 2 vào kìa!");
+                return;
+              }
+              document.getElementById("close_dialog1").click();
+              if (!isNaN(approve)){
+                          document.getElementById("operation2").value=document.getElementById("d1_operation").value;
+                          document.getElementById("eff2").value=approve;
+                          document.getElementById("save_cbc_group").value=document.getElementById("group_name").value
+                          document.getElementById("save_cbc_shift").value=document.getElementById("sel_shift").value
+                          document.getElementById("save_cbc_style").value=document.getElementById("style_detail").value
+                          document.getElementById("save_cbc_size").value=document.getElementById("sel_size").value
+                          document.getElementById("save_cbc_ie").value=document.getElementById("user_sign_up").value
+                          document.getElementById("save_cbc_output").value=result_cbc.Min
+                          document.getElementById("save_cbc_eff").value=result_cbc.Eff
+                          document.getElementById("save_cbc_HC").value=result_cbc.Head_Count
+                          document.getElementById("save_cbc_rate").value=result_cbc.Rate
+                          document.getElementById("save_cbc_week").value=document.getElementById("sel_week").value
+                          var frm_update = $('#save_cbc_form');
+                          var main_url="/IE/updateEff2";
+                          $.ajax({
+                              type: "post",
+                              url: main_url,
+                              data: frm_update.serialize(),
+                              // headers: {'X-Alt-Referer': referrer },
+                              success: function (data) {
+                                  alert(data)
+                                },
+                                error: function () {
+                                          alert("update eff2 failed")
+                                },
+                          });
+              } else{
+                alert('hiệu suất nhập vào phải là số nguyên!')
+              }
+            }
+      function eff2(){
+              login_status=document.getElementById("login_status").innerText
+              if (login_status==" Login"){
+                return
+              }
+              var wks=document.getElementById("sel_week").value;
+              if (wks==0){
+                alert('chọn tuần để lưu dữ liệu');
+                return;
+              }
+              var table = document.getElementById("table_content");
+              event.stopImmediatePropagation;
+              if (table) {
+                for (var i = 0; i < table.rows.length; i++) {
+                  table.rows[i].ondblclick = function(e) {
+                    tableText(this);
+                  };
+                };
+              };
+            };
+          // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      function login() {
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                  var result_login=this.responseText
+                  if (result_login=="success"){
+                    document.getElementById("user_sign_up").disabled = true;
+                    document.getElementById("pass_sign_up").disabled = true;
+                    document.getElementById("login_status").innerHTML=" Login_success"
+                    alert("bạn đã đăng nhập thành công")
+                  } else{
+                      alert(result_login)
+                  }
+                  }
+                };
+                var login_status=document.getElementById("login_status").innerText
+                var user_sign_up=document.getElementById("user_sign_up").value
+                var pass_sign_up=document.getElementById("pass_sign_up").value
+                if (login_status==" Login"){
+                    if (user_sign_up==''){
+                    alert('Bạn chưa nhập User');
+                    return;
+                    }
+                    if (pass_sign_up==''){
+                        alert('Bạn chưa nhập password');
+                        return;
+                    }
+                    xhttp.open("get", "/IE/login/"+user_sign_up+"/"+pass_sign_up, true);
+                    xhttp.send();
+                }
+                };
+        ///////////////////////////////////////////////////////////////////////////////////////
+      function save_cbc(){
+          var result_cbc=JSON.parse(kq_cbc);
+          console.log(result_cbc)
+          var xhttp= new XMLHttpRequest();
+          xhttp.onreadystatechange = function(){
+            if (this.readyState==4 && this.status==200){
+              var res=this.responseText
+              alert(res);
+            }
+          }
+          if (result_cbc.Min>0){
+            if (document.getElementById("login_status").innerText!=" Login_success"){
+              alert('IE cần đăng nhập để lưu dữ liệu');
+              return;
+            }
+            var wks=document.getElementById("sel_week").value;
+            if (wks==0){
+              alert('chọn tuần để lưu dữ liệu');
+              return;
+            }
+
+            document.getElementById("save_cbc_group").value=document.getElementById("group_name").value
+            document.getElementById("save_cbc_shift").value=document.getElementById("sel_shift").value
+            document.getElementById("save_cbc_style").value=document.getElementById("style_detail").value
+            document.getElementById("save_cbc_size").value=document.getElementById("sel_size").value
+            document.getElementById("save_cbc_ie").value=document.getElementById("user_sign_up").value
+            document.getElementById("save_cbc_output").value=result_cbc.Min
+            document.getElementById("save_cbc_eff").value=result_cbc.Eff
+            document.getElementById("save_cbc_HC").value=result_cbc.Head_Count
+            document.getElementById("save_cbc_rate").value=result_cbc.Rate
+            document.getElementById("save_cbc_week").value=document.getElementById("sel_week").value
+            // alert(document.getElementById("save_cbc_group").value)
+            // alert(document.getElementById("save_cbc_ie").value)
+            // alert(document.getElementById("save_cbc_style").value)
+            // alert(document.getElementById("save_cbc_size").value)
+            var frm_save_cbc = $('#save_cbc_form');
+            var main_url="/IE/save_cbc";
+            $.ajax({
+                type: "post",
+                url: main_url,
+                data: frm_save_cbc.serialize(),
+                // headers: {'X-Alt-Referer': referrer },
+                success: function (data) {
+                    alert(data)
+                  },
+                  error: function () {
+                            alert("save failed")
+                  },
+            });
+
+          } else {
+            alert('bạn chưa chạy cbc')
+          }
+
+    };
+
+  </script>
+
+  </div>
+
+
+</body>
+</div>
+</html>

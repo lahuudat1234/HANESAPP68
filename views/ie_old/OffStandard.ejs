@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <title>Off Standard</title>
+    </header>
+    <body>
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <!-- Title -->
+                    <span class="mdl-layout-title">OFF STANDARD</span>
+                    <!-- Add spacer, to align navigation to the right -->
+                    <div class="mdl-layout-spacer"></div>
+                    <!-- Navigation. We hide it in small screens. -->
+                    <div id="div_cbb_week" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                            style="width: 50px; margin-right: 50px;">
+                        <input type="text" value="" class="mdl-textfield__input" id="cbb_week" readonly disabled style="color: white;">
+                        <input type="hidden" value="" name="cbb_week">
+                        <label for="cbb_week" class="mdl-textfield__label" style="color: white;">Tuần</label>
+                        <ul for="cbb_week" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="cbb_week_list">
+                        </ul>
+                    </div>
+                    <div id="div_cbb_group" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                            style="width: 100px; margin-right: 50px;">
+                        <input type="text" value="" class="mdl-textfield__input" id="cbb_group" readonly>
+                        <input type="hidden" value="" name="cbb_group">
+                        <label for="cbb_group" class="mdl-textfield__label" style="color: white;">Chuyền</label>
+                        <ul for="cbb_group" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="cbb_group_list">
+                        </ul>
+                    </div>
+                    <div id="div_cbb_shift" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                            style="width: 100px;;margin-right: 50px;">
+                        <input type="text" value="" class="mdl-textfield__input" id="cbb_shift" readonly>
+                        <input type="hidden" value="" name="cbb_shift">
+                        <label for="cbb_shift" class="mdl-textfield__label" style="color: white">Ca</label>
+                        <ul for="cbb_shift" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="list_cbb_shift">
+                            <li class="mdl-menu__item" data-val="RIT">RIT</li>
+                            <li class="mdl-menu__item" data-val="BALI">BALI</li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+            <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--3-col mdl-shadow--6dp" style="background-color: white; height: 700px;">
+                            <div class="mdl-card" style="width: 100%;">
+                                <div class="mdl-card__title" style="background: red;">
+                                  <h2 class="mdl-card__title-text" style="color: white;">Nhập thông tin</h2>
+                                </div>
+                                <div class="mdl-card__supporting-text" style="height: 550px;">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder" style="width:150px; margin-right: 50px; margin-left: 5px;">
+                                        <input class="mdl-textfield__input" type="date" id="date_group_search" style="color: black;">
+                                        <label class="mdl-textfield__label" for="date_group_search">Chọn ngày</label>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder" style="width: 400px; margin-right: 50px; margin-left: 5px;">
+                                        <input class="mdl-textfield__input" type="number" id="txt_rfid" style="color:black">
+                                        <label class="mdl-textfield__label" for="txt_rfid" id="txt_rfid_name">Quẹt thẻ NV</label>
+                                        <span class="mdl-textfield__error" id="txt_rfid_check">Không tìm thấy NV!</span>
+                                    </div>
+                                    <div id="div_style_detail" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                            style="width: 400px; margin-left: 5px;">
+                                        <input type="text" value="" class="mdl-textfield__input" id="cbb_style_detail" readonly style="color: black;">
+                                        <input type="hidden" value="" name="cbb_style_detail">
+                                        <label for="cbb_style_detail" class="mdl-textfield__label">Chọn mã hàng bấm giờ</label>
+                                        <ul for="cbb_style_detail" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="list_cbb_style_detail">
+                                        </ul>
+                                    </div>
+                                    <div id="div_cbb_code" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                            style="width: 400px; margin-left: 5px;">
+                                        <input type="text" value="" class="mdl-textfield__input" id="cbb_code" readonly style="color: black;">
+                                        <input type="hidden" value="" name="cbb_code">
+                                        <label for="cbb_code" class="mdl-textfield__label">Chọn code quẹt thẻ</label>
+                                        <ul for="cbb_code" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="list_cbb_code" style="height: 200px;">
+                                            <!-- <li class="mdl-menu__item" data-val="03">03 (Hỗ trợ Đào tạo chuyển đổi)</li>
+                                            <li class="mdl-menu__item" data-val="08">08 (Đa kỹ năng chuyền)</li>
+                                            <li class="mdl-menu__item" data-val="09">08 (Không sản xuất)</li> -->
+                                        </ul>
+                                    </div>
+                                    <div id="div_cbb_old_op" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                            style="width: 400px; margin-left: 5px;">
+                                        <input type="text" value="" class="mdl-textfield__input" id="cbb_old_op" readonly style="color: black;">
+                                        <input type="hidden" value="" name="cbb_old_op">
+                                        <label for="cbb_old_op" class="mdl-textfield__label">Công đoạn cũ</label>
+                                        <ul for="cbb_old_op" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="list_cbb_old_op">
+                                        </ul>
+                                    </div>
+                                    <div id="div_cbb_new_op" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                            style="width: 400px; margin-left: 5px;">
+                                        <input type="text" value="" class="mdl-textfield__input" id="cbb_new_op" readonly style="color: black;">
+                                        <input type="hidden" value="" name="cbb_new_op">
+                                        <label for="cbb_new_op" class="mdl-textfield__label">Công đoạn mới</label>
+                                        <ul for="cbb_new_op" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="list_cbb_new_op">
+                                        </ul>
+                                    </div>
+                                    <div id="div_txt_note" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder" style="width: 97%; ;margin-right: 50px; margin-left: 5px;">
+                                        <input class="mdl-textfield__input" type="text" id="txt_note" style="color: black;">
+                                        <label class="mdl-textfield__label" for="txt_note">Ghi chú</label>
+                                    </div>
+                                    <div id="div_cbb_note" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                            style="width: 400px; margin-left: 5px; display: none;">
+                                        <input type="text" value="" class="mdl-textfield__input" id="cbb_note" readonly style="color: black;">
+                                        <input type="hidden" value="" name="cbb_note">
+                                        <label for="cbb_note" class="mdl-textfield__label">Lý do</label>
+                                        <ul for="cbb_note" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="list_cbb_note" style='height: 200px;'>
+                                            <li class="mdl-menu__item">Test máy đổi mã hàng</li>
+                                            <li class="mdl-menu__item">Hỗ trợ chuyền phó tạm thời</li>
+                                            <li class="mdl-menu__item">Chất lượng (lỗ kim, tưa vải, dầu..)</li>
+                                            <li class="mdl-menu__item">Nhân viên mất CBC</li>
+                                            <li class="mdl-menu__item">Đào tạo tuần 0</li>
+                                            <li class="mdl-menu__item">Hỗ trợ cắt hàng</li>
+                                            <li class="mdl-menu__item">Hỗ trợ kéo máy</li>
+                                        </ul>
+                                    </div>
+                                    <div id="txt_status_register">Tình trạng:</div>
+                                    <div id="txt_status_register" style="margin-top: 20px; color: black;">Chương trình 7000:</div>
+                                </div>
+                                <div class="mdl-card__actions mdl-card--border">
+                                    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" style="color: white; background-color: indigo; border-radius: 20px; margin-left: 5px;" id="btn_emp_register">
+                                        YES
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" style="color: white; background-color: gray; border-radius: 20px; margin-left: 5px;" id="btn_emp_register_cancel">
+                                        NO
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="background-color: red; color: white; margin-right: 5px; border-radius: 20px; float: right;" id="btn_7000_show_dialog">
+                                        <i class="material-icons">attach_money</i>
+                                        7000
+                                    </button>
+                                </div>
+                                <!-- <div class="mdl-card__menu">
+                                  <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                    <i class="material-icons">share</i>
+                                  </button>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--9-col mdl-shadow--6dp" style="background-color: white; margin: 10px auto; overflow-x:auto;">
+                            <table class="mdl-data-table mdl-js-data-table" style="width:100%; height: 100%;">
+                                <thead style="background-color: green;">
+                                    <!-- <col width="20px"> -->
+                                    <tr style=" border-radius: 10px; height: 60px;">
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">ID</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">TÊN</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">CODE</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">CĐ1</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">CĐ2</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">HS2</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">BẮT ĐẦU</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">KẾT THÚC</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">TỔNG TG</th>
+                                        <!-- <th class="mdl-data-table__cell--non-numeric" style="color: white;">CHUYỀN ĐẾN</th> -->
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">GHI CHÚ</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">IE DUYỆT</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">IE PHẢN HỒI</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_employee_body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <dialog id="dialog_7000" style="border: none; border-radius: 10px; padding:0;">
+            <div class="mdl-card mdl-shadow--2dp" style="width: 500px;">
+                <div class="mdl-card__title" style="background: blueviolet; color:white;">
+                  <h2 class="mdl-card__title-text">CHƯƠNG TRÌNH 7000</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    <div style="margin-bottom: 20px; color:black;">Kích đúp để tham gia chương trình:</div>
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width:100%; height: 100%;">
+                        <thead style="background-color: green;">
+                            <tr style=" border-radius: 10px;">
+                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">CÔNG ĐOẠN</th>
+                                <!-- <th class="mdl-data-table__cell--non-numeric" style="color: white;">HIỆU SUẤT</th> -->
+                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">MỤC TIÊU</th>
+                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">ĐĂNG KÝ</th>
+                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">DK</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_7000_body">
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <div class="mdl-card__actions mdl-card--border">
+                  <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                    Get Started
+                  </a>
+                </div> -->
+                <div class="mdl-card__menu">
+                  <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" style="color:white; background-color: red;" id="btn_7000_close">
+                    <i class="material-icons">close</i>
+                  </button>
+                </div>
+              </div>
+        </dialog>
+    </body>
+    <script>
+        load_week();
+        load_off_standard_code(false, false);
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+        var today= localISOTime.substring(0,10);
+        table_employee_body=document.getElementById('table_employee_body');
+        document.getElementById('date_group_search').value=today;
+        week_list             = document.getElementById('cbb_week_list');
+        list_cbb_style_detail = document.getElementById('list_cbb_style_detail');
+        list_cbb_code         = document.getElementById('list_cbb_code');
+        list_cbb_old_op       = document.getElementById('list_cbb_old_op');
+        list_cbb_new_op      = document.getElementById('list_cbb_new_op');
+        function load_week(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Production/GetShiftTime",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    if (data.length>0){
+                        for (i=1; i<=53; i++) {
+                            var li=document.createElement('li');
+                            li.setAttribute('class', 'mdl-menu__item');
+                            li.setAttribute('data-val', i);
+                            li.innerHTML=i;
+                            week_list.appendChild(li);
+                        }
+                        $('ul[for="cbb_week"] li[data-val="'+data[0].Week+'"]').attr("data-selected", "true");  
+                        var d = new Date();
+                        var n = d.getHours();
+                        currShift='RIT';
+                        if (n>=data[0].StartTime && n<=data[0].FinishTime) {
+                            if (data[0].Shift=='R') currShift='RIT';
+                            else currShift='BALI';
+                        } else {
+                            if (data[0].Shift=='R') currShift='BALI';
+                            else currShift='RIT';
+                        }         
+                        $('ul[for="cbb_shift"] li[data-val="'+currShift+'"]').attr("data-selected", "true"); 
+                        // $('ul[for="cbb_group"] li[data-val="'+data[0].Week+'"]').attr("data-selected", "true");                        
+                        getmdlSelect.init('#div_cbb_shift'); 
+                        getmdlSelect.init('#div_cbb_week');
+                        // getmdlSelect.init('#div_cbb_shift');
+                        load_group();
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send();
+        }
+        document.getElementById('cbb_group').addEventListener('change', function(){
+            load_style_detail();
+            // load_off_standard_tracking();
+        });
+        document.getElementById('cbb_shift').addEventListener('change', function(){
+            load_style_detail();
+            // load_off_standard_tracking();
+        });
+        function load_style_detail(){
+            week=document.getElementById('cbb_week').value;
+            group=document.getElementById('cbb_group').value;
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Production/GetStyleDetail1",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    while (list_cbb_style_detail.childNodes.length>0) { 
+                        list_cbb_style_detail.removeChild(list_cbb_style_detail.childNodes[0]);
+                    }
+                    for (i=0; i<data.length; i++){
+                        var li=document.createElement('li');
+                        li.setAttribute('class', 'mdl-menu__item');
+                        if (i==0) li.setAttribute('data-selected', 'true');
+                        li.setAttribute('data-val', data[i].style);
+                        li.innerHTML= data[i].style;
+                        list_cbb_style_detail.appendChild(li);
+                    }
+                    getmdlSelect.init('#div_style_detail');
+                    load_off_standard_tracking();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={group:group, week: week};
+            xsend.send(JSON.stringify(data));
+        }
+        function load_group(){
+            group_list=document.getElementById('cbb_group_list');
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Production/GetGroup",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    first=0
+                    for (i=1; i<data.length; i++){
+                        if (data[i].GROUP_PLAN==null) continue;
+                        var li=document.createElement('li');
+                        li.setAttribute('class', 'mdl-menu__item');
+                        if (first==0) li.setAttribute('data-selected', "true")
+                        li.setAttribute('data-val', data[i].GROUP_PLAN);
+                        li.innerHTML=data[i].GROUP_PLAN;
+                        group_list.appendChild(li);
+                        if (first==0) first=i;
+                    }
+                    $('ul[for="cbb_group"] li[data-val="'+data[0].Week+'"]').attr("data-selected", "true");                        
+                    getmdlSelect.init('#div_cbb_group');
+                    load_style_detail();
+                    
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send();
+        }
+        //convert 10 digit to 8 digit
+        function convert_rfid(digit10){
+            digit10=parseInt(digit10);
+            dec2hex=digit10.toString(16);
+            if (dec2hex.length>6) hex8digit=dec2hex.substring(dec2hex.length-6, dec2hex.length);
+            else hex8digit=dec2hex;
+            while (hex8digit.length<8) hex8digit='0'+hex8digit;
+            last4digit=hex8digit.substring(4, 9)
+            pre4digit=hex8digit.substring(0,4);
+            if (pre4digit.length>=3) pre4digit=parseInt(pre4digit.substring(pre4digit.length-2, pre4digit.length), 16).toString();
+            last4digit=parseInt(last4digit, 16).toString();
+            emp8digit='';
+            while (pre4digit.length<3)  pre4digit ='0'+pre4digit ;
+            while (last4digit.length<5) last4digit='0'+last4digit;
+            emp8digit=pre4digit+last4digit;
+            return emp8digit;
+        }
+        function load_off_standard_tracking(){
+            group=document.getElementById('cbb_group').value;
+            date=document.getElementById('date_group_search').value;
+            shift=document.getElementById('cbb_shift').value;
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Production/GetOffStandardTracking",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    while (table_employee_body.childNodes.length>0)
+                    table_employee_body.removeChild(table_employee_body.childNodes[0]);
+                    for (var i=0; i<data.length; i++){
+                        if (data[i].Shift.includes(shift)){
+                            var tr=document.createElement("tr");
+                            //ID
+                            var tdTicket=document.createElement("td");
+                            tdTicket.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode('');
+                            if (data[i].ID!=null) node=document.createTextNode(data[i].ID);
+                            tdTicket.appendChild(node);
+                            tr.appendChild(tdTicket);
+                            //Name
+                            var tdOp=document.createElement("td");
+                            tdOp.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode(data[i].Name);
+                            tdOp.appendChild(node);
+                            tr.appendChild(tdOp);
+                            //Code
+                            var tdEmployee=document.createElement("td");
+                            tdEmployee.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode('');
+                            if (data[i].Code!=null) node=document.createTextNode(data[i].Code);
+                            tdEmployee.appendChild(node);
+                            tr.appendChild(tdEmployee);
+                            //Operation1
+                            var tdName=document.createElement("td");
+                            tdName.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode('');
+                            if (data[i].Operation1!=null) node=document.createTextNode(data[i].Operation1);
+                            tdName.appendChild(node);
+                            tr.appendChild(tdName);
+                            //Operation2
+                            var tdOpR=document.createElement("td");
+                            tdOpR.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode('');
+                            if (data[i].Operation2!=null) node=document.createTextNode(data[i].Operation2);
+                            tdOpR.appendChild(node);
+                            tr.appendChild(tdOpR);
+                            //Efficiency2
+                            var tdSection=document.createElement("td");
+                            tdSection.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode('');
+                            if (data[i].Efficiency2!=null) node=document.createTextNode(data[i].Efficiency2);
+                            tdSection.appendChild(node);
+                            tr.appendChild(tdSection);
+                            //StartTime
+                            var tdShift=document.createElement("td");
+                            tdShift.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode('');
+                            if (data[i].StartTime!=null) {
+                                var StartTime=(new Date(data[i].StartTime)).toLocaleString("en-US", {timeZone: "Asia/Bangkok"}).split(', ')[1];
+                                node=document.createTextNode(StartTime);
+                            }
+                            tdShift.appendChild(node);
+                            tr.appendChild(tdShift);
+                            //FinishTime
+                            var tdShift=document.createElement("td");
+                            tdShift.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode('');
+                            if (data[i].FinishTime!=null) {
+                                // node=document.createTextNode(data[i].FinishTime);
+                                var FinishTime=(new Date(data[i].FinishTime)).toLocaleString("en-US", {timeZone: "Asia/Bangkok"}).split(', ')[1];
+                                node=document.createTextNode(FinishTime);
+                            }
+                            tdShift.appendChild(node);
+                            tr.appendChild(tdShift);
+                            //SpanTime
+                            var tdShift=document.createElement("td");
+                            tdShift.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode('');
+                            if (data[i].SpanTime!=null) node=document.createTextNode(data[i].SpanTime);
+                            tdShift.appendChild(node);
+                            tr.appendChild(tdShift);
+                            //Note
+                            var tdShift=document.createElement("td");
+                            tdShift.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode('');
+                            if (data[i].Note!=null) node=document.createTextNode(data[i].Note);
+                            tdShift.appendChild(node);
+                            tr.appendChild(tdShift);
+                            //IEApprovedUser
+                            var tdShift=document.createElement("td");
+                            tdShift.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode('');
+                            if (data[i].IEApprovedUser!=null) node=document.createTextNode(data[i].IEApprovedUser);
+                            tdShift.appendChild(node);
+                            tr.appendChild(tdShift);
+                            //Note
+                            var tdShift=document.createElement("td");
+                            tdShift.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            var node=document.createTextNode('');
+                            if (data[i].IEApprovedResult!=null) node=document.createTextNode(data[i].IEApprovedResult);
+                            tdShift.appendChild(node);
+                            tr.appendChild(tdShift);
+                            componentHandler.upgradeElement(tr);
+                            table_employee_body.appendChild(tr);
+                        }
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={date:date, group: group};
+            xsend.send(JSON.stringify(data));
+        }
+        function get_group_infor(){
+            date=document.getElementById('date_group_search').value;
+            group=document.getElementById('cbb_group').value;
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Production/GetOffStandardTracking",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={date:date, group: group};
+            xsend.send(JSON.stringify(data));
+        }
+        function load_off_standard_code(code03, code08){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Production/GetOffStandardCode",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    while (list_cbb_code.childNodes.length>0)
+                    list_cbb_code.removeChild(list_cbb_code.childNodes[0]);
+                    for (i=0; i<data.length; i++){
+                        if (code03==false && data[i].OffCode.includes('03')) continue;
+                        if (code08==false && data[i].OffCode.includes('08')) continue;
+                        var li=document.createElement('li');
+                        li.setAttribute('class', 'mdl-menu__item');
+                        li.setAttribute('data-val', data[i].OffCode);
+                        li.innerHTML=data[i].OffCode;
+                        list_cbb_code.appendChild(li);
+                    }
+                    getmdlSelect.init('#div_cbb_code'); 
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send();
+        }
+        document.getElementById('txt_rfid').addEventListener('keyup', function(){
+            if (event.keyCode === 13) {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                digit10=document.getElementById("txt_rfid").value;
+                if (digit10.length!=10&&digit10.length!=6){
+                    alert('Hãy quẹt thẻ hoặc nhập ID 6 số đúng!');
+                    return;
+                }
+                if (digit10.length==10) digit8=convert_rfid(digit10);
+                if (digit10.length==6) digit8=digit10;
+                var xsend= new XMLHttpRequest();
+                xsend.open("POST","/Get_RFID",true);
+                xsend.onreadystatechange= function(){
+                    if (this.readyState==4 && this.status==200){
+                        data=JSON.parse(xsend.responseText);
+                        if (data.length>0){
+                            document.getElementById('txt_rfid').value=data[0].ID;
+                            document.getElementById('txt_rfid_name').innerHTML=data[0].Name+' - '+data[0].Line+' - '+data[0].Shift;
+                            document.getElementById('txt_rfid').disabled=true;
+                            document.getElementById('cbb_week').disabled=true;
+                            document.getElementById('cbb_group').disabled=true;
+                            document.getElementById('cbb_shift').disabled=true;
+                            date=document.getElementById('date_group_search').value;
+                            load_emp_status(data[0].ID);
+                            
+                        } else {
+                            alert('Không tìm thấy thông tin nhân viên!');
+                        }
+                    }
+                }
+                xsend.setRequestHeader("Content-type", "application/json");
+                data={rfid:digit8};
+                xsend.send(JSON.stringify(data));
+            }
+        });
+        document.getElementById('cbb_code').addEventListener('change', function(){
+            code=document.getElementById('cbb_code').value;
+            if (!code.includes('03')&&!code.includes('08')){
+                document.getElementById('div_txt_note').style.display="none";
+                document.getElementById('div_cbb_old_op').style.display="none";
+                document.getElementById('div_cbb_new_op').style.display="none";
+            } else {
+                document.getElementById('div_txt_note').style.display="grid";
+                document.getElementById('div_cbb_old_op').style.display="grid";
+                document.getElementById('div_cbb_new_op').style.display="grid";
+            }
+            if (code.includes('09')) document.getElementById('div_cbb_note').style.display="grid";
+            else document.getElementById('div_cbb_note').style.display="none";
+        });
+        function load_emp_status(emp){
+            ID=emp;//document.getElementById('txt_rfid');
+            date=document.getElementById('date_group_search').value;
+            week=document.getElementById('cbb_week').value;
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Production/GetOffStandardInfo",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    code03=false;
+                    code08=false;
+                    checkTracking(emp, date, function(result){
+                        console.log(result)
+                        data=JSON.parse(xsend.responseText);
+                        console.log(data)
+                        if (result==''){//new ticket, need to be open
+                            if (xsend.responseText!='[]'){
+                                document.getElementById('txt_status_register').innerHTML='BẠN ĐÃ ĐĂNG KÝ CHƯƠNG TRÌNH!';
+                                document.getElementById('txt_status_register').style.display="grid";
+                                document.getElementById('txt_status_register').style.fontSize="15";
+                                document.getElementById('txt_status_register').style.color="green";
+                                style_detail=document.getElementById('cbb_style_detail').value;
+                                while (list_cbb_new_op.childNodes.length>0)
+                                list_cbb_new_op.removeChild(list_cbb_new_op.childNodes[0]);
+                                while (list_cbb_old_op.childNodes.length>0)
+                                list_cbb_old_op.removeChild(list_cbb_old_op.childNodes[0]);
+                                for (i=0; i<data.length; i++){
+                                    if (data[i].WC.toLowerCase()==style_detail.toLowerCase()) {
+                                        if (data[i].Operation1!=null && data[i].Operation1!=''){
+                                            sessionStorage.setItem(data[i].ID+data[i].WC.toUpperCase()+data[i].Operation1,data[i].Efficiency1)
+                                            var li=document.createElement('li');
+                                            li.setAttribute('class', 'mdl-menu__item');
+                                            li.setAttribute('data-val', data[i].Operation1);
+                                            li.innerHTML=data[i].Operation1+' - '+data[i].Efficiency1;
+                                            list_cbb_old_op.appendChild(li);
+                                            // list_cbb_new_op.appendChild(li);
+                                            var li=document.createElement('li');
+                                            li.setAttribute('class', 'mdl-menu__item');
+                                            li.setAttribute('data-val', data[i].Operation1);
+                                            li.innerHTML=data[i].Operation1+' - '+data[i].Efficiency1;
+                                            // list_cbb_old_op.appendChild(li);
+                                            list_cbb_new_op.appendChild(li);
+                                        }
+                                        if (data[i].Operation2!=null && data[i].Operation2!=''){
+                                            sessionStorage.setItem(data[i].ID+data[i].WC.toUpperCase()+data[i].Operation2,data[i].Efficiency2)
+                                            var li=document.createElement('li');
+                                            li.setAttribute('class', 'mdl-menu__item');
+                                            li.setAttribute('data-val', data[i].Operation2);
+                                            li.innerHTML=data[i].Operation2+' - '+data[i].Efficiency2;
+                                            list_cbb_old_op.appendChild(li);
+                                            // list_cbb_new_op.appendChild(li);
+                                            var li=document.createElement('li');
+                                            li.setAttribute('class', 'mdl-menu__item');
+                                            li.setAttribute('data-val', data[i].Operation2);
+                                            li.innerHTML=data[i].Operation2+' - '+data[i].Efficiency2;
+                                            // list_cbb_old_op.appendChild(li);
+                                            list_cbb_new_op.appendChild(li);
+                                        }
+                                        if (data[i].Operation3!=null && data[i].Operation3!=''){
+                                            sessionStorage.setItem(data[i].ID+data[i].WC.toUpperCase()+data[i].Operation3,data[i].Efficiency3)
+                                            var li=document.createElement('li');
+                                            li.setAttribute('class', 'mdl-menu__item');
+                                            li.setAttribute('data-val', data[i].Operation3);
+                                            li.innerHTML=data[i].Operation3+' - '+data[i].Efficiency3;
+                                            list_cbb_old_op.appendChild(li);
+                                            // list_cbb_new_op.appendChild(li);
+                                            var li=document.createElement('li');
+                                            li.setAttribute('class', 'mdl-menu__item');
+                                            li.setAttribute('data-val', data[i].Operation3);
+                                            li.innerHTML=data[i].Operation3+' - '+data[i].Efficiency3;
+                                            // list_cbb_old_op.appendChild(li);
+                                            list_cbb_new_op.appendChild(li);
+                                        }
+                                    }
+                                }
+                                getmdlSelect.init('#div_cbb_old_op'); 
+                                getmdlSelect.init('#div_cbb_new_op');
+                                for (var i=0; i<data.length; i++){
+                                    if (data[i].Code==3 && data[i].WC.toLowerCase()==style_detail.toLowerCase()) {
+                                        code03=true;
+                                    }
+                                    if (data[i].Code==8 && data[i].WC.toLowerCase()==style_detail.toLowerCase()) {
+                                        code08=true;
+                                    }
+                                }
+                            } else {
+                                document.getElementById('txt_status_register').innerHTML='BẠN CHƯA ĐĂNG KÝ CHƯƠNG TRÌNH!';
+                                document.getElementById('txt_status_register').style.display="grid";
+                                document.getElementById('txt_status_register').style.fontSize="15";
+                                document.getElementById('txt_status_register').style.color="red";
+                            }
+                            load_off_standard_code(code03, code08);
+                        } else {//old ticket, need to be closed
+                            closeOffStandardTracking(result);
+                        }
+                    });
+                    
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={ID: ID, date:date, week: week};
+            xsend.send(JSON.stringify(data));
+        }
+        document.getElementById('btn_emp_register_cancel').addEventListener('click', function(){
+            location.reload();
+        }); 
+        document.getElementById('btn_emp_register').addEventListener('click', function(){
+            ID = document.getElementById('txt_rfid').value;
+            if (ID=='') {
+                alert('Bạn chưa quẹt thẻ hoặc nhập mã ID!');
+                return;
+            }
+            emp_infor = document.getElementById('txt_rfid_name').innerHTML.split(' - ');
+            if (emp_infor.length==1){
+                alert('Hãy nhấn Enter để nhận thông tin!');
+                return;
+            }
+            name      = emp_infor[0];
+            shift     = emp_infor[2];
+            groupTo   = document.getElementById('cbb_group').value;
+            if (groupTo==''){
+                alert('Bạn chưa chọn group đến!');
+                return;
+            }
+            code      = document.getElementById('cbb_code').value;
+            if (code==''){
+                alert('Bạn chưa chọn mã code!');
+                return;
+            }
+            wc        = document.getElementById('cbb_style_detail').value.toUpperCase();
+            op1       = document.getElementById('cbb_old_op').value.split(' - ')[0];
+            if (op1=='' && (code.includes('03')||code.includes('08'))){
+                alert('Chọn CĐ đang may!');
+                return;
+            }
+            if (!code.includes('03')&&!code.includes('08')) op1='';
+            op2       = document.getElementById('cbb_new_op').value.split(' - ')[0];
+            if (op2=='' && (code.includes('03')||code.includes('08'))){
+                alert('Chọn CĐ muốn chuyển đổi!');
+                return;
+            }
+            eff2      = sessionStorage.getItem(ID+wc.toUpperCase()+op1);
+            if (!code.includes('03')&&!code.includes('08')) {
+                eff2='0'
+                op2='';
+            }
+            weekUpdate=document.getElementById('cbb_week').value;
+            if (weekUpdate==''){
+                alert('Chọn tuần!');
+                return;
+            }
+            note      = document.getElementById('txt_note').value+' ('+document.getElementById('txt_status_register').innerHTML+')';
+            if (code.includes('09')) note=document.getElementById('cbb_note').value;
+            if (note==''){
+                alert('Bạn chưa nhập lý do!');
+                return;
+            }
+            var xsend = new XMLHttpRequest();
+            xsend.open("POST","/Production/InsertOffStandardTracking",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=xsend.responseText;
+                    if (code.includes('03')||code.includes('08'))
+                    alert('Bạn đã mở ticket mã '+code+' THÀNH CÔNG!\nHiệu suất bạn cần đạt là: '+document.getElementById('cbb_new_op').value.split(' - ')[1]+'%');
+                    else alert('Bạn đã mở ticket mã '+code+' THÀNH CÔNG!');
+                    location.reload();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={ID: ID, name: name, shift: shift, groupTo: groupTo, code: code, 
+                  wc: wc, op1: op1, op2: op2, eff2: eff2, weekUpdate: weekUpdate, note: note};
+            xsend.send(JSON.stringify(data));
+        }); 
+        function checkTracking(empID, date, callback){
+            var xsend = new XMLHttpRequest();
+            xsend.open("POST","/Production/IsExistedOffStandardTracking",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=xsend.responseText;
+                    if (data.length>0) return callback(JSON.parse(data));
+                    else return callback('');
+                    // location.reload();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={empID: empID, date: date};
+            xsend.send(JSON.stringify(data));
+        }
+        function closeOffStandardTracking(data){
+            empID=data[0].ID;
+            start  = (new Date((new Date(data[0].StartTime)) - tzoffset)).toISOString().slice(0, -1);
+            startTime=start.split('T')[0]+' '+start.split('T')[1].split('.')[0];
+            var xsend    = new XMLHttpRequest();
+            xsend.open("POST","/Production/CloseOffStandardTracking",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    if (data.length>0){
+                        alert('Bạn đã đóng ticket THÀNH CÔNG!\nThời gian quẹt thẻ '+data[0].Code+' là '+data[0].SpanTime+'h');
+                        location.reload();
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={empID: empID, startTime: startTime};
+            xsend.send(JSON.stringify(data));
+        }
+        document.getElementById('btn_7000_show_dialog').addEventListener('click', function(){
+            load_7000_table();
+            empID=document.getElementById('txt_rfid').value.substring(1,6);
+            if (empID!='')
+                document.getElementById('dialog_7000').showModal();
+        });
+        function load_7000_table(){
+            empID=document.getElementById('txt_rfid').value.substring(1,6);
+            var xsend    = new XMLHttpRequest();
+            xsend.open("POST","/Production/GetOperationByEmployee7000",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    console.log(data);
+                    table_7000_body=document.getElementById('table_7000_body');
+                    while (table_7000_body.childNodes.length>0)
+                    table_7000_body.removeChild(table_7000_body.childNodes[0]);
+                    for (var i=0; i<data.length; i++){
+                        var tr=document.createElement("tr");
+                        //ID
+                        var tdTicket=document.createElement("td");
+                        tdTicket.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode('');
+                        node=document.createTextNode(data[i].OPERATION);
+                        tdTicket.appendChild(node);
+                        tr.appendChild(tdTicket);
+                        //Code
+                        var tdEmployee=document.createElement("td");
+                        tdEmployee.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode('');
+                        node=document.createTextNode(data[i].GOAL);
+                        tdEmployee.appendChild(node);
+                        tr.appendChild(tdEmployee);
+                        //Operation1
+                        var tdName=document.createElement("td");
+                        tdName.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode('');
+                        if (data[i].TARGET!=null) node=document.createTextNode('ĐÃ ĐK');
+                        else node=document.createTextNode('CHƯA ĐK');
+                        tdName.appendChild(node);
+                        tr.appendChild(tdName);
+                        //checkbox
+                        var tdLabel=document.createElement('td')
+                        var label=document.createElement('label');
+                        label.setAttribute('class', 'mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect');
+                        label.setAttribute('for', data[i].OPERATION);
+                        var input=document.createElement('input');
+                        input.setAttribute('click','mdl-checkbox__input');
+                        input.setAttribute('type', "checkbox");
+                        if (data[i].TARGET!=null)
+                            input.setAttribute('checked', "true");
+                        input.setAttribute('onchange', 'function_7000_reg(this)')
+                        input.setAttribute('id', data[i].OPERATION);
+                        var span=document.createElement('span');
+                        span.setAttribute('class', 'mdl-checkbox__label');
+                        componentHandler.upgradeElement(input);
+                        componentHandler.upgradeElement(span);
+                        label.appendChild(input);
+                        label.appendChild(span);
+                        tdLabel.appendChild(label);
+                        tr.appendChild(tdLabel);
+                        componentHandler.upgradeElement(tr);
+                        table_7000_body.appendChild(tr);
+                    }
+
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={empID: empID};
+            xsend.send(JSON.stringify(data));
+        }
+        function function_7000_reg(x){
+            // console.log(x.parentNode.parentNode.parentNode.childNodes[0])
+            empID=document.getElementById('txt_rfid').value.substring(1,6);
+            operation=x.parentNode.parentNode.parentNode.childNodes[0].innerHTML;
+            // actual=x.childNodes[1].innerHTML;
+            // target=x.childNodes[2].innerHTML;
+            var xsend    = new XMLHttpRequest();
+            xsend.open("POST","/Production/AddOperationByEmployee7000",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=xsend.responseText;
+                    load_7000_table();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={empID: empID, operation: operation, actual: '0', target: '0'};
+            console.log(data)
+            xsend.send(JSON.stringify(data));
+        }
+        document.getElementById('btn_7000_close').addEventListener('click', function(){
+            document.getElementById('dialog_7000').close();
+            location.reload();
+        })
+    </script>
+</html>

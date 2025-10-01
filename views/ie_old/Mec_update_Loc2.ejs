@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html>
+<title>MMS</title>
+<!-- <meta charset="UTF-8"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../CSS/w3.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Helvetica","Arial",sans-serif;
+}
+a,li{
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+}
+.w3-bar-block .w3-bar-item {padding:20px}
+body{
+  font-family: "Helvetica","Arial",sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  /* background-image: url("/public/imgbook/bodyBG2.jpg"); */
+  background-color: whitesmoke;
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+</style>
+<body>
+
+<!-- Sidebar (hidden by default) -->
+    <!-- Sidebar (hidden by default) -->
+    <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:100;width:25%;min-width:300px; background-image: url(/public/imgbook/bodyBG.jpg);" id="mySidebar">
+      <a href="/mechome" class="w3-bar-item w3-button" ><span class="glyphicon glyphicon-home" style="padding-right: 20px;"></span>Trang Chủ</a>
+      <a href="/mechome" class="w3-bar-item w3-button w3-blue"><span class="glyphicon glyphicon-inbox" style="padding-right: 20px;"></span>Quét thẻ downtime</a>
+      <!-- <a href="/mec/updateloc" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật vị trí máy</a> -->
+      <a href="/mec/updateloc2" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật vị trí máy mới</a>
+      <a href="/mec/report" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-list-alt" style="padding-right: 20px;"></span>Báo cáo Realtime</a>
+      <a href="/mec/partissue" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-usd" style="padding-right: 20px;"></span>Cấp / Phát phụ tùng</a>
+      <a href="#" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-duplicate" style="padding-right: 20px;"></span>Mechanic KPI</a>
+    </nav>
+<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-right" style="display:none;z-index:2;width:30%;min-width:300px; right: 0;" id="mySidebar_right">
+  <a href="javascript:void(0)"
+  class="w3-bar-item w3-button" id="name">Thông tin user đăng nhập</a>
+  <div class="w3-container w3-card-4 w3-light-grey" style="display:none;">
+    <a id="logout_ref" href="/logout" class="w3-bar-item w3-button">Logout</a>
+  </div>
+  <br>
+  <div class="form-group">
+    <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="logout()"><span class="glyphicon glyphicon-floppy-saved"></span> Đăng xuất</button>
+  </div>
+</nav>
+<!-- Top menu -->
+<div class="w3-top w3-center">
+  <div class="w3-purple w3-xlarge" style="width: 100%;margin:auto;">
+    <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+    <div class="w3-right w3-padding-16" onclick="open_signup()" >
+    <span class="glyphicon glyphicon-user" style="padding-right: 10px;" ></span><span id="username"><%= user %></span></div>
+    <div class="w3-center w3-padding-16" style="margin: 0 auto;"><h3 style="margin: 0 auto;">CẬP NHẬT VỊ TRÍ MÁY</h3></div>
+    <a href="/lead" id="refresh" style="display: none;"></a>
+  </div>
+</div>
+  
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-container w3-center" style="width: 100%;margin-top:50px; margin-left: auto;" onclick="w3_close()">
+    <!-- About Section -->
+    <div class="w3-row w3-border">
+      <h1>----</h1>
+      <form style="text-align: left;" action="javascript:">
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="machine_id">mã máy:</label>
+            <input name="machine_id" type="number" id="machine_id" class="form-control" onkeypress="search_mc()" placeholder="nhập vào mã máy">
+            <br>
+            <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="find_machine()"><span class="glyphicon glyphicon-search"></span> Xem thông tin</button>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="form-group">
+            <label for="mctype">loại máy:</label>
+            <input name="mc_type" type="text" id="mc_type" disabled class="form-control">
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="form-group">
+            <label for="line_old2">Line:</label>
+            <input name="line_old2" type="text" id="line_old2" disabled class="form-control">
+            <label for="pos_old">Vị trí:</label>
+            <input name="pos_old" type="number" id="pos_old" disabled class="form-control">
+            </div>
+        </div>
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="machine_id">chọn nhóm chuyển đến:</label>
+            <select class="form-control" name="sel_group" id="sel_group">
+              <option>001-007</option>
+              <option>008-014</option>
+              <option>015-021</option>
+              <option>022-028</option>
+              <option>029-034</option>
+              <option>035-042</option>
+              <option>043-050</option>
+              <option>051-058</option>
+              <option>059-066</option>
+              <option>067-074</option>
+              <option>075-082</option>
+              <option>083-090</option>
+              <option>091-098</option>
+              <option>099-105</option>
+              <option>106-111</option>
+              <option>112-118</option>
+              <option>200-203</option>
+              <option>204-210</option>
+              <option>211-217</option>
+              <option>218-223</option>
+              <option>224-231</option>
+              <option>232-234</option>
+              <option>239-245</option>
+              <option>246-252</option>
+              <option>253-259</option>
+              <option>260-266</option>
+              <option>277-283</option>
+              <option>284-290</option>
+              <option>291-297</option>
+              <option>298-304</option>
+              <option>305-311</option>
+              <option>312-318</option>
+              <option>319-325</option>
+              <option>326-332</option>
+              <option>333-339</option>
+              <option>340-346</option>
+              <option>347-353</option>
+              <option>Đổi mã PB1</option>
+              <option>Đổi mã PB2</option>
+              <option>Kho SX PB1</option>
+              <option>Kho SX PB2</option>
+              <option>SMED PB1 RACK</option>
+              <option>SMED PB1 SÀN</option>
+              <option>SMED PB1 TEST</option>
+              <option>SMED PB2 RACK</option>
+              <option>SMED PB2 SÀN</option>
+              <option>SMED PB2 TEST</option>
+            </select>
+            <br>
+            <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="load_group()"><span class="glyphicon glyphicon-refresh"></span> Xem layout</button>
+          </div>
+        </div>
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="sel_line">chọn Line mới:</label>
+            <input name="sel_line" type="text" id="sel_line" disabled class="form-control" placeholder="chọn line trên layout">
+            <label for="sel_pos">chọn Vị trí mới:</label>
+            <select class="form-control" name="sel_pos" id="sel_pos">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+              <option>13</option>
+              <option>14</option>
+              <option>15</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="form-group">
+            <br>
+            <br>
+            <br>
+            <br>
+            <button type="button" value="submit" id="bt_di" class="btn btn-primary" style="background-color: #4B0082;" onclick="update_loc()"><span class="glyphicon glyphicon-random"></span> Xác nhận</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="w3-row w3-border">
+      <!-- <div class="col-md-1"></div> -->
+      <div class="col-md-12">
+        <h2>vị trí cập nhật mới</h2>  
+        <div style="overflow-x: scroll; padding: 0px; margin: auto; position: relative; width: 100%; height: 800px;">
+          <div style="opacity: 0; position: absolute; left: 0px; top: 0px; z-index: 10;">
+            <img src="/public/imgbook/bodyBG2.jpg" width="1792" height="800" alt="Planets"  usemap="#MapMC">
+          </div>
+          <div style="position: absolute; left: 0px; top: 0px;">
+            <canvas id="myCanvas" width="1792" height="800" style="border:1px solid #d3d3d3;"></canvas>
+          </div>
+          <map name="MapMC" id="MapMC">
+            <!-- <area shape="rect" coords="0,0,120,180" alt="MC1" href="/login"> -->
+          </map>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+  <button id="dialog_finish" style="display: none;"  type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#FModal">Open Modal</button>
+  <!-- Modal -->
+  <div class="modal fade" id="FModal" role="dialog" onload="set_forcus()">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><strong>Thông tin di chuyển máy</strong><span id="sys_confirm3">.</span></h4>
+        </div>
+        <div class="modal-body">
+          <form id="finish_fillin" action="javascript:">
+            <div class="modal-body">
+              <label class="form-control w3-left" for="idmc3">mã máy:</label><br>
+              <input class="form-control w3-left" type="number" name="idmc3" id="idmc3"><br>
+              <label class="form-control w3-left" id="mc_type3">loại máy:</label><br>
+              <label class="form-control w3-left" for="line_old">Line hiện tại:</label><br>
+              <input class="form-control w3-left" type="text" name="line_old" id="line_old"><br>
+              <label class="form-control w3-left" for="line_new">Line mới:</label><br>
+              <input class="form-control w3-left" type="text" name="line_new" id="line_new"><br>
+              <label class="form-control w3-left" for="pos_new">Vị trí trên line mới:</label><br>
+              <input class="form-control w3-left" type="number" name="pos_new" id="pos_new"><br>
+            </div>
+            <div class="modal-body">
+              <p>---------------------</p>
+            </div>
+            <div class="modal-body" id="f_nvtm">
+              <label class="form-control w3-left">Quét mã thẻ thợ máy cập nhật:</label><br>
+              <input class="form-control w3-center" style="background-color: yellow;" onkeypress="get_mec_name()" placeholder="đưa chuột vào và quét thẻ" type="number" name="id_nvtm3" id="id_nvtm3"><br>
+              <label class="form-control w3-left" id="name_nvtm3">Tên thợ máy</label>
+            </div>
+            <div class="modal-footer">
+              <div class="col-md-5">
+                <button type="button" value="submit" id="bt_firm" class="btn btn-primary" style="background-color: #4B0082;" onclick="update_loc_firm()"><span class="glyphicon glyphicon-ok-sign"></span> Cập nhật</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="close_dialog3" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+
+
+  <!-- Footer -->
+<footer class="w3-row-padding w3-padding-32 w3-center">
+</footer>
+
+</body>
+
+<script type="text/javascript">
+$('#FModal').on('shown.bs.modal', function () {
+    $('#id_nvtm3').focus();
+})  
+
+function set_forcus(){
+  document.getElementById("id_nvtm3").disabled=false;  
+  document.getElementById("id_nvtm3").focus();
+}
+function open_reg(){
+  document.getElementById("downtime_reg").style.display="inline";
+  document.getElementById("employee_id").value="";
+  document.getElementById("emp_name").innerText="Tên nhân viên";
+}
+
+function close_reg(){
+  // document.getElementById("machine_id").value=""
+  document.getElementById("downtime_reg").style.display="none";
+}
+
+// Script to open and close sidebar
+var list_mc=JSON.stringify("");
+function update_loc(){
+  document.getElementById("line_new").value=document.getElementById("sel_line").value
+  document.getElementById("pos_new").value=document.getElementById("sel_pos").value
+  document.getElementById("idmc3").value=document.getElementById("machine_id").value
+  document.getElementById("line_old").value=document.getElementById("line_old2").value
+  document.getElementById("line_new").disabled=true;
+  document.getElementById("line_old").disabled=true;
+  document.getElementById("pos_new").disabled=true;
+  document.getElementById("idmc3").disabled=true;
+  document.getElementById("name_nvtm3").innerText="Tên thợ máy"
+  document.getElementById("id_nvtm3").disabled=false;
+  document.getElementById("id_nvtm3").value="";
+  document.getElementById("dialog_finish").click()
+}
+
+function update_loc_firm(){
+  if (document.getElementById("name_nvtm3").innerText=="Tên thợ máy"){
+    alert("Vui lòng quét thẻ thợ máy để tiếp tục")
+    document.getElementById("close_dialog3").click()
+    return
+  }
+  document.getElementById("line_new").disabled=false;
+  document.getElementById("line_old").disabled=false;
+  document.getElementById("pos_new").disabled=false;
+  document.getElementById("idmc3").disabled=false;
+  document.getElementById("id_nvtm3").disabled=false;  
+  if (document.getElementById("idmc3").value==""){
+    alert("bạn chưa nhập vào mã máy")
+    document.getElementById("close_dialog3").click()
+    return
+  }
+  event.preventDefault();
+  var main_url="/mec/updateloc"
+  var frm = $('#finish_fillin');
+  $.ajax({
+      type: "post",
+      url: main_url,
+      data: frm.serialize(),
+      success: function (data) {
+          if (data=="sc"){
+            alert("cập nhật thành công")
+            document.getElementById("machine_id").value="";
+            document.getElementById("line_old2").value="";
+            document.getElementById("pos_old").value="";
+            document.getElementById("mc_type").value="";
+            load_group()
+            document.getElementById("machine_id").focus();
+          } else{
+            alert("mã nhập vào hok phải mã máy!")
+          }
+      },
+      error: function () {
+        alert("submit failed")
+      },
+  })
+
+
+
+
+
+  document.getElementById("close_dialog3").click()
+}
+
+
+function req_part(){
+  var thomay=document.getElementById("name_nvtm3").innerText;
+  if (thomay=="Tên thợ máy"){
+    document.getElementById("f_nvtm").style.display="inline";
+    return;
+  }
+}
+function close_advance(){
+  document.getElementById("closeA").style.display="inline";
+}
+
+function search_mc(){
+  if (event.keyCode === 13){
+      find_machine()
+    }
+}
+
+function logout(){
+  alert('log out');
+  document.getElementById("logout_ref").click();
+}
+
+function get_mc_stt(){
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var res_result=this.responseText
+      console.log(res_result)
+      if (res_result=="false"){
+        alert("something wrong happen!")
+      } else{
+        sessionStorage.setItem('res_mc_stt',res_result);
+        Draw_map();
+      }
+      }
+    };
+    var login_user=document.getElementById("username").innerText
+    xhttp.open("get", "/mec/stt/"+login_user, true);
+    xhttp.send();
+}
+
+function find_machine(){
+  // alert('load group')
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var res_result=this.responseText
+      console.log(res_result)
+      if (res_result=="false"){
+        alert("mã số nhập vào không phải nv may!")
+      } else{
+        sessionStorage.setItem('mclocate',res_result);
+        res_result=JSON.parse(res_result);
+        document.getElementById("mc_type").value=res_result[0].MachineModel;
+        document.getElementById("line_old2").value=res_result[0].Line;
+        document.getElementById("pos_old").value=res_result[0].Pos;
+        document.getElementById("line_new").disabled=false;
+        document.getElementById("pos_new").disabled=false;
+        document.getElementById("idmc3").disabled=false;
+        document.getElementById("idmc3").value=mcfind
+        document.getElementById("mc_type3").innerText=ds[mc].MachineModel
+        document.getElementById("line_old").value=ds[mc].Line;
+        // Draw_map2();
+      }
+      }
+    };
+    var mcid=document.getElementById("machine_id").value;
+    console.log(mcid)
+    xhttp.open("get", "/mec/mclocate2/"+mcid, true);
+    xhttp.send();
+}
+function change_line(){
+  group=document.getElementById("sel_group").value
+  fr=parseInt(group.substring(0,3));
+  to=parseInt(group.substring(4,7));
+  console.log(fr)
+  console.log(to)
+  var x = document.getElementById("sel_line");
+
+        while (x.length >0){
+            x.options.remove(0);
+            var x = document.getElementById("sel_line");
+        }
+  for (i=fr;i<=to;i++){
+        var x = document.getElementById("sel_line");
+        var option = document.createElement("option");
+        var lineno="00"+i.toString();
+        lineno=lineno.substr(lineno.length-3,3);
+        console.log("Line "+lineno)
+        option.text ="Line "+ lineno;
+        x.add(option);
+  }
+  var x=document.getElementById("sel_line");
+  var option = document.createElement("option");
+  option.text ="Line 199";
+  x.add(option);
+  var x=document.getElementById("sel_line");
+  var option = document.createElement("option");
+  option.text ="Line 922";
+  x.add(option);
+  
+}
+
+function load_group(){
+  // alert('load group')
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var res_result=this.responseText
+      // console.log(res_result)
+      if (res_result=="false"){
+        alert("mã số nhập vào không phải nv may!")
+      } else{
+        // change_line();
+        sessionStorage.setItem('res_mc_stt',res_result);
+        Draw_map();
+      }
+      }
+    };
+    var login_group=document.getElementById("sel_group").value;
+    console.log(login_group)
+    xhttp.open("get", "/mec/group/"+login_group, true);
+    xhttp.send();
+}
+
+function start_repair(){
+  document.getElementById("close_dialog2").click();
+  document.getElementById("id_nvtm").disabled=false;
+  document.getElementById("idmc2").disabled=false;
+  // alert("open ticket")
+  event.preventDefault();
+  if(document.getElementById("name_nvtm").innerText=="Tên thợ máy"){
+    alert("mã số nhân viên không đúng");
+    document.getElementById("id_nvtm").value="";
+    return
+  }
+  var main_url="/mec/reg_repair"
+  var frm = $('#reg_repair');
+  $.ajax({
+      type: "post",
+      url: main_url,
+      data: frm.serialize(),
+      success: function (data) {
+        alert(data);
+        load_group();
+      },
+      error: function () {
+                  alert("submit failed")
+      },
+  })
+
+}
+
+function finish_repair(){
+  document.getElementById("close_dialog3").click();
+  document.getElementById("id_nvtm3").disabled=false;
+  document.getElementById("idmc3").disabled=false;
+  document.getElementById("employee_id3").disabled=false;
+  // alert("open ticket")
+  event.preventDefault();
+  if(document.getElementById("emp_name3").innerText=="Tên nhân viên"){
+    alert("mã số nhân viên không đúng");
+    document.getElementById("employee_id3").value="";
+    return
+  }
+  var main_url="/mec/finish_repair"
+  var frm = $('#finish_repair');
+  $.ajax({
+      type: "post",
+      url: main_url,
+      data: frm.serialize(),
+      success: function (data) {
+        alert(data);
+        load_group();
+      },
+      error: function () {
+                  alert("submit failed")
+      },
+  })
+
+}
+
+function click_map(loc){
+  // document.getElementById("dialog2").click();
+  ld=loc.split('_');
+  document.getElementById("sel_line").value=ld[0];
+  document.getElementById("sel_pos").value=ld[1];
+  document.getElementById("bt_di").focus();
+};
+
+function Draw_map2(){
+  var ds=JSON.parse(sessionStorage.getItem('mclocate'));
+  var mcfind=document.getElementById("machine_id").value
+  var NumMc=ds.length;
+  // var flex_map=document.getElementById("MapMC")
+  // console.log(ds[0].IDMC)
+  console.log(ds.length);
+  var c = document.getElementById("Canvas1line");
+  var ctx = c.getContext("2d");
+  ctx.clearRect(0, 0, 310, 800);
+  // flex_map.innerHTML='';
+  var mc=0
+  var i=1
+  var j=1
+  var c=0
+  var pos=0
+  var rest_infor=""
+  var hong=0
+  var repair=0
+  for (i=0;i<1;i++){
+    if (mc==NumMc){break}
+    var linename=ds[mc].Line
+    ctx.font = "18px Verdana";
+    ctx.fillText(linename, 60+220*i, 20);
+    ctx.fillText(linename, 60+220*i, 660);
+    ctx.strokeStyle = "blue";
+    ctx.strokeRect(10+i*220, 30, 200, 610);
+    c=0
+    ctx.font = "30px Verdana";
+    ctx.fillText("MR", 40+220*i, 600);
+    ctx.font = "16px Verdana";
+    // dãy bên trái
+    for (j=0;j<6;j++){
+      if (ds[mc].Pos>6){continue}
+      ctx.fillStyle = "cyan"; // mau XANH - may tot
+      if (ds[mc].IDMC==mcfind){
+        ctx.fillStyle = "orange"; // mau cam - may tot
+        document.getElementById("line_new").disabled=false;
+        document.getElementById("line_old").disabled=false;
+        document.getElementById("pos_new").disabled=false;
+        document.getElementById("idmc3").disabled=false;
+        document.getElementById("idmc3").value=mcfind
+        document.getElementById("mc_type3").innerText=ds[mc].MachineModel
+        document.getElementById("line_old").value=ds[mc].Line;
+        console.log(ds[mc].Line)
+      }
+      pos=ds[mc].Pos-1
+      ctx.fillRect(12+i*220, 40+(pos)*100, 96, 90);
+      ctx.fillStyle = "black";
+      ctx.fillText(ds[mc].IDMC,15+i*220,60+pos*100)
+      var op=""
+      if (ds[mc].operation==null){
+        op=""
+      }
+      else {
+        op=ds[mc].operation
+      }
+      op=op.toString()
+      op=op.substring(0,12)
+      ctx.fillText(op,12+i*220,75+pos*100)
+      var model=''
+      model=ds[mc].MachineModel
+      model=model.substring(0,12)
+      ctx.fillText(model,12+i*220,90+pos*100)
+      if (ds[mc].status==1 || ds[mc].status==2){
+        ctx.fillText(ds[mc].starttime,12+i*220,105+pos*100)
+      }
+      // tạo map
+      // x_co=12+i*220;
+      // y_co=40+(pos)*100
+      // x_co2=x_co+96;
+      // y_co2=y_co+80;
+      // var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+      // var element = document.createElement( "AREA" );
+      // element.shape = "Rect";
+      // element.coords = rec;
+      // element.href="#";
+      // element.setAttribute("id",ds[mc].IDMC)
+      // element.setAttribute("onclick","click_map(this.id)")
+      // flex_map.appendChild(element)
+      // thêm vào map
+      mc=mc+1
+      if (mc==NumMc){break}
+      if (linename!=ds[mc].Line){
+        c=1
+        break;
+      }
+    }
+    if (c==1){ continue; }
+    // dãy bên phải
+    for (j=0;j<10;j++){
+      ctx.fillStyle = "cyan"; // mau XANH - may tot
+      if (ds[mc].IDMC==mcfind){
+        ctx.fillStyle = "orange"; // mau cam - may tot
+        document.getElementById("line_new").disabled=false;
+        document.getElementById("line_old").disabled=false;
+        document.getElementById("pos_new").disabled=false;
+        document.getElementById("idmc3").disabled=false;
+        document.getElementById("idmc3").value=mcfind
+        document.getElementById("mc_type3").innerText=ds[mc].MachineModel
+        document.getElementById("line_old").value=ds[mc].Line;
+      }
+      pos=ds[mc].Pos-7
+      console.log(pos)
+      ctx.fillRect(112+i*220, 40+pos*100, 96, 90);
+      ctx.fillStyle = "black";
+      ctx.fillText(ds[mc].IDMC,112+i*220,60+pos*100)
+      var op=""
+      if (ds[mc].operation==null){
+        op=""
+      }
+      else {
+        op=ds[mc].operation
+      }
+      op=op.toString()
+      op=op.substring(0,12)
+      ctx.fillText(op,112+i*220,75+pos*100)
+      model=ds[mc].MachineModel
+      model=model.substring(0,12)
+      ctx.fillText(model,112+i*220,90+pos*100)
+      if (ds[mc].status==1 || ds[mc].status==2){
+        ctx.fillText(ds[mc].starttime,112+i*220,105+pos*100)
+      }
+      //tạo map
+      // x_co=112+i*220;
+      // x_co2=x_co+96;
+      // y_co=40+pos*100;
+      // y_co2=y_co+90;
+      // var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+      // var element = document.createElement( "AREA" );
+      // element.shape = "Rect";
+      // element.coords = rec;
+      // element.href="#";
+      // // element.addEventListener("click",click_map);
+      // element.setAttribute("id",ds[mc].IDMC)
+      // element.setAttribute("onclick","click_map(this.id)")
+      // flex_map.appendChild(element)
+      // thêm vào map
+      mc=mc+1
+      if (mc==NumMc){break}
+      if (linename!=ds[mc].Line){
+        c=1
+        break;
+      }
+    }
+  }
+  // rest_infor="tổng máy = "+NumMc.toString()+" ; máy hỏng = "+hong.toString()+" ; máy đang sửa = "+repair.toString();
+  // console.log(rest_infor)
+  // document.getElementById("detail_infor").innerText=rest_infor;
+}
+
+function Draw_mapxxx(){
+  let lname=[];
+  var sel_machine=document.getElementById("machine_id").value;
+  console.log("select mc "+sel_machine)
+  var ds=JSON.parse(sessionStorage.getItem('res_mc_stt'));
+  var NumMc=ds.length;
+  var flex_map=document.getElementById("MapMC")
+  console.log(ds[0].IDMC)
+  console.log(ds.length);
+  var c = document.getElementById("myCanvas");
+  var ctx = c.getContext("2d");
+  ctx.clearRect(0, 0, 1692, 800);
+  flex_map.innerHTML='';
+  var mc=0
+  var i=1
+  var j=1
+  var c=0
+  var pos=0
+  var rest_infor=""
+  var hong=0
+  var repair=0
+  for (i=0;i<8;i++){
+    if (mc==NumMc){break}
+    var linename=ds[mc].Line
+    lname.push(linename)
+    ctx.font = "18px Verdana";
+    ctx.fillText(linename, 60+220*i, 20);
+    ctx.fillText(linename, 60+220*i, 660);
+    ctx.strokeStyle = "blue";
+    ctx.strokeRect(10+i*220, 30, 200, 610);
+    c=0
+    ctx.font = "30px Verdana";
+    ctx.fillText("MR", 40+220*i, 600);
+    ctx.font = "16px Verdana";
+    // dãy bên trái
+    for (j=0;j<=6;j++){
+
+      if (ds[mc].Pos>6){continue}
+      if (ds[mc].status==0||ds[mc].status==null){
+        ctx.fillStyle = "cyan"; // mau XANH - may tot
+      }
+      if (ds[mc].status==1){
+        ctx.fillStyle = "red"; // mau DO - may hong
+        hong=hong+1
+      }
+      if (ds[mc].status==2){
+        ctx.fillStyle = "yellow"; // mau vang - may dang sua
+        hong=hong+1
+        repair=repair+1
+      }
+      if (sel_machine==ds[mc].IDMC){
+        ctx.fillStyle = "white"; // xanh duong => may dang dc chon
+      }
+      pos=ds[mc].Pos-1
+      ctx.fillRect(12+i*220, 40+(pos)*100, 96, 90);
+      ctx.fillStyle = "black";
+      ctx.fillText(ds[mc].IDMC,15+i*220,60+pos*100)
+      // ctx.font = "24px Verdana";
+      // ctx.fillStyle = "red";
+      // ctx.fillText(ds[mc].Pos,85+i*220,60+pos*100)
+      ctx.font = "16px Verdana";
+      ctx.fillStyle = "black";
+      var op=""
+      if (ds[mc].operation==null){
+        op=""
+      }
+      else {
+        op=ds[mc].operation
+      }
+      op=op.toString()
+      op=op.substring(0,12)
+      ctx.fillText(op,12+i*220,75+pos*100)
+      var model=''
+      model=ds[mc].MachineModel
+      model=model.substring(0,12)
+      ctx.fillText(model,12+i*220,90+pos*100)
+      if (ds[mc].status==1 || ds[mc].status==2){
+        ctx.fillText(ds[mc].starttime,12+i*220,105+pos*100)
+      }
+      mc=mc+1
+      if (mc==NumMc){break}
+      if (linename!=ds[mc].Line){
+        c=1
+        break;
+      }
+    }
+    if (mc==NumMc){break}
+    if (c==1){ break; }
+    // dãy bên phải
+    for (j=0;j<20;j++){
+      if (ds[mc].status==0||ds[mc].status==null){
+        ctx.fillStyle = "cyan"; // mau XANH - may tot
+      }
+      if (ds[mc].status==1){
+        ctx.fillStyle = "red"; // mau DO - may hong
+        hong=hong+1
+      }
+      if (ds[mc].status==2){
+        ctx.fillStyle = "yellow"; // mau vang - may dang sua
+        hong=hong+1
+        repair=repair+1
+      }
+      pos=ds[mc].Pos-7
+      if (pos>5){
+        ctx.fillStyle = "orange"; // mau CAM - NGOAI LAYOUT
+      }
+      if (sel_machine==ds[mc].IDMC){
+        ctx.fillStyle = "white"; // xanh duong => may dang dc chon
+      }
+      console.log(pos)
+      ctx.fillRect(112+i*220, 40+pos*100, 96, 90);
+      ctx.fillStyle = "black";
+      ctx.fillText(ds[mc].IDMC,112+i*220,60+pos*100)
+      // ctx.font = "24px Verdana";
+      // ctx.fillStyle = "red";
+      // ctx.fillText(ds[mc].Pos,182+i*220,60+pos*100)
+      ctx.font = "16px Verdana";
+      ctx.fillStyle = "black";
+      var op=""
+      if (ds[mc].operation==null){
+        op=""
+      }
+      else {
+        op=ds[mc].operation
+      }
+      op=op.toString()
+      op=op.substring(0,12)
+      ctx.fillText(op,112+i*220,75+pos*100)
+      model=ds[mc].MachineModel
+      model=model.substring(0,12)
+      ctx.fillText(model,112+i*220,90+pos*100)
+      if (ds[mc].status==1 || ds[mc].status==2){
+        ctx.fillText(ds[mc].starttime,112+i*220,105+pos*100)
+      }
+      //tạo map
+      // x_co=112+i*220;
+      // x_co2=x_co+96;
+      // y_co=40+pos*100;
+      // y_co2=y_co+90;
+      // var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+      // var element = document.createElement( "AREA" );
+      // element.shape = "Rect";
+      // element.coords = rec;
+      // element.href="#";
+      // // element.addEventListener("click",click_map);
+      // element.setAttribute("id",ds[mc].IDMC)
+      // element.setAttribute("onclick","click_map(this.id)")
+      // flex_map.appendChild(element)
+      // thêm vào map
+      mc=mc+1
+      if (mc==NumMc){break}
+      if (linename!=ds[mc].Line){
+        c=1
+        break;
+      }
+    }
+  }
+  i=0;
+  lname.forEach(function(item){
+    ctx.font = "20px Verdana";
+    ctx.fillStyle = "red"; 
+    ctx.fillText("1",85+(i)*220,60+(1-1)*100)
+    ctx.fillText("2",85+(i)*220,60+(2-1)*100)
+    ctx.fillText("3",85+(i)*220,60+(3-1)*100)
+    ctx.fillText("4",85+(i)*220,60+(4-1)*100)
+    ctx.fillText("5",85+(i)*220,60+(5-1)*100)
+    ctx.fillText("6",85+(i)*220,60+(6-1)*100)
+    ctx.fillText("7",185+(i)*220,60+(1-1)*100)
+    ctx.fillText("8",185+(i)*220,60+(2-1)*100)
+    ctx.fillText("9",185+(i)*220,60+(3-1)*100)
+    ctx.fillText("10",185+(i)*220,60+(4-1)*100)
+    ctx.fillText("11",185+(i)*220,60+(5-1)*100)
+    ctx.fillText("12",185+(i)*220,60+(6-1)*100)
+    ctx.font = "16px Verdana";
+    ctx.fillStyle = "black"; 
+    for (j=1;j<=6;j++){
+      // tạo map
+      x_co=12+i*220;
+      y_co=40+(j-1)*100
+      x_co2=x_co+96;
+      y_co2=y_co+80;
+      var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+      var element = document.createElement( "AREA" );
+      element.shape = "Rect";
+      element.coords = rec;
+      element.href="#";
+      mapid=item+"_"+j.toString();
+      element.setAttribute("id",mapid)
+      element.setAttribute("onclick","click_map(this.id)")
+      flex_map.appendChild(element)
+      // thêm vào map
+    }
+    for (j=7;j<=12;j++){
+      //tạo map
+      x_co=112+i*220;
+      x_co2=x_co+96;
+      y_co=40+(j-7)*100;
+      y_co2=y_co+90;
+      var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+      var element = document.createElement( "AREA" );
+      element.shape = "Rect";
+      element.coords = rec;
+      element.href="#";
+      // element.addEventListener("click",click_map);
+      mapid=item+"_"+j.toString();
+      element.setAttribute("id",mapid)
+      element.setAttribute("onclick","click_map(this.id)")
+      flex_map.appendChild(element)
+      // thêm vào map
+    }
+    i=i+1
+  })
+   
+
+
+  // rest_infor="tổng máy = "+NumMc.toString()+" ; máy hỏng = "+hong.toString()+" ; máy đang sửa = "+repair.toString();
+  // console.log(rest_infor)
+  // document.getElementById("detail_infor").innerText=rest_infor;
+}
+
+function Draw_map(){
+            var sel_machine=document.getElementById("machine_id").value;
+            var ds=JSON.parse(sessionStorage.getItem('res_mc_stt'));
+            console.log(ds)
+            if (ds.length==0){
+              alert("layout chưa có máy")
+              var c = document.getElementById("myCanvas");
+              var ctx = c.getContext("2d");
+              ctx.clearRect(0, 0, 1792, 800);
+              return;
+            }
+            var pre=ds[0].Line.substr(5,3);
+            var last=ds[0].Line.substr(5,3)
+            let lname=[];
+            var flex_map=document.getElementById("MapMC")
+            flex_map.innerHTML='';
+            if (pre=="035"||pre=="200"||pre=="232"){
+              var NumMc=ds.length;
+              console.log(ds[0].IDMC)
+              console.log(ds.length);
+              var c = document.getElementById("myCanvas");
+              var ctx = c.getContext("2d");
+              ctx.clearRect(0, 0, 1792, 800);
+              var mc=0
+              var i=1
+              var j=1
+              var c=0
+              var pos=0
+              var rest_infor=""
+              var hong=0
+              var repair=0
+              for (i=0;i<8;i++){
+                if (mc==NumMc){break}
+                var linename=ds[mc].Line
+                lname.push(linename)
+                var last=ds[mc].Line.substr(5,3)
+                ctx.font = "18px Verdana";
+                ctx.fillText(linename, 60+220*i, 20);
+                ctx.fillText(linename, 60+220*i, 760);
+                ctx.strokeStyle = "blue";
+                ctx.strokeRect(10+i*220, 30, 200, 700);
+                c=0
+                ctx.font = "30px Verdana";
+                ctx.fillText("MR", 40+220*i, 690);
+                ctx.font = "14px Verdana";
+                ctx.fillStyle = "black"; 
+                // dãy bên trái
+                for (j=0;j<=7;j++){
+                  var linename=ds[mc].Line
+                  if (ds[mc].Pos>7){continue}
+                  if (ds[mc].status==0||ds[mc].status==null){
+                    ctx.fillStyle ="cyan"; // mau XANH - may tot
+                  }
+                  if (ds[mc].status==1){
+                    ctx.fillStyle = "red"; // mau DO - may hong
+                    console.log('loi may')
+                    hong=hong+1
+                  }
+                  if (ds[mc].status==2){
+                    ctx.fillStyle = "yellow"; // mau vang - may dang sua
+                    hong=hong+1
+                    repair=repair+1
+                  }
+                  if (sel_machine==ds[mc].IDMC){
+                    ctx.fillStyle = "pink"; // xanh duong => may dang dc chon
+                  }
+                  pos=ds[mc].Pos-1
+                  ctx.fillRect(12+i*220, 40+(pos)*100, 96, 90);
+                  ctx.fillStyle = "black";
+                  ctx.fillText(ds[mc].IDMC,15+i*220,60+pos*100)
+                  var op=""
+                  if (ds[mc].operation==null){
+                    op=""
+                  }
+                  else {
+                    op=ds[mc].operation
+                  }
+                  op=op.toString()
+                  op=op.substring(0,12)
+                  ctx.fillText(op,12+i*220,75+pos*100)
+                  var model=''
+                  model=ds[mc].MachineModel
+                  model=model.substring(0,12)
+                  ctx.fillText(model,12+i*220,90+pos*100)
+                  if (ds[mc].status==1 || ds[mc].status==2){
+                    ctx.fillText(ds[mc].starttime,12+i*220,105+pos*100)
+                  }
+                  // tạo map
+                  // x_co=12+i*220;
+                  // y_co=40+(pos)*100
+                  // x_co2=x_co+96;
+                  // y_co2=y_co+80;
+                  // var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                  // var element = document.createElement( "AREA" );
+                  // element.shape = "Rect";
+                  // element.coords = rec;
+                  // element.href="#";
+                  // element.setAttribute("id",ds[mc].IDMC)
+                  // element.setAttribute("onclick","click_map(this.id)")
+                  // flex_map.appendChild(element)
+                  // thêm vào map
+                  mc=mc+1
+                  if (mc==NumMc){break}
+                  if (linename!=ds[mc].Line){
+                    c=1
+                    break;
+                  }
+                }
+                if (c==1){ break; }
+                // dãy bên phải
+                for (j=0;j<20;j++){
+                  if (ds[mc].status==0||ds[mc].status==null){
+                    ctx.fillStyle = "cyan"; // mau XANH - may tot
+                  }
+                  if (ds[mc].status==1){
+                    ctx.fillStyle = "red"; // mau DO - may hong
+                    hong=hong+1
+                  }
+                  if (ds[mc].status==2){
+                    ctx.fillStyle = "yellow"; // mau vang - may dang sua
+                    hong=hong+1
+                    repair=repair+1
+                  }
+                  pos=ds[mc].Pos-8
+                  if (pos>6){
+                    ctx.fillStyle = "orange"; // mau CAM - NGOAI LAYOUT
+                  }
+                  if (sel_machine==ds[mc].IDMC){
+                    ctx.fillStyle = "pink"; // xanh duong => may dang dc chon
+                  }
+                  console.log(pos)
+                  ctx.fillRect(112+i*220, 40+pos*100, 96, 90);
+                  ctx.fillStyle = "black";
+                  ctx.fillText(ds[mc].IDMC,112+i*220,60+pos*100)
+                  var op=""
+                  if (ds[mc].operation==null){
+                    op=""
+                  }
+                  else {
+                    op=ds[mc].operation
+                  }
+                  op=op.toString()
+                  op=op.substring(0,12)
+                  ctx.fillText(op,112+i*220,75+pos*100)
+                  model=ds[mc].MachineModel
+                  model=model.substring(0,12)
+                  ctx.fillText(model,112+i*220,90+pos*100)
+                  if (ds[mc].status==1 || ds[mc].status==2){
+                    ctx.fillText(ds[mc].starttime,112+i*220,105+pos*100)
+                  }
+                  //tạo map
+                  // x_co=112+i*220;
+                  // x_co2=x_co+96;
+                  // y_co=40+pos*100;
+                  // y_co2=y_co+90;
+                  // var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                  // var element = document.createElement( "AREA" );
+                  // element.shape = "Rect";
+                  // element.coords = rec;
+                  // element.href="#";
+                  // // element.addEventListener("click",click_map);
+                  // element.setAttribute("id",ds[mc].IDMC)
+                  // element.setAttribute("onclick","click_map(this.id)")
+                  // flex_map.appendChild(element)
+                  // thêm vào map
+                  mc=mc+1
+                  if (mc==NumMc){break}
+                  if (linename!=ds[mc].Line){
+                    c=1
+                    break;
+                  }
+                }
+                ctx.font = "20px Verdana";
+                ctx.fillStyle = "red"; 
+                ctx.fillText("1",85+(i)*220,60+(1-1)*100)
+                ctx.fillText("2",85+(i)*220,60+(2-1)*100)
+                ctx.fillText("3",85+(i)*220,60+(3-1)*100)
+                ctx.fillText("4",85+(i)*220,60+(4-1)*100)
+                ctx.fillText("5",85+(i)*220,60+(5-1)*100)
+                ctx.fillText("6",85+(i)*220,60+(6-1)*100)
+                ctx.fillText("7",85+(i)*220,60+(7-1)*100)
+                ctx.fillText("8",185+(i)*220,60+(1-1)*100)
+                ctx.fillText("9",185+(i)*220,60+(2-1)*100)
+                ctx.fillText("10",185+(i)*220,60+(3-1)*100)
+                ctx.fillText("11",185+(i)*220,60+(4-1)*100)
+                ctx.fillText("12",185+(i)*220,60+(5-1)*100)
+                ctx.fillText("13",185+(i)*220,60+(6-1)*100)
+                ctx.fillText("14",185+(i)*220,60+(7-1)*100)
+                ctx.font = "14px Verdana";
+                ctx.fillStyle = "black"; 
+              }
+              // var gr=pre+'-'+last
+              // document.getElementById("sel_group").value=gr;
+              // rest_infor="tổng máy = "+NumMc.toString()+" ; máy hỏng = "+hong.toString()+" ; máy đang sửa = "+repair.toString();
+              // console.log(rest_infor)
+              // document.getElementById("detail_infor").innerText=rest_infor;
+
+
+            } 
+            else{
+              var NumMc=ds.length;
+              console.log(ds[0].IDMC)
+              console.log(ds.length);
+              var c = document.getElementById("myCanvas");
+              var ctx = c.getContext("2d");
+              ctx.clearRect(0, 0, 1792, 800);
+              var mc=0
+              var i=1
+              var j=1
+              var c=0
+              var pos=0
+              var rest_infor=""
+              var hong=0
+              var repair=0
+              for (i=0;i<8;i++){
+                if (mc==NumMc){break}
+                var linename=ds[mc].Line
+                lname.push(linename)
+                var last=ds[mc].Line.substr(5,3)
+                ctx.font = "18px Verdana";
+                ctx.fillText(linename, 60+220*i, 20);
+                ctx.fillText(linename, 60+220*i, 660);
+                ctx.strokeStyle = "blue";
+                ctx.strokeRect(10+i*220, 30, 200, 610);
+                c=0
+                ctx.font = "30px Verdana";
+                ctx.fillText("MR", 40+220*i, 600);
+                ctx.font = "14px Verdana";
+                ctx.fillStyle = "black"; 
+                // dãy bên trái
+                for (j=0;j<=6;j++){
+                  var linename=ds[mc].Line
+                  console.log(ds[mc].IDMC,ds[mc].Pos)
+                  if (ds[mc].Pos>=7){continue}
+                  if (ds[mc].status==0||ds[mc].status==null){
+                    ctx.fillStyle ="cyan"; // mau XANH - may tot
+                  }
+                  if (ds[mc].status==1){
+                    ctx.fillStyle = "red"; // mau DO - may hong
+                    console.log('loi may')
+                    hong=hong+1
+                  }
+                  if (ds[mc].status==2){
+                    ctx.fillStyle = "yellow"; // mau vang - may dang sua
+                    hong=hong+1
+                    repair=repair+1
+                  }
+                  if (sel_machine==ds[mc].IDMC){
+                    ctx.fillStyle = "pink"; // xanh duong => may dang dc chon
+                  }
+                  pos=ds[mc].Pos-1
+                  ctx.fillRect(12+i*220, 40+(pos)*100, 96, 90);
+                  ctx.fillStyle = "black";
+                  ctx.fillText(ds[mc].IDMC,15+i*220,60+pos*100)
+                  var op=""
+                  if (ds[mc].operation==null){
+                    op=""
+                  }
+                  else {
+                    op=ds[mc].operation
+                  }
+                  op=op.toString()
+                  op=op.substring(0,12)
+                  ctx.fillText(op,12+i*220,75+pos*100)
+                  var model=''
+                  model=ds[mc].MachineModel
+                  model=model.substring(0,12)
+                  ctx.fillText(model,12+i*220,90+pos*100)
+                  if (ds[mc].status==1 || ds[mc].status==2){
+                    ctx.fillText(ds[mc].starttime,12+i*220,105+pos*100)
+                  }
+                  // tạo map
+                  // x_co=12+i*220;
+                  // y_co=40+(pos)*100
+                  // x_co2=x_co+96;
+                  // y_co2=y_co+80;
+                  // var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                  // var element = document.createElement( "AREA" );
+                  // element.shape = "Rect";
+                  // element.coords = rec;
+                  // element.href="#";
+                  // element.setAttribute("id",ds[mc].IDMC)
+                  // element.setAttribute("onclick","click_map(this.id)")
+                  // flex_map.appendChild(element)
+                  // thêm vào map
+                  mc=mc+1
+                  if (mc==NumMc){break}
+                  if (linename!=ds[mc].Line){
+                    c=1
+                    break;
+                  }
+                }
+                if (c==1){ break; }
+                // dãy bên phải
+                for (j=0;j<20;j++){
+                  if (ds[mc].status==0||ds[mc].status==null){
+                    ctx.fillStyle = "cyan"; // mau XANH - may tot
+                  }
+                  if (ds[mc].status==1){
+                    ctx.fillStyle = "red"; // mau DO - may hong
+                    hong=hong+1
+                  }
+                  if (ds[mc].status==2){
+                    ctx.fillStyle = "yellow"; // mau vang - may dang sua
+                    hong=hong+1
+                    repair=repair+1
+                  }
+                  pos=ds[mc].Pos-7
+                  if (pos>5){
+                    ctx.fillStyle = "orange"; // mau CAM - NGOAI LAYOUT
+                  }
+                  if (sel_machine==ds[mc].IDMC){
+                    ctx.fillStyle = "pink"; // xanh duong => may dang dc chon
+                  }
+                  console.log(pos)
+                  ctx.fillRect(112+i*220, 40+pos*100, 96, 90);
+                  ctx.fillStyle = "black";
+                  ctx.fillText(ds[mc].IDMC,112+i*220,60+pos*100)
+                  var op=""
+                  if (ds[mc].operation==null){
+                    op=""
+                  }
+                  else {
+                    op=ds[mc].operation
+                  }
+                  op=op.toString()
+                  op=op.substring(0,12)
+                  ctx.fillText(op,112+i*220,75+pos*100)
+                  model=ds[mc].MachineModel
+                  model=model.substring(0,12)
+                  ctx.fillText(model,112+i*220,90+pos*100)
+                  if (ds[mc].status==1 || ds[mc].status==2){
+                    ctx.fillText(ds[mc].starttime,112+i*220,105+pos*100)
+                  }
+                  //tạo map
+                  // x_co=112+i*220;
+                  // x_co2=x_co+96;
+                  // y_co=40+pos*100;
+                  // y_co2=y_co+90;
+                  // var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                  // var element = document.createElement( "AREA" );
+                  // element.shape = "Rect";
+                  // element.coords = rec;
+                  // element.href="#";
+                  // // element.addEventListener("click",click_map);
+                  // element.setAttribute("id",ds[mc].IDMC)
+                  // element.setAttribute("onclick","click_map(this.id)")
+                  // flex_map.appendChild(element)
+                  // thêm vào map
+                  mc=mc+1
+                  if (mc==NumMc){break}
+                  if (linename!=ds[mc].Line){
+                    c=1
+                    break;
+                  }
+                }
+                ctx.font = "20px Verdana";
+                ctx.fillStyle = "red"; 
+                ctx.fillText("1",85+(i)*220,60+(1-1)*100)
+                ctx.fillText("2",85+(i)*220,60+(2-1)*100)
+                ctx.fillText("3",85+(i)*220,60+(3-1)*100)
+                ctx.fillText("4",85+(i)*220,60+(4-1)*100)
+                ctx.fillText("5",85+(i)*220,60+(5-1)*100)
+                ctx.fillText("6",85+(i)*220,60+(6-1)*100)
+                ctx.fillText("7",185+(i)*220,60+(1-1)*100)
+                ctx.fillText("8",185+(i)*220,60+(2-1)*100)
+                ctx.fillText("9",185+(i)*220,60+(3-1)*100)
+                ctx.fillText("10",185+(i)*220,60+(4-1)*100)
+                ctx.fillText("11",185+(i)*220,60+(5-1)*100)
+                ctx.fillText("12",185+(i)*220,60+(6-1)*100)
+                ctx.font = "14px Verdana";
+                ctx.fillStyle = "black"; 
+              }
+              var gr=pre+'-'+last
+              // document.getElementById("sel_group").value=gr;
+              // rest_infor="tổng máy = "+NumMc.toString()+" ; máy hỏng = "+hong.toString()+" ; máy đang sửa = "+repair.toString();
+              // console.log(rest_infor)
+              // document.getElementById("detail_infor").innerText=rest_infor;
+            }
+
+            i=0;
+            lname.forEach(function(item){
+              // ctx.font = "20px Verdana";
+              // ctx.fillStyle = "red"; 
+              // ctx.fillText("1",85+(i)*220,60+(1-1)*100)
+              // ctx.fillText("2",85+(i)*220,60+(2-1)*100)
+              // ctx.fillText("3",85+(i)*220,60+(3-1)*100)
+              // ctx.fillText("4",85+(i)*220,60+(4-1)*100)
+              // ctx.fillText("5",85+(i)*220,60+(5-1)*100)
+              // ctx.fillText("6",85+(i)*220,60+(6-1)*100)
+              // ctx.fillText("7",85+(i)*220,60+(7-1)*100)
+              // ctx.fillText("8",185+(i)*220,60+(1-1)*100)
+              // ctx.fillText("9",185+(i)*220,60+(2-1)*100)
+              // ctx.fillText("10",185+(i)*220,60+(3-1)*100)
+              // ctx.fillText("11",185+(i)*220,60+(4-1)*100)
+              // ctx.fillText("12",185+(i)*220,60+(5-1)*100)
+              // ctx.fillText("13",185+(i)*220,60+(6-1)*100)
+              // ctx.fillText("14",185+(i)*220,60+(7-1)*100)
+              ctx.font = "16px Verdana";
+              ctx.fillStyle = "black"; 
+              for (j=1;j<=6;j++){
+                // tạo map
+                x_co=12+i*220;
+                y_co=40+(j-1)*100
+                x_co2=x_co+96;
+                y_co2=y_co+80;
+                var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                var element = document.createElement( "AREA" );
+                element.shape = "Rect";
+                element.coords = rec;
+                element.href="#";
+                mapid=item+"_"+j.toString();
+                element.setAttribute("id",mapid)
+                element.setAttribute("onclick","click_map(this.id)")
+                flex_map.appendChild(element)
+                // thêm vào map
+              }
+              for (j=7;j<=12;j++){
+                //tạo map
+                x_co=112+i*220;
+                x_co2=x_co+96;
+                y_co=40+(j-7)*100;
+                y_co2=y_co+90;
+                var rec=x_co.toString()+","+y_co.toString()+","+x_co2.toString()+","+y_co2.toString();
+                var element = document.createElement( "AREA" );
+                element.shape = "Rect";
+                element.coords = rec;
+                element.href="#";
+                // element.addEventListener("click",click_map);
+                mapid=item+"_"+j.toString();
+                element.setAttribute("id",mapid)
+                element.setAttribute("onclick","click_map(this.id)")
+                flex_map.appendChild(element)
+                // thêm vào map
+              }
+              i=i+1
+            })
+
+
+
+
+
+
+    }
+  
+
+
+
+function get_mec_name(){
+  var msnv=document.getElementById('id_nvtm3').value
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var res_result=this.responseText
+      console.log(res_result)
+      if (res_result=="wrong_id"){
+        alert("something wrong happen!")
+      } else{
+        nv=JSON.parse(res_result);
+        console.log(nv[0].type)
+        if (nv[0].dept=="MEC"){
+          document.getElementById("name_nvtm3").innerText=nv[0].name;
+          document.getElementById("id_nvtm3").value=nv[0].employeeid;
+          document.getElementById("id_nvtm3").disabled=true;
+          document.getElementById("bt_firm").focus();
+        }else{
+          alert("Mã số nhập vào không phải thợ máy")
+        }
+      }
+      }
+    };
+    if (msnv.length>=6 && event.keyCode === 13){
+        xhttp.open("get", "/mec/idnv/"+msnv, true);
+        xhttp.send();
+    }
+}
+
+function get_name_Function(){
+  var msnv=document.getElementById('employee_id').value
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var res_result=this.responseText
+      console.log(res_result)
+      if (res_result=="wrong_id"){
+        alert("something wrong happen!")
+      } else{
+        nv=JSON.parse(res_result);
+        console.log(nv[0].type)
+        if (nv[0].type=="DR"){
+          document.getElementById("emp_name").innerText=nv[0].name;
+          document.getElementById("employee_id").value=nv[0].employeeid;
+          document.getElementById("employee_id").disabled=true;
+        }else{
+          alert("Mã số nhập vào không phải nhân viên trực tiếp")
+        }
+      }
+      }
+    };
+    if (msnv.length>=6 && event.keyCode === 13){
+        xhttp.open("get", "/mec/idnv/"+msnv, true);
+        xhttp.send();
+    }
+}
+
+function get_name2(){
+  var msnv=document.getElementById('employee_id3').value
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var res_result=this.responseText
+      console.log(res_result)
+      if (res_result=="wrong_id"){
+        alert("something wrong happen!")
+      } else{
+        nv=JSON.parse(res_result);
+        console.log(nv[0].type)
+        if (nv[0].type=="DR"){
+          document.getElementById("emp_name3").innerText=nv[0].name;
+          document.getElementById("employee_id3").value=nv[0].employeeid;
+          document.getElementById("employee_i3").disabled=true;
+        }else{
+          alert("Mã số nhập vào không phải nhân viên trực tiếp")
+        }
+      }
+      }
+    };
+    if (msnv.length>=6 && event.keyCode === 13){
+        xhttp.open("get", "/mec/idnv/"+msnv, true);
+        xhttp.send();
+    }
+}
+
+function w3_open() {
+  w3_close();
+  document.getElementById("mySidebar").style.display = "block";
+}
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("mySidebar_right").style.display = "none";
+  
+}
+
+function open_signup(){
+  w3_close();
+  document.getElementById("mySidebar_right").style.display = "block";
+}
+
+function submit_form_openticket(){
+      document.getElementById("employee_id").disabled=false;
+      alert("open ticket")
+      event.preventDefault();
+      if(document.getElementById("emp_name").innerText=="Tên nhân viên"){
+        alert("mã số nhân viên không đúng");
+        document.getElementById("employee_id").value="";
+        return
+      }
+      var main_url="/mec/openticket"
+      var frm = $('#form_reg');
+      $.ajax({
+          type: "post",
+          url: main_url,
+          data: frm.serialize(),
+          success: function (data) {
+            if (data=="sc"){
+              load_group();
+            }
+            else {
+              alert(data);
+            }
+          },
+          error: function () {
+                      alert("submit failed")
+          },
+      })
+}
+
+function get_detail(){
+              event.preventDefault();
+              get_week();
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      console.log(this.response)
+                      if (this.responseText=="ID không đăng nhập được"){
+                        alert('ID đăng nhập lần đầu tiên')
+                        document.getElementById("t_login").innerText="1"
+                      } else{
+                        var ds=JSON.parse(this.response);
+                        var i;
+                        var trHTML_ds='';
+                        var dn=0;
+                        for (i = 0; i < ds.length; i++) {
+                          trHTML_ds += '<tr><td >' + ds[i].user + '</td><td >' + ds[i].date + '</td><td >' + ds[i].week + '</td><td >' + ds[i].login+ '</td><td >' + ds[i].score+'</td></tr>';
+                          if (parseInt(ds[i].week)==parseInt(document.getElementById("week_login").innerText)){
+                            dn=parseInt(ds[i].login)+1
+                          }
+                        };
+                        $('#table_detail tbody').html(trHTML_ds)
+                        if (dn==0) {
+                          document.getElementById("t_login").innerText="1"
+                        } else {
+                          document.getElementById("t_login").innerText=dn
+                        }
+                        document.getElementById("infor").click();
+                      }
+                      
+                  }
+                };
+                var login_status=document.getElementById("bt_signup").innerText;
+                var user_sign_up=document.getElementById("idnv").value
+                xhttp.open("get", "/lead/detail/"+user_sign_up, true);
+                xhttp.send();
+}
+function get_week(){
+              event.preventDefault();
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      console.log(this.response)
+                      if (this.responseText=="ID không đăng nhập được"){
+                        alert('ID đăng nhập lần đầu tiên')
+                      } else{
+                        var ds=JSON.parse(this.response);
+                        document.getElementById("week_login").innerText=ds[0].week
+                      }
+                  }
+                };
+                xhttp.open("get", "/lead/get_week", true);
+                xhttp.send();
+}
+function show_history(){
+  w3_close()
+  document.getElementById("home_page").style.display="none";
+  document.getElementById("test").style.display="none";
+  document.getElementById("history").style.display="block";
+}
+function next_question(){
+    document.getElementById("sel_answer").value="-";
+    var nq=parseInt(document.getElementById("question_number").innerText)
+    if (nq<5){
+      start_answer()
+    } else{
+      alert("bạn đã hoàn thành trả lời 5 câu hỏi của lượt này!")
+      document.getElementById("div_question").style.display="none"
+      document.getElementById("start_answer").style.display="none"
+      get_detail();
+    }  
+}
+function submit_answer(){
+  if(document.getElementById("sel_answer").value=="-"){
+    alert('Bạn chưa chọn câu trả lời!')
+    return;
+  }
+  document.getElementById("a_confirm").innerText="Bạn đã trả lời sai!"
+  if (document.getElementById("sel_answer").value==document.getElementById("ans").value){
+    var score=parseInt(document.getElementById("score").innerText)+2
+    document.getElementById("score").innerText=score
+    document.getElementById("a_confirm").innerText="Bạn đã trả lời đúng!"
+  }
+  document.getElementById("dialog2").click();
+  document.getElementById("next_q").disabled=false;
+  document.getElementById("submit_ans").disabled=true;
+  document.getElementById("guide").innerText=". nhấn nút tiếp theo để chuyển sang câu tiếp theo!"
+  var score=parseInt(document.getElementById("score").innerText)
+  var week=document.getElementById("week_login").innerText
+  var user=document.getElementById("idnv").value
+  var t_log=document.getElementById("t_login").innerText
+              event.preventDefault();
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      console.log(this.response)
+                      if (this.responseText=="ID không đăng nhập được"){
+                        document.getElementById("sys_confirm").innerText=" Chưa được cập nhật _ Lỗi hệ thống"
+                      } else{
+                        document.getElementById("sys_confirm").innerText=" Đã được cập nhật"
+                      }
+                  }
+                };
+                xhttp.open("get", "/lead/submit/"+user+"/"+week+"/"+t_log+"/"+score, true);
+                xhttp.send();
+}
+function start_answer(){
+    event.preventDefault();
+    var login_status=document.getElementById("bt_signup").innerText;
+    var user_sign_up=document.getElementById("idnv").value
+    if (login_status=="Đăng nhập"){
+      alert("Vui lòng đăng nhập để bắt đầu!")
+      return;
+    }
+    if (document.getElementById("t_login").innerText=="6"){
+      alert("Bạn đã trả lời quá 5 lần trong tuần!\nVui lòng quay trở lại sau!");
+      return;
+    }
+    document.getElementById("div_question").style.display="grid"
+    document.getElementById("start_answer").style.display="none"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.response)
+            if (this.responseText=="error"){
+              alert('Hệ thống đang bị lỗi \n Vui lòng quay trở lại sau')
+            } else{
+              var q=JSON.parse(this.response);
+              document.getElementById("question").innerHTML="<b>Câu hỏi: "+q[0].question+"</b>";
+              document.getElementById("answerA").innerText="Câu A: "+q[0].answerA;
+              document.getElementById("answerB").innerText="Câu B: "+q[0].answerB;
+              document.getElementById("answerC").innerText="Câu C: "+q[0].answerC;
+              document.getElementById("answerD").innerText="Câu D: "+q[0].answerD;
+              document.getElementById("a_result").innerText="Câu trả lời là: "+q[0].answer;
+              if (q[0].answerA==q[0].answer){
+                document.getElementById("ans").value="Câu A";
+              }
+              if (q[0].answerB==q[0].answer){
+                document.getElementById("ans").value="Câu B";
+              }
+              if (q[0].answerC==q[0].answer){
+                document.getElementById("ans").value="Câu C";
+              }
+              if (q[0].answerD==q[0].answer){
+                document.getElementById("ans").value="Câu D";
+              }
+              console.log(document.getElementById("ans").value)
+              var qu=parseInt(document.getElementById("question_number").innerText)+1
+              document.getElementById("question_number").innerText=qu
+              document.getElementById("next_q").disabled=true;
+              document.getElementById("submit_ans").disabled=false;
+              document.getElementById("guide").innerText=". Chọn câu trả lời của bạn và nhấn nút trả lời"
+            }  
+        }
+      };
+      xhttp.open("get", "/lead/get_question/"+user_sign_up, true);
+      xhttp.send();
+};
+function show_home(){
+  w3_close()
+  document.getElementById("home_page").style.display="block";
+  document.getElementById("test").style.display="none";
+  document.getElementById("history").style.display="none";
+}
+function show_test(){
+  w3_close()
+  document.getElementById("home_page").style.display="none";
+  document.getElementById("history").style.display="none";
+  document.getElementById("test").style.display="block";
+}
+
+</script>
+
+</html>

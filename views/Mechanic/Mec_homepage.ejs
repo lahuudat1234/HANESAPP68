@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<title>MMS</title>
+<!-- <meta charset="UTF-8"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/JS/bootstrap/w3.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Helvetica","Arial",sans-serif;
+}
+a,li{
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+}
+.w3-bar-block .w3-bar-item {padding:20px}
+body{
+  font-family: "Helvetica","Arial",sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  background-image: url("/public/imgbook/bodyBG2.jpg");
+  background-color: #cccccc;
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+</style>
+<body>
+
+<!-- Sidebar (hidden by default) -->
+<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:25%;min-width:300px; background-image: url(/public/imgbook/bodyBG.jpg);" id="mySidebar">
+  <a href="/lead" onclick="w3_close()" class="w3-bar-item w3-button" ><span class="glyphicon glyphicon-home" style="padding-right: 20px;"></span> Trang Chủ</a>
+  <li class="w3-bar-item w3-blue"><span class="glyphicon glyphicon-tasks" style="padding-right: 20px;"></span>Thông tin chương trình</li>
+  <a href="#" onclick="show_home()" class="w3-bar-item w3-button w3-purple "><span class="glyphicon glyphicon-heart" style="padding-right: 20px;"></span>Giới thiệu</a>
+  <a href="#" onclick="show_history()" id="infor" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-screenshot" style="padding-right: 20px;"></span>Lịch sử tham gia</a>
+  <a href="#" onclick="show_test()" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-leaf" style="padding-right: 20px;"></span>tham gia thi</a>
+  <a href="#" onclick="show_home()" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-duplicate" style="padding-right: 20px;"></span>nội dung khác</a>
+</nav>
+<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-right" style="display:none;z-index:2;width:30%;min-width:300px; right: 0;" id="mySidebar_right">
+  <a href="javascript:void(0)" onclick="w3_close()"
+  class="w3-bar-item w3-button" id="name">Thông tin user đăng nhập</a>
+  <div class="w3-container w3-card-4 w3-light-grey">
+    <a href="/logout" class="w3-bar-item w3-button">Logout</a>
+  </div>
+</nav>
+<!-- Top menu -->
+<div class="w3-top w3-center">
+  <div class="w3-purple w3-xlarge" style="width: 100%;margin:auto;">
+    <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+    <div class="w3-right w3-padding-16" >
+    <span class="glyphicon glyphicon-user" style="padding-right: 10px;" ></span><span id="username"><%= user %></span></div>
+    <div class="w3-center w3-padding-16" style="margin: 0 auto;"><h3 style="margin: 0 auto;">HỆ THỐNG GHI NHẬN THỜI GIAN MÁY HỎNG</h3></div>
+    <a href="/lead" id="refresh" style="display: none;"></a>
+  </div>
+</div>
+  
+<!-- !PAGE CONTENT! -->
+<div class="w3-main w3-padding-16 w3-center" style="width: 98%;margin-top:100px; margin-left: auto;" onclick="w3_close()">
+  <hr id="about">
+  <!-- About Section -->
+  <!-- Home Page -->
+  <div class="w3-container w3-padding-32 w3-center" id="home_page">  
+    <h3></h3><br>
+    <img src="/public/imgbook/lead.jpg" alt="Me" class="w3-image" style="display:block;margin:auto" width="800" height="533">
+    <div class="w3-padding-32">
+      <h4><b>!</b></h4>
+      <h6><i>.</i></h6>
+      <p>...</p>
+    </div>
+  </div>
+  <!-- History -->
+  <div class="w3-container w3-padding-32 w3-center" id="history" style="display: none;">  
+              <h2>Thông tin tích điểm <span id="name2"></span>. Tuần đăng nhập: <span id="week_login">0</span> , lần đăng nhập hiện tại là: <span id="t_login">0</span></h2>
+              <p>lịch sử đăng nhập và trả lời câu hỏi.</p>
+              <div class="row">    
+                <div style=" width: 100%;">
+                  <div class="row" style="width:100%; margin-left: auto; margin-right: auto;">
+                    <div class="table-responsive" style="width: 90%; margin-left: auto; margin-right: auto;">
+                      <table id="table_detail" class="w3-table-all w3-hoverable" style="margin-left: auto; margin-right: auto;">
+                        <!-- <table id="table_content"> style="height: 310px;" -->
+                        <thead>
+                          <tr >
+                            <th>MÃ SỐ</th>
+                            <th>NGÀY</th>
+                            <th>TUẦN</th>
+                            <th>LẦN ĐĂNG NHẬP</th>
+                            <th>ĐIỂM</th>
+                          </tr>
+                        </thead>  
+                        <tbody style="height: 395px;">
+                        </tbody>
+                      </table>
+                    </div>
+                    <br>
+                  </div>
+                </div>
+              </div> 
+  </div>
+  <!-- Test -->
+  <div class="w3-container w3-padding-32 w3-center" id="test" style="display: none;">  
+          <div class="row groove" style="padding: 10px; font-size: larger; background-color: wheat;">
+            <div class="row" style="padding-bottom: 15px;">
+              <span style=" padding-right: 15px; padding-left: 30px;">Câu hỏi số</span><span id="question_number">0</span><span style="padding-right: 15px;"> / điểm của bạn:</span><span id="score">0</span><span style="padding-left: 15px;" id="guide">.nhấn bắt đầu để trả lời câu hỏi</span>
+            </div>            
+            <div class="col-md-2 w3-center">
+              <input type="button" class="form-control btn btn-primary w3-blue" style=" color: whitesmoke;" value="Bắt đầu" id="start_answer" onclick="start_answer()">
+            </div>
+          </div>
+          <div class="row w3-center" id="div_question" style="display: none; font-size: larger;">
+                <div class="w3-padding">
+                  <p style="background-color: yellow; border: 2px solid cadetblue; border-radius: 5px; padding: 10px; margin: auto; text-align: left;" id="question">Câu hỏi: bạn hãy chọn 1 trong các câu trả lời bên dưới</p>
+                </div>
+                <div class="w3-padding">
+                  <p style="border: 2px solid rgb(236, 238, 228); border-radius: 5px; padding: 10px; margin: auto; text-align: left;" id="answerA">Câu A: câu D đúng</p>
+                </div>
+                <div class="w3-padding">
+                  <p style="border: 2px solid rgb(236, 238, 228); border-radius: 5px; padding: 10px; margin: auto;  text-align: left;" id="answerB">Câu B: câu A đúng</p>
+                </div>
+                <div class="w3-padding">
+                  <p style="border: 2px solid rgb(236, 238, 228); border-radius: 5px; padding: 10px; margin: auto;  text-align: left;" id="answerC">Câu C: câu B đúng</p>
+                </div>
+                <div class="w3-padding">
+                  <p style="border: 2px solid rgb(236, 238, 228); border-radius: 5px; padding: 10px; margin: auto;  text-align: left;" id="answerD">Câu D: tất cả các câu trên đều đúng</p>
+                </div>
+                <div class="w3-padding">
+                  <div class="col-md-12 groove" style="padding: 10px; background-color: #10F2AA;">
+                    <form id="form_answer">
+                      <div class="col-md-3">
+                        <label class="form-control" style="background-color: #10F2AA;" for="sel_answer">câu trả lời của bạn là:</label>
+                      </div>
+                      <div class="col-md-2">
+                        <select class="form-control" name="sel_answer" id="sel_answer">
+                          <option>-</option>
+                          <option>Câu A</option>
+                          <option>Câu B</option>
+                          <option>Câu C</option>
+                          <option>Câu D</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2">
+                        <input type="button" class="form-control btn btn-primary w3-red" style=" color: whitesmoke;" value="Trả lời" id="submit_ans" onclick="submit_answer()">
+                      </div>
+                      <div class="col-md-2">
+                        <input type="button" class="form-control btn btn-primary w3-red" disabled="true" style=" color: whitesmoke;" id="next_q" value="câu tiếp >>" onclick="next_question()">
+                      </div>
+                      <div class="col-md-2" style="display: none;">
+                        <input type="text" id="ans" name="ans">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+          </div>
+  </div>
+  <hr> 
+
+  <!-- Footer -->
+<footer class="w3-row-padding w3-padding-32 w3-center">
+  <!-- <div class="w3-third w3-left" style="margin-left: auto;">
+    <h3>FOOTER</h3>
+    <p style="text-align: left; padding-left: 15px;">some thing want to write on the footer.</p>
+    <p style="text-align: left; padding-left: 15px;">Powered by <a href="#" target="_blank">innovation</a></p>
+  </div>
+
+  <div class="w3-third w3-left">
+    <h3>BLOG POSTS</h3>
+    <ul class="w3-ul w3-hoverable">
+      <li class="w3-padding-16" style="text-align: left; padding-left: 15px;">
+        <img src="/public/imgbook/music.png" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large" style="text-align: left; padding-left: 15px;">Music</span><br>
+        <span style="text-align: left; padding-left: 15px;">beautifull song</span>
+      </li>
+      <li class="w3-padding-16" style="text-align: left; padding-left: 15px;">
+        <img src="/public/imgbook/video.jpg" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large" style="text-align: left; padding-left: 15px;">film</span><br>
+        <span style="text-align: left; padding-left: 15px;">learn english through video</span>
+      </li> 
+    </ul>
+  </div>
+
+  <div class="w3-third w3-serif w3-left">
+    <h3>POPULAR TAGS</h3>
+    <p style="text-align: left; padding-left: 15px;">
+      <span class="w3-tag w3-black w3-margin-bottom">Travel</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">New York</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Dinner</span>
+      <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Salmon</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">France</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Drinks</span>
+      <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Ideas</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Flavors</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Cuisine</span>
+      <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Chicken</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Dressing</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Fried</span>
+      <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Fish</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Duck</span>
+    </p>
+  </div> -->
+</footer>
+<!-- End page content -->
+</div>
+</body> 
+<!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+<button id="dialog2" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><strong>Kết quả trả lời</strong><span id="sys_confirm">.</span></h4>
+      </div>
+      <div class="modal-body">
+        <form id="changeline">
+          <label class="form-control w3-center" id="a_confirm">Bạn đã trả lời đúng!</label>
+          <label id="a_result">câu trả lời là:</label>
+          <br>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="close_dialog2" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    
+  </div>
+</div>
+<!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+
+<script type="text/javascript">
+// Script to open and close sidebar
+function w3_open() {
+  w3_close();
+  document.getElementById("mySidebar").style.display = "block";
+}
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("mySidebar_right").style.display = "none";
+  
+}
+function open_signup(){
+  w3_close();
+  document.getElementById("mySidebar_right").style.display = "block";
+}
+function login() {
+              event.preventDefault();
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      console.log(this.response)
+                      if (this.responseText=="ID không đăng nhập được"){
+                        alert(this.responseText)
+                      } else{
+                        var result_login=JSON.parse(this.response);
+                        document.getElementById("idnv").disabled = true;
+                        // document.getElementById("pass_sign_up").disabled = true;
+                        document.getElementById("bt_signup").innerText="Đăng xuất"
+                        document.getElementById("name").innerText=result_login[0].name
+                        document.getElementById("name2").innerText=result_login[0].name
+                        alert("bạn đã đăng nhập thành công")
+                        get_detail();
+                      }
+                      
+                  }
+                };
+                var login_status=document.getElementById("bt_signup").innerText
+                console.log(login_status)
+                var user_sign_up=document.getElementById("idnv").value
+                if (login_status=="Đăng nhập"){
+                    if (user_sign_up==''){
+                    alert('Bạn chưa nhập User');
+                    return;
+                    }
+                    xhttp.open("get", "/lead/login/"+user_sign_up, true);
+                    xhttp.send();
+                } else{
+                  document.getElementById("refresh").click();
+                }
+};
+function get_detail(){
+              event.preventDefault();
+              get_week();
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      console.log(this.response)
+                      if (this.responseText=="ID không đăng nhập được"){
+                        alert('ID đăng nhập lần đầu tiên')
+                        document.getElementById("t_login").innerText="1"
+                      } else{
+                        var ds=JSON.parse(this.response);
+                        var i;
+                        var trHTML_ds='';
+                        var dn=0;
+                        for (i = 0; i < ds.length; i++) {
+                          trHTML_ds += '<tr><td >' + ds[i].user + '</td><td >' + ds[i].date + '</td><td >' + ds[i].week + '</td><td >' + ds[i].login+ '</td><td >' + ds[i].score+'</td></tr>';
+                          if (parseInt(ds[i].week)==parseInt(document.getElementById("week_login").innerText)){
+                            dn=parseInt(ds[i].login)+1
+                          }
+                        };
+                        $('#table_detail tbody').html(trHTML_ds)
+                        if (dn==0) {
+                          document.getElementById("t_login").innerText="1"
+                        } else {
+                          document.getElementById("t_login").innerText=dn
+                        }
+                        document.getElementById("infor").click();
+                      }
+                      
+                  }
+                };
+                var login_status=document.getElementById("bt_signup").innerText;
+                var user_sign_up=document.getElementById("idnv").value
+                xhttp.open("get", "/lead/detail/"+user_sign_up, true);
+                xhttp.send();
+}
+function get_week(){
+              event.preventDefault();
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      console.log(this.response)
+                      if (this.responseText=="ID không đăng nhập được"){
+                        alert('ID đăng nhập lần đầu tiên')
+                      } else{
+                        var ds=JSON.parse(this.response);
+                        document.getElementById("week_login").innerText=ds[0].week
+                      }
+                  }
+                };
+                xhttp.open("get", "/lead/get_week", true);
+                xhttp.send();
+}
+function show_history(){
+  w3_close()
+  document.getElementById("home_page").style.display="none";
+  document.getElementById("test").style.display="none";
+  document.getElementById("history").style.display="block";
+}
+function next_question(){
+    document.getElementById("sel_answer").value="-";
+    var nq=parseInt(document.getElementById("question_number").innerText)
+    if (nq<5){
+      start_answer()
+    } else{
+      alert("bạn đã hoàn thành trả lời 5 câu hỏi của lượt này!")
+      document.getElementById("div_question").style.display="none"
+      document.getElementById("start_answer").style.display="none"
+      get_detail();
+    }  
+}
+function submit_answer(){
+  if(document.getElementById("sel_answer").value=="-"){
+    alert('Bạn chưa chọn câu trả lời!')
+    return;
+  }
+  document.getElementById("a_confirm").innerText="Bạn đã trả lời sai!"
+  if (document.getElementById("sel_answer").value==document.getElementById("ans").value){
+    var score=parseInt(document.getElementById("score").innerText)+2
+    document.getElementById("score").innerText=score
+    document.getElementById("a_confirm").innerText="Bạn đã trả lời đúng!"
+  }
+  document.getElementById("dialog2").click();
+  document.getElementById("next_q").disabled=false;
+  document.getElementById("submit_ans").disabled=true;
+  document.getElementById("guide").innerText=". nhấn nút tiếp theo để chuyển sang câu tiếp theo!"
+  var score=parseInt(document.getElementById("score").innerText)
+  var week=document.getElementById("week_login").innerText
+  var user=document.getElementById("idnv").value
+  var t_log=document.getElementById("t_login").innerText
+              event.preventDefault();
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      console.log(this.response)
+                      if (this.responseText=="ID không đăng nhập được"){
+                        document.getElementById("sys_confirm").innerText=" Chưa được cập nhật _ Lỗi hệ thống"
+                      } else{
+                        document.getElementById("sys_confirm").innerText=" Đã được cập nhật"
+                      }
+                  }
+                };
+                xhttp.open("get", "/lead/submit/"+user+"/"+week+"/"+t_log+"/"+score, true);
+                xhttp.send();
+}
+function start_answer(){
+    event.preventDefault();
+    var login_status=document.getElementById("bt_signup").innerText;
+    var user_sign_up=document.getElementById("idnv").value
+    if (login_status=="Đăng nhập"){
+      alert("Vui lòng đăng nhập để bắt đầu!")
+      return;
+    }
+    if (document.getElementById("t_login").innerText=="6"){
+      alert("Bạn đã trả lời quá 5 lần trong tuần!\nVui lòng quay trở lại sau!");
+      return;
+    }
+    document.getElementById("div_question").style.display="grid"
+    document.getElementById("start_answer").style.display="none"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.response)
+            if (this.responseText=="error"){
+              alert('Hệ thống đang bị lỗi \n Vui lòng quay trở lại sau')
+            } else{
+              var q=JSON.parse(this.response);
+              document.getElementById("question").innerHTML="<b>Câu hỏi: "+q[0].question+"</b>";
+              document.getElementById("answerA").innerText="Câu A: "+q[0].answerA;
+              document.getElementById("answerB").innerText="Câu B: "+q[0].answerB;
+              document.getElementById("answerC").innerText="Câu C: "+q[0].answerC;
+              document.getElementById("answerD").innerText="Câu D: "+q[0].answerD;
+              document.getElementById("a_result").innerText="Câu trả lời là: "+q[0].answer;
+              if (q[0].answerA==q[0].answer){
+                document.getElementById("ans").value="Câu A";
+              }
+              if (q[0].answerB==q[0].answer){
+                document.getElementById("ans").value="Câu B";
+              }
+              if (q[0].answerC==q[0].answer){
+                document.getElementById("ans").value="Câu C";
+              }
+              if (q[0].answerD==q[0].answer){
+                document.getElementById("ans").value="Câu D";
+              }
+              console.log(document.getElementById("ans").value)
+              var qu=parseInt(document.getElementById("question_number").innerText)+1
+              document.getElementById("question_number").innerText=qu
+              document.getElementById("next_q").disabled=true;
+              document.getElementById("submit_ans").disabled=false;
+              document.getElementById("guide").innerText=". Chọn câu trả lời của bạn và nhấn nút trả lời"
+            }  
+        }
+      };
+      xhttp.open("get", "/lead/get_question/"+user_sign_up, true);
+      xhttp.send();
+};
+function show_home(){
+  w3_close()
+  document.getElementById("home_page").style.display="block";
+  document.getElementById("test").style.display="none";
+  document.getElementById("history").style.display="none";
+}
+function show_test(){
+  w3_close()
+  document.getElementById("home_page").style.display="none";
+  document.getElementById("history").style.display="none";
+  document.getElementById("test").style.display="block";
+}
+
+</script>
+
+</html>

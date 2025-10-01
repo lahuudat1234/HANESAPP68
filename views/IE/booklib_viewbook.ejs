@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<title>HBI Book Library</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Helvetica","Arial",sans-serif;
+}
+a,li{
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+}
+.w3-bar-block .w3-bar-item {padding:20px}
+body{
+  font-family: "Helvetica","Arial",sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  background-image: url("/public/imgbook/bodyBG2.jpg");
+  background-color: #cccccc;
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+</style>
+<body>
+
+<!-- Sidebar (hidden by default) -->
+<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:25%;min-width:300px; background-image: url(/public/imgbook/bodyBG.jpg);" id="mySidebar">
+  <a href="/lib" onclick="w3_close()" class="w3-bar-item w3-button" ><span class="glyphicon glyphicon-home" style="padding-right: 20px;"></span> Trang Chủ</a>
+  <li class="w3-bar-item w3-blue"><span class="glyphicon glyphicon-tasks" style="padding-right: 20px;"></span>  Chuyên Mục Sách</li>
+  <a href="/lib/book_leader" onclick="w3_close()" class="w3-bar-item w3-button w3-purple "><span class="glyphicon glyphicon-heart" style="padding-right: 20px;"></span> Kỹ năng lãnh đạo và Kỹ năng mềm</a>
+  <a href="/lib/book_major" onclick="w3_close()" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-screenshot" style="padding-right: 20px;"></span> Sách chuyên ngành</a>
+  <a href="#cate" onclick="w3_close()" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-leaf" style="padding-right: 20px;"></span> Kỹ năng sống</a>
+  <a href="#cate" onclick="w3_close()" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-duplicate" style="padding-right: 20px;"></span> Sách khác</a>
+  <li class="w3-bar-item w3-blue"><span class="glyphicon glyphicon-tasks" style="padding-right: 20px;"></span>  Thư Viện Bài Giảng</li>
+  <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-purple">...</a>
+  <li class="w3-bar-item w3-blue"><span class="glyphicon glyphicon-king" style="padding-right: 20px;"></span> Thư Viện GAME</li>
+  <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-purple">...</a>
+  <li class="w3-bar-item w3-blue"><span class="glyphicon glyphicon-paste" style="padding-right: 20px;"></span>  Đăng ký mượn/trả sách</li>
+  <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-purple">...</a>
+  <li class="w3-bar-item w3-blue"><span class="glyphicon glyphicon-cloud-upload" style="padding-right: 20px;"></span>  Tải sách lên thư viện</li>
+  <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-purple">...</a>
+</nav>
+
+<!-- Top menu -->
+<div class="w3-top w3-center">
+  <div class="w3-purple w3-xlarge" style="width: 100%;margin:auto;">
+    <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+    <div class="w3-right w3-padding-16"><span class="glyphicon glyphicon-user" style="padding-right: 10px;"></span></div>
+    <div class="w3-center w3-padding-16">THƯ VIỆN HBI</div>
+  </div>
+</div>
+  
+<!-- !PAGE CONTENT! -->
+<div class="w3-main w3-padding-16 w3-center" style="width: 98%;margin-top:100px; margin-left: auto;" onclick="w3_close()">
+  
+  <!-- !book content! -->
+  <h1>TÊN SÁCH_ lập trình Node JS</h1>
+  <iframe src="/public/book/NodeExpress.PDF" width="100%" height="800px">
+  </iframe>
+  
+  <!-- comment-->
+  <div class="w3-row-padding w3-padding-16 w3-center" id="comment">
+    <form class="w3-container">
+      <textarea name="Text1" rows="5" placeholder="Để lại bình luận của bạn tại đây" style="width:100%;"></textarea>
+      <button class="w3-btn w3-blue w3-left" onclick="submit_comment()">Bình Luận</button>
+    </form>
+  </div>
+
+
+  <!-- Footer -->
+  <footer class="w3-row-padding w3-padding-32 w3-center">
+    <div class="w3-third w3-left" style="margin-left: auto;">
+      <h3>FOOTER</h3>
+      <p style="text-align: left; padding-left: 15px;">some thing want to write on the footer.</p>
+      <p style="text-align: left; padding-left: 15px;">Powered by <a href="#" target="_blank">innovation</a></p>
+    </div>
+  
+    <div class="w3-third w3-left">
+      <h3>BLOG POSTS</h3>
+      <ul class="w3-ul w3-hoverable">
+        <li class="w3-padding-16" style="text-align: left; padding-left: 15px;">
+          <img src="/public/imgbook/music.png" class="w3-left w3-margin-right" style="width:50px">
+          <span class="w3-large" style="text-align: left; padding-left: 15px;">Music</span><br>
+          <span style="text-align: left; padding-left: 15px;">beautifull song</span>
+        </li>
+        <li class="w3-padding-16" style="text-align: left; padding-left: 15px;">
+          <img src="/public/imgbook/video.jpg" class="w3-left w3-margin-right" style="width:50px">
+          <span class="w3-large" style="text-align: left; padding-left: 15px;">film</span><br>
+          <span style="text-align: left; padding-left: 15px;">learn english through video</span>
+        </li> 
+      </ul>
+    </div>
+  
+    <div class="w3-third w3-serif w3-left">
+      <h3>POPULAR TAGS</h3>
+      <p style="text-align: left; padding-left: 15px;">
+        <span class="w3-tag w3-black w3-margin-bottom">Travel</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">New York</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Dinner</span>
+        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Salmon</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">France</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Drinks</span>
+        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Ideas</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Flavors</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Cuisine</span>
+        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Chicken</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Dressing</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Fried</span>
+        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Fish</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Duck</span>
+      </p>
+    </div>
+  </footer>
+
+<!-- End page content -->
+</div>
+
+<script>
+// Script to open and close sidebar
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
+ 
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+function submit_comment(){
+  event.preventDefault();
+  alert("chức năng đang thử nghiệm")
+
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/JS/boostrap/w3.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <script defer type="text/javascript" src="/JS/chart/Chart.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </header>
+    <body>
+        <!-- Always shows a header, even in smaller screens. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout-title">Yêu cầu thay đổi SAH PAD</span>
+                    <%- include ("partials/headerTemplate.ejs"); -%>
+                </div>
+            </header>
+            <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                        <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 10px;">
+                            <div style="margin: 10px auto;">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 400px; margin-right: 50px;">
+                                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="txt_ID">
+                                    <label class="mdl-textfield__label" for="txt_ID">Nhập lot yêu cầu SAH PAD</label>
+                                    <span class="mdl-textfield__error">phải là số</span>
+                                </div>
+                                <button class="mdl-button mdl-js-button mdl-button--fab 
+                                        mdl-js-ripple-effect mdl-button--colored" id="btn_send">
+                                    <i class="material-icons">send</i>
+                                </button>
+                            </div>
+            
+                        </div>
+                    </div>
+                    <div style="width: 95%; margin: 20px auto; border-radius: 5px;">
+                        <div class="table-responsive" style="height: 615px; width: 100%; margin-left: auto; margin-right: auto;">
+                            <h3 style="color: brown; margin: 20px auto;">TỔNG HỢP THÔNG TIN ĐIỀU CHỈNH</h3>
+                            
+                            <table id="table_GROUPSUM"  class="mdl-data-table mdl-js-data-table" style="width:100%; height: 100%;margin-top: 30px;" onclick="detail_group()">
+                              <thead style="background-color:#4B0082;">
+                                  <tr style=" border-radius: 10px; height: 60px;">
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">WORKLOT</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">LOCATION</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">STYLE</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">COLOR</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">SIZE</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">USER YÊU CẦU</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">THỜI GIAN YÊU CẦU</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">SAH CŨ</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">SAH MỚI</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">USER CẬP NHẬT</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">THỜI GIAN CẬP NHẬT</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">APPROVED</th>
+                                      <th class="mdl-data-table__cell--non-numeric" style="color: white;">TẠNG THÁI</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                              </tbody>
+                          </table>
+                        </div>
+                    
+                    </div>
+                </div>
+            </main>
+        </div>
+
+    <button id="dialog2" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button id="clmd" type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><strong>Thông tin điều chỉnh SẠ - </strong><span id="user"><%= user %></span></h4>
+          </div>
+          <div class="modal-body">
+            <form id="reg_repair" action="javascript:">
+              <label for="idmc2">Worklot:</label><br>
+              <input style="font-size: 20px;" class="form-control w3-left" type="number" name="wlot" id="wlot">
+              <br>
+              <div class="modal-body" id="closeB">
+                <label class="form-control w3-left">SAH Cũ:</label>
+                <input class="form-control w3-center"  type="number" name="sah_old" id="sah_old">
+                <p>---------------------</p>
+                <label class="form-control w3-left">SAH Mới:</label>
+                <input class="form-control w3-center" type="number" name="sah_new" id="sah_new">
+                <p>---------------------</p>
+              </div>
+              <br>
+              <div class="modal-body">
+                <div class="col-md-5">
+                  <button type="button" class="btn btn-primary" style="background-color: #4B0082;" onclick="update_pad_sah()"><span class="glyphicon glyphicon-ok"></span> Cập Nhật</button>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                  <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="close_ad()"><span class="glyphicon glyphicon-remove"></span> Hủy</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <button id="dialog3" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">OPMD</button>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal2" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button id="clmd2" type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><strong>Thông tin điều chỉnh SAH - </strong><span id="user"><%= user %></span></h4>
+          </div>
+          <div class="modal-body">
+            <form id="reg_repair" action="javascript:">
+                <label for="idmc2">Worklot:</label><br>
+                <input style="font-size: 20px;" class="form-control w3-left" type="number" name="wlot" id="wlot2">
+                <p>---------------------</p>
+                <label class="form-control w3-left">Group:</label>
+                <input style="font-size: 20px;" class="form-control w3-center" type="text" name="group" id="group">
+                <p>---------------------</p>
+                <label class="form-control w3-left">Style:</label>
+                <input style="font-size: 20px;" class="form-control w3-center"  type="text" name="style" id="style">
+                <p>---------------------</p>
+                <label class="form-control w3-left">Color:</label>
+                <input style="font-size: 20px;" class="form-control w3-center"  type="text" name="color" id="color">
+                <p>---------------------</p>
+                <label class="form-control w3-left">Size:</label>
+                <input style="font-size: 20px;" class="form-control w3-center" type="text" name="size" id="size">
+                <p>---------------------</p>
+              <br>
+              <div class="modal-body">
+                <div class="col-md-5">
+                  <button type="button" class="btn btn-primary" style="background-color: #4B0082;" onclick="submit_wlot()"><span class="glyphicon glyphicon-ok"></span> gửi yêu cầu</button>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                  <button type="button" class="btn btn-primary" style="background-color: #4B0082;" onclick="close_ad()"><span class="glyphicon glyphicon-remove"></span> Hủy</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <button id="dialog4" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal3">OPMD</button>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal3" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button id="clmd3" type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><strong>Approval Điều Chỉnh SAH - </strong><span id="user"><%= user %></span></h4>
+          </div>
+          <div class="modal-body">
+            <form id="reg_repair" action="javascript:">
+                <label for="idmc2">WorkLot:</label><br>
+                <input style="font-size: 20px;" class="form-control w3-left" type="number" name="wlot3" id="wlot3">
+                <p>---------------------</p>
+                <label class="form-control w3-left">User Req:</label>
+                <input style="font-size: 20px;" class="form-control w3-center" type="text" name="req3" id="req3">
+                <p>---------------------</p>
+                <label class="form-control w3-left">Group:</label>
+                <input style="font-size: 20px;" class="form-control w3-center" type="text" name="group3" id="group3">
+                <label class="form-control w3-left">Style:</label>
+                <input style="font-size: 20px;" class="form-control w3-center"  type="text" name="style3" id="style3">
+                <label class="form-control w3-left">Color:</label>
+                <input style="font-size: 20px;" class="form-control w3-center"  type="text" name="color3" id="color3">
+                <label class="form-control w3-left">Size:</label>
+                <input style="font-size: 20px;" class="form-control w3-center" type="text" name="size3" id="size3">
+                <p>---------------------</p>
+                <label class="form-control w3-left" for="approve">Chọn Phương Án:</label>
+                <select class="form-control w3-left" id="approve" style="background-color: lightskyblue;">
+                  <option>YES</option>
+                  <option>NO</option>
+                </select>
+                <p>---------------------</p>
+              <br>
+              <div class="modal-body">
+                <div class="col-md-5">
+                  <button type="button" class="btn btn-primary" style="background-color: #4B0082;" onclick="approve_wlot()"><span class="glyphicon glyphicon-ok"></span> Approve</button>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                  <button type="button" class="btn btn-primary" style="background-color: #4B0082;" onclick="close_ad()"><span class="glyphicon glyphicon-remove"></span> Hủy</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    </body>
+</html>
+<script type="text/javascript">
+    window.addEventListener('load', function () {
+            get_tabel()
+          })
+    function close_ad(){
+        document.getElementById("clmd").click();
+        document.getElementById("clmd2").click();
+        document.getElementById("clmd3").click();
+    }
+    document.getElementById("btn_send").addEventListener("click",function () {
+        document.getElementById('wlot2').value=document.getElementById('txt_ID').value
+        if (document.getElementById('txt_ID').value=='') return;
+        document.getElementById("sah_old").value=""
+        document.getElementById("sah_new").value=""
+        var xsend= new XMLHttpRequest();
+        xsend.open("POST","/Production/pad_lot_check",true);
+        xsend.onreadystatechange= function(){
+            if (this.readyState==4 && this.status==200){
+                data=xsend.responseText;
+                // data=JSON.parse(xsend.responseText);
+                if (data=='empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                }
+                else {
+                    data=JSON.parse(xsend.responseText);
+                    document.getElementById("wlot2").disabled=true;
+                    document.getElementById("style").disabled=true;
+                    document.getElementById("color").disabled=true;
+                    document.getElementById("size").disabled=true;
+                    document.getElementById("group").disabled=true;
+                    document.getElementById('style').value=data[0].selling_style;
+                    document.getElementById('color').value=data[0].color;
+                    document.getElementById('size').value=data[0].size;
+                    document.getElementById('group').value=data[0].location;
+                    document.getElementById("dialog3").click();
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var wlot=document.getElementById('txt_ID').value;
+        datas={lot: wlot};
+        xsend.send(JSON.stringify(datas));
+
+    });
+        
+    function get_tabel(){
+
+        var xsend= new XMLHttpRequest();
+        xsend.open("POST","/Production/pad_lot_list",true);
+        xsend.onreadystatechange= function(){
+            if (this.readyState==4 && this.status==200){
+                // console.log(xsend.responseText)
+                data=xsend.responseText;
+                if (data=='empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                    // table_group_load_spinner.removeAttribute("class");
+                }
+                else {
+                    data=JSON.parse(xsend.responseText);
+                    console.log(data);
+                    // table_group_load_spinner.removeAttribute("class");
+                    // alert(data)
+                    document.getElementById("txt_ID").value="";
+                    trHTML_ds=''
+                    for (i=0;i<data.length;i++){
+                        trHTML_ds += '<tr><td >'+data[i].work_lot+'</td><td>'+data[i].location+'</td><td>'+data[i].style+'</td><td>'+data[i].color+'</td><td>'+data[i].size+'</td><td>'+data[i].req_user+'</td><td>'+data[i].time_req_cv
+                        trHTML_ds +='</td><td>'+data[i].old_sah_per_dz+'</td><td>'+data[i].new_sah_per_dz
+                        trHTML_ds +='</td><td>'+data[i].user_update+'</td><td>'+data[i].time_update_cv+'</td><td>'+data[i].approved+'</td><td>'+data[i].status+'</td></tr>'
+                    }
+                    $('#table_GROUPSUM tbody').html(trHTML_ds)
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var wlot=document.getElementById('txt_ID').value;
+        datas={lot: wlot};
+        xsend.send(JSON.stringify(datas));
+
+    }
+    function approve_wlot() {
+        var xsend= new XMLHttpRequest();
+        xsend.open("POST","/Production/pad_approval",true);
+        xsend.onreadystatechange= function(){
+            if (this.readyState==4 && this.status==200){
+                data=xsend.responseText;
+                // data=JSON.parse(xsend.responseText);
+                if (data=='empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                }
+                else {
+                    console.log(data);
+                    alert(data)
+                    document.getElementById("txt_ID").value="";
+                    close_ad()
+                    get_tabel()
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var wlot=document.getElementById('wlot3').value;
+        var requ=document.getElementById('req3').value;
+        var approve=document.getElementById('approve').value;
+        datas={lot: wlot,requ:requ,approve:approve};
+        xsend.send(JSON.stringify(datas));
+    }
+    function tableText(tableRow) {
+              document.getElementById("wlot").disabled=true;
+              document.getElementById("wlot").value=tableRow.childNodes[0].innerText;
+              document.getElementById("wlot3").value=tableRow.childNodes[0].innerText;
+              document.getElementById("req3").value=tableRow.childNodes[5].innerText;
+              document.getElementById("group3").value=tableRow.childNodes[1].innerText;
+              document.getElementById("style3").value=tableRow.childNodes[2].innerText;
+              document.getElementById("color3").value=tableRow.childNodes[3].innerText;
+              document.getElementById("size3").value=tableRow.childNodes[4].innerText;
+              var usern=document.getElementById("user").innerText;
+              if (usern=="ngmai1"||usern=="hungo"){
+                document.getElementById("dialog2").click();
+                document.getElementById("sah_old").focus();
+              } else{
+                document.getElementById("dialog4").click();
+              }
+              
+          };
+
+    function detail_group(){
+            var usern=document.getElementById("user").innerText;
+            if (usern=="ngmai1"||usern=="hungo"||usern=="tudo"||usern=="nnguyen"){
+                
+            } else{
+                return;
+            }
+              var table = document.getElementById("table_GROUPSUM");
+              event.stopImmediatePropagation;
+              if (table) {
+                for (var i = 0; i < table.rows.length; i++) {
+                  table.rows[i].ondblclick = function(e) {
+                    tableText(this);
+                  };
+                };
+              };
+
+
+          }
+    
+    function update_pad_sah(){
+        old_sah=document.getElementById("sah_old").value
+        new_sah=document.getElementById("sah_new").value
+        if (new_sah==""){
+            alert("SAH nhập vào không được để trống")
+            return
+        }
+        var xsend= new XMLHttpRequest();
+        xsend.open("POST","/Production/pad_update_sah",true);
+        xsend.onreadystatechange= function(){
+            if (this.readyState==4 && this.status==200){
+                data=xsend.responseText;
+                // data=JSON.parse(xsend.responseText);
+                if (data=='empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                }
+                else {
+                    console.log(data);
+                    alert(data)
+                    document.getElementById("txt_ID").value="";
+                    document.getElementById("clmd").click();
+                    get_tabel()
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var wlot=document.getElementById('wlot').value;
+        datas={lot: wlot,old_sah:old_sah,new_sah:new_sah};
+        xsend.send(JSON.stringify(datas));
+
+    }
+    
+    function submit_wlot(){
+        // var table_group_load_spinner=document.getElementById('table_group_spinner');
+        // table_group_load_spinner.setAttribute("class","mdl-spinner mdl-js-spinner is-active");
+        // componentHandler.upgradeElement(table_group_load_spinner);
+        var xsend= new XMLHttpRequest();
+        xsend.open("POST","/Production/pad_lot_change",true);
+        xsend.onreadystatechange= function(){
+            if (this.readyState==4 && this.status==200){
+                data=xsend.responseText;
+                // data=JSON.parse(xsend.responseText);
+                if (data=='empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                }
+                else {
+                    console.log(data);
+                    // table_group_load_spinner.removeAttribute("class");
+                    alert(data)
+                    document.getElementById("txt_ID").value="";
+                    close_ad()
+                    get_tabel()
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var wlot=document.getElementById('wlot2').value;
+        var style=document.getElementById('style').value;
+        var group=document.getElementById('group').value;
+        var color=document.getElementById('color').value;
+        var size=document.getElementById('size').value;
+        datas={lot: wlot,style:style,group:group,color:color,size:size};
+        xsend.send(JSON.stringify(datas));
+    };
+
+    
+
+    function draw_graph(name, list_data, label, chart_name, typeChar){
+        var color=new Array();
+        for (var i=0; i<name.length; i++){
+            color.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
+        }
+        var ctx = document.getElementById(chart_name).getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: typeChar,//'bar',
+            data: {
+                labels: name,
+                datasets: [{
+                    label: label,//'Sản lượng theo Công đoạn',
+                    data: list_data,
+                    backgroundColor: color,
+                    borderWidth: 1,
+                    fill: false
+                }]
+            }
+            ,options: {
+                // plugins:{
+                //     colorschemes:{
+                //         scheme: 'tableau.Classic10'
+                //     }
+                // },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        gridLines:{
+                            display: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+</script>

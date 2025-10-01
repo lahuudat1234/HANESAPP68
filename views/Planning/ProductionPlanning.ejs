@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <title>Daily Planning</title>
+    </header>
+    <body>
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                <!-- Title -->
+                    <span class="mdl-layout-title">DAILY PRODUCTION</span>
+                    <div class="mdl-layout-spacer"></div>
+                
+                </div>
+                
+              <!-- Tabs -->
+                <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+                    <a href="#PB-COMPLEX" class="mdl-layout__tab is-active">Phubai Complex</a>
+                    <a href="#PB-IE" class="mdl-layout__tab">Phubai IE</a>
+                    <a href="#PB-CUTTING" class="mdl-layout__tab">Phubai Cutting</a>
+                    <!-- <a href="#scroll-tab-3" class="mdl-layout__tab">Tab 3</a>
+                    <a href="#scroll-tab-4" class="mdl-layout__tab">Tab 4</a>
+                    <a href="#scroll-tab-5" class="mdl-layout__tab">Tab 5</a>
+                    <a href="#scroll-tab-6" class="mdl-layout__tab">Tab 6</a> -->
+                </div>
+            </header>
+            <!-- <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">Functions</span>
+            </div> -->
+            <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <section class="mdl-layout__tab-panel is-active" id="PB-COMPLEX">
+                    <div class="page-content">
+                        <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                            <div class="mdl-grid">
+                                <div class="mdl-grid" style="margin-top: 0px; width: 100%; padding: 0; ">
+                                    <div class="mdl-cell mdl-cell--3-col" style="margin:0; padding: 0;">
+                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="float: left; margin-top: 25px;" id="btn_search_pbc_previous">
+                                            <i class="material-icons">navigate_before</i>
+                                            PREVIOUS
+                                        </button>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--6-col">
+                                        <div style="margin: 0 auto;">
+                                            <div id="div_week_pbc" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                                    style="width: 100px; margin-right: 50px;">
+                                                <input type="text" value="" class="mdl-textfield__input" id="cbb_week_pbc" readonly>
+                                                <input type="hidden" value="" name="cbb_week_pbc">
+                                                <label for="cbb_week_pbc" class="mdl-textfield__label">Week</label>
+                                                <ul for="cbb_week_pbc" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="cbb_week_pbc_list">
+                                                </ul>
+                                            </div>
+                                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btn_search_pbc" style="background-color: red;">
+                                                <i class="material-icons">search</i>
+                                                Load
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="float: right; margin-top: 10px;" id="btn_search_pbc_next">
+                                            Next
+                                            <i class="material-icons">navigate_next</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- <form id='form_upload_pbc' method='POST' action='/Planning/ProductionPlanning/UploadPBC' style="width: fit-content; display: none;">
+                                    <input type='file' name='file_pbc' id='file_pbc' style="width: 80%; display: none;" onchange="load_pbc_file(this)">
+                                    <input type='submit' id='submit_pbc' style='display: none;'>
+                                </form> -->
+                                <div style="margin: 10px auto;">
+                                    <div class="mdl-grid" id="spinner_div" style="margin: 0px auto; display: none;"></div>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                                        mdl-js-ripple-effect mdl-button--colored" style="position: fixed; bottom: 50px; right:40px; z-index: 10; background-color: orange;" 
+                                        id="btn_upload_pbc">
+                                        <i class="material-icons">play_arrow</i>
+                                    </button>
+                                    <div class="mdl-tooltip" for="btn_upload_pbc" style="z-index: 11;">
+                                        <p style="font-size:12px">Refresh<br>PB Complex</p>
+                                    </div>
+                                </div>
+                                <table class="mdl-data-table mdl-js-data-table" style="border: none; width: 100%; margin-top: 20px;">
+                                    <thead style="background-color: green;">
+                                        <tr>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">STT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">GROUP</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">PLANT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">CUTLOT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">WORKLOT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">ASSLOT</th>
+                                            <!-- <th class="mdl-data-table__cell--non-numeric" style="color: white;">HQAS</th> -->
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">MFG</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">COLOR</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">PACKING</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">SELLING</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">SIZE</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">TOTAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_pbc_body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="PB-IE">
+                    <div class="page-content">
+                        <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                            <div class="mdl-grid">
+                                <div class="mdl-grid" style="margin-top: 0px; width: 100%; padding: 0; ">
+                                    <div class="mdl-cell mdl-cell--3-col" style="margin:0; padding: 0;">
+                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="float: left; margin-top: 25px;" id="btn_search_pbie_previous">
+                                            <i class="material-icons">navigate_before</i>
+                                            PREVIOUS
+                                        </button>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--6-col">
+                                        <div id="div_week_pbie" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                                style="width: 100px; margin-right: 50px; ">
+                                            <input type="text" value="" class="mdl-textfield__input" id="cbb_week_pbie" readonly>
+                                            <input type="hidden" value="" name="cbb_week_pbie">
+                                            <label for="cbb_week_pbie" class="mdl-textfield__label">Week</label>
+                                            <ul for="cbb_week_pbie" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="cbb_week_pbie_list">
+                                            </ul>
+                                        </div>
+                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btn_search_pbie" style="background-color: red;">
+                                            <i class="material-icons">search</i>
+                                            Load
+                                        </button>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="float: right; margin-top: 10px;" id="btn_search_pbie_next">
+                                            Next
+                                            <i class="material-icons">navigate_next</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- <form id='form_upload_pbie' method='POST' action='/Planning/ProductionPlanning/UploadPBIE' style="width: fit-content; display: none;">
+                                    <input type='file' name='file_pbie' id='file_pbie' style="width: 80%; display: none;" onchange="load_pbie_file(this)">
+                                    <input type='submit' id='submit_pbie' style='display: none;'>
+                                </form> -->
+                                <div style="margin: 10px auto;">
+                                    <div class="mdl-grid" id="spinner_div_ie" style="margin: 0px auto; display: none;"></div>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                                        mdl-js-ripple-effect mdl-button--colored" style="position: fixed; bottom: 50px; right:40px; z-index: 10; background-color: green;" 
+                                        id="btn_upload_pbie">
+                                        <i class="material-icons">play_arrow</i>
+                                    </button>
+                                    <div class="mdl-tooltip" for="btn_upload_pbie" style="z-index: 11;">
+                                        <p style="font-size:12px">Refresh<br>PBIE</p>
+                                    </div>
+                                </div>
+                                <table class="mdl-data-table mdl-js-data-table" style="border: none; width: 100%; margin-top: 20px;">
+                                    <thead style="background-color: darkorange;">
+                                        <tr>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">STT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">GROUP</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">PLANT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">CUTLOT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">WORKLOT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">ASSLOT</th>
+                                            <!-- <th class="mdl-data-table__cell--non-numeric" style="color: white;">HQAS</th> -->
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">MFG</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">COLOR</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">PACKING</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">SELLING</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">SIZE</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">TOTAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_pbie_body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="PB-CUTTING">
+                    <div class="page-content">
+                        <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                            <div class="mdl-grid">
+                                <div class="mdl-grid" style="margin-top: 0px; width: 100%; padding: 0; ">
+                                    <div class="mdl-cell mdl-cell--3-col" style="margin:0; padding: 0;">
+                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="float: left; margin-top: 25px;" 
+                                                id="btn_search_pbcutting_previous">
+                                            <i class="material-icons">navigate_before</i>
+                                            PREVIOUS
+                                        </button>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--6-col">
+                                        <div id="div_week_pbcutting" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                                style="width: 100px; margin-right: 50px; ">
+                                            <input type="text" value="" class="mdl-textfield__input" id="cbb_week_pbc" readonly>
+                                            <input type="hidden" value="" name="cbb_week_pbie">
+                                            <label for="cbb_week_pbie" class="mdl-textfield__label">Week</label>
+                                            <ul for="cbb_week_pbie" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="cbb_week_pbie_list">
+                                            </ul>
+                                        </div>
+                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btn_search_pbie" style="background-color: red;">
+                                            <i class="material-icons">search</i>
+                                            Load
+                                        </button>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="float: right; margin-top: 10px;" id="btn_search_pbie_next">
+                                            Next
+                                            <i class="material-icons">navigate_next</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- <form id='form_upload_pbie' method='POST' action='/Planning/ProductionPlanning/UploadPBIE' style="width: fit-content; display: none;">
+                                    <input type='file' name='file_pbie' id='file_pbie' style="width: 80%; display: none;" onchange="load_pbie_file(this)">
+                                    <input type='submit' id='submit_pbie' style='display: none;'>
+                                </form> -->
+                                <div style="margin: 10px auto;">
+                                    <div class="mdl-grid" id="spinner_div_ie" style="margin: 0px auto; display: none;"></div>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                                        mdl-js-ripple-effect mdl-button--colored" style="position: fixed; bottom: 50px; right:40px; z-index: 10; background-color: green;" 
+                                        id="btn_upload_pbie">
+                                        <i class="material-icons">play_arrow</i>
+                                    </button>
+                                    <div class="mdl-tooltip" for="btn_upload_pbcutting" style="z-index: 11;">
+                                        <p style="font-size:12px">Refresh<br>PB Cutting</p>
+                                    </div>
+                                </div>
+                                <table class="mdl-data-table mdl-js-data-table" style="border: none; width: 100%; margin-top: 20px;">
+                                    <thead style="background-color: darkorange;">
+                                        <tr>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">STT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">GROUP</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">PLANT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">CUTLOT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">WORKLOT</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">ASSLOT</th>
+                                            <!-- <th class="mdl-data-table__cell--non-numeric" style="color: white;">HQAS</th> -->
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">MFG</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">COLOR</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">PACKING</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">SELLING</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">SIZE</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">TOTAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_pbie_body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </body>
+    <script>
+        spinner_div         = document.getElementById('spinner_div');
+        spinner_div_ie      = document.getElementById('spinner_div_ie');
+        table_pbc_body=document.getElementById('table_pbc_body');
+        table_pbie_body=document.getElementById('table_pbie_body');
+        window.onload=load_data();
+        var limit=0;
+        var limit_pbie=0;
+        // var form_pbc=document.getElementById("upload_pbc");
+        // var form_pbie=document.getElementById("upload_pbie");
+        function load_data(){
+            get_current_week();
+            if (document.getElementById('cbb_week_pbc').value==null) $('ul[for="cbb_week_pbc"] li[data-val="'+'01'+'"]').attr('data-selected',true); 
+            if (document.getElementById('cbb_week_pbie').value==null) $('ul[for="cbb_week_pbie"] li[data-val="'+'01'+'"]').attr('data-selected',true); 
+            if (limit==1) document.getElementById('btn_search_pbc_previous').disabled=true;
+        }
+        function get_current_week(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Get_Week",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    var list_week=document.getElementById('cbb_week_pbc_list');
+                    var list_week_pbie=document.getElementById('cbb_week_pbie_list');
+                    while (list_week.childNodes.length>0) list_week.removeChild(list_week.childNodes[0]);
+                    while (list_week_pbie.childNodes.length>0) list_week_pbie.removeChild(list_week_pbie.childNodes[0]);
+                    for (var i=1; i<=52; i++) {
+                        var li=document.createElement("li");
+                        li.setAttribute("class","mdl-menu__item");
+                        // if (i==data[0].WEEK) li.classList.add('selected');
+                        var textNode=document.createTextNode(i);
+                        if (i<10) textNode=document.createTextNode('0'+i);
+                        li.appendChild(textNode);
+                        li.setAttribute('data-val', i.toString());
+                        list_week.appendChild(li);
+                        // list_week_pbie.appendChild(li);
+                    }
+                    for (var i=1; i<=52; i++) {
+                        var li=document.createElement("li");
+                        li.setAttribute("class","mdl-menu__item");
+                        // if (i==data[0].WEEK) li.classList.add('selected');
+                        var textNode=document.createTextNode(i);
+                        if (i<10) textNode=document.createTextNode('0'+i);
+                        li.appendChild(textNode);
+                        li.setAttribute('data-val', i.toString());
+                        // list_week.appendChild(li);
+                        list_week_pbie.appendChild(li);
+                    }
+                    $('ul[for="cbb_week_pbc"] li[data-val="'+data[0].WEEK+'"]').attr('data-selected',true); 
+                    $('ul[for="cbb_week_pbie"] li[data-val="'+data[0].WEEK+'"]').attr('data-selected',true); 
+                    getmdlSelect.init('#div_week_pbc');
+                    getmdlSelect.init('#div_week_pbie');
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send();
+        }
+        //Phubai Complex
+        document.getElementById('btn_search_pbc_next').addEventListener('click', function(){
+            limit+=500;
+            document.getElementById('btn_search_pbc').click();
+        });
+        document.getElementById('btn_search_pbc_previous').addEventListener('click', function(){
+            if (limit==0){
+                document.getElementById('btn_search_pbc_previous').disabled=true;
+                return;
+            }
+            limit-=500;
+            document.getElementById('btn_search_pbc').click();
+        });
+        function remove_table_pbc_body(){
+            while (table_pbc_body.childNodes.length>0) table_pbc_body.removeChild(table_pbc_body.childNodes[0]);
+        }
+        document.getElementById('btn_search_pbc').addEventListener('click', function(){
+            remove_table_pbc_body();
+            tabIndex=$('.mdl-layout__tab').index($('.is-active'))
+            tabName='';
+            if (tabIndex==0) tabName='PB0';
+            else if (tabIndex==1) tabName='Phubai IE'
+            else if (tabIndex==2) tabName='PBC'
+            week=parseInt(document.getElementById('cbb_week_pbc').value);
+            
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Planning/DailyProduction/LoadSewingPlan",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    for (var i=0; i<data.length; i++){
+                        var tr=document.createElement("tr");
+                        //STT
+                        var tdSTT=document.createElement("td");
+                        tdSTT.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(i+1);
+                        tdSTT.appendChild(node);
+                        tr.appendChild(tdSTT);
+                        //GROUP
+                        var tdGroup=document.createElement("td");
+                        tdGroup.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].NAMEGROUP);
+                        tdGroup.appendChild(node);
+                        tr.appendChild(tdGroup);
+                        //PLANT
+                        var tdPlant=document.createElement("td");
+                        tdPlant.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].PLANT);
+                        tdPlant.appendChild(node);
+                        tr.appendChild(tdPlant);
+                        //Cutlot
+                        var tdCutlot=document.createElement("td");
+                        tdCutlot.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].CUTLOT);
+                        tdCutlot.appendChild(node);
+                        tr.appendChild(tdCutlot);
+                        //WORKLOT
+                        var tdWorklot=document.createElement("td");
+                        tdWorklot.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].LOTANET);
+                        tdWorklot.appendChild(node);
+                        tr.appendChild(tdWorklot);
+                        //ASSLOT
+                        var tdAsslot=document.createElement("td");
+                        tdAsslot.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].LOTTOTAL);
+                        tdAsslot.appendChild(node);
+                        tr.appendChild(tdAsslot);
+                        //MFG
+                        var tdMFG=document.createElement("td");
+                        tdMFG.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].COLOR.substring(0,6));
+                        tdMFG.appendChild(node);
+                        tr.appendChild(tdMFG);
+                        //COLOR
+                        var tdColor=document.createElement("td");
+                        tdColor.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].COLOR.substring(6,10));
+                        tdColor.appendChild(node);
+                        tr.appendChild(tdColor);
+                        //PACKING
+                        var tdPacking=document.createElement("td");
+                        tdPacking.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].PACKINGSTYLE);
+                        tdPacking.appendChild(node);
+                        tr.appendChild(tdPacking);
+                        //SELLING
+                        var tdSelling=document.createElement("td");
+                        tdSelling.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].SELLSTYLE);
+                        tdSelling.appendChild(node);
+                        tr.appendChild(tdSelling);
+                        //SIZE
+                        var tdSize=document.createElement("td");
+                        tdSize.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].SIZE);
+                        tdSize.appendChild(node);
+                        tr.appendChild(tdSize);
+                        //TOTAL
+                        var tdTotal=document.createElement("td");
+                        tdTotal.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].TOTAL);
+                        tdTotal.appendChild(node);
+                        tr.appendChild(tdTotal);
+                        componentHandler.upgradeElement(tr);
+                        table_pbc_body.appendChild(tr);
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={week:week, limit: limit, plant: tabName}
+            xsend.send(JSON.stringify(data));
+        });
+        document.getElementById('btn_upload_pbc').addEventListener('click', function(){
+            document.getElementById('file_pbc').click();
+            document.getElementById("file_pbc").onchange = function() {
+                if (document.getElementById("file_pbc").value!=""){
+                    var r = confirm("Bạn chắc chắn muốn load file này lên?");
+                    if (r == true) {
+                        document.getElementById('btn_upload_pbc').disabled=true;
+                        document.getElementById('submit_pbc').click();
+                    }
+                }
+            };
+            var form=document.getElementById("form_upload_pbc");
+            form.addEventListener("submit", e=>{
+                if (document.getElementById('file_pbc').value!=''){
+                    e.preventDefault();
+                    var spinning=document.createElement("div");
+                    spinning.setAttribute("class","mdl-spinner mdl-js-spinner is-active");
+                    spinning.setAttribute("id", "spin_load");
+                    spinning.setAttribute("style", "margin: 0px auto;")
+                    componentHandler.upgradeElement(spinning);
+                    spinner_div.appendChild(spinning);
+                    spinner_div.style.display='grid';
+                    var xsend=new XMLHttpRequest();
+                    xsend.onreadystatechange=function(){
+                        if (this.readyState==4 && this.status==200){
+                            document.getElementById('btn_upload_pbc').disabled=false;
+                            spinner_div.removeChild(spinner_div.childNodes[0]);
+                            spinner_div.style.display='none';
+                            var data=xsend.responseText.split(';');
+                            console.log(data)
+                            result=data[0];
+                            colName=data[1];
+                            if (result=='fail'){
+                                alert('File bị lỗi tại cột số '+ colName+ '! Vui lòng kiểm tra lại file.')
+                            } else {
+                                alert('File cập nhật thành công!\nTìm thấy '+colName+' dòng')
+                            }
+                            // if (result=='fail'){
+                            //     alert('Column '+colName+' was not existed in Attribute. Please check again!');
+                            // } else {
+                            //     alert('Upload completed');
+                            //     document.getElementById('file').value="";
+                            //     item_name_get();
+                            // }
+                        }
+                    }
+                    var fileInput = document.getElementById('file_pbc');
+                    var file;
+                    week=document.getElementById('cbb_week_pbc').value;
+                    // week=week.substring(week.length-2, week.length);
+                    newName='PBC_'+week+'.xlsm';
+                    file=fileInput.files[0];
+                    var formData = new FormData();
+                    // formData.append('file', file);
+                    formData.append('file', file, newName);
+                    if (file!=null){
+                        xsend.open('POST','/Planning/ProductionPlanning/UploadPBC', true);
+                        xsend.send(formData);
+                    }
+                }
+                return false;
+            });
+        });
+        //Phubai IE
+        document.getElementById('btn_search_pbie_next').addEventListener('click', function(){
+            limit_pbie+=500;
+            document.getElementById('btn_search_pbie').click();
+        });
+        document.getElementById('btn_search_pbie_previous').addEventListener('click', function(){
+            if (limit==0){
+                document.getElementById('btn_search_pbie_previous').disabled=true;
+                return;
+            }
+            limit_pbie-=500;
+            document.getElementById('btn_search_pbie').click();
+        });
+        function remove_table_pbie_body(){
+            while (table_pbie_body.childNodes.length>0) table_pbie_body.removeChild(table_pbie_body.childNodes[0]);
+        }
+        document.getElementById('btn_search_pbie').addEventListener('click', function(){
+            remove_table_pbie_body();
+            tabIndex=$('.mdl-layout__tab').index($('.is-active'))
+            tabName='';
+            if (tabIndex==0) tabName='PB0';
+            else if (tabIndex==1) tabName='Phubai IE'
+            else if (tabIndex==2) tabName='PBC'
+            week=parseInt(document.getElementById('cbb_week_pbie').value);
+            table_pbie_body=document.getElementById('table_pbie_body');
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Planning/DailyProduction/LoadSewingPlan",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    for (var i=0; i<data.length; i++){
+                        var tr=document.createElement("tr");
+                        //STT
+                        var tdSTT=document.createElement("td");
+                        tdSTT.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(i+1);
+                        tdSTT.appendChild(node);
+                        tr.appendChild(tdSTT);
+                        //GROUP
+                        var tdGroup=document.createElement("td");
+                        tdGroup.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].NAMEGROUP);
+                        tdGroup.appendChild(node);
+                        tr.appendChild(tdGroup);
+                        //PLANT
+                        var tdPlant=document.createElement("td");
+                        tdPlant.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].PLANT);
+                        tdPlant.appendChild(node);
+                        tr.appendChild(tdPlant);
+                        //Cutlot
+                        var tdCutlot=document.createElement("td");
+                        tdCutlot.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].CUTLOT);
+                        tdCutlot.appendChild(node);
+                        tr.appendChild(tdCutlot);
+                        //WORKLOT
+                        var tdWorklot=document.createElement("td");
+                        tdWorklot.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].LOTANET);
+                        tdWorklot.appendChild(node);
+                        tr.appendChild(tdWorklot);
+                        //ASSLOT
+                        var tdAsslot=document.createElement("td");
+                        tdAsslot.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].LOTTOTAL);
+                        tdAsslot.appendChild(node);
+                        tr.appendChild(tdAsslot);
+                        //MFG
+                        var tdMFG=document.createElement("td");
+                        tdMFG.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].COLOR.substring(0,6));
+                        tdMFG.appendChild(node);
+                        tr.appendChild(tdMFG);
+                        //COLOR
+                        var tdColor=document.createElement("td");
+                        tdColor.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].COLOR.substring(6,10));
+                        tdColor.appendChild(node);
+                        tr.appendChild(tdColor);
+                        //PACKING
+                        var tdPacking=document.createElement("td");
+                        tdPacking.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].PACKINGSTYLE);
+                        tdPacking.appendChild(node);
+                        tr.appendChild(tdPacking);
+                        //SELLING
+                        var tdSelling=document.createElement("td");
+                        tdSelling.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].SELLSTYLE);
+                        tdSelling.appendChild(node);
+                        tr.appendChild(tdSelling);
+                        //SIZE
+                        var tdSize=document.createElement("td");
+                        tdSize.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].SIZE);
+                        tdSize.appendChild(node);
+                        tr.appendChild(tdSize);
+                        //TOTAL
+                        var tdTotal=document.createElement("td");
+                        tdTotal.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].TOTAL);
+                        tdTotal.appendChild(node);
+                        tr.appendChild(tdTotal);
+                        componentHandler.upgradeElement(tr);
+                        table_pbie_body.appendChild(tr);
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={week:week, limit: limit_pbie, plant: tabName}
+            xsend.send(JSON.stringify(data));
+        });
+        document.getElementById('btn_upload_pbie').addEventListener('click', function(){
+            document.getElementById('file_pbie').click();
+            document.getElementById("file_pbie").onchange = function() {
+                if (document.getElementById("file_pbie").value!=""){
+                    var r = confirm("Bạn chắc chắn muốn load file này lên?");
+                    if (r == true) {
+                        document.getElementById('btn_upload_pbie').disabled=true;
+                        document.getElementById('submit_pbie').click();
+                    }
+                }
+            };
+            var form=document.getElementById("form_upload_pbie");
+            form.addEventListener("submit", e=>{
+                if (document.getElementById('file_pbie').value!=''){
+                    e.preventDefault();
+                    var spinning=document.createElement("div");
+                    spinning.setAttribute("class","mdl-spinner mdl-js-spinner is-active");
+                    spinning.setAttribute("id", "spin_load");
+                    spinning.setAttribute("style", "margin: 0px auto;")
+                    componentHandler.upgradeElement(spinning);
+                    spinner_div_ie.appendChild(spinning);
+                    spinner_div_ie.style.display='grid';
+                    var xsend=new XMLHttpRequest();
+                    xsend.onreadystatechange=function(){
+                        if (this.readyState==4 && this.status==200){
+                            spinner_div_ie.removeChild(spinner_div_ie.childNodes[0]);
+                            spinner_div_ie.style.display='none';
+                            document.getElementById('btn_upload_pbie').disabled=false;
+                            var data=xsend.responseText.split(';');
+                            result=data[0];
+                            colName=data[1];
+                            if (result=='fail'){
+                                alert('File bị lỗi tại cột số '+ colName+ '! Vui lòng kiểm tra lại file.')
+                            } else {
+                                alert('File cập nhật thành công!\nTìm thấy '+colName+' dòng')
+                            }
+                        }
+                    }
+                    var fileInput = document.getElementById('file_pbie');
+                    var file;
+                    week=document.getElementById('cbb_week_pbie').value;
+                    // week=week.substring(week.length-2, week.length);
+                    newName='PBIE_'+week+'.xlsm';
+                    file=fileInput.files[0];
+                    var formData = new FormData();
+                    // formData.append('file', file);
+                    formData.append('file', file, newName);
+                    if (file!=null){
+                        xsend.open('POST','/Planning/ProductionPlanning/UploadPBIE', true);
+                        xsend.send(formData);
+                    }
+                }
+                return false;
+            });
+        });
+    </script>
+</html>

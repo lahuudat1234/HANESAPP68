@@ -1,0 +1,217 @@
+<div class="mdl-grid">
+    <%if (type=='DR'){%>
+        <div class="mdl-card mdl-shadow--8dp" style="width: 95%; margin:10px auto; margin-top:20px; border-radius: 10px;">
+            <div class="mdl-card__title mdl-card--expand" style="max-height:100px; background-color: indigo; color: white;">
+                <h2 class="mdl-card__title-text">KẾT QUẢ LÀM VIỆC</h2>
+            </div>
+            <div class="mdl-card__supporting-text" style>
+                <ul class="demo-list-icon mdl-list">
+                    <li class="mdl-list__item">
+                        <span class="mdl-list__item-primary-content">
+                            <i class="material-icons mdl-list__item-icon">calendar_today</i>
+                            <input class="mdl-textfield__input" type="date" id="date_search" 
+                            style="width: 150px;">
+                            <script>
+                                var date = new Date();
+                                var day = date.getDate();
+                                var month = date.getMonth() + 1;
+                                var year = date.getFullYear();
+                                if (month < 10) month = "0" + month;
+                                if (day < 10) day = "0" + day;
+                                var today = year + "-" + month + "-" + day;
+                                document.getElementById("date_search").value = today;
+                            </script>
+                        </span>
+                    </li>
+                    <li class="mdl-list__item">
+                        <span class="mdl-list__item-primary-content" style="width: 50%; text-align: center; float:left;">
+                            <i class="material-icons mdl-list__item-icon">work</i>
+                            Quẹt thẻ: <%=reg_hrs%>
+                        </span>
+                        <span class="mdl-list__item-primary-content" style="width: 50%; text-align: right; float:right;">
+                            <i class="material-icons mdl-list__item-icon">watch_later</i>
+                            Tăng ca: <%=ot_hrs%>
+                        </span>
+                    </li>
+                    <li class="mdl-list__item">
+                        <span class="mdl-list__item-primary-content" style="width: 50%; text-align: center; float:left;">
+                            <i class="material-icons mdl-list__item-icon">work_off</i>
+                            Không sản xuất: <%=offStd_hrs%>
+                        </span>
+                        <span class="mdl-list__item-primary-content" style="width: 50%; text-align: right; float:right;">
+                            <i class="material-icons mdl-list__item-icon">store</i>
+                            Còn lại: <%=otLeft_hrs%>
+                        </span>
+                    </li>
+                    <li>
+                        <hr>
+                    </li>
+                    <li class="mdl-list__item">
+                        <span class="mdl-list__item-primary-content"  style="width: 50%; text-align: center; float:left;">
+                            <i class="material-icons mdl-list__item-icon">receipt</i>
+                            Tổng SAH: <%=sum_sah%>
+                        </span>
+                        <span class="mdl-list__item-primary-content"  style="width: 50%; text-align: right; float:right;">
+                            <i class="material-icons mdl-list__item-icon">grade</i>
+                            Hiệu suất: <%=eff%>%
+                        </span>
+                    </li>
+                    <li class="mdl-list__item">
+                        <span class="mdl-list__item-primary-content"  style="width: 50%; text-align: center; float:left;">
+                            <i class="material-icons mdl-list__item-icon">assignment</i>
+                            Lương cơ bản: <%=salary%> VND
+                        </span>
+                        <span class="mdl-list__item-primary-content"  style="width: 50%; text-align: right; float:right;">
+                            <i class="material-icons mdl-list__item-icon">favorite</i>
+                            Lương sản phẩm: <%=bonus%> VND
+                        </span>
+                    </li>
+                    <li class="mdl-list__item">
+                        <span class="mdl-list__item-primary-content"  style="width: 50%; text-align: center; float:left;">
+                            <i class="material-icons mdl-list__item-icon">list</i>
+                            Chi tiết: 
+                        </span>
+                    </li>
+                    <li>
+                        <table class="mdl-data-table mdl-js-data-table mdl-shadow--6dp" style="width: 80%; margin:10px auto;" >
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric">Công Đoạn</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Tổng SAH</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Tổng tem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="mdl-data-table__cell--non-numeric">SEAM PANEL</td>
+                                    <td class="mdl-data-table__cell--non-numeric">0.256</td>
+                                    <td class="mdl-data-table__cell--non-numeric">20</td>
+                                </tr>
+                                <tr>
+                                    <td class="mdl-data-table__cell--non-numeric">SEAM CROTCH</td>
+                                    <td class="mdl-data-table__cell--non-numeric">0.31</td>
+                                    <td class="mdl-data-table__cell--non-numeric">10</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                    Lịch sử hiệu suất
+                    <i class="material-icons">search</i>
+                </a>
+            </div>
+        </div>
+    <%} else {%>
+        <div class="mdl-card mdl-shadow--8dp" style="width: 95%; margin:5px auto; margin-top:20px; border-radius: 10px;">
+            <div class="mdl-card__title mdl-card--expand" style="max-height:100px; background-color: indigo; color: white;">
+                <h2 class="mdl-card__title-text">THỜI GIAN LÀM VIỆC</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+                <ul class="demo-list-icon mdl-list">
+                    <li class="mdl-list__item">
+                        <span class="mdl-list__item-primary-content" style="width: 50%; text-align: center; float:left;" id="Abs_Day">
+                            <i class="material-icons mdl-list__item-icon">work</i>
+                            Số ngày nghỉ: 0
+                        </span>
+                        <span class="mdl-list__item-primary-content" style="width: 50%; text-align: right; float:right;" id="OT_Sum">
+                            <i class="material-icons mdl-list__item-icon">watch_later</i>
+                            Số giờ tăng ca: 0
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div style="overflow-x: auto; width: 90%; margin:10px auto; border-radius: 10px;" class="mdl-shadow--2dp">
+                <table class="mdl-data-table mdl-js-data-table" style="border:none; width: 100%;" id="table_workHrs_non_dr">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Ngày</th>
+                            <th class="mdl-data-table__cell--non-numeric">Ca</th>
+                            <th class="mdl-data-table__cell--non-numeric">Quẹt thẻ vào</th>
+                            <th class="mdl-data-table__cell--non-numeric">Quẹt thẻ ra</th>
+                            <th class="mdl-data-table__cell--non-numeric">Vắng</th>
+                            <th class="mdl-data-table__cell--non-numeric">Đi trễ</th>
+                            <th class="mdl-data-table__cell--non-numeric">Về sớm</th>
+                            <th class="mdl-data-table__cell--non-numeric">Tăng ca 150%</th>
+                            <th class="mdl-data-table__cell--non-numeric">Tăng ca 200%</th>
+                            <th class="mdl-data-table__cell--non-numeric">Tăng ca đêm</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_workHrs_non_dr_body" style="transition-delay: 3s;">
+                    </tbody>
+                </table>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_employee_non_dr_search">
+                    Lịch sử
+                    <i class="material-icons">search</i>
+                </a>
+            </div>
+        </div>
+    <%}%>
+    <div class="mdl-card mdl-shadow--8dp" style="width: 95%; margin:10px auto; margin-top:20px; border-radius: 10px;">
+        <div class="mdl-card__title mdl-card--expand" style="max-height:100px; background-color: orange; color: white;">
+            <h2 class="mdl-card__title-text">THÔNG TIN PHÉP NĂM</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ul class="demo-list-icon mdl-list">
+                <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content" style="width: 50%; text-align: center; float:left;">
+                        <i class="material-icons mdl-list__item-icon">done</i>
+                        Đã nghỉ: 1.5 ngày
+                    </span>
+                    <span class="mdl-list__item-primary-content" style="width: 50%; text-align: right; float: right;">
+                        <i class="material-icons mdl-list__item-icon">date_range</i>
+                        Còn lại: 13.5 ngày
+                    </span>
+                </li>
+                <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content" style="width: 50%; text-align: center; float:left;">
+                        <i class="material-icons mdl-list__item-icon">list</i>
+                        Chi tiết:
+                    </span>
+                </li>
+                <li>
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--6dp" style="width: 80%; margin:10px auto;" >
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">Ngày nghỉ</th>
+                                <th class="mdl-data-table__cell--non-numeric">Loại</th>
+                                <th class="mdl-data-table__cell--non-numeric">Lý do</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="mdl-data-table__cell--non-numeric">5/2/2020</td>
+                                <td class="mdl-data-table__cell--non-numeric">1 ngày</td>
+                                <td class="mdl-data-table__cell--non-numeric">Con ốm</td>
+                            </tr>
+                            <tr>
+                                <td class="mdl-data-table__cell--non-numeric">15/2/2020</td>
+                                <td class="mdl-data-table__cell--non-numeric">1/2 ngày</td>
+                                <td class="mdl-data-table__cell--non-numeric">Đau, đi khám</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Đăng ký nghỉ
+                <i class="material-icons">create</i>
+            </a>
+        </div>
+    </div>
+    <!-- </div>  -->
+</div>
+<script defer>
+    window.onload=function() {
+        var element=document.createElement("script");
+        element.src="/JS/Employee/GetInfor/get_infor.js"
+        element.async=true;
+        document.body.appendChild(element);
+    }
+</script>

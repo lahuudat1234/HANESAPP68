@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <title>Giờ làm việc</title>
+    </header>
+    <style>
+        #page-mask {
+            background: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+    <div id="page-mask"></div>
+    <!-- <body> -->
+    <body style="background-image: url('../Image/11.jpg')" onload="get_employee_infor()">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout-title" id="txt_header"></span>
+                    <div class="mdl-layout-spacer"></div>
+                    <nav class="mdl-navigation">
+                        <a class="mdl-navigation__link" href="/Employee/TimeSheet">Giờ Làm Việc</a>
+                        <a class="mdl-navigation__link" href="/Employee/SAH">Lương sản phẩm</a>
+                        <a class="mdl-navigation__link" href="/Employee/Traning">Đào Tạo</a>
+                        <a class="mdl-navigation__link" href="/Employee/Notification">Thông Báo</a>
+                        <a class="mdl-navigation__link" href="/Employee/Surveys">Khảo Sát</a>
+                    </nav>
+                </div>
+                
+            </header>
+            <%- include ("partials/Employee_nav.ejs"); -%>
+            <main class="mdl-layout__content">
+                <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                    <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 20px;">
+                        <div style="margin: 10px auto;">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder" style="width:150px; margin-right: 50px;">
+                                <input class="mdl-textfield__input" type="date" id="date_from">
+                                <label class="mdl-textfield__label" for="date_from">Từ ngày</label>
+                            </div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder" style="width:150px; margin-right: 50px;">
+                                <input class="mdl-textfield__input" type="date" id="date_to">
+                                <label class="mdl-textfield__label" for="date_to">Đến ngày</label>
+                            </div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 200px; margin-right: 50px;">
+                                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="txt_ID_search">
+                                <label class="mdl-textfield__label" for="txt_ID_search">Mã NV</label>
+                                <span class="mdl-textfield__error">ID là 1 con số!</span>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-button--fab 
+                                    mdl-js-ripple-effect mdl-button--colored" id="btn_ID_search">
+                                <i class="material-icons">search</i>
+                            </button>
+                        </div>
+                        <div style="width: 100%;">
+                            <div id="table_ID_spinner" style="margin-left: 50%; margin-top: 5px;"></div>
+                        </div>
+                        <div style="width: 90%; margin: 0px auto;">
+                            <ul style="margin:0px 0px;">
+                                <li class="mdl-list__item">
+                                    <span class="mdl-list__item-primary-content" style="width: 30%; text-align: left; float:left;">
+                                        <i class="material-icons mdl-list__item-icon" style="color: green;">art_track</i>
+                                            <div id="txt_day_reg">Ngày Quẹt Thẻ: 0</div>
+                                    </span>
+                                    <span class="mdl-list__item-primary-content" style="width: 30%; text-align: left; float:left;">
+                                        <i class="material-icons mdl-list__item-icon" style="color: blue;">timer</i>
+                                            <div id="txt_abs_half">Ngày Về Sớm: 0</div>
+                                    </span>
+                                    <span class="mdl-list__item-primary-content" style="width: 30%; text-align: right; float:left;">
+                                        <i class="material-icons mdl-list__item-icon" style="color: red;">eco</i>
+                                            <div id="txt_sum_ot">Giờ Tăng Ta: 0</div>
+                                    </span>
+                                </li>
+                                <li class="mdl-list__item">
+                                    <span class="mdl-list__item-primary-content" style="width: 30%; text-align: right; float:left;">
+                                        <i class="material-icons mdl-list__item-icon" style="color: orange;">person</i>
+                                            <div id="txt_sum_abs">Ngày Vắng: 0</div>
+                                    </span>
+                                    <span class="mdl-list__item-primary-content" style="width: 30%; text-align: left; float:left;">
+                                        <i class="material-icons mdl-list__item-icon" style="color: indigo;">filter_3</i>
+                                            <div id="txt_sum_late">Đi Trễ: 0</div>
+                                    </span>
+                                    <span class="mdl-list__item-primary-content" style="width: 30%; text-align: right; float:left;">
+                                        <i class="material-icons mdl-list__item-icon" style="color: purple;">filter_8</i>
+                                            <div id="txt_sum_soon">Về Sớm: 0</div>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="table_timesheet" class="mdl-card mdl-shadow--6dp" style="width: 90% ; margin: 10px auto; overflow-x:auto; border-radius: 20px;">
+                            <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                <thead style="background-color: #6c25be;">
+                                    <tr>
+                                        <th style="color: white;">STT</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">NGÀY</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">GIỜ VÀO</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">GIỜ RA</th>
+                                        <th style="color: white;">ĐI TRỄ</th>
+                                        <th style="color: white;">VỀ SỚM</th>
+                                        <th style="color: white;">VẮNG</th>
+                                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">CODE VẮNG</th>
+                                        <th style="color: white;">OT15</th>
+                                        <th style="color: white;">OT20</th>
+                                        <th style="color: white;">OT30</th>
+                                        <th style="color: white;">TỔNG</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_timesheet_body" style="height: 500px; overflow: scroll;">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </body>
+    <script>
+        function load_avatar(empID){
+            console.log('../Assets/Employee/Avatar/'+empID+'.jpg')
+            document.getElementById('img_avatar').src='';
+            document.getElementById('img_avatar').src='../Assets/Employee/Avatar/'+empID+'.jpg';
+        };
+
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1).substring(0,10);
+        document.getElementById('date_from').value=localISOTime;
+        document.getElementById('date_to').value=localISOTime;
+        
+        function get_employee_infor(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Employee/Get_Employee_Infor",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                    console.log(result[0]);
+                    document.getElementById('txt_header').innerHTML=result[0].NAME;
+                    document.getElementById('txt_id').innerHTML=result[0].ID;
+                    document.getElementById('txt_ID_search').value=result[0].ID;
+                    document.getElementById('txt_ID_search').parentNode.classList.add('is-dirty');
+                    document.getElementById('txt_name').innerHTML=result[0].NAME;
+                    document.getElementById('txt_dept').innerHTML=result[0].DEPT;
+                    document.getElementById('txt_type').innerHTML=result[0].TYPE;
+                    if (result[0].TYPE!='DR'){
+                        document.getElementById('txt_line').parentNode.parentNode.style.display="none";
+                    } else {
+                        document.getElementById('txt_line').parentNode.parentNode.style.display="inline";
+                        document.getElementById('txt_line').innerHTML=result[0].LINE;
+                    }
+                    load_avatar(result[0].ID);
+                    document.getElementById('txt_pos').innerHTML=result[0].POSITION;
+                    document.getElementById('txt_line').innerHTML=result[0].LINE;
+                    document.getElementById('txt_shift').innerHTML=result[0].SHIFT;
+                    document.getElementById('txt_plant').innerHTML=result[0].PLANT;   
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={ID: ''}
+            xsend.send(JSON.stringify(data));
+        }
+
+        document.getElementById('btn_ID_search').addEventListener('click', function(){
+            table_timesheet_body=document.getElementById('table_timesheet_body');
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Employee/Get_Employee_TimeSheet",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                    sum_soon=0;
+                    sum_late=0;
+                    sum_ot=0;
+                    sum_abs=0;
+                    sum_work=0;
+                    sum_abs_half=0;
+                    while (table_timesheet_body.childNodes.length>0) table_timesheet_body.removeChild(table_timesheet_body.childNodes[0])
+                    for(var i=0; i<result.length; i++){
+                        var tr=document.createElement("tr");
+                        //STT
+                        var tdSTT=document.createElement("td");
+                        var node=document.createTextNode(i+1);
+                        tdSTT.appendChild(node);
+                        tr.appendChild(tdSTT);
+                        //DATE
+                        var tdDate=document.createElement("td");
+                        tdDate.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var timeUpdate=(new Date(result[i].DATE)).toLocaleString("en-US", {timeZone: "Asia/Bangkok"}).split(',')[0];
+                        var node=document.createTextNode(timeUpdate);
+                        tdDate.appendChild(node);
+                        tr.appendChild(tdDate);
+                        //TIME_IN
+                        var tdIn=document.createElement("td");
+                        tdIn.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(result[i].TIME_IN);
+                        tdIn.appendChild(node);
+                        tr.appendChild(tdIn);
+                        //OUT
+                        var tdOut=document.createElement("td");
+                        tdOut.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(result[i].TIME_OUT);
+                        tdOut.appendChild(node);
+                        tr.appendChild(tdOut);
+                        //Late
+                        var tdLate=document.createElement("td");
+                        if (result[i].LATE>0){
+                            var node=document.createTextNode(result[i].LATE);
+                            sum_late+=result[i].LATE;
+                        } else var node=document.createTextNode('');
+                        tdLate.appendChild(node);
+                        tr.appendChild(tdLate);
+                        //Soon
+                        var tdSoon=document.createElement("td");
+                        if (result[i].SOON>0){
+                            var node=document.createTextNode(result[i].SOON);
+                            sum_soon+=result[i].SOON;
+                        } else var node=document.createTextNode('');
+                        tdSoon.appendChild(node);
+                        tr.appendChild(tdSoon);
+                        //Abs
+                        var tdAbs=document.createElement("td");
+                        if (result[i].ABSENT>=4) tr.setAttribute('style', 'background-color: green;');
+                        if (result[i].ABSENT>0) var node=document.createTextNode(result[i].ABSENT);
+                        else var node=document.createTextNode('');
+                        if (result[i].ABSENT<8) sum_work+=1; else sum_abs+=1;
+                        if (result[i].ABSENT==4) sum_abs_half+=1;
+                        if (result[i].SOON==8 || result[i].LATE==8) tr.setAttribute('style', 'background-color: red;'); 
+                        tdAbs.appendChild(node);
+                        tr.appendChild(tdAbs);
+                        //ALcode
+                        var tdAlCode=document.createElement("td");
+                        tdAlCode.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(result[i].AL_CODE);
+                        tdAlCode.appendChild(node);
+                        tr.appendChild(tdAlCode);
+                        //OT15
+                        var td15=document.createElement("td");
+                        if (result[i].OT15>0) var node=document.createTextNode(result[i].OT15);
+                        else var node=document.createTextNode('');
+                        td15.appendChild(node);
+                        tr.appendChild(td15);
+                        //20
+                        var td20=document.createElement("td");
+                        if (result[i].OT20>0) var node=document.createTextNode(result[i].OT20);
+                        else var node=document.createTextNode('');
+                        // var node=document.createTextNode(result[i].OT20);
+                        td20.appendChild(node);
+                        tr.appendChild(td20);
+                        //30
+                        var td30=document.createElement("td");
+                        if (result[i].OT30>0) var node=document.createTextNode(result[i].OT30);
+                        else var node=document.createTextNode('');
+                        // var node=document.createTextNode(result[i].OT30);
+                        td30.appendChild(node);
+                        tr.appendChild(td30);
+                        sum_ot+=result[i].OT_ACTUAL;
+                        //Total
+                        var tdTotal=document.createElement("td");
+                        if (result[i].REG_HRS_TOTAL>0) var node=document.createTextNode(result[i].REG_HRS_TOTAL);
+                        else var node=document.createTextNode('');
+                        // var node=document.createTextNode(result[i].REG_HRS_TOTAL);
+                        tdTotal.appendChild(node);
+                        tr.appendChild(tdTotal);
+                        componentHandler.upgradeElement(tr);
+                        table_timesheet_body.appendChild(tr);
+                    }
+                    document.getElementById('txt_day_reg').innerHTML='Ngày Quẹt Thẻ: '+sum_work+'/'+result.length;
+                    document.getElementById('txt_abs_half').innerHTML='Ngày Về Sớm: '+sum_abs_half;
+                    document.getElementById('txt_sum_ot').innerHTML='Giờ Tăng Ta: '+Math.round(sum_ot*100)/100;
+                    document.getElementById('txt_sum_abs').innerHTML='Ngày Vắng: '+sum_abs;
+                    document.getElementById('txt_sum_late').innerHTML='Đi Trễ: '+Math.round(sum_late*100)/100;
+                    document.getElementById('txt_sum_soon').innerHTML='Về Sớm: '+Math.round(sum_soon*100)/100;
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            ID=document.getElementById('txt_ID_search').value;
+            datefrom=document.getElementById('date_from').value;
+            dateto=document.getElementById('date_to').value;
+            data={ID: ID, datefrom: datefrom, dateto: dateto}
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        });
+        function get_employee_infor(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Employee/Get_Employee_Infor",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                    console.log(result[0]);
+                    document.getElementById('txt_header').innerHTML=result[0].NAME;
+                    document.getElementById('txt_id').innerHTML=result[0].ID;
+                    document.getElementById('txt_name').innerHTML=result[0].NAME;
+                    document.getElementById('txt_dept').innerHTML=result[0].DEPT;
+                    document.getElementById('txt_type').innerHTML=result[0].TYPE;
+                    if (result[0].TYPE!='DR'){
+                        document.getElementById('txt_line').parentNode.parentNode.style.display="none";
+                    } else {
+                        document.getElementById('txt_line').parentNode.parentNode.style.display="inline";
+                        document.getElementById('txt_line').innerHTML=result[0].LINE;
+                    }
+                    document.getElementById('txt_pos').innerHTML=result[0].POSITION;
+                    document.getElementById('txt_line').innerHTML=result[0].LINE;
+                    document.getElementById('txt_shift').innerHTML=result[0].SHIFT;
+                    document.getElementById('txt_plant').innerHTML=result[0].PLANT;
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={ID: ''}
+            xsend.send(JSON.stringify(data));
+        }
+    </script>
+</html>

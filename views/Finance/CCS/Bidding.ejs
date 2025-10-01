@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<header>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>CCS - Finance</title>
+</header>
+
+<body onload="onload_func()">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">BIDDING</span>
+                <div class="mdl-layout-spacer"></div>
+                <div style="margin-left:20px;">
+                    <button id="btn_exportExcel" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                        style="background-color: green; border-radius: 10px;">
+                        Excel Bidding Information
+                        <i class="material-icons">fact_check</i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+
+                    <div class="mdl-grid" style="width: 100%;">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                            style="margin: 0px auto;">
+                            <input class="mdl-textfield__input" type="text" id="txt_pr_search">
+                            <label class="mdl-textfield__label" for="txt_pr_search">Nhập Bidding...</label>
+                        </div>
+                    </div>
+                    <div style="margin:0px auto;padding: 0;">
+                        <div style="margin:10px auto;">
+                            <div style="width: 50%;">
+                                <div id="spinner" class="mdl-spinner mdl-js-spinner is-active"
+                                    style="margin-left: 90%; margin-top: 5px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mdl_grid" style="margin-top: 20px; margin-left: 20px;">
+                        <!-- <div id="txt_pur_note_bidding">Purchasing ghi chú:</div>
+                        <div id="txt_staff_note_bidding">Nhân viên ghi chú:</div>
+                        <div id="txt_dept_note_bidding">Bộ phận ghi chú:</div>
+                        <div id="txt_three_note_bidding">RCM ghi chú:</div> -->
+                        <!-- <div class="mdl_grid" style="margin-top: 20px; margin-left: 20px;"> -->
+                        <div class="mdl-grid" style="padding: 0;">
+                            <i class="material-icons" style="color: indigo;">person</i>
+                            <div style="display: inline; margin-top: 5px; color: indigo; margin-left: 10px; font-weight: bold;"
+                                id="txt_staff_note_bidding">Nhân viên ghi chú:</div>
+                        </div>
+                        <div class="mdl-grid" style="padding: 0; margin-top: 10px">
+                            <i class="material-icons" style="color: indigo;">filter_2</i>
+                            <div style="display: inline; margin-top: 5px; color: indigo; margin-left: 10px; font-weight: bold;"
+                                id="txt_dept_note_bidding">Bộ phận ghi chú:</div>
+                        </div>
+                        <div class="mdl-grid" style="padding: 0; margin-top: 10px">
+                            <i class="material-icons" style="color: indigo;">filter_6</i>
+                            <div style="display: inline; margin-top: 5px; color: indigo; margin-left: 10px; font-weight: bold;"
+                                id="txt_pur_note_bidding">Purchasing ghi chú:</div>
+                        </div>
+                        <div class="mdl-grid" style="padding: 0; margin-top: 10px">
+                            <i class="material-icons" style="color: indigo;">filter_7</i>
+                            <div style="display: inline; margin-top: 5px; color: indigo; margin-left: 10px; font-weight: bold;"
+                                id="txt_three_note_bidding">RCM ghi chú:</div>
+                        </div>
+                        <!-- </div>  -->
+                    </div>
+                    <div
+                        style="width: 98%; overflow:hidden; overflow-x: scroll; overflow-y: scroll; margin:10px auto; height: 90vh; margin-top:20px;">
+                        <div style="width: 3400px;">
+                            <div class="mdl-card mdl-shadow--2dp" style="display: inline-block; width: 500px;">
+                                <div class="mdl-card__title" style="background-color: orangered; color:white;">
+                                    <h2 class="mdl-card__title-text" style="margin:0 auto;" id="txt_pr_id">THÔNG TIN BÁO
+                                        GIÁ</h2>
+                                </div>
+                                <div class="mdl-card__supporting-text" style="padding: 0; width: 100%;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none; width: 100%;">
+                                        <colgroup>
+                                            <col style="width: 20px;">
+                                            <col style="width: 300px;">
+                                            <col style="width: 80px;">
+                                            <col style="width: 100px;">
+                                        </colgroup>
+                                        <thead style="background-color: orangered;">
+                                            <tr style=" height: 60px;">
+                                                <th style="color: white;">#</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">ITEM
+                                                </th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">ĐƠN
+                                                    VỊ</th>
+                                                <th style="color: white;">SỐ LƯỢNG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body_request">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mdl-card__actions mdl-card--border" style="padding:0; margin-left: 20px;">
+                                    <ul class="mdl-list" style="padding: 0; margin: 0;">
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: red;">attach_money</i>
+                                                TỔNG TIỀN (CHƯA VAT)
+                                                <!-- <div>0</div> -->
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: blue;">request_page</i>
+                                                TỔNG TIỀN (SAU CHIẾT KHẤU)
+                                                <!-- <div>0</div> -->
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: green;">shop</i>
+                                                BẢO HÀNH
+                                                <!-- <div>0</div> -->
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: indigo;">filter_1</i>
+                                                DEPARTMENT MANAGER<div style="margin-left: 10px;" id="txt_dept_result">
+                                                </div>
+                                                <!-- <div>0</div> -->
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: indigo;">filter_2</i>
+                                                PUR. MANAGER<div style="margin-left: 10px;" id="txt_pur_mng_result">
+                                                </div>
+                                                <!-- <div>0</div> -->
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: indigo;">filter_3</i>
+                                                OPERATION MANAGER<div style="margin-left: 10px;"
+                                                    id="txt_operation_result"></div>
+                                                <!-- <div>0</div> -->
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: indigo;">filter_4</i>
+                                                RCM<div style="margin-left: 10px;" id="txt_rcm_result"></div>
+                                                <!-- <div>0</div> -->
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: indigo;">filter_5</i>
+                                                PLANT MANAGER<div style="margin-left: 10px;" id="txt_plant_result">
+                                                </div>
+                                                <!-- <div>0</div> -->
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="mdl-card mdl-shadow--2dp" style="display: inline-block; width: 450px;"
+                                id="div_vendor1">
+                                <div class="mdl-card__title" style="background-color: blue; color:white;">
+                                    <h2 class="mdl-card__title-text" id="txt_vendor_1" style="margin:0 auto;">Vendor1
+                                    </h2>
+                                </div>
+                                <div class="mdl-card__supporting-text" style="padding: 0; width: 100%;">
+                                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--6dp"
+                                        style="border: none; width: 100%;">
+                                        <colgroup>
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 110px;">
+                                        </colgroup>
+                                        <thead style="background-color: orangered;">
+                                            <tr style=" height: 60px;">
+                                                <th style="color: white;">ĐƠN GIÁ</th>
+                                                <th style="color: white;">THÀNH TIỀN</th>
+                                                <th style="color: white;">L.T</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">XUẤT
+                                                    XỨ</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">CHỌN
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body_vendor1">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mdl-card__actions mdl-card--border" style="padding:0; margin-left: 20px;">
+                                    <ul class="mdl-list" style="padding: 0; margin: 0;">
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i> -->
+                                                <!-- TỔNG TIỀN (CHƯA VAT) -->
+                                                <div id="txt_price_no_vat0">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                TỔNG TIỀN (SAU CHIẾT KHẤU) -->
+                                                <div id="txt_price_discount0">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                BẢO HÀNH -->
+                                                <div id="txt_warranty0">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="mdl-card mdl-shadow--2dp" style="display: inline-block; width: 450px;"
+                                id="div_vendor2">
+                                <div class="mdl-card__title" style="background-color: blue; color:white;">
+                                    <h2 class="mdl-card__title-text" id="txt_vendor_2" style="margin:0 auto;">Vendor2
+                                    </h2>
+                                </div>
+                                <div class="mdl-card__supporting-text" style="padding: 0; width: 100%;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none; width: 100%;">
+                                        <colgroup>
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 110px;">
+                                        </colgroup>
+                                        <thead style="background-color: orangered;">
+                                            <tr style=" height: 60px;">
+                                                <th style="color: white;">ĐƠN GIÁ</th>
+                                                <th style="color: white;">THÀNH TIỀN</th>
+                                                <th style="color: white;">L.T</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">XUẤT
+                                                    SỨ</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">CHỌN
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body_vendor2">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mdl-card__actions mdl-card--border" style="padding:0; margin-left: 20px;">
+                                    <ul class="mdl-list" style="padding: 0; margin: 0;">
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                TỔNG TIỀN (CHƯA VAT) -->
+                                                <div id="txt_price_no_vat1">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                TỔNG TIỀN (SAU CHIẾT KHẤU) -->
+                                                <div id="txt_price_discount1">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                BẢO HÀNH -->
+                                                <div id="txt_warranty1">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="mdl-card mdl-shadow--2dp" style="display: inline-block; width: 450px;"
+                                id="div_vendor3">
+                                <div class="mdl-card__title" style="background-color: blue; color:white;">
+                                    <h2 class="mdl-card__title-text" id="txt_vendor_3" style="margin:0 auto;">Vendor3
+                                    </h2>
+                                </div>
+                                <div class="mdl-card__supporting-text" style="padding: 0; width: 100%;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none; width: 100%;">
+                                        <colgroup>
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                        </colgroup>
+                                        <thead style="background-color: orangered;">
+                                            <tr style=" height: 60px;">
+                                                <th style="color: white;">ĐƠN GIÁ</th>
+                                                <th style="color: white;">THÀNH TIỀN</th>
+                                                <th style="color: white;">L.T</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">XUẤT
+                                                    SỨ</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">CHỌN
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body_vendor3">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mdl-card__actions mdl-card--border" style="padding:0; margin-left: 20px;">
+                                    <ul class="mdl-list" style="padding: 0; margin: 0;">
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                TỔNG TIỀN (CHƯA VAT) -->
+                                                <div id="txt_price_no_vat2">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                TỔNG TIỀN (SAU CHIẾT KHẤU) -->
+                                                <div id="txt_price_discount2">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                BẢO HÀNH -->
+                                                <div id="txt_warranty2">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="mdl-card mdl-shadow--2dp" style="display: inline-block; width: 450px;"
+                                id="div_vendor4">
+                                <div class="mdl-card__title" style="background-color: blue; color:white;">
+                                    <h2 class="mdl-card__title-text" id="txt_vendor_4" style="margin:0 auto;">Vendor4
+                                    </h2>
+                                </div>
+                                <div class="mdl-card__supporting-text" style="padding: 0; width: 100%;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none; width: 100%;">
+                                        <colgroup>
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                        </colgroup>
+                                        <thead style="background-color: orangered;">
+                                            <tr style=" height: 60px;">
+                                                <th style="color: white;">ĐƠN GIÁ</th>
+                                                <th style="color: white;">THÀNH TIỀN</th>
+                                                <th style="color: white;">L.T</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">XUẤT
+                                                    SỨ</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">CHỌN
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body_vendor4">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mdl-card__actions mdl-card--border" style="padding:0; margin-left: 20px;">
+                                    <ul class="mdl-list" style="padding: 0; margin: 0;">
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                TỔNG TIỀN (CHƯA VAT) -->
+                                                <div id="txt_price_no_vat3">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                TỔNG TIỀN (SAU CHIẾT KHẤU) -->
+                                                <div id="txt_price_discount3">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                BẢO HÀNH -->
+                                                <div id="txt_warranty3">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="mdl-card mdl-shadow--2dp" style="display: inline-block; width: 450px;"
+                                id="div_vendor5">
+                                <div class="mdl-card__title" style="background-color: blue; color:white;">
+                                    <h2 class="mdl-card__title-text" id="txt_vendor_5" style="margin:0 auto;">Vendor5
+                                    </h2>
+                                </div>
+                                <div class="mdl-card__supporting-text" style="padding: 0; width: 100%;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none; width: 100%;">
+                                        <colgroup>
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                        </colgroup>
+                                        <thead style="background-color: orangered;">
+                                            <tr style=" height: 60px;">
+                                                <th style="color: white;">ĐƠN GIÁ</th>
+                                                <th style="color: white;">THÀNH TIỀN</th>
+                                                <th style="color: white;">L.T</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">XUẤT
+                                                    SỨ</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">CHỌN
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body_vendor5">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mdl-card__actions mdl-card--border" style="padding:0; margin-left: 20px;">
+                                    <ul class="mdl-list" style="padding: 0; margin: 0;">
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                TỔNG TIỀN (CHƯA VAT) -->
+                                                <div id="txt_price_no_vat4">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                TỔNG TIỀN (SAU CHIẾT KHẤU) -->
+                                                <div id="txt_price_discount4">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                BẢO HÀNH -->
+                                                <div id="txt_warranty4">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="mdl-card mdl-shadow--2dp" style="display: inline-block; width: 450px;"
+                                id="div_vendor6">
+                                <div class="mdl-card__title" style="background-color: blue; color:white;">
+                                    <h2 class="mdl-card__title-text" id="txt_vendor_6" style="margin:0 auto;">Vendor6
+                                    </h2>
+                                </div>
+                                <div class="mdl-card__supporting-text" style="padding: 0; width: 100%;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none; width: 100%;">
+                                        <colgroup>
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                            <col style="width: 90px;">
+                                        </colgroup>
+                                        <thead style="background-color: orangered;">
+                                            <tr style=" height: 60px;">
+                                                <th style="color: white;">ĐƠN GIÁ</th>
+                                                <th style="color: white;">THÀNH TIỀN</th>
+                                                <th style="color: white;">L.T</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">XUẤT
+                                                    SỨ</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">CHỌN
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body_vendor6">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mdl-card__actions mdl-card--border" style="padding:0; margin-left: 20px;">
+                                    <ul class="mdl-list" style="padding: 0; margin: 0;">
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                TỔNG TIỀN (CHƯA VAT) -->
+                                                <div id="txt_price_no_vat5">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                TỔNG TIỀN (SAU CHIẾT KHẤU) -->
+                                                <div id="txt_price_discount5">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                                <!-- <i class="material-icons mdl-list__item-icon">person</i>
+                                                BẢO HÀNH -->
+                                                <div id="txt_warranty5">0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item" style="padding: 0; margin: 0;">
+                                            <span class="mdl-list__item-primary-content" style="padding: 0; margin: 0;">
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="btn_confirm" style="position: fixed; right: 50px; bottom: 50px; background-color: green; z-index: 10; display: none">
+                            <i class="material-icons">download</i>
+                        </button>
+                        <div class="mdl-tooltip" data-mdl-for="btn_confirm">
+                            Download
+                        </div>
+                        <form id="upload_form_bidding" method='POST' action='CCS/Update_PR_File_Bidding_Done' submit='return false;'>
+                            <input type='file' name='file_bidding' id='file_bidding' style='display: none;'>
+                            <input type='submit' id='submit_bidding' style='display: none;'>
+                            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="btn_upload" style="position: fixed; right: 50px; bottom: 120px; background-color: orangered; z-index: 10; display: none;">
+                                <i class="material-icons">upload</i>
+                            </button>
+                            
+                            <div class="mdl-tooltip" data-mdl-for="btn_upload">
+                                Upload<br>Done Bidding
+                            </div>
+                        </form> -->
+                        <!-- <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="btn_done" style="position: fixed; right: 50px; bottom: 190px; background-color: indigo; z-index: 10;">
+                            <i class="material-icons">done</i>
+                        </button> -->
+                        <!-- <div class="mdl-tooltip" data-mdl-for="btn_done">
+                            Confirm Bidding
+                        </div>
+                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="btn_reject" style="position: fixed; right: 50px; bottom: 260px; background-color: gray; z-index: 10;">
+                            <i class="material-icons">close</i>
+                        </button> -->
+                        <div class="mdl-tooltip" data-mdl-for="menu-lower-right">
+                            Thêm...
+                        </div>
+                        <button id="menu-lower-right"
+                            class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                            style="position: fixed; right: 50px; bottom: 50px; background-color: indigo; z-index: 10;">
+                            <i class="material-icons">more_vert</i>
+                        </button>
+                        <!-- <li class="mdl-menu__item"> -->
+
+                        <!-- </li> -->
+                        <ul class="mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect"
+                            for="menu-lower-right">
+                            <li class="mdl-menu__item" style="color: indigo" id="btn_3000">
+                                <i class="material-icons" style="height: 25px; vertical-align: middle;">3k_plus</i>
+                                <div style="display:inline-block">$ 3000</div>
+                            </li>
+                            <li class="mdl-menu__item" style="color: blue" id="btn_1000">
+                                <i class="material-icons" style="height: 25px; vertical-align: middle;">1k_plus</i>
+                                <div style="display:inline-block">$ 1000</div>
+                            </li>
+                            <li class="mdl-menu__item" style="color: green" id="btn_done">
+                                <i class="material-icons" style="height: 25px; vertical-align: middle;">done</i>
+                                <div style="display:inline-block">Xác nhận</div>
+                            </li>
+                            <li class="mdl-menu__item" style="color: red" id="btn_reject">
+                                <i class="material-icons" style="height: 25px; vertical-align: middle;">close</i>
+                                <div style="display:inline-block">Từ chối</div>
+                            </li>
+                            <!-- <li class="mdl-menu__item">Yet Another Action</li> -->
+                        </ul>
+                    </div>
+                </div>
+
+            </main>
+    </div>
+    <dialog style="border-radius: 10px; border: none; padding: 0; background-color: transparent; height: 900px;"
+        id="dialog_item_infor">
+        <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="width: 500px; border-radius: 10px;">
+            <div class="mdl-card__title" style="background-color: green; color: white; ">
+                <h3 class="mdl-card__title-text" id="txt_item_infor"></h3>
+                <!-- <div id="txt_PO_ID"></div>
+                    </h2> -->
+            </div>
+            <div class="mdl-card__supporting-text">
+                <div id="txt_item_vendor" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_vendor_cd" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_qty" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_unit" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_price" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_currency" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_usd" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_discount" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_leadtime" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_expired" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_orgin" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_warranty" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_moq" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_file" style="color: indigo; margin-top: 10px;"></div>
+                <div id="txt_item_note" style="color: indigo; margin-top: 10px;"></div>
+            </div>
+            <div class="mdl-card__menu">
+                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="btn_item_infor_close"
+                    style="background-color: red; color: white;">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+        </div>
+    </dialog>
+</body>
+
+<script>
+    req_id = '<%- req_id%>';
+    console.log(req_id)
+    function onload_func() {
+        document.getElementById('txt_pr_search').value = req_id;
+        document.getElementById('txt_pr_search').parentNode.classList.add('is-dirty');
+        function_bidding_rq(req_id)
+    }
+    function set_display(num_of_vendor) {
+        console.log(num_of_vendor)
+        switch (num_of_vendor) {
+            case 0:
+                document.getElementById('div_vendor1').style.display = "none";
+                document.getElementById('div_vendor2').style.display = "none";
+                document.getElementById('div_vendor3').style.display = "none";
+                document.getElementById('div_vendor4').style.display = "none";
+                document.getElementById('div_vendor5').style.display = "none";
+                document.getElementById('div_vendor6').style.display = "none";
+                break;
+            case 1:
+                document.getElementById('div_vendor1').style.display = "inline-block";
+                document.getElementById('div_vendor2').style.display = "none";
+                document.getElementById('div_vendor3').style.display = "none";
+                document.getElementById('div_vendor4').style.display = "none";
+                document.getElementById('div_vendor5').style.display = "none";
+                document.getElementById('div_vendor6').style.display = "none";
+                break;
+            case 2:
+                document.getElementById('div_vendor1').style.display = "inline-block";
+                document.getElementById('div_vendor2').style.display = "inline-block";
+                document.getElementById('div_vendor3').style.display = "none";
+                document.getElementById('div_vendor4').style.display = "none";
+                document.getElementById('div_vendor5').style.display = "none";
+                document.getElementById('div_vendor6').style.display = "none";
+                break;
+            case 3:
+                document.getElementById('div_vendor1').style.display = "inline-block";
+                document.getElementById('div_vendor2').style.display = "inline-block";
+                document.getElementById('div_vendor3').style.display = "inline-block";
+                document.getElementById('div_vendor4').style.display = "none";
+                document.getElementById('div_vendor5').style.display = "none";
+                document.getElementById('div_vendor6').style.display = "none";
+                break;
+            case 4:
+                document.getElementById('div_vendor1').style.display = "inline-block";
+                document.getElementById('div_vendor2').style.display = "inline-block";
+                document.getElementById('div_vendor3').style.display = "inline-block";
+                document.getElementById('div_vendor4').style.display = "inline-block";
+                document.getElementById('div_vendor5').style.display = "none";
+                document.getElementById('div_vendor6').style.display = "none";
+                break;
+            case 5:
+                document.getElementById('div_vendor1').style.display = "inline-block";
+                document.getElementById('div_vendor2').style.display = "inline-block";
+                document.getElementById('div_vendor3').style.display = "inline-block";
+                document.getElementById('div_vendor4').style.display = "inline-block";
+                document.getElementById('div_vendor5').style.display = "inline-block";
+                document.getElementById('div_vendor6').style.display = "none";
+                break;
+        }
+    }
+    function vendor_display(vendor_list) {
+        for (var i = 0; i < vendor_list.length; i++) {
+            document.getElementById('txt_vendor_' + (i + 1)).innerHTML = vendor_list[i];
+        }
+    }
+    function clear_table() {
+        while (table_body_request.childNodes.length > 0) table_body_request.removeChild(table_body_request.childNodes[0]);
+        while (table_body_vendor6.childNodes.length > 0) table_body_vendor6.removeChild(table_body_vendor6.childNodes[0]);
+        while (table_body_vendor1.childNodes.length > 0) table_body_vendor1.removeChild(table_body_vendor1.childNodes[0]);
+        while (table_body_vendor2.childNodes.length > 0) table_body_vendor2.removeChild(table_body_vendor2.childNodes[0]);
+        while (table_body_vendor3.childNodes.length > 0) table_body_vendor3.removeChild(table_body_vendor3.childNodes[0]);
+        while (table_body_vendor4.childNodes.length > 0) table_body_vendor4.removeChild(table_body_vendor4.childNodes[0]);
+        while (table_body_vendor5.childNodes.length > 0) table_body_vendor5.removeChild(table_body_vendor5.childNodes[0]);
+        document.getElementById('txt_price_no_vat0').innerHTML = 0;
+        document.getElementById('txt_price_no_vat1').innerHTML = 0;
+        document.getElementById('txt_price_no_vat2').innerHTML = 0;
+        document.getElementById('txt_price_no_vat3').innerHTML = 0;
+        document.getElementById('txt_price_no_vat4').innerHTML = 0;
+        document.getElementById('txt_price_no_vat5').innerHTML = 0;
+
+        document.getElementById('txt_price_discount0').innerHTML = 0;
+        document.getElementById('txt_price_discount1').innerHTML = 0;
+        document.getElementById('txt_price_discount2').innerHTML = 0;
+        document.getElementById('txt_price_discount3').innerHTML = 0;
+        document.getElementById('txt_price_discount4').innerHTML = 0;
+        document.getElementById('txt_price_discount5').innerHTML = 0;
+
+        document.getElementById('txt_warranty0').innerHTML = 0;
+        document.getElementById('txt_warranty1').innerHTML = 0;
+        document.getElementById('txt_warranty2').innerHTML = 0;
+        document.getElementById('txt_warranty3').innerHTML = 0;
+        document.getElementById('txt_warranty4').innerHTML = 0;
+        document.getElementById('txt_warranty5').innerHTML = 0;
+    }
+    document.getElementById('txt_pr_search').addEventListener('keyup', function (event) {
+        if (event.keyCode == 13) {
+            req_id = document.getElementById('txt_pr_search').value;
+            function_bidding_rq(req_id)
+        }
+    });
+    function load_note(req_id) {
+        console.log('load_note')
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/get_note_bidding", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                result = JSON.parse(xsend.responseText);
+                console.log(result)
+                if (result.length > 0) {
+                    if (result[0].purNote != null) document.getElementById('txt_pur_note_bidding').innerHTML = "<b>Purchasing ghi chú: </b>" + result[0].purNote;
+                    if (result[0].staffNote != null) document.getElementById('txt_staff_note_bidding').innerHTML = "<b>Nhân viên ghi chú: </b>" + result[0].staffNote;
+                    if (result[0].deptNote != null) document.getElementById('txt_dept_note_bidding').innerHTML = "<b>Bộ phận ghi chú: ghi chú: </b>" + result[0].deptNote;
+                    if (result[0].threeNote != null) document.getElementById('txt_three_note_bidding').innerHTML = "<b>RCM ghi chú: </b>" + result[0].threeNote;
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { pr_id: req_id }
+        xsend.send(JSON.stringify(data));
+    }
+    function function_bidding_rq(req_id) {
+        document.getElementById('txt_pr_id').innerHTML = req_id;
+        load_note(req_id);
+        load_bidding_detail(req_id);
+    }
+    function load_bidding_detail(req_id) {
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/CCS/Get_Bidding_Infor", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                console.log(data)
+                item_list = new Array();
+                item_detail_list = new Array();
+                vendor_list = new Array();
+                vendor_name_list = new Array();
+                vendor_infor = new Array();
+                if (data.length > 0) {
+                    sup_timeUpdate = '';
+                    op_timeUpdate = '';
+                    plt_timeUpdate = '';
+                    k1_timeUpdate = '';
+                    k3_timeUpdate = '';
+                    if (data[0].SUP_TIMEUPDATE != null) {
+                        sup_timeUpdate = (new Date(data[0].SUP_TIMEUPDATE)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" }).split(',')[0];
+                    }
+                    if (data[0].OPERATION_TIMEUPDATE != null) {
+                        op_timeUpdate = (new Date(data[0].OPERATION_TIMEUPDATE)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" }).split(',')[0];
+                    }
+                    if (data[0].PLANT_TIMEUPDATE != null) {
+                        plt_timeUpdate = (new Date(data[0].PLANT_TIMEUPDATE)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" }).split(',')[0];
+                    }
+                    if (data[0].K1_TIMEUPDATE != null) {
+                        k1_timeUpdate = (new Date(data[0].K1_TIMEUPDATE)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" }).split(',')[0];
+                    }
+                    if (data[0].K3_TIMEUPDATE != null) {
+                        k3_timeUpdate = (new Date(data[0].K3_TIMEUPDATE)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" }).split(',')[0];
+                    }
+                    // if (data[0].SUP_USER=="ltdang"){
+                    //     sup_timeUpdate=(new Date(data[0].SUP_TIMEUPDATE)).toLocaleString("en-US", {timeZone: "Asia/Bangkok"}).split(',')[0];
+                    // }
+                    if (data[0].SUP_RESULT == 'Y') document.getElementById('txt_dept_result').innerHTML = '<div style="color: green">Approved - ' + sup_timeUpdate + '</div>';
+                    else if (data[0].SUP_RESULT == 'N') document.getElementById('txt_dept_result').innerHTML = '<div style="color: red">Rejected (' + data[0].SUP_NOTE + ' - ' + sup_timeUpdate + ')' + '</div>';
+                    if (data[0].OPERATION_RESULT == 'Y') document.getElementById('txt_operation_result').innerHTML = '<div style="color: green">Approved - ' + op_timeUpdate + '</div>'
+                    else if (data[0].OPERATION_RESULT == 'N') document.getElementById('txt_operation_result').innerHTML = '<div style="color: red">Rejected (' + data[0].OPERATION_NOTE + ' - ' + op_timeUpdate + ')' + '</div>';
+                    if (data[0].PLANT_RESULT == 'Y') document.getElementById('txt_plant_result').innerHTML = '<div style="color: green">Approved - ' + plt_timeUpdate + '</div>'
+                    else if (data[0].PLANT_RESULT == 'N') document.getElementById('txt_plant_result').innerHTML = '<div style="color: red">Rejected (' + data[0].PLANT_NOTE + ' - ' + plt_timeUpdate + ')' + '</div>';
+                    if (data[0].K1_RESULT == 'Y') document.getElementById('txt_pur_mng_result').innerHTML = '<div style="color: green">Approved - ' + k1_timeUpdate + '</div>'
+                    else if (data[0].K1_RESULT == 'N') document.getElementById('txt_plant_result').innerHTML = '<div style="color: red">Rejected (' + data[0].K1_NOTE + ' - ' + k1_timeUpdate + ')' + '</div>';
+                    if (data[0].K3_RESULT == 'Y') document.getElementById('txt_rcm_result').innerHTML = '<div style="color: green">Approved - ' + k3_timeUpdate + '</div>'
+                    else if (data[0].K3_RESULT == 'N') document.getElementById('txt_plant_result').innerHTML = '<div style="color: red">Rejected (' + data[0].K3_NOTE + ' - ' + k3_timeUpdate + ')' + '</div>';
+                }
+                for (var i = 0; i < data.length; i++) {
+                    item = data[i].ITEM;
+                    if (item_list.indexOf(item) == -1) {
+                        item_list.push(data[i].ITEM);
+                        item_detail_list.push({ Item: data[i].ITEM, Unit: data[i].UNIT, Quantity: data[i].QUANTITY });
+                    }
+                    vendor_id_element = data[i].VENDOR;
+                    if (vendor_list.indexOf(vendor_id_element) == -1) {
+                        vendor_list.push(vendor_id_element);
+                        vendor_name_list.push(data[i].NAME)
+                    }
+                }
+                set_display(vendor_list.length);
+                vendor_display(vendor_name_list)
+                clear_table();
+                for (var i = 0; i < item_detail_list.length; i++) {
+                    var tr = document.createElement("tr");
+                    tr.setAttribute('style', 'height: 50px;')
+                    //stt
+                    var tdSTT = document.createElement("td");
+                    tdSTT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(i + 1);
+                    tdSTT.setAttribute('style', 'color: black;');
+                    tdSTT.appendChild(node);
+                    tr.appendChild(tdSTT);
+                    //Item name
+                    var tdItem = document.createElement("td");
+                    tdItem.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(item_detail_list[i].Item.substring(0, 40));
+                    tdItem.appendChild(node);
+                    tdItem.setAttribute('style', 'color: black;')
+                    tr.appendChild(tdItem);
+                    //tdUnit
+                    var tdUnit = document.createElement("td");
+                    tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(item_detail_list[i].Unit);
+                    tdUnit.appendChild(node);
+                    tdUnit.setAttribute('style', 'color: black;')
+                    tr.appendChild(tdUnit);
+                    //tdUnit
+                    var tdQuantity = document.createElement("td");
+                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(item_detail_list[i].Quantity);
+                    tdQuantity.appendChild(node);
+                    tdQuantity.setAttribute('style', 'color: black;')
+                    tr.appendChild(tdQuantity);
+                    table_body_request.appendChild(tr);
+                    componentHandler.upgradeElement(tr);
+                    console.log(item_detail_list[i].Quantity)
+                }
+                price_no_vat1 = 0;
+                price_discount1 = 0;
+                warranty1 = 0;
+                price_no_vat2 = 0;
+                price_discount2 = 0;
+                warranty2 = 0;
+                price_no_vat3 = 0;
+                price_discount3 = 0;
+                warranty3 = 0;
+                price_no_vat4 = 0;
+                price_discount4 = 0;
+                warranty4 = 0;
+                price_no_vat5 = 0;
+                price_discount5 = 0;
+                warranty5 = 0;
+                price_no_vat0 = 0;
+                price_discount0 = 0;
+                warranty0 = 0;
+                for (var i = 0; i < item_detail_list.length; i++) {
+                    item = item_detail_list[i].Item;
+                    min_price_vendor = 100000000000000000
+                    for (var j = 0; j < data.length; j++) {
+                        if (data[j].ITEM == item)
+                            if (min_price_vendor > data[j].PRICE) min_price_vendor = data[j].PRICE
+                    }
+                    for (var j = 0; j < vendor_list.length; j++) {
+                        var tr = document.createElement("tr");
+                        tr.setAttribute('style', 'height: 50px')
+                        vendor = vendor_list[j];
+                        is_exist_item_in_vendor = false;
+                        for (var k = 0; k < data.length; k++) {
+                            if (vendor == data[k].VENDOR && item == data[k].ITEM) {
+                                is_exist_item_in_vendor = true;
+                                if (j == 0) {
+                                    //Price
+                                    var tdItem = document.createElement("td");
+                                    total = data[k].PRICE.toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    var node = document.createTextNode(total);
+                                    if (data[k].PRICE == min_price_vendor) tdItem.setAttribute('style', 'color: green; font-weight: bold;')
+                                    else tdItem.setAttribute('style', 'color: black;')
+                                    tdItem.appendChild(node);
+                                    tr.appendChild(tdItem);
+                                    //Total
+                                    var tdUnit = document.createElement("td");
+                                    total = (data[k].PRICE * data[k].QUANTITY).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    // if (data[k].CHECKED=='Y')
+                                    // {
+                                    price_no_vat0 += data[k].PRICE * data[k].QUANTITY;
+                                    price_discount0 += data[k].PRICE * data[k].QUANTITY * (1 - data[k].DISCOUNT);
+                                    // }
+                                    warranty0 = data[k].WARRANTY;
+                                    var node = document.createTextNode(total);
+                                    tdUnit.setAttribute('style', 'color: black;')
+                                    tdUnit.appendChild(node);
+                                    tr.appendChild(tdUnit);
+                                    //LeadTime
+                                    var tdQuantity = document.createElement("td");
+                                    var node = document.createTextNode(data[k].LEADTIME);
+                                    tdQuantity.setAttribute('style', 'color: black;');
+                                    tdQuantity.appendChild(node);
+                                    tr.appendChild(tdQuantity);
+                                    //Origin
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var node = document.createTextNode(data[k].ORIGIN.substring(0, 12));
+                                    tdQuantity.setAttribute('style', 'color: black;')
+                                    tdQuantity.appendChild(node);
+                                    tr.appendChild(tdQuantity);
+                                    //IsCheck
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var label = document.createElement('label');
+                                    label.setAttribute('class', 'mdl-radio mdl-js-radio mdl-js-ripple-effect');
+                                    label.setAttribute('for', vendor + item);
+                                    var input = document.createElement('input');
+                                    input.setAttribute('type', 'radio');
+                                    input.setAttribute('id', vendor + item);
+                                    input.setAttribute('class', 'mdl-radio__button');
+                                    input.setAttribute('name', item);
+                                    input.setAttribute('value', data[k].PR_ID + ';' + vendor + ';' + item);
+                                    input.setAttribute('onchange', 'item_selected(this)');
+                                    if (data[k].CHECKED == 'Y') input.setAttribute('checked', true);
+                                    componentHandler.upgradeElement(input);
+                                    label.appendChild(input);
+                                    componentHandler.upgradeElement(label);
+                                    tdQuantity.appendChild(label);
+                                    tr.appendChild(tdQuantity);
+                                    // console.log(data[k].VENDOR_NOTE)
+                                    if (data[k].VENDOR_NOTE != '' && data[k].VENDOR_NOTE != null) tr.style.backgroundColor = 'rgb(204, 204, 204)'
+                                    tr.setAttribute('ondblclick', 'fnc_item_detail(data[' + k + '])')
+                                    table_body_vendor1.appendChild(tr);
+                                    componentHandler.upgradeElement(tr);
+                                }
+                                if (j == 1) {
+                                    //Price
+                                    var tdItem = document.createElement("td");
+                                    total = data[k].PRICE.toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    var node = document.createTextNode(total);
+                                    tdItem.appendChild(node);
+                                    if (data[k].PRICE == min_price_vendor) tdItem.setAttribute('style', 'color: green; font-weight: bold;')
+                                    else tdItem.setAttribute('style', 'color: black;');
+                                    tr.appendChild(tdItem);
+                                    //Total
+                                    var tdUnit = document.createElement("td");
+                                    total = (data[k].PRICE * data[k].QUANTITY).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    // if (data[k].CHECKED=='Y')
+                                    // {
+                                    price_no_vat1 += data[k].PRICE * data[k].QUANTITY;
+                                    price_discount1 += data[k].PRICE * data[k].QUANTITY * (1 - data[k].DISCOUNT);
+                                    // }
+                                    warranty1 = data[k].WARRANTY;
+                                    var node = document.createTextNode(total);
+                                    tdUnit.setAttribute('style', 'color: black;')
+                                    tdUnit.appendChild(node);
+                                    tr.appendChild(tdUnit);
+                                    //LeadTime
+                                    var tdQuantity = document.createElement("td");
+                                    var node = document.createTextNode(data[k].LEADTIME);
+                                    tdQuantity.setAttribute('style', 'color: black;')
+                                    tdQuantity.appendChild(node);
+                                    tr.appendChild(tdQuantity);
+                                    //Origin
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var node = document.createTextNode(data[k].ORIGIN.substring(0, 12));
+                                    tdQuantity.appendChild(node);
+                                    tdQuantity.setAttribute('style', 'color: black;')
+                                    tr.appendChild(tdQuantity);
+                                    //IsCheck
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var label = document.createElement('label');
+                                    label.setAttribute('class', 'mdl-radio mdl-js-radio mdl-js-ripple-effect');
+                                    label.setAttribute('for', vendor + item);
+                                    var input = document.createElement('input');
+                                    input.setAttribute('type', 'radio');
+                                    input.setAttribute('id', vendor + item);
+                                    input.setAttribute('class', 'mdl-radio__button');
+                                    input.setAttribute('name', item);
+                                    input.setAttribute('value', data[k].PR_ID + ';' + vendor + ';' + item);
+                                    input.setAttribute('onchange', 'item_selected(this)');
+                                    if (data[k].CHECKED == 'Y') input.setAttribute('checked', true);
+                                    componentHandler.upgradeElement(input);
+                                    label.appendChild(input);
+                                    componentHandler.upgradeElement(label);
+                                    tdQuantity.appendChild(label);
+                                    tr.appendChild(tdQuantity);
+                                    if (data[k].VENDOR_NOTE != '' && data[k].VENDOR_NOTE != null) tr.style.backgroundColor = 'rgb(204, 204, 204)'
+                                    tr.setAttribute('ondblclick', 'fnc_item_detail(data[' + k + '])')
+                                    table_body_vendor2.appendChild(tr);
+                                    componentHandler.upgradeElement(tr);
+                                }
+                                if (j == 2) {
+                                    //Price
+                                    var tdItem = document.createElement("td");
+                                    total = data[k].PRICE.toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    var node = document.createTextNode(total);
+                                    if (data[k].PRICE == min_price_vendor) tdItem.setAttribute('style', 'color: green; font-weight: bold;')
+                                    else tdItem.setAttribute('style', 'color: black;')
+                                    tdItem.appendChild(node);
+                                    tr.appendChild(tdItem);
+                                    //Total
+                                    var tdUnit = document.createElement("td");
+                                    total = (data[k].PRICE * data[k].QUANTITY).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    // if (data[k].CHECKED=='Y')
+                                    // {
+                                    price_no_vat2 += data[k].PRICE * data[k].QUANTITY;
+                                    price_discount2 += data[k].PRICE * data[k].QUANTITY * (1 - data[k].DISCOUNT);
+                                    // }
+                                    warranty2 = data[k].WARRANTY;
+                                    var node = document.createTextNode(total);
+                                    tdUnit.setAttribute('style', 'color: black;')
+                                    tdUnit.appendChild(node);
+                                    tr.appendChild(tdUnit);
+                                    //LeadTime
+                                    var tdQuantity = document.createElement("td");
+                                    var node = document.createTextNode(data[k].LEADTIME);
+                                    tdQuantity.appendChild(node);
+                                    tdQuantity.setAttribute('style', 'color: black;')
+                                    tr.appendChild(tdQuantity);
+                                    //Origin
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var node = document.createTextNode(data[k].ORIGIN.substring(0, 12));
+                                    tdQuantity.appendChild(node);
+                                    tdQuantity.setAttribute('style', 'color: black;')
+                                    tr.appendChild(tdQuantity);
+                                    //IsCheck
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var label = document.createElement('label');
+                                    label.setAttribute('class', 'mdl-radio mdl-js-radio mdl-js-ripple-effect');
+                                    label.setAttribute('for', vendor + item);
+                                    var input = document.createElement('input');
+                                    input.setAttribute('type', 'radio');
+                                    input.setAttribute('id', vendor + item);
+                                    input.setAttribute('class', 'mdl-radio__button');
+                                    input.setAttribute('name', item);
+                                    input.setAttribute('value', data[k].PR_ID + ';' + vendor + ';' + item);
+                                    input.setAttribute('onchange', 'item_selected(this)');
+                                    if (data[k].CHECKED == 'Y') input.setAttribute('checked', true);
+                                    componentHandler.upgradeElement(input);
+                                    label.appendChild(input);
+                                    componentHandler.upgradeElement(label);
+                                    tdQuantity.appendChild(label);
+                                    tr.appendChild(tdQuantity);
+                                    if (data[k].VENDOR_NOTE != '' && data[k].VENDOR_NOTE != null) tr.style.backgroundColor = 'rgb(204, 204, 204)'
+                                    tr.setAttribute('ondblclick', 'fnc_item_detail(data[' + k + '])')
+                                    table_body_vendor3.appendChild(tr);
+                                    componentHandler.upgradeElement(tr);
+                                }
+                                if (j == 3) {
+                                    //Price
+                                    var tdItem = document.createElement("td");
+                                    total = data[k].PRICE.toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    var node = document.createTextNode(total);
+                                    if (data[k].PRICE == min_price_vendor) tdItem.setAttribute('style', 'color: green; font-weight: bold;')
+                                    else tdItem.setAttribute('style', 'color: black;')
+                                    tdItem.appendChild(node);
+                                    tr.appendChild(tdItem);
+                                    //Total
+                                    var tdUnit = document.createElement("td");
+                                    total = (data[k].PRICE * data[k].QUANTITY).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    // if (data[k].CHECKED=='Y')
+                                    // {
+                                    price_no_vat3 += data[k].PRICE * data[k].QUANTITY;
+                                    price_discount3 += data[k].PRICE * data[k].QUANTITY * (1 - data[k].DISCOUNT);
+                                    // }
+                                    warranty3 = data[k].WARRANTY;
+                                    var node = document.createTextNode(total);
+                                    tdUnit.setAttribute('style', 'color: black;')
+                                    tdUnit.appendChild(node);
+                                    tr.appendChild(tdUnit);
+                                    //LeadTime
+                                    var tdQuantity = document.createElement("td");
+                                    var node = document.createTextNode(data[k].LEADTIME);
+                                    tdQuantity.appendChild(node);
+                                    tdQuantity.setAttribute('style', 'color: black;')
+                                    tr.appendChild(tdQuantity);
+                                    //Origin
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var node = document.createTextNode(data[k].ORIGIN.substring(0, 12));
+                                    tdQuantity.setAttribute('style', 'color: black;')
+                                    tdQuantity.appendChild(node);
+                                    tr.appendChild(tdQuantity);
+                                    //IsCheck
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var label = document.createElement('label');
+                                    label.setAttribute('class', 'mdl-radio mdl-js-radio mdl-js-ripple-effect');
+                                    label.setAttribute('for', vendor + item);
+                                    var input = document.createElement('input');
+                                    input.setAttribute('type', 'radio');
+                                    input.setAttribute('id', vendor + item);
+                                    input.setAttribute('class', 'mdl-radio__button');
+                                    input.setAttribute('name', item);
+                                    input.setAttribute('value', data[k].PR_ID + ';' + vendor + ';' + item);
+                                    input.setAttribute('onchange', 'item_selected(this)');
+                                    if (data[k].CHECKED == 'Y') input.setAttribute('checked', true);
+                                    componentHandler.upgradeElement(input);
+                                    label.appendChild(input);
+                                    componentHandler.upgradeElement(label);
+                                    tdQuantity.appendChild(label);
+                                    tr.appendChild(tdQuantity);
+                                    if (data[k].VENDOR_NOTE != '' && data[k].VENDOR_NOTE != null) tr.style.backgroundColor = 'rgb(204, 204, 204)'
+                                    tr.setAttribute('ondblclick', 'fnc_item_detail(data[' + k + '])')
+                                    table_body_vendor4.appendChild(tr);
+                                    componentHandler.upgradeElement(tr);
+                                }
+                                if (j == 4) {
+                                    //Price
+                                    var tdItem = document.createElement("td");
+                                    total = data[k].PRICE.toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    var node = document.createTextNode(total);
+                                    if (data[k].PRICE == min_price_vendor) tdItem.setAttribute('style', 'color: green; font-weight: bold;')
+                                    else tdItem.setAttribute('style', 'color: black;')
+                                    tdItem.appendChild(node);
+                                    tr.appendChild(tdItem);
+                                    //Total
+                                    var tdUnit = document.createElement("td");
+                                    total = (data[k].PRICE * data[k].QUANTITY).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    // if (data[k].CHECKED=='Y')
+                                    // {
+                                    price_no_vat4 += data[k].PRICE * data[k].QUANTITY;
+                                    price_discount4 += data[k].PRICE * data[k].QUANTITY * (1 - data[k].DISCOUNT);
+                                    // }
+                                    warranty4 = data[k].WARRANTY;
+                                    var node = document.createTextNode(total);
+                                    tdUnit.setAttribute('style', 'color: black;')
+                                    tdUnit.appendChild(node);
+                                    tr.appendChild(tdUnit);
+                                    //LeadTime
+                                    var tdQuantity = document.createElement("td");
+                                    var node = document.createTextNode(data[k].LEADTIME);
+                                    tdQuantity.appendChild(node);
+                                    tdQuantity.setAttribute('style', 'color: black;')
+                                    tr.appendChild(tdQuantity);
+                                    //Origin
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var node = document.createTextNode(data[k].ORIGIN.substring(0, 12));
+                                    tdQuantity.setAttribute('style', 'color: black;')
+                                    tdQuantity.appendChild(node);
+                                    tr.appendChild(tdQuantity);
+                                    //IsCheck
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var label = document.createElement('label');
+                                    label.setAttribute('class', 'mdl-radio mdl-js-radio mdl-js-ripple-effect');
+                                    label.setAttribute('for', vendor + item);
+                                    var input = document.createElement('input');
+                                    input.setAttribute('type', 'radio');
+                                    input.setAttribute('id', vendor + item);
+                                    input.setAttribute('class', 'mdl-radio__button');
+                                    input.setAttribute('name', item);
+                                    input.setAttribute('value', data[k].PR_ID + ';' + vendor + ';' + item);
+                                    input.setAttribute('onchange', 'item_selected(this)');
+                                    if (data[k].CHECKED == 'Y') input.setAttribute('checked', true);
+                                    componentHandler.upgradeElement(input);
+                                    label.appendChild(input);
+                                    componentHandler.upgradeElement(label);
+                                    tdQuantity.appendChild(label);
+                                    tr.appendChild(tdQuantity);
+                                    if (data[k].VENDOR_NOTE != '' && data[k].VENDOR_NOTE != null) tr.style.backgroundColor = 'rgb(204, 204, 204)'
+                                    tr.setAttribute('ondblclick', 'fnc_item_detail(data[' + k + '])')
+                                    table_body_vendor5.appendChild(tr);
+                                    componentHandler.upgradeElement(tr);
+                                }
+                                if (j == 5) {
+                                    //Price
+                                    var tdItem = document.createElement("td");
+                                    total = data[k].PRICE.toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    var node = document.createTextNode(total);
+                                    if (data[k].PRICE == min_price_vendor) tdItem.setAttribute('style', 'color: green; font-weight: bold;')
+                                    else tdItem.setAttribute('style', 'color: black;')
+                                    tdItem.appendChild(node);
+                                    tr.appendChild(tdItem);
+                                    //Total
+                                    var tdUnit = document.createElement("td");
+                                    total = (data[k].PRICE * data[k].QUANTITY).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                                    // if (data[k].CHECKED=='Y')
+                                    // {
+                                    price_no_vat5 += data[k].PRICE * data[k].QUANTITY;
+                                    price_discount5 += data[k].PRICE * data[k].QUANTITY * (1 - data[k].DISCOUNT);
+                                    // }
+                                    warranty5 = data[k].WARRANTY;
+                                    var node = document.createTextNode(total);
+                                    tdUnit.setAttribute('style', 'color: black;')
+                                    tdUnit.appendChild(node);
+                                    tr.appendChild(tdUnit);
+                                    //LeadTime
+                                    var tdQuantity = document.createElement("td");
+                                    var node = document.createTextNode(data[k].LEADTIME);
+                                    tdQuantity.setAttribute('style', 'color: black;')
+                                    tdQuantity.appendChild(node);
+                                    tr.appendChild(tdQuantity);
+                                    //Origin
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var node = document.createTextNode(data[k].ORIGIN.substring(0, 12));
+                                    tdQuantity.setAttribute('style', 'color: black;')
+                                    tdQuantity.appendChild(node);
+                                    tr.appendChild(tdQuantity);
+                                    //IsCheck
+                                    var tdQuantity = document.createElement("td");
+                                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                                    var label = document.createElement('label');
+                                    label.setAttribute('class', 'mdl-radio mdl-js-radio mdl-js-ripple-effect');
+                                    label.setAttribute('for', vendor + item);
+                                    var input = document.createElement('input');
+                                    input.setAttribute('type', 'radio');
+                                    input.setAttribute('id', vendor + item);
+                                    input.setAttribute('class', 'mdl-radio__button');
+                                    input.setAttribute('name', item);
+                                    input.setAttribute('value', data[k].PR_ID + ';' + vendor + ';' + item);
+                                    input.setAttribute('onchange', 'item_selected(this)');
+                                    if (data[k].CHECKED == 'Y') input.setAttribute('checked', true);
+                                    componentHandler.upgradeElement(input);
+                                    label.appendChild(input);
+                                    componentHandler.upgradeElement(label);
+                                    tdQuantity.appendChild(label);
+                                    tr.appendChild(tdQuantity);
+                                    if (data[k].VENDOR_NOTE != '' && data[k].VENDOR_NOTE != null) tr.style.backgroundColor = 'rgb(204, 204, 204)'
+                                    tr.setAttribute('ondblclick', 'fnc_item_detail(data[' + k + '])')
+                                    table_body_vendor6.appendChild(tr);
+                                    componentHandler.upgradeElement(tr);
+                                }
+                            }
+                        }
+                        if (is_exist_item_in_vendor == false) {
+                            if (j == 0) {
+                                //Price
+                                var tdItem = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdItem.appendChild(node);
+                                tr.appendChild(tdItem);
+                                //Total
+                                var tdUnit = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdUnit.appendChild(node);
+                                tr.appendChild(tdUnit);
+                                //LeadTime
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //Origin
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //IsCheck
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                table_body_vendor1.appendChild(tr);
+                                componentHandler.upgradeElement(tr);
+                            }
+                            if (j == 1) {
+                                //Price
+                                var tdItem = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdItem.appendChild(node);
+                                tr.appendChild(tdItem);
+                                //Total
+                                var tdUnit = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdUnit.appendChild(node);
+                                tr.appendChild(tdUnit);
+                                //LeadTime
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //Origin
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //IsCheck
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                table_body_vendor2.appendChild(tr);
+                                componentHandler.upgradeElement(tr);
+                            }
+                            if (j == 2) {
+                                //Price
+                                var tdItem = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdItem.appendChild(node);
+                                tr.appendChild(tdItem);
+                                //Total
+                                var tdUnit = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdUnit.appendChild(node);
+                                tr.appendChild(tdUnit);
+                                //LeadTime
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //Origin
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //IsCheck
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                table_body_vendor3.appendChild(tr);
+                                componentHandler.upgradeElement(tr);
+                            }
+                            if (j == 3) {
+                                //Price
+                                var tdItem = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdItem.appendChild(node);
+                                tr.appendChild(tdItem);
+                                //Total
+                                var tdUnit = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdUnit.appendChild(node);
+                                tr.appendChild(tdUnit);
+                                //LeadTime
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //Origin
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //IsCheck
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                table_body_vendor4.appendChild(tr);
+                                componentHandler.upgradeElement(tr);
+                            }
+                            if (j == 4) {
+                                //Price
+                                var tdItem = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdItem.appendChild(node);
+                                tr.appendChild(tdItem);
+                                //Total
+                                var tdUnit = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdUnit.appendChild(node);
+                                tr.appendChild(tdUnit);
+                                //LeadTime
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //Origin
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //IsCheck
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                table_body_vendor5.appendChild(tr);
+                                componentHandler.upgradeElement(tr);
+                            }
+                            if (j == 5) {
+                                //Price
+                                var tdItem = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdItem.appendChild(node);
+                                tr.appendChild(tdItem);
+                                //Total
+                                var tdUnit = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdUnit.appendChild(node);
+                                tr.appendChild(tdUnit);
+                                //LeadTime
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //Origin
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                //IsCheck
+                                var tdQuantity = document.createElement("td");
+                                var node = document.createTextNode('');
+                                tdQuantity.appendChild(node);
+                                tr.appendChild(tdQuantity);
+                                table_body_vendor6.appendChild(tr);
+                                componentHandler.upgradeElement(tr);
+                            }
+                        }
+                    }
+                }
+                min_price_no_vat = 100000000000000;
+                min_price_discount = 100000000000000;
+                if (min_price_no_vat > price_no_vat0 && price_no_vat0 != 0) min_price_no_vat = price_no_vat0;
+                if (min_price_no_vat > price_no_vat1 && price_no_vat1 != 0) min_price_no_vat = price_no_vat1;
+                if (min_price_no_vat > price_no_vat2 && price_no_vat2 != 0) min_price_no_vat = price_no_vat2;
+                if (min_price_no_vat > price_no_vat3 && price_no_vat3 != 0) min_price_no_vat = price_no_vat3;
+                if (min_price_no_vat > price_no_vat4 && price_no_vat4 != 0) min_price_no_vat = price_no_vat4;
+                if (min_price_no_vat > price_no_vat5 && price_no_vat5 != 0) min_price_no_vat = price_no_vat5;
+
+                if (min_price_discount > price_discount0 && price_discount0 != 0) min_price_discount = price_discount0;
+                if (min_price_discount > price_discount1 && price_discount1 != 0) min_price_discount = price_discount1;
+                if (min_price_discount > price_discount2 && price_discount2 != 0) min_price_discount = price_discount2;
+                if (min_price_discount > price_discount3 && price_discount3 != 0) min_price_discount = price_discount3;
+                if (min_price_discount > price_discount4 && price_discount4 != 0) min_price_discount = price_discount4;
+                if (min_price_discount > price_discount5 && price_discount5 != 0) min_price_discount = price_discount5;
+
+                if (min_price_no_vat == price_no_vat0) document.getElementById('txt_price_no_vat0').setAttribute('style', 'color:green; font-weight: bold;');
+                if (min_price_no_vat == price_no_vat1) document.getElementById('txt_price_no_vat1').setAttribute('style', 'color:green; font-weight: bold;');
+                if (min_price_no_vat == price_no_vat2) document.getElementById('txt_price_no_vat2').setAttribute('style', 'color:green; font-weight: bold;');
+                if (min_price_no_vat == price_no_vat3) document.getElementById('txt_price_no_vat3').setAttribute('style', 'color:green; font-weight: bold;');
+                if (min_price_no_vat == price_no_vat4) document.getElementById('txt_price_no_vat4').setAttribute('style', 'color:green; font-weight: bold;');
+                if (min_price_no_vat == price_no_vat5) document.getElementById('txt_price_no_vat5').setAttribute('style', 'color:green; font-weight: bold;');
+
+                if (min_price_discount == price_discount0) document.getElementById('txt_price_discount0').setAttribute('style', 'color:green; font-weight: bold;');
+                if (min_price_discount == price_discount1) document.getElementById('txt_price_discount1').setAttribute('style', 'color:green; font-weight: bold;');
+                if (min_price_discount == price_discount2) document.getElementById('txt_price_discount2').setAttribute('style', 'color:green; font-weight: bold;');
+                if (min_price_discount == price_discount3) document.getElementById('txt_price_discount3').setAttribute('style', 'color:green; font-weight: bold;');
+                if (min_price_discount == price_discount4) document.getElementById('txt_price_discount4').setAttribute('style', 'color:green; font-weight: bold;');
+                if (min_price_discount == price_discount5) document.getElementById('txt_price_discount5').setAttribute('style', 'color:green; font-weight: bold;');
+
+                price_no_vat0 = (price_no_vat0).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                price_no_vat1 = (price_no_vat1).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                price_no_vat2 = (price_no_vat2).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                price_no_vat3 = (price_no_vat3).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                price_no_vat4 = (price_no_vat4).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                price_no_vat5 = (price_no_vat5).toLocaleString('en-US', { minimumFractionDigits: 0 });
+
+                price_discount0 = (price_discount0).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                price_discount1 = (price_discount1).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                price_discount2 = (price_discount2).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                price_discount3 = (price_discount3).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                price_discount4 = (price_discount4).toLocaleString('en-US', { minimumFractionDigits: 0 });
+                price_discount5 = (price_discount5).toLocaleString('en-US', { minimumFractionDigits: 0 });
+
+                document.getElementById('txt_price_no_vat0').innerHTML = price_no_vat0;
+                document.getElementById('txt_price_no_vat1').innerHTML = price_no_vat1;
+                document.getElementById('txt_price_no_vat2').innerHTML = price_no_vat2;
+                document.getElementById('txt_price_no_vat3').innerHTML = price_no_vat3;
+                document.getElementById('txt_price_no_vat4').innerHTML = price_no_vat4;
+                document.getElementById('txt_price_no_vat5').innerHTML = price_no_vat5;
+
+                document.getElementById('txt_price_discount0').innerHTML = price_discount0;
+                document.getElementById('txt_price_discount1').innerHTML = price_discount1;
+                document.getElementById('txt_price_discount2').innerHTML = price_discount2;
+                document.getElementById('txt_price_discount3').innerHTML = price_discount3;
+                document.getElementById('txt_price_discount4').innerHTML = price_discount4;
+                document.getElementById('txt_price_discount5').innerHTML = price_discount5;
+
+                document.getElementById('txt_warranty0').innerHTML = warranty0;
+                document.getElementById('txt_warranty1').innerHTML = warranty1;
+                document.getElementById('txt_warranty2').innerHTML = warranty2;
+                document.getElementById('txt_warranty3').innerHTML = warranty3;
+                document.getElementById('txt_warranty4').innerHTML = warranty4;
+                document.getElementById('txt_warranty5').innerHTML = warranty5;
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        // PR_ID=document.getElementById('cbb_pr_id').value;
+        data = { PR_ID: req_id }
+        xsend.send(JSON.stringify(data));
+    }
+    function fnc_item_detail(data) {
+        document.getElementById('txt_item_infor').innerHTML = data.ITEM;
+        document.getElementById('txt_item_vendor').innerHTML = 'Vendor: ' + '<b>' + data.NAME + '</b>';
+        document.getElementById('txt_item_vendor_cd').innerHTML = 'Vendor Code: ' + '<b>' + data.VENDOR + '</b>';
+        document.getElementById('txt_item_qty').innerHTML = 'Số Lượng: ' + '<b>' + data.QUANTITY + '</b>';
+        document.getElementById('txt_item_unit').innerHTML = 'Đơn Vị: ' + '<b>' + data.UNIT + '</b>';
+        document.getElementById('txt_item_currency').innerHTML = 'Tiền Tệ: ' + '<b>' + data.CURRENCY + '</b>';
+        document.getElementById('txt_item_usd').innerHTML = 'Theo USD: ' + '<b>' + data.USD + '</b>';
+        document.getElementById('txt_item_discount').innerHTML = 'Chiết Khấu: ' + '<b>' + data.DISCOUNT * 100 + '%' + '</b>';
+        document.getElementById('txt_item_leadtime').innerHTML = 'Lead time: ' + '<b>' + data.LEADTIME + ' Ngày' + '</b>';
+        document.getElementById('txt_item_expired').innerHTML = 'Ngày Hết Hạn: ' + '<b>' + data.EXPIRED.split('T')[0] + '</b>';
+        document.getElementById('txt_item_orgin').innerHTML = 'Xuất xứ: ' + '<b>' + data.ORIGIN + '</b>';
+        document.getElementById('txt_item_warranty').innerHTML = 'Bảo Hành: ' + '<b>' + data.WARRANTY + ' Tháng' + '</b>';
+        document.getElementById('txt_item_moq').innerHTML = 'MOQ: ' + '<b>' + Math.round(data.MOQ * data.QUANTITY) + '</b>';
+        document.getElementById('txt_item_file').innerHTML = 'File: ' + '<b>' + data.FILE + '</b>';
+        document.getElementById('txt_item_note').innerHTML = 'Vendor Ghi Chú: ' + '<b>' + data.VENDOR_NOTE + '</b>';
+        document.getElementById('dialog_item_infor').showModal();
+    }
+    document.getElementById('btn_item_infor_close').addEventListener('click', function () {
+        document.getElementById('dialog_item_infor').close()
+    });
+</script>
+
+
+<script>
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('btn_exportExcel').addEventListener('click', function () {
+
+        var PR_ID = document.getElementById('txt_pr_search').value;
+        var PRBidding = document.getElementById('txt_pr_id').innerHTML;
+        if (PR_ID == '' || PRBidding == '') { alert('Không có thông tin bidding'); return };
+        document.getElementById('spinner').style.display = 'grid'
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST", "/CCS/Bidding/Download", true);
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                fileName = xmlhttp.responseText;
+                console.log(fileName)
+                document.getElementById('spinner').style.display = 'none';
+                if (fileName != 'fail') {
+                    a = document.createElement('a');
+                    a.setAttribute('href', '../downloadCCS/saveReportFile/' + fileName);
+                    a.setAttribute('download', fileName);
+                    a.click();
+                }
+                else { alert('Fail') }
+            }
+        }
+        xmlhttp.setRequestHeader("Content-type", "application/json");
+        data = {
+            PRBidding: PRBidding,
+            PR_ID: PR_ID
+        }
+        console.log(data);
+        xmlhttp.send(JSON.stringify(data));
+    });
+</script>
+
+</html>

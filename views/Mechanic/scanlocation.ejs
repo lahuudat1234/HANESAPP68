@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<title>cập nhật vị trí làm việc</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/JS/boostrap/w3.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<style>
+h1,h2,h3,h4,h5,h6 {
+  font-family:"Calibri","Helvetica","Arial","sans-serif";
+}
+a,li{
+  font-size: 16px;
+}
+.w3-bar-block .w3-bar-item {padding:20px}
+body{
+  font-family:"Calibri","Helvetica","Arial","sans-serif";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  background-color:#ececf9;
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+</style>
+<body>
+
+<!-- Sidebar (hidden by default) -->
+
+
+
+<!-- Top menu -->
+<div class="w3-top w3-center">
+  <div class="w3-purple w3-xlarge" style="width: 100%; margin:auto;">
+    <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+    <div class="w3-right w3-padding-16"><span class="glyphicon glyphicon-user" style="padding-right: 10px;"></span></div>
+    <div class="w3-center w3-padding-16">CẬP NHẬT THÔNG TIN VỊ TRÍ LÀM VIỆC</div>
+  </div>
+</div>
+  
+<!-- !PAGE CONTENT! -->
+<div class="w3-main w3-center" style="border: blueviolet; border-style: inset; width: 99%;margin-top: 60px; margin-left: auto;" onclick="w3_close()">
+
+  <!-- 3 cụm máy Grid-->
+  <div class="w3-row w3-center" id="main_tab" style=" margin-bottom: 0px !important;">
+
+      <div class="w3-row">
+        <div class="col-md-2">
+          <label for="line">LINE / PHÒNG :</label><br>
+          <select class="form-control w3-left" type="text" name="line" id="line" onchange="rf_data()">
+            <option>-</option>
+            <option>PB1 VP SX </option>
+            <option>PB1 VP MEZANIN</option>
+            <option>PB1 VP HANES</option>
+            <option>PB1 INNOVATION</option>
+            <option>PB1 YTE</option>
+            <option>PB1 SMED</option>
+            <option>PB1 PM_MEC</option>
+            <option>PB1 KHO PHỤ TÙNG MEC</option>
+            <option>PB1 FM</option>
+            <option>PB1 ODD</option>
+            <option>PB1 WAREHOUSE</option>
+            <option>PB2 VP SX</option>
+            <option>PB2 YTE</option>
+            <option>PB2 SMED</option>
+            <option>PB2 KHO PHỤ TÙNG MEC</option>
+            <option>PB2 FM RITMO</option>
+            <option>PB2 ODD</option>
+            <option>PB2 WAREHOUSE</option>            
+            <option>PB3 VP CHÍNH</option>
+            <option>PB3 YTE</option>
+            <option>PB3 MARKER</option>
+            <option>PB3 WAREHOUSE</option>
+            <%
+              for ( var i = 1; i < 119; i++ )
+              {
+                  var line="Line ";
+                  if (i<10){
+                    line="Line 00"+i
+                  }else{
+                    if (i<100){
+                      line="Line 0"+i
+                    }else{
+                      line="Line "+i
+                    }
+                  }
+                  %><option><%=line%></option><%
+              }
+            %>
+            <%
+            for ( var i = 200; i < 354; i++ )
+            {
+                var line="Line ";
+                if (i<10){
+                  line="Line 00"+i
+                }else{
+                  if (i<100){
+                    line="Line 0"+i
+                  }else{
+                    line="Line "+i
+                  }
+                }
+                %><option><%=line%></option><%
+            }
+          %>
+
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="pos">Vị trí Trái / Phải:</label><br>
+          <select class="form-control w3-left" type="text" name="pos" id="pos">
+            <option>-</option>
+            <option>TRÁI</option>
+            <option>PHẢI</option>
+            <option>ĐÓNG GÓI</option>
+            <option>QC-KT-TM-IDR</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="idnv">MÃ SỐ NV</label><br>
+          <input class="form-control w3-left" type="number" name="idnv" id="idnv" onkeypress="check_nv()">
+        </div>
+        <div class="col-md-3">
+          <br>
+          <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="reg_infor()"><span class="glyphicon glyphicon-ok"></span> Xác nhận</button>
+        </div>
+      </div>
+      <div class="w3-row"></div>
+        <p>---</p>
+        <div class="col-md-5">
+          <label id="tennv" style="font-size: 18px;">NV</label><br>
+        </div>
+        <div class="col-md-4">
+          <label id="shift" style="font-size: 18px;">Ca:</label><br>
+        </div>
+        <div class="col-md-3">
+          <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="clear_infor()"><span class="glyphicon glyphicon-remove"></span> Hủy lệnh</button>
+        </div>
+        <p>---</p>
+      </div>
+      <div class="w3-row">
+
+      </div>
+
+  </div>
+
+  <!-- First group machine-->
+  <div class="w3-row w3-center" id="tub1_show" style=" border: blueviolet; border-style: inset;margin-top: 0px !important; height: 830px;">
+
+    <div class="col-md-4" style="height: 100%;margin-top: 0px !important;margin-left: 0px; padding: 0px;">
+      <div class="w3-row" style="border: blueviolet; border-style: inset; height: 100%; margin-top: 0px !important;padding-left: 0px;padding-right: 0px; overflow: scroll;">
+        <!-- utica 1 -->
+        <div class="w3-row" style=" padding-left: 5px; width: 100%; background-color: #e6ffb3; height: 565px;">
+          <h2 style=" text-align: left!important;">Danh sách bên trái</h2>
+          <div class="col-sm-12" style="border: blueviolet; border-style: inset; margin-top: 0px !important;padding-left: 0px; padding-right: 0px;">
+            <div class="w3-row" style="overflow: scroll; width: 100%;">
+              <style>
+                /* Just for styling */
+                    table, th, td {
+                      border: 1px solid black;
+                    }
+                    table {
+                    text-align: left;
+                    position: relative;
+                    border-collapse: collapse; 
+                  }
+                    th {
+                    background-color: aqua;
+                    position: sticky;
+                    top: 0; /* Don't forget this, required for the stickiness */
+                    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+                  }
+              </style>
+              <table id="table_left" class="w3-table w3-striped w3-bordered" style="margin-left: auto; margin-right: auto; font-size: 14px; overflow: scroll; background-color:white;" onclick="detail_ticket()">
+                <thead class="w3-aqua w3-bordered">
+                  <tr >
+                    <th >IDNV</th>
+                    <th >Tên NV</th>
+                    <th >Line/Vị Trí</th>
+                    <th >DEPT</th>
+                  </tr>
+                </thead>  
+                <tbody>
+      
+                </tbody>
+              </table>
+            </div>  
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-md-4" style="height: 100%;margin-top: 0px !important;margin-left: 0px; padding: 0px;">
+    <img src="../imgbook/LAYOUT.PNG" style="width: 100%;">
+    
+    </div>
+    <div class="col-md-4" style="height: 100%;margin-top: 0px !important;margin-left: 0px; padding: 0px;">
+      <div class="w3-row" style="border: blueviolet; border-style: inset; height: 100%; margin-top: 0px !important;padding-left: 0px;padding-right: 0px; overflow: scroll;">
+        <!-- utica 1 -->
+        <div class="w3-row" style=" padding-left: 5px; width: 100%; background-color: #e6ffb3;  height: 565px;">
+          <h2 style=" text-align: left!important;">Danh sách bên phải</h2>
+          <div class="col-sm-12" style="border: blueviolet; border-style: inset; margin-top: 0px !important;padding-left: 0px; padding-right: 0px;">
+            <div class="w3-row" style="overflow: scroll; width: 100%;">
+              <style>
+                /* Just for styling */
+                    table, th, td {
+                      border: 1px solid black;
+                    }
+                    table {
+                    text-align: left;
+                    position: relative;
+                    border-collapse: collapse; 
+                  }
+                    th {
+                    background-color: aqua;
+                    position: sticky;
+                    top: 0; /* Don't forget this, required for the stickiness */
+                    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+                  }
+              </style>
+              <table id="table_right" class="w3-table w3-striped w3-bordered" style="margin-left: auto; margin-right: auto; font-size: 14px; overflow: scroll; background-color:white;" onclick="detail_ticket()">
+                <thead class="w3-aqua w3-bordered">
+                  <tr >
+                    <th >IDNV</th>
+                    <th >Tên NV</th>
+                    <th >Line/Vị Trí</th>
+                    <th >DEPT</th>
+                  </tr>
+                </thead>  
+                <tbody>
+      
+                </tbody>
+              </table>
+            </div>  
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- Second group machine-->
+
+  <!-- modal -->
+  <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+  <button id="dialog_call_kanban" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal_call_kanban">Open Modal</button>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal_call_kanban" role="dialog" style="align-content: left;">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><strong>thông tin cutlot</strong><span id="sys_confirm">.</span></h4>
+        </div>
+        <div class="modal-body">
+          <form class="w3-left" id="reg_kanban">
+            <div class="w3-row">
+              <label for="alot">Assort Lot:</label><br>
+              <input class="form-control w3-left" type="number" name="alot" id="alot">
+              <label for="alot">Cut Lot:</label><br>
+              <input class="form-control w3-left" type="number" name="clot" id="clot">
+              <p>---</p>
+              <label id="SKU">sku:</label><br>
+              <label id="mix">Mix:</label><br>
+              <label id="combine">combine:</label><br>
+              <p>---</p>
+              <label for="machine">chọn máy trải:</label><br>
+              <select class="form-control w3-left" type="text" name="machine" id="machine">
+                <option>Utica1</option>
+                <option>Utica2</option>
+                <option>Utica3</option>
+                <option>Utica4</option>
+                <option>Utica5</option>
+                <option>TSM1</option>
+              </select>
+            </div>
+            <div class="w3-row">
+              <div class="col-md-5">
+                <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="start_kanban()"><span class="glyphicon glyphicon-wrench"></span> Gọi vải</button>
+              </div>
+              <div class="col-md-2"></div>
+              <div class="col-md-5">
+                <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="close_advance()"><span class="glyphicon glyphicon-lock"></span> Hủy lệnh</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="close_dialog_call_kanban" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Pagination -->
+  <!-- <div class="w3-center w3-padding">
+    <div class="w3-bar">
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
+      <a href="#" class="w3-bar-item w3-black w3-button">1</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
+    </div>
+  </div> -->
+  
+  <!-- Footer -->
+  <footer class="w3-row-padding w3-padding-32 w3-center">
+    <div style="display: none;">
+    </div>
+  </footer>
+
+
+
+
+
+<!-- End page content -->
+</div>
+
+<script type="text/javascript">
+
+  window.addEventListener('load', function () {
+    // document.getElementById("tub1").click();
+    // load_list_prepare("tub1")
+  })
+
+  // setInterval(function(){load_list_prepare("tub1")},40000);
+
+function clear_infor(){
+  // document.getElementById("pos").value="-";
+  document.getElementById("idnv").value="";
+  document.getElementById("idnv").disabled=false;
+  document.getElementById("tennv").innerText="NV";
+  document.getElementById("shift").innerText="Ca:";
+
+}
+
+function rf_data(){
+  var line=document.getElementById("line").value;
+  $('#table_left tbody').html('')
+  $('#table_right tbody').html('')
+  if (line=="-"){
+    return
+  }
+  var xhttp = new XMLHttpRequest();
+  event.preventDefault(); //prevent default action 
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+          var res_result=this.responseText
+          if (res_result=="false"){
+            alert("Hệ thống lỗi!\nVui lòng thử lại sau")
+            $('#table_left tbody').html('')
+            $('#table_right tbody').html('')
+          } 
+          else{
+            ls=JSON.parse(res_result)
+            console.log(ls)
+            if (ls.length>0){
+                var ttdt_left=""
+                var ttdt_right=""
+                for (i=0;i<ls.length;i++){
+                  var pos=ls[i].pos;
+
+                  if(pos=="TRÁI"){                 
+                    ttdt_left+='<tr><td >'+ ls[i].employeeid + '</td><td >' +  ls[i].name + '</td><td >'+ ls[i].location + '</td><td >' + ls[i].dept +'</td></tr>';
+                  }else{
+                    ttdt_right+='<tr><td >'+ ls[i].employeeid + '</td><td >' +  ls[i].name + '</td><td >'+ ls[i].location + '</td><td >' + ls[i].dept +'</td></tr>';
+                  }
+                  
+                }
+                $('#table_left tbody').html(ttdt_left)
+                $('#table_right tbody').html(ttdt_right)
+              }
+            else{
+              $('#table_left tbody').html('')
+              $('#table_right tbody').html('')
+            }
+          }
+      }
+    };
+    xhttp.open("post", '/sc/location', true);
+    // var id= document.getElementById("idreq").value;
+    // send data jason
+    xhttp.setRequestHeader("Content-type", "application/json");
+    data_send = {
+        line: line
+
+    };
+    xhttp.send(JSON.stringify(data_send));
+
+}
+function reg_infor(){
+  var line=document.getElementById("line").value;
+  var pos=document.getElementById("pos").value;
+  var idnv=document.getElementById("idnv").value;
+  var nv=document.getElementById("tennv").innerText;
+  if (line=="-"){
+    swal("Thông báo từ hệ thống!","Vui lòng chọn line / phòng trước", "error");
+    document.getElementById("line").focus();
+    return;
+  }
+  if (line.indexOf("Line")>-1&&pos=="-"){
+    swal("Thông báo từ hệ thống!","vui lòng chọn bên trái / phải của line", "error");
+    document.getElementById("pos").focus();
+    return;
+  }
+  if (line.indexOf("Line")>-1){
+    console.log("sx")
+  } else{
+    pos="-"
+  }
+  if (nv=="NV"){
+    swal("Thông báo từ hệ thống!","Vui lòng quét thẻ \nhoặc nhập IDNV và nhấn Enter để kiểm tra trước khi nhấn xác nhận", "error");
+    document.getElementById("idnv").focus();
+    return;
+  }
+  var xhttp = new XMLHttpRequest();
+  event.preventDefault(); //prevent default action 
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+          var res_result=this.responseText
+          if (res_result=="false"){
+            alert("Hệ thống lỗi!\nVui lòng thử lại sau")
+          } 
+          else{
+            swal("Thông báo từ hệ thống!","hệ thống đã cập nhật", "success");
+            clear_infor()
+            rf_data()
+          
+          }
+      }
+    };
+    xhttp.open("post", '/sc/reg_infor', true);
+    // var id= document.getElementById("idreq").value;
+    // send data jason
+    xhttp.setRequestHeader("Content-type", "application/json");
+    data_send = {
+        line: line,
+        pos: pos,
+        idnv:idnv
+    };
+    xhttp.send(JSON.stringify(data_send));
+
+
+}
+
+function check_nv(){
+            var msnv=document.getElementById('idnv').value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false6"){
+                  alert("Vui lòng sử dụng thẻ để quét mã nhân viên!")
+                  document.getElementById('employee_id4').value=""
+                  return
+                }
+                if (res_result=="wrong_id"){
+                  alert("something wrong happen!")
+                } else{
+                  nv=JSON.parse(res_result);
+                  console.log(nv[0].type)
+                    document.getElementById("tennv").innerText="Tên NV :"+nv[0].name;
+                    document.getElementById("shift").innerText="Ca làm việc :"+nv[0].shift;
+                    document.getElementById("idnv").value=nv[0].employeeid;
+                    document.getElementById("idnv").disabled=true;
+                    
+                  }
+                }
+              };
+              if (msnv.length>=6 && event.keyCode === 13){
+                  xhttp.open("get", "/sc/idnv/"+msnv, true);
+                  xhttp.send();
+              }
+          }
+
+
+
+
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+} 
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/JS/boostrap/w3.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <script defer type="text/javascript" src="/JS/chart/Chart.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </header>
+    <body>
+        <!-- Always shows a header, even in smaller screens. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout-title">SẢN XUẤT - KIỂM TRA SCAN WIP PACKER</span>
+                    <%- include ("partials/headerTemplate.ejs"); -%>
+                </div>
+            </header>
+            <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+
+                  <div class="page-content">
+                    <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                        <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 10px;">
+                            <div style="margin: 10px auto;">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder" style="width:150px; margin-right: 50px;">
+                                    <input class="mdl-textfield__input" type="date" id="date_group_search">
+                                    <label class="mdl-textfield__label" for="date_group_search">Chọn ngày</label>
+                                </div>
+                                <div id="cbb_group" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                        style="width: 100px; margin-right: 50px;">
+                                    <input type="text" value="" class="mdl-textfield__input" id="txt_group" readonly>
+                                    <input type="hidden" value="" name="groupScan">
+                                    <label for="groupScan" class="mdl-textfield__label">Chuyền</label>
+                                    <ul for="groupScan" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="groupScanList">
+                                        <li class="mdl-menu__item" data-val="001-007" data-selected="true">001-007</li>
+                                        <li class="mdl-menu__item" data-val="008-014">008-014</li>
+                                        <li class="mdl-menu__item" data-val="015-019">015-020</li>
+                                        <li class="mdl-menu__item" data-val="021-027">021-027</li>
+                                        <li class="mdl-menu__item" data-val="028-034">028-034</li>
+                                        <li class="mdl-menu__item" data-val="035-042">035-042</li>
+                                        <li class="mdl-menu__item" data-val="043-050">043-050</li>
+                                        <li class="mdl-menu__item" data-val="051-058">051-058</li>
+                                        <li class="mdl-menu__item" data-val="059-066">059-066</li>
+                                        <li class="mdl-menu__item" data-val="067-074">067-074</li>
+                                        <li class="mdl-menu__item" data-val="075-082">075-082</li>
+                                        <li class="mdl-menu__item" data-val="083-090">083-090</li>
+                                        <li class="mdl-menu__item" data-val="099-105">099-105</li>
+                                        <li class="mdl-menu__item" data-val="091-098">091-098</li>
+                                        <li class="mdl-menu__item" data-val="106-111">106-111</li>
+                                        <li class="mdl-menu__item" data-val="112-118">112-118</li>
+                                        <li class="mdl-menu__item" data-val="200-203">200-203</li>
+                                        <li class="mdl-menu__item" data-val="201-202">201-202</li>
+                                        <li class="mdl-menu__item" data-val="232-233-234">232-233-234</li>
+                                        <li class="mdl-menu__item" data-val="204-210">204-210</li>
+                                        <li class="mdl-menu__item" data-val="211-217">211-217</li>
+                                        <li class="mdl-menu__item" data-val="218-224">218-224</li>
+                                        <li class="mdl-menu__item" data-val="225-231">225-231</li>
+                                        <li class="mdl-menu__item" data-val="239-239">239-239</li>
+                                        <li class="mdl-menu__item" data-val="239-245">239-245</li>
+                                        <li class="mdl-menu__item" data-val="246-252">246-252</li>
+                                        <li class="mdl-menu__item" data-val="253-259">253-259</li>
+                                        <li class="mdl-menu__item" data-val="260-266">260-266</li>
+                                        <li class="mdl-menu__item" data-val="277-283">277-283</li>
+                                        <li class="mdl-menu__item" data-val="284-290">284-290</li>
+                                        <li class="mdl-menu__item" data-val="291-297">291-297</li>
+                                        <li class="mdl-menu__item" data-val="298-304">298-304</li>
+                                        <li class="mdl-menu__item" data-val="305-311">305-311</li>
+                                        <li class="mdl-menu__item" data-val="306-311">306-311</li>
+                                        <li class="mdl-menu__item" data-val="312-318">312-318</li>
+                                        <li class="mdl-menu__item" data-val="319-325">319-319</li>
+                                        <li class="mdl-menu__item" data-val="319-325">319-325</li>
+                                        <li class="mdl-menu__item" data-val="326-332">326-332</li>
+                                        <li class="mdl-menu__item" data-val="333-339">333-339</li>
+                                        <li class="mdl-menu__item" data-val="340-345">340-345</li>
+                                        <li class="mdl-menu__item" data-val="347-347">347-347</li>
+                                        <li class="mdl-menu__item" data-val="346-353">347-353</li>
+                                        <li class="mdl-menu__item" data-val="981-981">981-981</li>
+                                        <li class="mdl-menu__item" data-val="982-982">982-982</li>
+                                        <!-- <li class="mdl-menu__item">500-600</li>
+                                        <li class="mdl-menu__item">700-800</li> -->
+                                    </ul>
+                                </div>
+                                <div id="cbb_shift" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                        style="width: 100px; margin-right: 50px;">
+                                    <input type="text" value="" class="mdl-textfield__input" id="txt_shift" readonly>
+                                    <input type="hidden" value="" name="shiftScan">
+                                    <label for="shiftScan" class="mdl-textfield__label">Ca</label>
+                                    <ul for="shiftScan" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="shiftScanList">
+                                        <li class="mdl-menu__item" data-val="BuoiSang" data-selected="true">BuoiSang</li>
+                                        <li class="mdl-menu__item" data-val="BuoiChieu">BuoiChieu</li>
+                                    </ul>
+                                </div>
+                                <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="btn_group_search">
+                                    <i class="material-icons">search</i>
+                                </button>
+
+                            </div>
+
+                    <div style="width: 95%; margin: 10px auto; border-radius: 5px;">
+                        <div class="table-responsive" style="height: 615px; width: 100%; margin-left: auto; margin-right: auto;">
+                            <h2 style="color: blueviolet; margin: auto;" id="ttth">Tổng hợp thông tin scan wip PACKER _ </h2>
+                            <br>
+                            <table id="table_GROUPSUM" class="table" style="margin-left: auto; margin-right: auto; font-size: 18px;" onclick="detail_group()">
+                              <!-- <table id="table_content"> style="height: 310px;" -->
+                              <thead class="w3-cyan">
+                                <tr >
+                                  <th >Work_lot</th>
+                                  <th >location</th>
+                                  <th >bundle</th>
+                                  <th >file</th>
+                                  <th >QC</th>
+                                  <th >timeupdate</th>
+                                </tr>
+                              </thead>  
+                              <tbody>
+                              </tbody>
+                            </table>
+                        </div>
+                    
+                    </div>
+                </div>
+            </main>
+        </div>
+  </body>
+</html>
+<script type="text/javascript">
+
+    var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    var today= localISOTime;
+    document.getElementById('date_group_search').value=today.substr(0,10);
+
+
+
+    window.addEventListener('load', function () {
+            // get_tabel()
+          })
+    function close_ad(){
+        document.getElementById("clmd").click();
+        document.getElementById("clmd2").click();
+        document.getElementById("clmd3").click();
+    }
+
+
+    document.getElementById('btn_group_search').addEventListener('click', function(){
+        document.getElementById("ttth").innerText=("Thông tin WIP Packer Scan | 0 bó")
+        datesel=document.getElementById('date_group_search').value
+        group_data=document.getElementById('txt_group').value;
+        shift=document.getElementById('txt_shift').value;
+        // alert(datesel)
+        var xsend= new XMLHttpRequest();
+        xsend.open("POST","/Production/packer_wip_d",true);
+        xsend.onreadystatechange= function(){
+            if (this.readyState==4 && this.status==200){
+                data=xsend.responseText;
+                // data=JSON.parse(xsend.responseText);
+                if (data=='notfoundshift') {
+                    alert('Không tìm thấy dữ liệu ở operation_schedule');
+                    return
+                }
+                if (data=='empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                }
+                else {
+
+                  data=JSON.parse(data)
+                    console.log(data)
+                    if(data.length==0){
+                        alert("Không có thông tin WIP");
+                        return;
+                    }
+                    trHTML_ds=''
+                    for (i=0;i<data.length;i++){
+                        trHTML_ds += '<tr><td >'+data[i].work_lot+'</td><td>'+data[i].groupname+'</td><td>'+data[i].bundle+'</td><td>'+data[i].tenfile+'</td><td>'+data[i].qc+'</td><td>'+data[i].timeupdate+'</td></tr>'
+                    }
+                    $('#table_GROUPSUM tbody').html(trHTML_ds)
+                    document.getElementById("ttth").innerText=("Thông tin WIP Packer Scan | "+data.length+" bó")
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        datas={groupname: group_data,shift: shift,datesel: datesel};
+        xsend.send(JSON.stringify(datas));
+    
+      });
+
+    function get_tabel(){
+
+        var xsend= new XMLHttpRequest();
+        xsend.open("POST","/Production/pad_lot_list",true);
+        xsend.onreadystatechange= function(){
+            if (this.readyState==4 && this.status==200){
+                // console.log(xsend.responseText)
+                data=xsend.responseText;
+                if (data=='empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                    // table_group_load_spinner.removeAttribute("class");
+                }
+                else {
+                    data=JSON.parse(xsend.responseText);
+                    console.log(data);
+                    // table_group_load_spinner.removeAttribute("class");
+                    // alert(data)
+                    document.getElementById("txt_ID").value="";
+                    trHTML_ds=''
+                    for (i=0;i<data.length;i++){
+                        trHTML_ds += '<tr><td >'+data[i].work_lot+'</td><td>'+data[i].location+'</td><td>'+data[i].style+'</td><td>'+data[i].color+'</td><td>'+data[i].size+'</td><td>'+data[i].req_user+'</td><td>'+data[i].time_req_cv
+                        trHTML_ds +='</td><td>'+data[i].old_sah_per_dz+'</td><td>'+data[i].new_sah_per_dz
+                        trHTML_ds +='</td><td>'+data[i].user_update+'</td><td>'+data[i].time_update_cv+'</td><td>'+data[i].approved+'</td><td>'+data[i].status+'</td></tr>'
+                    }
+                    $('#table_GROUPSUM tbody').html(trHTML_ds)
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var wlot=document.getElementById('txt_ID').value;
+        datas={lot: wlot};
+        xsend.send(JSON.stringify(datas));
+
+    }
+    function approve_wlot() {
+        var xsend= new XMLHttpRequest();
+        xsend.open("POST","/Production/pad_approval",true);
+        xsend.onreadystatechange= function(){
+            if (this.readyState==4 && this.status==200){
+                data=xsend.responseText;
+                // data=JSON.parse(xsend.responseText);
+                if (data=='empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                }
+                else {
+                    console.log(data);
+                    alert(data)
+                    document.getElementById("txt_ID").value="";
+                    close_ad()
+                    get_tabel()
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var wlot=document.getElementById('wlot3').value;
+        var requ=document.getElementById('req3').value;
+        var approve=document.getElementById('approve').value;
+        datas={lot: wlot,requ:requ,approve:approve};
+        xsend.send(JSON.stringify(datas));
+    }
+    
+    
+    
+    function tableText(tableRow) {
+              document.getElementById("wlot").disabled=true;
+              document.getElementById("wlot").value=tableRow.childNodes[0].innerText;
+              document.getElementById("wlot3").value=tableRow.childNodes[0].innerText;
+              document.getElementById("req3").value=tableRow.childNodes[5].innerText;
+              document.getElementById("group3").value=tableRow.childNodes[1].innerText;
+              document.getElementById("style3").value=tableRow.childNodes[2].innerText;
+              document.getElementById("color3").value=tableRow.childNodes[3].innerText;
+              document.getElementById("size3").value=tableRow.childNodes[4].innerText;
+              var usern=document.getElementById("user").innerText;
+              if (usern=="ngmai1"||usern=="hnguyen4"){
+                document.getElementById("dialog2").click();
+                document.getElementById("sah_old").focus();
+              } else{
+                document.getElementById("dialog4").click();
+              }
+              
+          };
+
+    function detail_group(){
+            var usern=document.getElementById("user").innerText;
+            if (usern=="ngmai1"||usern=="hnguyen4"||usern=="tudo"||usern=="nnguyen"){
+                
+            } else{
+                return;
+            }
+              var table = document.getElementById("table_GROUPSUM");
+              event.stopImmediatePropagation;
+              if (table) {
+                for (var i = 0; i < table.rows.length; i++) {
+                  table.rows[i].ondblclick = function(e) {
+                    tableText(this);
+                  };
+                };
+              };
+
+
+          }
+    
+    function update_pad_sah(){
+        old_sah=document.getElementById("sah_old").value
+        new_sah=document.getElementById("sah_new").value
+        if (new_sah==""){
+            alert("SAH nhập vào không được để trống")
+            return
+        }
+        var xsend= new XMLHttpRequest();
+        xsend.open("POST","/Production/pad_update_sah",true);
+        xsend.onreadystatechange= function(){
+            if (this.readyState==4 && this.status==200){
+                data=xsend.responseText;
+                // data=JSON.parse(xsend.responseText);
+                if (data=='empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                }
+                else {
+                    console.log(data);
+                    alert(data)
+                    document.getElementById("txt_ID").value="";
+                    document.getElementById("clmd").click();
+                    get_tabel()
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var wlot=document.getElementById('wlot').value;
+        datas={lot: wlot,old_sah:old_sah,new_sah:new_sah};
+        xsend.send(JSON.stringify(datas));
+
+    }
+    
+    function submit_wlot(){
+        // var table_group_load_spinner=document.getElementById('table_group_spinner');
+        // table_group_load_spinner.setAttribute("class","mdl-spinner mdl-js-spinner is-active");
+        // componentHandler.upgradeElement(table_group_load_spinner);
+        var xsend= new XMLHttpRequest();
+        xsend.open("POST","/Production/pad_lot_change",true);
+        xsend.onreadystatechange= function(){
+            if (this.readyState==4 && this.status==200){
+                data=xsend.responseText;
+                // data=JSON.parse(xsend.responseText);
+                if (data=='empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                }
+                else {
+                    console.log(data);
+                    // table_group_load_spinner.removeAttribute("class");
+                    alert(data)
+                    document.getElementById("txt_ID").value="";
+                    close_ad()
+                    get_tabel()
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var wlot=document.getElementById('wlot2').value;
+        var style=document.getElementById('style').value;
+        var group=document.getElementById('group').value;
+        var color=document.getElementById('color').value;
+        var size=document.getElementById('size').value;
+        datas={lot: wlot,style:style,group:group,color:color,size:size};
+        xsend.send(JSON.stringify(datas));
+    };
+
+    
+
+
+</script>

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header id="header_content">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <title>Quản lý đánh giá</title>
+    </header>
+    <style>
+        @media print {
+           .noprint {
+              visibility: hidden;
+           }
+        }
+        </style>
+    <body style="background-color: #E5E7E9;">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">ĐÁNH GIÁ KPI</span>
+                <div class="mdl-layout-spacer"></div>
+                <div id="div_cbb_year" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                    style="width: 100px; margin-left: 10px; margin-right: 20px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_year" readonly>
+                    <input type="hidden" value="" name="cbb_year">
+                    <label for="cbb_year" class="mdl-textfield__label" style="color:white">Năm...</label>
+                    <ul for="cbb_year" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="list_cbb_year">
+                        <li class="mdl-menu__item">2020</li>
+                        <li class="mdl-menu__item">2021</li>
+                        <li class="mdl-menu__item">2022</li>
+                        <li class="mdl-menu__item">2023</li>
+                        <li class="mdl-menu__item">2024</li>
+                    </ul>
+                </div>
+                <div id="div_cbb_period" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                    style="width: 400px; margin-left: 10px;">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_period" readonly>
+                    <input type="hidden" value="" name="cbb_period">
+                    <label for="cbb_period" class="mdl-textfield__label" style="color:white">Kỳ đánh giá...</label>
+                    <ul for="cbb_period" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="list_cbb_period">
+                    </ul>
+                </div>
+            </div>
+            </header>
+            <%- include ("../partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    <!-- <div class="mdl-grid">
+                        <h2 style="margin: 10px auto; color:green; ">BẢNG ĐÁNH GIÁ KẾT QUẢ CÔNG TÁC CUỐI NĂM CÔNG TY HBI</h2>
+                    </div> -->
+                    <div class="mdl-grid" style="width: 99%; margin: 10px auto;">
+                        <div class="mdl-cell mdl-cell--3-col mdl-shadow--6dp" style="background-color: white;">
+                            <style>
+                                .div-info{
+                                    color:indigo;
+                                }
+                            </style>
+                            <div class="mdl-grid">
+                                <h4 style="margin: 10px auto; color:red; font-weight: bold;">THÔNG TIN NHÂN VIÊN</h4>
+                            </div>
+                            <div class="mdl-grid div-info" style="margin-left: 20px;">
+                                <i class="material-icons" style="margin-right: 10px;">credit_card</i>
+                                Mã số:<div id="txt_id" style="margin-left: 30px; font-weight: bold;"></div>
+                            </div>
+                            <div class="mdl-grid div-info" style="margin-left: 20px;">
+                                <i class="material-icons" style="margin-right: 10px;">person</i>
+                                Họ và tên:<div id="txt_name" style="margin-left: 10px; font-weight: bold;"></div>
+                            </div>
+                            <div class="mdl-grid div-info" style="margin-left: 20px;">
+                                <i class="material-icons" style="margin-right: 10px;">work</i>
+                                Chức vụ:<div id="txt_pos" style="margin-left: 15px; font-weight: bold;"></div>
+                            </div>
+                            <div class="mdl-grid div-info" style="margin-left: 20px;">
+                                <i class="material-icons" style="margin-right: 10px;">settings</i>
+                                Bộ phận:<div id="txt_dept" style="margin-left: 15px; font-weight: bold;"></div>
+                            </div>
+                            <div class="mdl-grid div-info" style="margin-left: 20px;">
+                                <i class="material-icons" style="margin-right: 10px;">calendar_today</i>
+                                Giai đoạn:<div id="txt_period" style="margin-left: 7px; font-weight: bold;"></div>
+                            </div>
+                            <div class="mdl-grid div-info" style="margin-left: 20px;">
+                                <i class="material-icons" style="margin-right: 10px;">location_on</i>
+                                Làm việc:<div id="txt_plant" style="margin-left: 10px; font-weight: bold;"></div>
+                            </div>
+                            <div class="mdl-grid div-info" style="margin-left: 20px;">
+                                <i class="material-icons" style="margin-right: 10px;">verified_user</i>
+                                Người đánh giá:<div id="txt_supID" style="margin-left: 10px; font-weight: bold;"></div>
+                            </div>
+                            <div class="mdl-grid div-info" style="margin-left: 20px;">
+                                <i class="material-icons" style="margin-right: 10px;">today</i>
+                                Thời gian đánh giá:<div id="txt_supTimeUpdate" style="margin-left: 10px; font-weight: bold;"></div>
+                            </div>
+                            <hr>
+                            <div class="mdl-grid">
+                                <h4 style="margin: 10px auto; color:red; font-weight: bold;">DANH SÁCH NHÂN VIÊN</h4>
+                            </div>
+                            <div class="mdl-card mdl-shadow--2dp" style="width: 95% ; margin: 10px auto; overflow-x:auto; border-radius: 10px;">
+                                <table class="mdl-data-table mdl-js-data-table" style="border: none; width: 100%;">
+                                    <thead style="background-color: green;">
+                                        <!-- <col width="20px"> -->
+                                        <tr>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">ID</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">TÊN</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">TÌNH TRẠNG</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">KẾT QUẢ</th>
+                                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">SUBMIT</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_employee_body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--9-col mdl-shadow--6dp" style="background-color: white;">
+                            <div class="mdl-grid">
+                                <h4 style="margin: 10px auto; font-weight: bold; color:indigo">BẢNG ĐÁNH GIÁ</h4>
+                            </div>
+                            <style>
+                                .header-align{
+                                    margin-left: 20px;
+                                    margin-top: 10px;
+                                    padding: 0;
+                                    margin-bottom: 5px;
+                                    font-weight: bold;
+                                    color: rebeccapurple;
+                                }
+                                .p-align{
+                                    margin-left: 40px;
+                                    margin-top: 10px;
+                                }
+                                .header-sub-align{
+                                    margin-left: 40px;
+                                    margin-top: 10px;
+                                    padding: 0;
+                                    /* margin-top: 5px; */
+                                    margin-bottom: 5px;
+                                    color: red;
+                                }
+                            </style>
+                            <h5 class="header-align">
+                                <u>Phần 1:</u> NHÂN VIÊN TỰ ĐÁNH GIÁ
+                            </h5>
+                            <h5 class="header-sub-align">
+                                Kết quả công việc chủ yếu:
+                            </h5>
+                            <p class="p-align">
+                                <i>
+                                    Nếu nhân viên tham gia quá trình thiết lập mục tiêu theo quý thì chỉ cần đính kèm bản mục tiêu vào mẫu đánh giá này. 
+                                    <br>Nếu không, nhân viên cần điền đủ mục tiêu & kết quả công việc ở phần dưới đây. Nhân viên cần đưa ra ví dụ cụ thể để chứng minh việc mình đã hoàn thành các mục tiêu đề ra như thế nào.
+                                </i>
+                            </p>
+                            <div class="mdl-textfield mdl-js-textfield" style="margin-left: 40px; width: 90%;">
+                                <textarea class="mdl-textfield__input" type="text" rows= "10" id="txt_tudanhgia"></textarea>
+                                <label class="mdl-textfield__label" for="txt_tudanhgia">Nhân viên tự đánh giá ở đây...</label>
+                            </div>
+                            <img style="width: 90%; margin-left: 40px; display: none;" alt="kpi" id="kpi">
+                            <h5 class="header-align">
+                                <u>Phần 2:</u> ĐÁNH GIÁ CỦA NGƯỜI QUẢN LÝ
+                            </h5>
+                            <h5 class="header-sub-align">
+                                Góp ý đánh giá kết quả công việc:
+                            </h5>
+                            <p class="p-align">
+                                <i>
+                                    Người quản lý đánh giá tổng thể kết quả công việc của nhân viên trong năm và cho biết nhân viên đã hoàn thành công việc như thế nào. 
+                                    <br>Người đánh giá cần trung thực khi đánh giá nhằm đảm bảo lợi ích của nhân viên và tính chính xác của việc đánh giá.
+                                </i>
+                            </p>
+                            <div class="mdl-textfield mdl-js-textfield" style="margin-left: 40px; width: 90%;">
+                                <textarea class="mdl-textfield__input" type="text" rows= "10" id="txt_gopy"></textarea>
+                                <label class="mdl-textfield__label" for="txt_gopy">Đánh giá kết quả công việc ở đây...</label>
+                            </div>
+                            <h5 class="header-sub-align">
+                                Các mặt cần tập trung phát triển:
+                            </h5>
+                            <p class="p-align">
+                                <i>
+                                    Người quản lý  nhận xét, góp ý giúp nhân viên có cơ hội cải thiện trong kỳ đánh giá tiếp theo.
+                                </i>
+                            </p>
+                            <div class="mdl-textfield mdl-js-textfield" style="margin-left: 40px; width: 90%;">
+                                <textarea class="mdl-textfield__input" type="text" rows= "10" id="txt_caithien" ></textarea>
+                                <label class="mdl-textfield__label" for="txt_caithien">Góp ý giúp nhân viên ở đây...</label>
+                            </div>
+                            <h5 class="header-sub-align">
+                                Cho điểm đánh giá kết quả công việc tổng quát của Người quản lý:
+                            </h5>
+                            <div style="margin-left: 40px;">
+                                <div id="div_cbb_evaluate" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" 
+                                    style="width: 100px;">
+                                    <input type="text" value="" class="mdl-textfield__input" id="cbb_evaluate" readonly>
+                                    <input type="hidden" value="" name="cbb_evaluate">
+                                    <label for="cbb_evaluate" class="mdl-textfield__label">Đánh giá</label>
+                                    <ul for="cbb_evaluate" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="list_cbb_evaluate">
+                                        <li class="mdl-menu__item" data-val="NOT MEET" style="color: red;">NOT MEET</li>
+                                        <li class="mdl-menu__item" data-val="MEET-" style="color: orangered;">MEET-</li>
+                                        <li class="mdl-menu__item" data-val="MEET" style="color: black">MEET</li>
+                                        <li class="mdl-menu__item" data-val="MEET+" style="color: rgb(122, 204, 0);">MEET+</li>
+                                        <li class="mdl-menu__item" data-val="EXCEED" style="color: green;">EXCEED</li>
+                                    </ul>
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-left: 20px; width: 400px;">
+                                    <input class="mdl-textfield__input" type="text" id="txt_note">
+                                    <label class="mdl-textfield__label" for="txt_note">Ghi chú...</label>
+                                </div>
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" style="float: right; margin-top: 10px; margin-right: 50px;" id="btn_submit">
+                                    SUBMIT
+                                    <i class="material-icons" style="margin-left: 10px;">send</i>
+                                </button>
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" style="float: right; margin-top: 10px; margin-right: 50px;" id="btn_paper">
+                                    BIỂU MẪU
+                                    <i class="material-icons" style="margin-left: 10px;">wallpaper</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </body>
+    <dialog style="border: none; border-radius: 10px; width: 210mm;" id="dialog_employee_kpi_result">
+        <!-- <style>
+            @media print {
+                dialog { /* Or specify a table class */
+                    max-height: 100%;
+                    overflow: hidden;
+                    page-break-after: always;
+                }
+
+            }
+        </style> -->
+        <div id="dialog_content">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--4-col">
+                    <div style="margin:0 auto;">Công ty TNHH Hanesbrands Việt Nam Huế</div>
+                    <div style="margin:0 auto;">Hanesbrands Vietnam Hue  </div>
+                </div>
+                <!-- <div class="mdl-cell mdl-cell--3-col">
+                </div> -->
+                <div class="mdl-cell mdl-cell--4-col" >
+                    <div style="margin:0 auto;">PHU-F-HR-010</div>
+                    <div style="margin:0 auto;">Rev. 03 – 30/07/2015</div>
+                </div>
+            </div>
+            <div class="mdl-grid">
+                <h5 style="margin: 0 auto;" id="txt_title">BẢNG ĐÁNH GIÁ KẾT QUẢ CÔNG TÁC CUỐI NĂM CÔNG TY HBI</h5>
+            </div>
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--4-col">
+                    <div class="mdl-grid">
+                        <div>Họ và tên:</div>
+                        <div style="margin-left: 5px; font-weight: bold;" id="txt_name_fill"></div>
+                    </div>
+                    <div class="mdl-grid">
+                        <div>Chức vụ:</div>
+                        <div style="margin-left: 5px; font-weight: bold;" id="txt_pos_fill"></div>
+                    </div>
+                    <div class="mdl-grid">
+                        <div>Bộ phận: </div>
+                        <div style="margin-left: 5px; font-weight: bold;" id="txt_dept_fill"></div>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col">
+                    <div class="mdl-grid">
+                        <div>Mã số nhân viên: </div>
+                        <div style="margin-left: 5px; font-weight: bold;" id="txt_id_fill"></div>
+                    </div>
+                    <div class="mdl-grid">
+                        <div>Giai đoạn đánh giá: </div>
+                        <div style="margin-left: 5px; font-weight: bold;" id="txt_period_fill"></div>
+                    </div>
+                    <div class="mdl-grid">
+                        <div>Địa điểm làm việc:</div>
+                        <div style="margin-left: 5px; font-weight: bold;" id="txt_plant_fill"></div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <h5 class="header-align">NHÂN VIÊN TỰ ĐÁNH GIÁ </h5>
+            <h6 class="header-sub-align">Phần 1: Kết quả công việc chủ yếu </h6>
+            <p style="font-weight: 10px;">
+                Nếu nhân viên tham gia quá trình thiết lập mục tiêu theo quý thì chỉ cần đính kèm bản mục tiêu vào mẫu đánh giá này.
+                <br>Nếu không, nhân viên cần điền đủ mục tiêu & kết quả công việc ở phần dưới đây. Nhân viên cần đưa ra ví dụ cụ thể để chứng minh việc mình đã hoàn thành các mục tiêu đề ra như thế nào. 
+            </p>
+            <div class="mdl-textfield mdl-js-textfield" style="width: 90%;">
+                <textarea class="mdl-textfield__input" type="text"  id="txt_tudanhgia_dialog" readonly rows="1" style="overflow-y: auto; resize: vertical;"></textarea>
+                <!-- <label class="mdl-textfield__label" for="txt_tudanhgia">Nhân viên tự đánh giá ở đây...</label> -->
+            </div>
+            <!-- <div id="txt_tudanhgia"></div> -->
+            <img style="width: 90%; margin-left: 40px; display: none;" alt="kpi" id="kpi_dialog">
+            <h5 class="header-align">
+                ĐÁNH GIÁ CỦA NGƯỜI QUẢN LÝ
+            </h5>
+            <h6 class="header-sub-align">
+                Phần 3: Góp ý đánh giá kết quả công việc:
+            </h6>
+            <p class="p-align" style="font-weight: 10px;">
+                Người quản lý đánh giá tổng thể kết quả công việc của nhân viên trong năm và cho biết nhân viên đã hoàn thành công việc như thế nào. 
+                <br>Người đánh giá cần trung thực khi đánh giá nhằm đảm bảo lợi ích của nhân viên và tính chính xác của việc đánh giá.
+            </p>
+            <div class="mdl-textfield mdl-js-textfield" style="width: 90%;">
+                <textarea class="mdl-textfield__input" type="text"  id="txt_gopy_dialog" readonly rows="1" style="overflow-y: auto; resize: vertical;"></textarea>
+                <!-- <label class="mdl-textfield__label" for="txt_tudanhgia">Nhân viên tự đánh giá ở đây...</label> -->
+            </div>
+            <!-- <p id="txt_gopy" class="solid"></p> -->
+            
+            <h6 class="header-sub-align">
+                Phần 4: Các mặt cần tập trung phát triển:
+            </h6>
+            <p class="p-align" style="font-weight: 10px;">
+                Người quản lý  nhận xét, góp ý giúp nhân viên có cơ hội cải thiện trong kỳ đánh giá tiếp theo.
+            </p>
+            <div class="mdl-textfield mdl-js-textfield" style="width: 90%;">
+                <textarea class="mdl-textfield__input" type="text"  id="txt_caithien_dialog" readonly rows="1" style="overflow-y: auto; resize: vertical;"></textarea>
+                <!-- <label class="mdl-textfield__label" for="txt_tudanhgia">Nhân viên tự đánh giá ở đây...</label> -->
+            </div>
+            <!-- <p id="txt_caithien" class="solid"></p> -->
+            <h6 class="header-sub-align">
+                <b>Phần 5: Kết quả đánh giá của Quản lý:</b>
+            </h6>
+            <div class="mdl-grid" style="padding: 0;">
+                <p>Kết quả đánh giá:</p><u><p id="txt_ketqua_dialog" style="font-weight: bold; color: red; margin-left: 5px;"></p></u>
+            </div>
+            <div class="mdl-grid" style="padding: 0;">
+                <p>Lý do đánh giá:</p><u><p id="txt_ghichu_dialog" style="margin-left: 5px;"></p></u>
+            </div>
+            <h5 class="header-align">CHỮ KÝ</h5>
+            <p class="p-align" style="font-weight: 10px;">
+                Ký tên sau khi hoàn tất việc thảo luận đánh giá kết quả công việc giữa hai bên:
+            </p>
+            <div class="mdl-grid" style="margin-top: 20px;">
+                <div class="p-align"> - Nhân viên:</div>
+                <div style="margin-left: 280px; margin-top: 10px;">Ngày Date:</div> 
+            </div>
+            <div class="mdl-grid" style="margin-top: 20px;">
+                <div class="p-align">- Người quản lý trực tiếp:</div>
+                <div style="margin-left: 200px; margin-top: 10px;">Ngày Date:</div>          
+            </div>
+            <div class="mdl-grid" style="margin-top: 20px;">
+                <div class="p-align">- Nhân sự:</div>
+                <div style="margin-left: 280px; margin-top: 10px;">Ngày Date:</div>
+            </div>
+            <p style="margin-top: 20px;" style="font-weight: 10px;">
+                Chữ ký của nhân viên không có nghĩa là nhân viên có đồng ý hay không đồng ý bảng đánh giá kết quả công việc này.
+                <br>Chữ ký chỉ chứng tỏ là nhân viên đã đọc bảng đánh giá này và đã trao đổi với với người quản lý của mình.
+            </p>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" style="float: right; position: fixed; bottom: 50px; right: 40px;" id="btn_close">
+                THOÁT
+                <i class="material-icons" style="margin-left: 10px;">close</i>
+            </button>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" style="float: right; position: fixed; bottom: 120px; right: 40px;" id="btn_print">
+                IN
+                <i class="material-icons" style="margin-left: 10px;">print</i>
+            </button>
+        </div>
+    </dialog>
+    <script type="text/javascript">
+        isEditable='0';
+        document.getElementById('cbb_year').addEventListener('change', function(){
+            load_period();
+        })
+        function load_period(){
+            year=document.getElementById('cbb_year').value;
+            if (year==null || year==''){
+                alert('Hãy chọn năm đánh giá!');
+                return;
+            }
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/HR/Load_KPI_Period",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    numInPeriod=0;
+                    while (list_cbb_period.childNodes.length>0) list_cbb_period.removeChild(list_cbb_period.childNodes[0]);
+                    for (i=0; i<data.length; i++){
+                        numInPeriod++;
+                        var li=document.createElement('li');
+                        li.setAttribute('class', 'mdl-menu__item');
+                        li.setAttribute('data-val', data[i].NAME);
+                        li.innerHTML=data[i].NAME;
+                        
+                        if (data[i].IN_PERIOD=='1'){
+                            sessionStorage.setItem(data[i].NAME, '1');
+                            li.setAttribute('style', 'color: green;')
+                        } else {
+                            sessionStorage.setItem(data[i].NAME, '0')
+                            li.setAttribute('style', 'color: red;')
+                        }
+                        list_cbb_period.appendChild(li);
+                    }
+                    if (numInPeriod==0){
+                        alert('Chưa có kì đánh giá KPI hiện tại.\nHãy liên hệ với người quản lý của mình!')
+                    }
+                    getmdlSelect.init('#div_cbb_period'); 
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={year: year}
+            xsend.send(JSON.stringify(data));
+        }
+        plant='Phubai Complex';
+        document.getElementById('cbb_period').addEventListener('change', function(){
+            period=document.getElementById('cbb_period').value;
+            isEditable=sessionStorage.getItem(period);
+            console.log(isEditable)
+            if (isEditable=='0'){
+                alert('Kỳ đánh giá chưa đến hoặc quá hạn!');
+            }
+            get_employee_infor(period);
+        })
+        function get_employee_infor(period){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Employee/Get_Employee_Infor",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                    plant=result[0].PLANT;
+                    ID   =result[0].ID;
+                    load_employees(ID, period);
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={ID: ''}
+            xsend.send(JSON.stringify(data));
+        }
+        function imageExists(image_url){
+            console.log(image_url);
+            var http = new XMLHttpRequest();
+            http.open('HEAD', image_url, false);
+            http.send();
+            return http.status != 404;
+        }
+        function load_employees(ID, period){
+            txt_data=document.getElementById('txt_tudanhgia').value;
+            txt_data=txt_data.replace('"',"'");
+            var table_employee_body=document.getElementById('table_employee_body');
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Employee/Load_Employees",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    console.log(data)
+                    while (table_employee_body.childNodes.length>0)
+                        table_employee_body.removeChild(table_employee_body.childNodes[0]);
+                    for (var i=0; i<data.length; i++){
+                        tr=document.createElement('tr');
+                        //ID
+                        var tdID=document.createElement("td");
+                        tdID.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].ID);
+                        tdID.appendChild(node);
+                        tr.appendChild(tdID);
+                        //Employee
+                        var tdName=document.createElement("td");
+                        tdName.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        list_name=data[i].Name.split(' ');
+                        ho=list_name[0];
+                        ten=list_name[list_name.length-1];
+                        var node=document.createTextNode(ho+', '+ten);
+                        tdName.appendChild(node);
+                        tr.appendChild(tdName);
+                        var save_str='';
+                        if (data[i].File!=null) save_str=data[i].Dept+';'+data[i].Position+';'+data[i].File;
+                        else save_str=data[i].Dept+';'+data[i].Position+';fail';
+                        sessionStorage.setItem(data[i].ID, save_str);
+                        //Status
+                        var tdStatus=document.createElement("td");
+                        tdStatus.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        stat='';
+                        var i_stat=document.createElement('i');
+                        i_stat.setAttribute('class','material-icons');
+                        if (data[i].File!=null) {
+                            i_stat.setAttribute('style','color: green;');
+                            i_stat.innerHTML='done'; //document.createTextNode(stat);
+                        }
+                        else {
+                            i_stat.setAttribute('style','color: red;');
+                            i_stat.innerHTML='close'; //document.createTextNode(stat);
+                        }
+                        tdStatus.appendChild(i_stat);
+                        tr.appendChild(tdStatus);
+                        //ID
+                        var tdID=document.createElement("td");
+                        tdID.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].UserSupSubmit);
+                        if (data[i].UserSupSubmit==null){
+                            node=document.createTextNode('');
+                            tr.setAttribute('style','background-color: red')
+                        }
+                        tdID.appendChild(node);
+                        tr.appendChild(tdID);
+                        //result
+                        var tdResult=document.createElement("td");
+                        tdResult.setAttribute("class","mdl-data-table__cell--non-numeric");
+                        var node=document.createTextNode(data[i].Evaluate);
+                        if (data[i].Evaluate==null) var node=document.createTextNode('');
+                        tdResult.appendChild(node);
+                        tr.appendChild(tdResult);
+                        tr.style.cursor='pointer';
+                        tr.setAttribute('ondblclick', 'function_employee_detail(this)');
+                        componentHandler.upgradeElement(tr);
+                        table_employee_body.appendChild(tr);
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={ID: ID, period: period};
+            xsend.send(JSON.stringify(data));
+        };
+        function function_employee_detail(x){
+            ID=x.childNodes[0].innerHTML;
+            name=x.childNodes[1].innerHTML;
+            infor_list=sessionStorage.getItem(ID).split(';');
+            dept=infor_list[0];
+            position=infor_list[1];
+            file=infor_list[2];
+            document.getElementById('txt_id').innerHTML=ID;
+            document.getElementById('txt_name').innerHTML=name;
+            document.getElementById('txt_pos').innerHTML=position;
+            document.getElementById('txt_dept').innerHTML=dept;
+            period=document.getElementById('cbb_period').value;
+            document.getElementById('txt_period').innerHTML=period;
+            document.getElementById('txt_plant').innerHTML=plant;
+            IDcode=ID+'_'+period;
+            if (imageExists("../Assets/Employee/KPI/"+ID+'_'+period+'.jpg')) {
+                document.getElementById('kpi').src="../Assets/Employee/KPI/"+IDcode+'.jpg';
+                document.getElementById('kpi').style.display="grid";
+                load_employee_kpi(IDcode);
+            }
+            else {
+                document.getElementById('txt_tudanhgia').value="";
+                document.getElementById('txt_gopy').value="";
+                document.getElementById('txt_caithien').value="";
+                document.getElementById('txt_note').value="";
+                document.getElementById('kpi').src="";
+                document.getElementById('kpi').style.display="none";
+            }
+        }
+        function load_employee_kpi(IDcode){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Employee/Load_Employee_KPI_Detail",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    if (data.length>0){
+                        document.getElementById('txt_tudanhgia').value=data[0].EmpEvaluate;
+                        if (data[0].EmpEvaluate!=null) document.getElementById('txt_tudanhgia').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_gopy').value=data[0].SupEvaluate;
+                        if (data[0].EmpEvaluate!=null) document.getElementById('txt_gopy').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_caithien').value=data[0].SupRecommend;
+                        if (data[0].EmpEvaluate!=null) document.getElementById('txt_caithien').parentNode.classList.add('is-dirty');
+                        document.getElementById('txt_note').value=data[0].SupNote;
+                        if (data[0].EmpEvaluate!=null) document.getElementById('txt_note').parentNode.classList.add('is-dirty');
+                        console.log(data[0].Evaluate);
+                        list_evaluate=document.getElementById('list_cbb_evaluate');
+                        // console.log(list_evaluate.childNodes[3])
+                        for (i=1; i<list_evaluate.childNodes.length; i+=2){
+                            list_evaluate.childNodes[i].removeAttribute("data-selected");
+                        }
+                        $('ul[for="cbb_evaluate"] li[data-val="'+data[0].Evaluate+'"]').attr('data-selected',true);
+                        getmdlSelect.init('#div_cbb_evaluate');
+                        document.getElementById('txt_supID').innerHTML="";
+                        document.getElementById('txt_supID').innerHTML=data[0].UserSupSubmit;
+                        if (data[0].TimeSupSubmit!=null)
+                        document.getElementById('txt_supTimeUpdate').innerHTML=(new Date(data[0].TimeSupSubmit)).toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
+                        console.log(data[0].UserSupSubmit)
+                        if (data[0].UserSupSubmit!=null) 
+                        check_avalable_edit(data[0].UserSupSubmit)
+                        // else document.getElementById('btn_submit').disabled=false;
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={ID: IDcode};
+            console.log(data)
+            xsend.send(JSON.stringify(data));
+        }
+        function check_avalable_edit(SupID){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Employee/Load_Available_Evaluate",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=xsend.responseText;
+                    // console.log(document.getElementById(''))
+                    console.log('hello', data) 
+                    if (data=='N'){
+                        // document.getElementById('btn_submit').disabled=true;
+                    } else {
+                        // document.getElementById('btn_submit').disabled=false;
+                    }
+                }
+            }
+            data={UserSup: SupID};
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send(JSON.stringify(data));
+        }
+        document.getElementById('btn_submit').addEventListener('click', function(){
+            //====Employee infor
+            period=document.getElementById('cbb_period').value;
+            isEditable=sessionStorage.getItem(period);
+            // if (isEditable=='0') {
+            //     alert('Đã hết kỳ đánh giá, bạn không thể Submit kết quả!');
+            //     return;
+            // }
+            ID=document.getElementById('txt_id').innerHTML;
+            IDcode=ID+'_'+period;
+            IDcode.replace(/\'/g, '`').replace(/\"/g, '`');
+            //=====Tu danh gia
+            selfEvaluate=document.getElementById('txt_tudanhgia').value;
+            if (selfEvaluate==''){
+                alert('Nhân viên phải có thông tin tự đánh giá!');
+                return;
+            }
+            selfEvaluate.replace(/\'/g, '`').replace(/\"/g, '`');
+            //=====Sup Infor
+            supEvaluate=document.getElementById('txt_gopy').value.replace(/\'/g, '`').replace(/\"/g, '`');
+            if (supEvaluate==''){
+                alert('Bạn chưa đánh giá cho Nhân viên!');
+                return;
+            }
+            supEvaluate.replace(/\'/g, '`').replace(/\"/g, '`');
+            supRecommend=document.getElementById('txt_caithien').value.replace(/\'/g, '`').replace(/\"/g, '`');
+            if (supRecommend==''){
+                alert('Bạn chưa góp ý cho Nhân viên!');
+                return;
+            }
+            supRecommend.replace(/\'/g, '`').replace(/\"/g, '`');
+            supNote=document.getElementById('txt_note').value;
+            supNote.replace(/\'/g, '`').replace(/\"/g, '`');
+            evaluateResult=document.getElementById('cbb_evaluate').value;
+            if (evaluateResult==''){
+                alert('Bạn chưa xếp loại cho Nhân viên!');
+                return;
+            }
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Employee/Submit_Employee_KPI_Detail",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    // load_employee_kpi(IDcode);
+                    alert('Đã cập nhật thành công!');
+                    // location.reload();
+                    period=document.getElementById('cbb_period').value;
+                    get_employee_infor(period);
+                }
+            }
+            data={ID: IDcode, selfEvaluate:selfEvaluate, supEvaluate:supEvaluate, supRecommend:supRecommend, supNote:supNote, evaluate:evaluateResult};
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send(JSON.stringify(data));
+        });
+        function get_rows(richtext, is_display=0){
+            tdg_row=1;
+            if (richtext!=null){
+                tdg_row=richtext.split('\n').length;
+                if (is_display==1) console.log('Start: ', tdg_row)
+                for(var i=0; i<richtext.split('\n').length;i++){
+                    if (is_display==1) console.log(richtext.split('\n')[i], 'Words length: ', richtext.split('\n')[i].length)
+                    if (richtext.split('\n')[i].length>90){
+                        tdg_temp=Math.round(richtext.split('\n')[i].length/90-0.5);
+                        tdg_row+=tdg_temp;
+                        if (is_display==1)
+                        console.log(richtext.split('\n')[i].length/90, tdg_temp, tdg_row)
+                    }
+                }
+            }
+            return tdg_row
+        }
+        document.getElementById('btn_paper').addEventListener('click', function(){
+            ID    =document.getElementById('txt_id').innerHTML;
+            year  =document.getElementById('cbb_year').value;
+            if (year==''|| year==null){
+                alert('Bạn chưa chọn Năm đánh giá!');
+                return;
+            }
+            period=document.getElementById('cbb_period').value;
+            if (period==''){
+                alert('Bạn chưa chọn Kỳ đánh giá!');
+                return;
+            }
+            
+            document.getElementById('txt_title').innerHTML='BẢNG ĐÁNH GIÁ '+period.toUpperCase()+' NĂM '+year
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Employee/Load_Employee_KPI_Detail",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200){
+                    data=JSON.parse(xsend.responseText);
+                    // document.getElementById('btn_print').style.display="none";
+                    // document.getElementById('btn_close').style.display="none";
+                    //append info
+                    name  =document.getElementById('txt_name').innerHTML;
+                    pos   =document.getElementById('txt_pos').innerHTML;
+                    dept  =document.getElementById('txt_dept').innerHTML;
+                    plant =document.getElementById('txt_plant').innerHTML;
+                    document.getElementById('txt_name_fill').innerHTML=name;
+                    document.getElementById('txt_pos_fill').innerHTML=pos;
+                    document.getElementById('txt_dept_fill').innerHTML=dept;
+                    document.getElementById('txt_id_fill').innerHTML=ID;
+                    document.getElementById('txt_period_fill').innerHTML=period;
+                    document.getElementById('txt_plant_fill').innerHTML=plant;
+                    //display data
+                    document.getElementById('txt_tudanhgia_dialog').value   =data[0].EmpEvaluate;
+                    document.getElementById('txt_tudanhgia_dialog').innerHTML=data[0].EmpEvaluate;
+                    document.getElementById('txt_tudanhgia_dialog').rows    =get_rows(data[0].EmpEvaluate);
+                    document.getElementById('txt_gopy_dialog').value        =data[0].SupEvaluate;
+                    document.getElementById('txt_gopy_dialog').innerHTML    =data[0].SupEvaluate;
+                    document.getElementById('txt_gopy_dialog').rows         =get_rows(data[0].SupEvaluate);
+                    document.getElementById('txt_caithien_dialog').value    =data[0].SupRecommend;
+                    document.getElementById('txt_caithien_dialog').innerHTML=data[0].SupRecommend;
+                    document.getElementById('txt_caithien_dialog').rows     =get_rows(data[0].SupRecommend);
+                    document.getElementById('txt_ghichu_dialog').innerHTML  =data[0].SupNote;
+                    document.getElementById('txt_ketqua_dialog').innerHTML  =data[0].Evaluate;
+                    //show modal
+                    // console.log(x.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerHTML);
+                    // period=document.getElementById('cbb_period').value;
+                    if (imageExists("../Assets/Employee/KPI/"+ID+'_'+period+'.jpg')){
+                        document.getElementById('kpi_dialog').src="../Assets/Employee/KPI/"+ID+'_'+period+'.jpg';
+                        document.getElementById('kpi_dialog').style.display="grid";
+                    }
+                    // a=document.createElement('a')
+                    // a.setAttribute('href', 'www.google.com.vn');
+                    // a.setAttribute('target', '_blank');
+                    // a.click()
+                    document.getElementById('dialog_employee_kpi_result').showModal();
+                }
+            }
+            IDCode=ID+'_'+period;
+            data={ID: IDCode};
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send(JSON.stringify(data));
+            // document.getElementById('dialog_employee_kpi_result').showModal();
+        });
+        document.getElementById('btn_print').addEventListener('click', function(){
+            document.getElementById('btn_print').style.visibility ="hidden";
+            document.getElementById('btn_close').style.visibility ="hidden";
+            var w=window.open();
+            var html="<!DOCTYPE HTML>";
+            html += '<html lang="en-us">';
+            html += document.getElementById('header_content').innerHTML;
+            html += "<body onload='window.print()'>";
+            html += document.getElementById('dialog_content').innerHTML;
+            html += "</body>";
+            html+="</html>";
+            w.document.write(html);
+            w.document.close();
+            w.focus();
+            w.close;
+            document.getElementById('btn_print').style.visibility="visible";
+            document.getElementById('btn_close').style.visibility="visible";
+        });
+
+        document.getElementById('btn_close').addEventListener('click', function(){
+            document.getElementById('dialog_employee_kpi_result').close();
+        });
+    </script>
+</html>

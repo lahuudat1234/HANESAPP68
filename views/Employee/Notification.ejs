@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+        <title>Thông báo</title>
+    </header>
+    <style>
+        #page-mask {
+            background: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            /* z-index: 10; */
+        }
+    </style>
+    <div id="page-mask"></div>
+    <!-- <body> -->
+    <body style="background-image: url('../Image/11.jpg');" onload="get_employee_infor()">
+
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout-title" id="txt_header"></span>
+                    <div class="mdl-layout-spacer"></div>
+                    <!-- Navigation -->
+                    <nav class="mdl-navigation">
+                        <a class="mdl-navigation__link" href="/Employee/TimeSheet">Giờ Làm Việc</a>
+                        <a class="mdl-navigation__link" href="/Employee/SAH">Lương sản phẩm</a>
+                        <a class="mdl-navigation__link" href="/Employee/Traning">Đào Tạo</a>
+                        <a class="mdl-navigation__link" href="/Employee/Notification">Thông Báo</a>
+                        <a class="mdl-navigation__link" href="/Employee/Surveys">Khảo Sát</a>
+                    </nav>
+                </div>
+                
+            </header>
+            <%- include ("partials/Employee_nav.ejs"); -%>
+            <main class="mdl-layout__content">
+                <div class="mdl-grid" style="margin: 10px auto; height: 100%;">
+                    <embed src="../Assets/HR/NVXS&TTXS_2020.pdf" width="90%" height="100%" style="margin: 10px auto;"/>
+                </div>
+            </main>
+        </div>
+    </body>
+    <script>
+        function load_avatar(empID){
+            console.log('../Assets/Employee/Avatar/'+empID+'.jpg')
+            document.getElementById('img_avatar').src='';
+            document.getElementById('img_avatar').src='../Assets/Employee/Avatar/'+empID+'.jpg';
+        }
+
+        function get_employee_infor(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Employee/Get_Employee_Infor",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                    console.log(result[0]);
+                    document.getElementById('txt_header').innerHTML=result[0].NAME;
+                    document.getElementById('txt_id').innerHTML=result[0].ID;
+                    document.getElementById('txt_name').innerHTML=result[0].NAME;
+                    document.getElementById('txt_dept').innerHTML=result[0].DEPT;
+                    document.getElementById('txt_type').innerHTML=result[0].TYPE;
+                    if (result[0].TYPE!='DR'){
+                        document.getElementById('txt_line').parentNode.parentNode.style.display="none";
+                    } else {
+                        document.getElementById('txt_line').parentNode.parentNode.style.display="inline";
+                        document.getElementById('txt_line').innerHTML=result[0].LINE;
+                    }
+                    document.getElementById('txt_pos').innerHTML=result[0].POSITION;
+                    document.getElementById('txt_line').innerHTML=result[0].LINE;
+                    document.getElementById('txt_shift').innerHTML=result[0].SHIFT;
+                    document.getElementById('txt_plant').innerHTML=result[0].PLANT;
+                    load_avatar(result[0].ID);
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={ID: ''}
+            xsend.send(JSON.stringify(data));
+        }
+    </script>
+</html>

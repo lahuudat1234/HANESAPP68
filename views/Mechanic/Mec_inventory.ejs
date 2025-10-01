@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html>
+<title>MMS</title>
+<!-- <meta charset="UTF-8"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/JS/boostrap/w3.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+
+
+<!-- day picker -->
+<!-- Include jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+
+
+
+
+<style>
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Helvetica","Arial",sans-serif;
+}
+a,li{
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+}
+.w3-bar-block .w3-bar-item {padding:20px}
+body{
+  font-family: "Helvetica","Arial",sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  /* background-image: url("/public/imgbook/bodyBG2.jpg"); */
+  background-color: whitesmoke;
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+</style>
+<body>
+    <!-- Sidebar (hidden by default) -->
+    <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:100;width:25%;min-width:300px; background-image: url(/public/imgbook/bodyBG.jpg);" id="mySidebar">
+      <a href="/mechome" class="w3-bar-item w3-button" ><span class="glyphicon glyphicon-home" style="padding-right: 20px;"></span>Trang Chủ</a>
+      <a href="/mechome" class="w3-bar-item w3-button w3-blue"><span class="glyphicon glyphicon-inbox" style="padding-right: 20px;"></span>Quét thẻ downtime</a>
+      <a href="/mec/updateloc" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật vị trí</a>
+      <a href="/mec/update_loc_pi" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật vị trí PI</a>
+      <a href="/mec/machineupdate" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật thông tin máy</a>
+      <a href="/mec/report" id="report_link" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-list-alt" style="padding-right: 20px;"></span>Báo cáo Realtime</a>
+      <a href="/get/autoclose" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-list-alt" style="padding-right: 20px;"></span>danh sách máy chốt cuối ca chưa sửa</a>
+      <a href="/mec/partissue" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-usd" style="padding-right: 20px;"></span>Cấp / Phát phụ tùng</a>
+      <a href="/mec/machinemovelog" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>thông tin di chuyển máy</a>
+      <a href="/mec/setupgroup" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Thiết lập nhóm chuyền</a>
+      <a href="#" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-duplicate" style="padding-right: 20px;"></span>Mechanic KPI</a>
+    </nav>
+    <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-right" style="display:none;z-index:2;width:30%;min-width:300px; right: 0;" id="mySidebar_right">
+      <a href="javascript:void(0)" class="w3-bar-item w3-button" id="name">Thông tin user đăng nhập</a>
+      <div class="w3-container w3-card-4 w3-light-grey" style="display:none;">
+        <a id="logout_ref" href="/logout" class="w3-bar-item w3-button">Logout</a>
+      </div>
+      <div class="form-group">
+        <label for="sel_shift">Ca làm việc hệ thống: <%= shift %></label>
+        <select class="form-control" name="sel_shift" id="sel_shift">
+          <option>BALI</option>
+          <option>RITMO</option>
+        </select>
+      </div>
+      <br>
+      <div class="form-group">
+        <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="logout()"><span class="glyphicon glyphicon-floppy-saved"></span> Đăng xuất</button>
+      </div>
+    </nav>
+    <!-- Top menu -->
+    <div class="w3-top w3-center">
+      <div class="w3-purple w3-xlarge" style="width: 100%;margin:auto;">
+        <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+        <div class="w3-right w3-padding-16" onclick="open_signup()" >
+        <span class="glyphicon glyphicon-user" style="padding-right: 10px;" ></span><span id="username"><%= user %></span></div>
+        <div class="w3-center w3-padding-16" style="margin: 0 auto;"><h3 style="margin: 0 auto;">HỆ THỐNG GHI NHẬN THỜI GIAN MÁY HỎNG</h3></div>
+        <a href="/mec/report" id="refresh" style="display: none;"></a>
+      </div>
+    </div>
+      
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-container w3-center" style="width: 100%;margin-top:50px; margin-left: auto;" onclick="w3_close()">
+      <hr id="about">
+      <!-- About Section -->
+      <!-- Home Page -->
+
+      <div class="w3-container" id="home_page" style="padding: 0px; margin: 0;">  
+        <!-- nhập thông tin máy hỏng -->
+      <!-- tình trạng máy trên chuyền -->
+        <div class="w3-rest" style="border: blueviolet;">
+          <div class="container" onclick="close_reg()" style="margin: auto;">
+            <!-- <div class="col-md-2 w3-left">
+              <div class="form-group">
+                <select class="form-control" name="sel_group" id="sel_group">
+                  <option>001-007</option>
+                  <option>008-014</option>
+                  <option>015-021</option>
+                  <option>022-028</option>
+                  <option>029-034</option>
+                  <option>035-042</option>
+                  <option>043-050</option>
+                  <option>051-058</option>
+                  <option>059-066</option>
+                  <option>067-074</option>
+                  <option>075-082</option>
+                  <option>083-090</option>
+                  <option>091-098</option>
+                  <option>099-105</option>
+                  <option>106-111</option>
+                  <option>112-118</option>
+                  <option>200-203</option>
+                  <option>204-210</option>
+                  <option>211-217</option>
+                  <option>218-224</option>
+                  <option>225-231</option>
+                  <option>232-234</option>
+                  <option>239-245</option>
+                  <option>246-252</option>
+                  <option>246-252</option>
+                  <option>253-259</option>
+                  <option>260-266</option>
+                  <option>277-283</option>
+                  <option>284-290</option>
+                  <option>291-297</option>
+                  <option>298-304</option>
+                  <option>305-311</option>
+                  <option>312-318</option>
+                  <option>319-325</option>
+                  <option>326-332</option>
+                  <option>333-339</option>
+                  <option>340-346</option>
+                  <option>347-353</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="load_group()"><span class="glyphicon glyphicon-search"></span> Xem thông tin</button>
+              </div>
+            </div> -->
+            <div class="w3-row w3-center" style="background-color: white;">
+              <!-- <h2 id="detail_infor" style="color: blueviolet; margin: auto;">Báo cáo thông tin máy hỏng</h2> -->
+              <!-- <h3 id="detail_infor" style="color: blueviolet;">RITMO: Tổng thợ máy: 50 , đang sửa máy: 1, có thể giao việc: 49</h3> -->
+            </div>
+          </div>
+          <br>
+          <div class="w3-responsive" style="overflow-x: scroll; padding: 0px; margin: auto; position: relative; width: 100%;">
+            <!-- <div style="width: 100%; margin-left: auto; margin-right: auto;">
+              <h2 style="color: blueviolet; margin: auto;">tổng hợp thông tin theo Zone / nhóm chuyền</h2>
+              <br>
+              <table id="table_GROUPSUM" class="w3-table w3-striped w3-bordered" style="margin-left: auto; margin-right: auto; font-size: 18px;" ondblclick="detail_group()">
+                <!-- <table id="table_content"> style="height: 310px;" -->
+                <!-- <thead class="w3-cyan">
+                  <tr >
+                    <th >ZONE</th>
+                    <th >GROUP LINE</th>
+                    <th >MÁY HỎNG</th>
+                    <th >MÁY ĐANG SỬA</th>
+                    <th >TỔNG MÁY</th>
+                    <th >TỔNG DOWNTIME (phút)</th>
+                    <th >% MÁY HOẠT ĐỘNG TỐT</th>
+                  </tr>
+                </thead>  
+                <tbody>
+                </tbody>
+              </table>
+            </div> -->
+            <br>
+            <div class="w3-row w3-blue-grey" style="width: 100%; margin-left: auto; margin-right: auto;"></div>
+            <div class="w3-row w3-orange" id="f_req_new" style="width: 100%; margin-left: auto; margin-right: auto; padding-bottom: 10px; padding-top: 10px;">
+              <div class="w3-row w3-sand" style="width: 60%; margin-left: auto; margin-right: auto; padding-bottom: 5px; padding-top: 5px;">
+                <h3>Nhập vào thông tin cập nhật TỒN KHO</h3>
+              </div> 
+              <form id="form_newreq" method="" style="width: 100%; font-size: 16px;">
+                <div class="row" id="xoa" style="padding-top: 10px;">
+                                <div  class="col-md-2">
+                                  <div class="form-group">
+                                    <label class="w3-left" for="f_hbi_n">HBI_ID:</label>
+                                    <input class="form-control w3-left" type="text" name="f_hbi_n" id="f_hbi_n" onkeypress="post_check()">
+                                  </div>
+                                </div>
+                                <div  class="col-md-2">
+                                  <div class="form-group">
+                                    <label class="w3-left" for="f_vendor_n">VENDOR_ID</label>
+                                    <input class="form-control w3-left" type="text" name="f_vendor_n" id="f_vendor_n" onkeypress="post_check()">
+                                  </div>
+                                </div>
+                                <div  class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="w3-left" for="f_EN_n">ENG NAME:</label>
+                                    <input class="form-control w3-left" type="text" name="f_EN_n" id="f_EN_n">
+                                  </div>
+                                </div>
+                                <div  class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="w3-left">TÊN PART:</label>
+                                    <input class="form-control w3-left" type="text" name="f_partname_n" id="f_partname_n">
+                                  </div>
+                                </div>
+
+                                <div  class="col-md-1" style="display:none;">
+                                  <div class="form-group">
+                                    <label class="w3-left" for="sel_user_n">USER:</label>
+                                    <input class="form-control w3-left" type="text" name="sel_user_n" id="sel_user_n">
+                                  </div>
+                                </div>
+                                <div class="col-md-1">
+                                  <br/>
+                                  <div style="display: none;">
+                                    <!-- Submit button -->
+                                    <button id="issue_button" class="btn btn-primary" style="background-color: #f31d1d;" type="button" onclick="deletepart()"><span class="glyphicon glyphicon-remove" style="padding-right: 10px;"></span>XÓA PART</button>
+                                  </div>
+                                </div>
+
+
+                </div>
+                                
+                <div class="row" id="them" style="padding-top: 10px;">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="w3-left" for="f_sub">MÃ THAY THẾ:</label>
+                      <input class="form-control w3-left" type="text" name="f_sub" id="f_sub">
+                    </div>
+                  </div>
+                  <div  class="col-md-2">
+                    <div class="form-group">
+                      <label class="w3-left" for="f_mc">MC MODEL:</label>
+                      <input class="form-control w3-left" type="text" name="f_mc" id="f_mc">
+                    </div>
+                  </div>
+                  <div  class="col-md-2">
+                    <div class="form-group">
+                      <label class="w3-left" for="f_type">CHỦNG LOẠI:</label>
+                      <input class="form-control w3-left" type="text" name="f_type" id="f_type">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row" style="padding-top: 10px;">
+                                <div class="col-md-6">
+                                  <div class="form-group"  id="input_reason">
+                                    <label class="w3-left" for="f_rea">LÝ DO:</label>
+                                    <input class="form-control w3-left" type="text" name="f_rea" id="f_rea">
+                                  </div>
+                                </div>
+                                <div  class="col-md-1">
+                                  <div class="form-group"  id="select_kho">
+                                    <label class="w3-left" for="sel_loc_O">KHO:</label>
+                                    <select class="form-control" name="sel_loc_O" id="sel_loc_O">
+                                      <option>-</option>
+                                      <option>KHO_1</option>
+                                      <option>KHO_2</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div  class="col-md-1">
+                                  <div class="form-group"  id="select_vitri">
+                                    <label class="w3-left" for="f_loc">VỊ TRÍ:</label>
+                                    <input class="form-control w3-left" type="text" name="f_loc" id="f_loc">
+                                  </div>
+                                </div>
+                                <div  class="col-md-1">
+                                  <div class="form-group"  id="input_soluong">
+                                    <label class="w3-left" for="f_add">SL THÊM VÀO:</label>
+                                    <input class="form-control w3-left" type="number" name="f_add" id="f_add">
+                                  </div>
+                                </div>
+                                <div class="col-md-2" style="margin-left: 0px;">
+                                  <br/>
+                                  <div id="button_themvao" >
+                                    <!-- Submit button -->
+                                    <button class="btn btn-primary" style="background-color: #4B0082; margin-left: 0px;" type="button" onclick="updateoradd()"><span class="glyphicon glyphicon-plus" style="padding-right: 10px;"></span>THÊM VÀO, CẬP NHẬT</button>
+                                  </div>
+                                </div>
+                                <div class="col-md-1" style="margin-left: 0px;">
+                                  <br/>
+                                  <div>
+                                    <!-- Submit button -->
+                                    <button id="change_bin_button" class="btn btn-primary" style="background-color: #4B0082; margin-left: 0px;" type="button" onclick="open_change_bin()"><span class="glyphicon glyphicon-transfer" style="padding-right: 10px;"></span>CHUYỂN BIN</button>
+                                  </div>
+                                </div>
+
+                </div>
+
+
+
+              </form>
+            </div>
+            <div class="w3-row w3-pale-green" id="f_cb" style="width: 100%; margin-left: auto; margin-right: auto; padding-bottom: 10px; padding-top: 10px; display: none;">
+              <div class="w3-row w3-pale-green" style="width: 60%; margin-left: auto; margin-right: auto; padding-bottom: 5px; padding-top: 5px;">
+                <h3>Nhập vào thông tin muốn chuyển Bin</h3>
+              </div> 
+              <form id="form_CB" method="" style="width: 100%; font-size: 16px;">
+                <div class="row" style="padding-top: 10px;">
+                                <div  class="col-md-2">
+                                  <div class="form-group">
+                                    <label class="w3-left" for="f_hbi_cb">HBI_ID:</label>
+                                    <input class="form-control w3-left" type="text" name="f_hbi_cb" id="f_hbi_cb" onkeypress="post_check_bin()">
+                                  </div>
+                                </div>
+                                <div  class="col-md-2">
+                                  <div class="form-group">
+                                    <label class="w3-left" for="f_vendor_cb">VENDOR_ID</label>
+                                    <input class="form-control w3-left" type="text" name="f_vendor_cb" id="f_vendor_cb" onkeypress="post_check_bin()">
+                                  </div>
+                                </div>
+                                <div  class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="w3-left">TÊN PART:</label>
+                                    <input class="form-control w3-left" type="text" name="f_partname_cb" id="f_partname_cb">
+                                  </div>
+                                </div>
+                                <div  class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="w3-left" for="f_EN_cb">ENG NAME:</label>
+                                    <input class="form-control w3-left" type="text" name="f_EN_cb" id="f_EN_cb">
+                                  </div>
+                                </div>
+                                <div  class="col-md-1" style="display:none;">
+                                  <div class="form-group">
+                                    <label class="w3-left" for="sel_user_cb">USER:</label>
+                                    <input class="form-control w3-left" type="text" name="sel_user_cb" id="sel_user_cb">
+                                  </div>
+                                </div>
+                                <div class="col-md-2">
+                                  <br/>
+                                  <div>
+                                    <div class="form-group">
+                                      <label class="w3-left" id="f_INV_cb">TỒN KHO:</label>
+                                    </div>
+                                  </div>
+                                </div>
+                </div>
+
+                <div class="row" style="padding-top: 10px;">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="w3-left" for="f_rea_cb">LÝ DO:</label>
+                                    <input class="form-control w3-left" type="text" name="f_rea_cb" id="f_rea_cb">
+                                  </div>
+                                </div>
+                                <div  class="col-md-1">
+                                  <div class="form-group">
+                                    <label class="w3-left" for="sel_loc_cb">KHO:</label>
+                                    <select class="form-control" name="sel_loc_cb" id="sel_loc_cb">
+                                      <option>-</option>
+                                      <option>KHO_1 SANG KHO_2</option>
+                                      <option>KHO_2 SANG KHO_1</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div  class="col-md-1">
+                                  <div class="form-group"  id="input_soluong">
+                                    <label class="w3-left" for="f_slcb">SL CHUYỂN BIN:</label>
+                                    <input class="form-control w3-left" type="number" name="f_slcb" id="f_slcb">
+                                  </div>
+                                </div>
+                                <div class="col-md-2" style="margin-left: 0px;">
+                                  <br/>
+                                  <div id="button_themvao" >
+                                    <!-- Submit button -->
+                                    <button class="btn btn-primary" style="background-color: #4B0082; margin-left: 0px;" type="button" onclick="updatecb()"><span class="glyphicon glyphicon-plus" style="padding-right: 10px;"></span>CẬP NHẬT BIN</button>
+                                  </div>
+                                </div>
+
+                </div>
+
+
+
+              </form>
+            </div>
+            <div class="w3-row" style="width: 100%; margin-left: auto; margin-right: auto; padding-bottom: 10px; padding-top: 10px;">
+            ---
+            </div>
+
+            <div class="w3-row w3-blue-grey" style="width: 100%; margin-left: auto; margin-right: auto; padding-bottom: 10px; padding-top: 10px;">
+                <form id="form_filter" method="" style="width: 100%; font-size: 16px;">
+                  <div  class="col-md-3"></div>
+                  <div  class="col-md-3"></div>
+                  <div  class="col-md-2">
+                    <div class="form-group">
+                      <label class="w3-left" for="sel_dk">trạng thái yêu cầu part:</label>
+                      <select class="form-control" name="sel_dk" id="sel_dk">
+                        <option>Tất cả</option>
+                        <option>đợi</option>
+                        <option>đã cấp</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div  class="col-md-2 w3-left">
+                      <!-- DAY PICKUP -->
+                      <div class="bootstrap-iso">
+                        <div class="container-fluid">
+                          <div class="row">
+                            <div class="col-md-9 col-xs-3 col-lg-12">
+                            <!-- Form code begins -->
+                                <div class="form-group"> <!-- Date input -->
+                                  <div>
+                                    <label class="control-label w3-left" for="date"><span class="glyphicon glyphicon-calendar"></span> chọn ngày:</label>
+                                  </div>
+                                  <div>
+                                    <input class="form-control" id="date" name="date" placeholder="YYYY/MM/DD" type="text" value="<%= dat %>"/>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>    
+                        </div>
+                      </div>
+                      <!-- DAY PICKUP -->
+                  </div>
+                  <div class="col-md-1">
+                    <br/>
+                    <div>
+                      <!-- Submit button -->
+                      <button id="search_data" class="btn btn-primary" style="background-color: #4B0082;" type="button" onclick="filterdata()"><span class="glyphicon glyphicon-search"></span> LỌC DỮ LIỆU</button>
+                    </div>
+                  </div>
+                </form>
+          </div>
+            <div class="w3-row w3-blue-grey" style="width: 100%; margin-left: 0;"></div>
+            <br>
+            <div style="width: 100%; height: 900px; margin-left: auto; margin-right: auto; overflow: scroll">
+              <h2 style="color: blueviolet; margin: auto;">Chi tiết:</h2>
+              <table id="table_ALL" class="w3-table w3-striped w3-bordered" style="margin-left: auto; margin-right: auto; font-size: 16px;" ondblclick="detail_ticket()">
+                <!-- <table id="table_content"> style="height: 310px;" -->
+                <thead class="w3-aqua">
+                  <tr >
+                    <th >HBI_PART</th>
+                    <th >VENDOR_PART</th>
+                    <th >ENG_NAME</th>
+                    <th >VIE_NAME</th>
+                    <th >SUB PART</th>
+                    <th >MC MODAL</th>
+                    <th >TYPE</th>
+                    <th >VỊ TRÍ 1</th>
+                    <th>SL 1</th>
+                    <th >VỊ TRÍ 2</th>
+                    <th >SL 2</th>
+                    <th >ĐƠN VỊ</th>
+                    <th >LAST UPDATE</th>
+                    <th >USER</th>
+                    <th >NOTE</th>
+                  </tr>
+                </thead>  
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Footer -->
+    <footer class="w3-row-padding w3-padding-32 w3-center">
+    </footer>
+    <!-- End page content -->
+    </div>
+        <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+    <button id="dialog2" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><strong>Thông tin thợ máy</strong><span id="sys_confirm">.</span></h4>
+          </div>
+          <div class="modal-body">
+            <form id="reg_repair" action="javascript:">
+              <label for="idmc2">mã máy:</label><br>
+              <input class="form-control w3-left" type="number" name="idmc2" id="idmc2">
+              <p>---</p>
+              <label id="mc_type">loại máy:</label><br>
+              <label id="broken_code">lỗi:</label><br>
+              <br>
+              <div class="modal-body" id="closeB">
+                <label class="form-control w3-left">Quét mã thẻ thợ máy:</label>
+                <input class="form-control w3-center" style="background-color:  rgb(230, 231, 206);" onkeypress="get_mec_name()" placeholder="đưa chuột vào và quét thẻ" type="number" name="id_nvtm" id="id_nvtm">
+                <p>---------------------</p>
+                <label class="form-control w3-left" id="name_nvtm">Tên thợ máy</label>
+                <p>---------------------</p>
+              </div>
+              <div class="modal-body" id="closeA" style="display: none;">
+                <label class="form-control w3-left">Quét mã thẻ nhân viên chốt giờ:</label>
+                <input class="form-control w3-center" style="background-color: rgb(230, 231, 206);" onkeypress="get_name4()" placeholder="đưa chuột vào và quét thẻ" type="number" name="employee_id4" id="employee_id4">
+                <label class="form-control w3-left" id="emp_name4">Tên nhân viên</label>
+              </div>
+              <br>
+              <div class="modal-body">
+                <div class="col-md-5">
+                  <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="start_repair()"><span class="glyphicon glyphicon-wrench"></span> Bắt đầu sửa máy</button>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                  <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="close_advance()"><span class="glyphicon glyphicon-lock"></span> đóng không cần sửa</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="close_dialog2" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+    <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+    <button id="dialog_finish" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#FModal">Open Modal</button>
+    <!-- Modal -->
+    <div class="modal fade" id="FModal" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><strong>Thông tin sửa máy</strong><span id="sys_confirm3">.</span></h4>
+          </div>
+          <div class="modal-body">
+            <form id="finish_repair" action="javascript:">
+              <label for="idmc3">mã máy:</label><br>
+              <input class="form-control w3-left" type="number" name="idmc3" id="idmc3">
+              <p>---</p>
+              <label id="mc_type3">loại máy:</label><br>
+              <label id="broken_code3" style="display: none;">lỗi:</label><br>
+              <div class="modal-body" id="tm_close">
+                <label class="form-control w3-left" for="mccode">code hỏng máy:</label>
+                <select class="form-control" name="mccode" id="mccode" style="background-color: yellow;">
+                  <option>002 không an toàn (thiếu bảo hộ/ rò điện...)</option>
+                  <option>003 máy bị gãy kim</option>
+                  <option>100 đổi máy - chuyển đổi mã hàng</option>
+                  <option>401 lỗ kim</option>
+                  <option>500 sụp mí</option>
+                  <option>502 sai mật độ mũi chỉ</option>
+                  <option>503 bỏ mũi</option>
+                  <option>504 máy nghiến</option>
+                  <option>505 đứt chỉ / bung chỉ</option>
+                  <option>520 Xì</option>
+                  <option>521 kẹp vải</option>
+                  <option>522 máy chả dầu</option>
+                  <option>528 nhăn, bai, sạc</option>
+                  <option>534 hỏng bờ</option>
+                  <option>542 lè vải</option>
+                  <option>558 chỉ dài</option>
+                  <option>570 lè thun</option>
+                  <option>600 tưa vải</option>
+                  <option>601 chờ phụ tùng</option>
+                  <option>620 máy auto bind panel không xếp được</option>
+                  <option>PM</option>
+                  <option>Gay_Kim (thay kim gãy)</option>
+                  <option>Lỗi khác</option>
+                </select>
+                <p>---------------------</p>
+                <label class="form-control w3-left">Quét mã thẻ thợ máy:</label>
+                <input class="form-control w3-center" style="background-color: rgb(230, 231, 206);" onkeypress="get_mec_name3()" placeholder="đưa chuột vào và quét thẻ" type="number" name="id_nvtm3" id="id_nvtm3">
+                <p>---------------------</p>
+                <label class="form-control w3-left" id="name_nvtm3">Tên thợ máy</label>
+                <p>---------------------</p>
+                <!-- <label class="form-control w3-left">yêu cầu spare part:</label>
+                <input class="form-control w3-center" style="background-color: rgb(230, 231, 206);" placeholder="nhập vào id part" type="number" name="id_part" id="id_part"> -->
+              </div>
+              <div class="modal-body" id="nvclose" style="display: none;">
+                <label class="form-control w3-left">Quét mã thẻ nhân viên chốt giờ:</label>
+                <input class="form-control w3-center" style="background-color: rgb(230, 231, 206);" onkeypress="get_name2()" placeholder="đưa chuột vào và quét thẻ" type="number" name="employee_id3" id="employee_id3">
+                <label class="form-control w3-left" id="emp_name3">Tên nhân viên</label>
+              </div>
+              <p>---------------------</p>
+              <div class="modal-footer">
+                <div class="col-md-5">
+                  <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="finish_repair()"><span class="glyphicon glyphicon-ok-sign"></span> đóng ticket</button>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                  <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="req_part()"><span class="glyphicon glyphicon-lock"></span> yêu cầu part</button>
+                </div>
+              </div>
+              
+              <br>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="close_dialog3" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+        <!-- Footer -->
+    <footer class="w3-row-padding w3-padding-32 w3-center">
+    </footer>
+
+</body> 
+
+<script type="text/javascript">
+
+          $(document).ready(function(){
+              var date_input=$('input[name="date"]'); //our date input has the name "date"
+              var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+              date_input.datepicker({
+                  format: 'yyyy/mm/dd',
+                  container: container,
+                  todayHighlight: true,
+                  autoclose: true,
+              })
+          });
+          window.addEventListener('load', function () {
+            filterdata()
+          })
+          setInterval(function(){ 
+            filterdata();
+          }, 120000);
+          $('#FModal').on('shown.bs.modal', function () {
+            document.getElementById("employee_id3").value="";
+            document.getElementById("emp_name3").innerText="Tên nhân viên";
+            document.getElementById("name_nvtm3").innerText="Tên thợ máy";
+            document.getElementById("id_nvtm3").value="";
+            document.getElementById("id_nvtm3").disabled=false;
+            document.getElementById("id_nvtm3").focus();
+          })  
+
+          $('#myModal').on('shown.bs.modal', function () {
+            document.getElementById("closeB").style.display="inline";
+            document.getElementById("closeA").style.display="none";
+            document.getElementById("employee_id4").value="";
+            document.getElementById("emp_name4").innerText="Tên nhân viên";
+            document.getElementById("name_nvtm").innerText="Tên thợ máy";
+            document.getElementById("id_nvtm").value="";
+            document.getElementById("id_nvtm").disabled=false;
+            document.getElementById("id_nvtm").focus();
+          })  
+          function open_reg(){
+            document.getElementById("downtime_reg").style.display="inline";
+            document.getElementById("employee_id").value="";
+            document.getElementById("emp_name").innerText="Tên nhân viên";
+            document.getElementById("employee_id").focus();
+          }
+          function close_reg(){
+            document.getElementById("machine_id").value=""
+            document.getElementById("downtime_reg").style.display="none";
+          }
+
+          // Script to open and close sidebar
+          var list_mc=JSON.stringify("");
+
+          function open_change_bin(){
+            if (document.getElementById("f_rea").value==""){
+              document.getElementById("xoa").style.display="none";
+              document.getElementById("them").style.display="none";
+              document.getElementById("input_reason").style.display="none";
+              document.getElementById("select_kho").style.display="none";
+              document.getElementById("select_vitri").style.display="none";
+              document.getElementById("input_soluong").style.display="none";
+              document.getElementById("button_themvao").style.display="none";
+              document.getElementById("f_cb").style.display="grid";
+              document.getElementById("f_rea").value="đã ẩn";
+              return
+            } else{
+              if (document.getElementById("f_rea").value=="đã ẩn"){
+              document.getElementById("xoa").style.display="initial";
+              document.getElementById("them").style.display="initial";
+              document.getElementById("input_reason").style.display="initial";
+              document.getElementById("select_kho").style.display="initial";
+              document.getElementById("select_vitri").style.display="initial";
+              document.getElementById("input_soluong").style.display="initial";
+              document.getElementById("button_themvao").style.display="initial";
+              document.getElementById("f_cb").style.display="none";
+              document.getElementById("f_rea").value="";
+              } else{
+                document.getElementById("xoa").style.display="none";
+                document.getElementById("them").style.display="none";
+                document.getElementById("input_reason").style.display="none";
+                document.getElementById("select_kho").style.display="none";
+                document.getElementById("select_vitri").style.display="none";
+                document.getElementById("input_soluong").style.display="none";
+                document.getElementById("button_themvao").style.display="none";
+                document.getElementById("f_cb").style.display="grid";
+                document.getElementById("f_rea").value="đã ẩn";
+
+              }
+            }
+          }
+
+          function logout(){
+            alert('log out');
+            document.getElementById("logout_ref").click();
+          }
+
+          function tableText(tableRow) {
+            document.getElementById("f_idmc").disabled=true;
+            document.getElementById("f_idpart").disabled=true;
+            document.getElementById("f_idtk").disabled=true;
+            document.getElementById("f_sl_req").disabled=true;
+            
+
+              document.getElementById("f_idmc").value=tableRow.childNodes[3].innerText;
+              document.getElementById("f_idpart").value=tableRow.childNodes[4].innerText;
+              document.getElementById("f_idtk").value=tableRow.childNodes[0].innerText;
+              document.getElementById("f_mec").innerText=tableRow.childNodes[2].innerText;
+              document.getElementById("f_partname").innerText="Tên Part:\n"+tableRow.childNodes[5].innerText;
+              document.getElementById("f_sl_req").value=tableRow.childNodes[6].innerText;
+              document.getElementById("f_sl_issue").value=tableRow.childNodes[6].innerText;
+              var x = document.getElementById("sel_loc");
+              while (x.length >0){
+                  x.options.remove(0);
+                  var x = document.getElementById("sel_loc");
+              }
+              var x = document.getElementById("sel_loc");
+              var option = document.createElement("option");
+              option.text =tableRow.childNodes[11].innerText+" _/_ "+tableRow.childNodes[12].innerText+" _/_ bal_1";
+              x.add(option);
+              var x = document.getElementById("sel_loc");
+              var option = document.createElement("option");
+              option.text =tableRow.childNodes[13].innerText+" _/_ "+tableRow.childNodes[14].innerText+" _/_ bal_2";
+              x.add(option);
+              document.getElementById("f_sl_issue").focus();
+          };
+
+          function detail_ticket(){
+              var table = document.getElementById("table_ALL");
+              event.stopImmediatePropagation;
+              if (table) {
+                for (var i = 0; i < table.rows.length; i++) {
+                  table.rows[i].ondblclick = function(e) {
+                    tableText(this);
+                  };
+                };
+              };
+
+
+          }
+
+          function req_part(){
+            alert("thư viện part chưa sẵn sàng")
+            return
+            var thomay=document.getElementById("name_nvtm3").innerText;
+            if (thomay=="Tên thợ máy"){
+              document.getElementById("f_nvtm").style.display="inline";
+              return;
+            }
+          }
+
+          function post_check(){
+            if (event.keyCode != 13){
+                  return;
+              }
+            event.preventDefault();
+                        var main_url="/mec/post_check_part"
+                        var frm = $('#form_newreq');
+                        $.ajax({
+                            type: "post",
+                            url: main_url,
+                            data: frm.serialize(),
+                            success: function (data) {
+                              var res_result=data
+                              console.log(res_result)
+                              if (res_result=="false"){
+                                alert("something wrong happen!")
+                              } else{
+                                inv=res_result;
+                                document.getElementById("f_hbi_n").disabled=true;
+                                document.getElementById("f_vendor_n").disabled=true;
+                                document.getElementById("f_hbi_n").value=inv[0].HBI_PART;
+                                document.getElementById("f_vendor_n").value=inv[0].VENDOR_PART;
+                                document.getElementById("f_partname_n").value=inv[0].VIE_NAME;
+                                document.getElementById("f_EN_n").value=inv[0].ENG_NAME;
+                                document.getElementById("f_mc").value=inv[0].MC_MODEL;
+                                document.getElementById("f_sub").value=inv[0].SUB_PART;
+                                document.getElementById("f_type").value=inv[0].TYPE;
+
+
+                                // document.getElementById("f_sl_issue_n").focus();
+                              }
+                            },
+                            error: function () {
+                                  alert("submit failed")
+                            },
+                        })
+          }
+
+          
+          function post_check_bin(){
+            if (event.keyCode != 13){
+                  return;
+              }
+            event.preventDefault();
+                        var main_url="/mec/post_check_part"
+                        var frm = $('#form_CB');
+                        $.ajax({
+                            type: "post",
+                            url: main_url,
+                            data: frm.serialize(),
+                            success: function (data) {
+                              var res_result=data
+                              console.log(res_result)
+                              if (res_result=="false"){
+                                alert("something wrong happen!")
+                              } else{
+                                inv=res_result;
+                                document.getElementById("f_hbi_cb").disabled=true;
+                                document.getElementById("f_vendor_cb").disabled=true;
+                                document.getElementById("f_partname_cb").disabled=true;
+                                document.getElementById("f_EN_cb").disabled=true;
+                                document.getElementById("f_hbi_cb").value=inv[0].HBI_PART;
+                                document.getElementById("f_vendor_cb").value=inv[0].VENDOR_PART;
+                                document.getElementById("f_partname_cb").value=inv[0].VIE_NAME;
+                                document.getElementById("f_EN_cb").value=inv[0].ENG_NAME;
+                                document.getElementById("f_INV_cb").innerText=inv[0].loc_1+" : _"+inv[0].bal_1+" // "+inv[0].loc_2+" :_ "+inv[0].bal_2
+                                // document.getElementById("f_sl_issue_n").focus();
+                              }
+                            },
+                            error: function () {
+                                  alert("submit failed")
+                            },
+                        })
+          }
+
+          function updatecb(){
+            if (document.getElementById("f_hbi_cb").value==""){
+                  alert("Vui lòng mã part")
+                  return;
+              }
+            if (document.getElementById("f_rea_cb").value==""){
+                  alert("Vui lòng nhập vào lý do")
+                  return;
+              }
+            if (document.getElementById("sel_loc_cb").value=="-"){
+                  alert("Vui lòng chọn kho di chuyển")
+                  return;
+              }
+            if (document.getElementById("f_slcb").value==""){
+                  alert("Vui nhập vào số lượng")
+                  return;
+              }
+            var str = document.getElementById("f_INV_cb").innerText;
+            var n = str.indexOf(" : _");
+            var m = str.indexOf(" // ");
+            var b1=str.substr(n+4,m-n-4);
+            var n = str.indexOf(" :_ ");
+            var m = str.length;
+            var b2=str.substr(n+4,m-n-4);
+            var slc=document.getElementById("f_slcb").value;
+            b1=parseInt(b1);
+            b2=parseInt(b2);
+            slc=parseInt(slc)
+            console.log(b1,b2,slc)
+            if (document.getElementById("sel_loc_cb").value=="KHO_1 SANG KHO_2"){
+              if (slc>b1){
+                alert("Tồn kho không đủ")
+                return;
+
+              }
+            } else{
+              if (slc>b2){
+                alert("Tồn kho không đủ")
+                return;
+                
+              }
+            }
+          
+            var user=document.getElementById("username").innerText;
+            document.getElementById("sel_user_cb").value=user
+            document.getElementById("f_hbi_cb").disabled=false;
+            document.getElementById("f_vendor_cb").disabled=false;
+            document.getElementById("f_partname_cb").disabled=false;
+            document.getElementById("f_EN_cb").disabled=false;
+            event.preventDefault();
+                        var main_url="/mec/update_cb"
+                        var frm = $('#form_CB');
+                        $.ajax({
+                            type: "post",
+                            url: main_url,
+                            data: frm.serialize(),
+                            success: function (data) {
+                              var res_result=data
+                              console.log(res_result)
+                              if (res_result=="false"){
+                                alert("something wrong happen!")
+                              } else{
+                                inv=res_result;
+                                document.getElementById("f_hbi_cb").disabled=false;
+                                document.getElementById("f_vendor_cb").disabled=false;
+                                document.getElementById("f_partname_cb").disabled=false;
+                                document.getElementById("f_EN_cb").disabled=false;
+                                document.getElementById("f_hbi_cb").value="";
+                                document.getElementById("f_vendor_cb").value="";
+                                document.getElementById("f_partname_cb").value="";
+                                document.getElementById("f_EN_cb").value="";
+                                document.getElementById("f_rea_cb").value="";
+                                document.getElementById("sel_loc_cb").value="-";
+                                document.getElementById("f_slcb").value="";
+                                document.getElementById("f_INV_cb").innerText="TỒN KHO:"
+                                filterdata();
+                                // document.getElementById("f_sl_issue_n").focus();
+                              }
+                            },
+                            error: function () {
+                                  alert("submit failed")
+                            },
+                        })
+          }
+
+
+
+          function checkpart(){
+            var idpart=document.getElementById("f_hbi_n").value
+            if (idpart==""){
+              idpart=document.getElementById("f_vendor_n").value
+            }
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false"){
+                  alert("something wrong happen!")
+                } else{
+                  inv=JSON.parse(res_result);
+                    document.getElementById("f_hbi_n").value=inv[0].HBI_PART;
+                    document.getElementById("f_hbi_n").disabled=true;
+                    document.getElementById("f_vendor_n").value=inv[0].VENDOR_PART;
+                    document.getElementById("f_vendor_n").disabled=true;
+                    document.getElementById("f_partname_n").value=inv[0].VIE_NAME;
+                    document.getElementById("f_EN_n").value=inv[0].ENG_NAME;
+                    document.getElementById("f_mc").value=inv[0].MC_MODEL;
+                    document.getElementById("f_sub").value=inv[0].SUB_PART;
+                    document.getElementById("f_type").value=inv[0].TYPE;
+
+                }
+                }
+              };
+            if (event.keyCode === 13){
+                  xhttp.open("get", "/mec/checkinv/"+idpart, true);
+                  xhttp.send();
+              }
+          }
+
+          function checktm(){
+            var msnv=document.getElementById('f_idtm_n').value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false"){
+                  alert("something wrong happen!")
+                } else{
+                  nv=JSON.parse(res_result);
+                  console.log(nv[0].type)
+                  if (nv[0].type=="IN" && nv[0].dept=="MEC" ||nv[0].employeeid=="080928"||nv[0].employeeid=="130085" || nv[0].employeeid=="160211"|| nv[0].employeeid=="118327"){
+                    document.getElementById("f_mec_n").innerText=nv[0].name;
+                    document.getElementById("f_idtm_n").value=nv[0].employeeid;
+                    document.getElementById("f_idtm_n").disabled=true;
+                  }else{
+                    alert("Mã số nhập vào không phải thợ máy")
+                  }
+                }
+                }
+              };
+            if (msnv.length>=6 && event.keyCode === 13){
+                xhttp.open("get", "/mec/idnv/"+msnv, true);
+                xhttp.send();
+            }
+          }
+
+
+          function get_mc_stt(){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+
+                if (res_result=="false"){
+                  alert("Hệ thống lỗi vui lòng thử lại sau")
+                } else{
+                  sessionStorage.setItem('res_mc_stt',res_result);
+                  info=JSON.parse(res_result)
+                  console.log(info)
+                  ttdt=""
+                  if (info.length>0){
+                    for (i=0;i<info.length;i++){
+                      ttdt+='<tr class="w3-sand"><td >'+ info[i].HBI_PART + '</td><td >' + info[i].VENDOR_PART + '</td><td >' +  info[i].ENG_NAME
+                      ttdt+='</td><td >' + info[i].VIE_NAME+'</td><td >' + info[i].SUB_PART+'</td><td >' +info[i].MC_MODEL+'</td><td >'+info[i].TYPE
+                      ttdt+='</td><td >' +  info[i].LOC_1+'</td><td >' + info[i].BAL_1+'</td><td >' + info[i].LOC_2
+                      ttdt+='</td><td >' + info[i].BAL_2+'</td><td >' + info[i].UNIT+'</td><td >' + change_time(info[i].last_update) +'</td><td >' + info[i].user+'</td><td >' + info[i].Note+'</td></tr>';
+
+                    }
+                    $('#table_ALL tbody').html(ttdt)
+                  }
+                
+                }
+                }
+              };
+              xhttp.open("get", "/mec/all_part", true);
+              xhttp.send();
+          }
+
+          function newreq(){
+            var user=document.getElementById("username").innerText;
+            if (user=="ngmai1"||user=="hpham"||user=="nhbach"||user=="annguyen"||user=="thnguye9"||user=="doton"){
+
+            }else{
+              alert("user không có quyền tạo request mới")
+              return;
+            }
+            if(document.getElementById("new_button").innerText=="TẠO YÊU CẦU MỚI"){
+              document.getElementById("f_req_new").style.display="grid";
+              document.getElementById("f_1_1").style.display="none";
+              document.getElementById("f_1_2").style.display="none";
+              document.getElementById("f_1_3").style.display="none";
+              document.getElementById("f_1_4").style.display="none";
+              document.getElementById("f_1_5").style.display="none";
+              document.getElementById("f_1_6").style.display="none";
+              document.getElementById("f_1_7").style.display="none";
+              document.getElementById("f_1_8").style.display="none";
+              document.getElementById("f_1_9").style.display="none";
+              document.getElementById("new_button").innerText="ẨN FORM NHẬP MỚI"
+
+              return;
+            } else{
+              document.getElementById("new_button").innerText="TẠO YÊU CẦU MỚI";
+              document.getElementById("f_req_new").style.display="none";
+              document.getElementById("f_1_1").style.display="grid";
+              document.getElementById("f_1_2").style.display="grid";
+              document.getElementById("f_1_3").style.display="grid";
+              document.getElementById("f_1_4").style.display="grid";
+              document.getElementById("f_1_5").style.display="grid";
+              document.getElementById("f_1_6").style.display="grid";
+              document.getElementById("f_1_7").style.display="grid";
+              document.getElementById("f_1_8").style.display="grid";
+              document.getElementById("f_1_9").style.display="grid";
+              document.getElementById("f_idtm_n").disabled=false;
+              document.getElementById("f_idtm_n").value="";
+              document.getElementById("f_mec_n").innerText="ID THỢ MÁY:";
+              document.getElementById("f_idpart_n").disabled=false;
+              document.getElementById("f_idpart_n").value="";
+              document.getElementById("f_rea_n").value="";
+              document.getElementById("f_partname_n").innerText="TÊN PART:";
+
+              return;
+            }
+
+          }
+
+          function updateoradd(){
+            if (document.getElementById("f_partname_n").value==""){
+              alert("Tên không được để trống")
+              return
+            }
+            if (document.getElementById("f_loc").value==""){
+              alert("Vui lòng nhập vào vị trí muốn cập nhật")
+              return
+            }
+            if (document.getElementById("f_add").value==""){
+              alert("Vui lòng nhập vào số lượng muốn thay đổi")
+              return
+            }
+            if (document.getElementById("f_rea").value==""){
+              alert("Vui lòng nhập vào lý do")
+              return
+            }
+            document.getElementById("f_hbi_n").disabled=false;
+            document.getElementById("f_vendor_n").disabled=false;
+            var user=document.getElementById("username").innerText;
+            document.getElementById("sel_user_n").value=user
+            event.preventDefault();
+                        var main_url="/mec/cl_inv_update"
+                        var frm = $('#form_newreq');
+                        $.ajax({
+                            type: "post",
+                            url: main_url,
+                            data: frm.serialize(),
+                            success: function (data) {
+                              console.log(data)
+                              if (data=="false"){
+                                alert("Vui lòng kiểm tra lại thông tin")
+                              } else{
+                                alert(data)
+                                document.getElementById("f_hbi_n").value="";
+                                document.getElementById("f_vendor_n").value="";
+                                document.getElementById("f_partname_n").value="";
+                                document.getElementById("f_EN_n").value="";
+                                document.getElementById("f_partname_n").value="";
+                                document.getElementById("f_add").value="";
+                                document.getElementById("f_loc").value="";
+                                document.getElementById("f_sub").value="";
+                                document.getElementById("f_mc").value="";
+                                document.getElementById("f_type").value="";
+                                document.getElementById("f_rea").value="";
+                                document.getElementById("sel_loc_O").value="-";
+
+                                filterdata();
+                              }
+                            },
+                            error: function () {
+                                  alert("submit failed")
+                            },
+                        })
+
+
+
+
+          }
+
+          function issued(){
+            var user=document.getElementById("username").innerText;
+            // alert(user)
+            if (user=="ngmai1"||user=="hpham"||user=="nhbach"||user=="annguyen"||user=="thnguye9"||user=="doton"){
+              var ktsl=document.getElementById("sel_loc").value;
+              var slinv=ktsl.split(" _/_ ");
+              if (document.getElementById("f_sl_issue").value==""){
+                alert("Vui lòng nhập vào số lượng thực cấp");
+                return;
+              }
+              if (parseInt(document.getElementById("f_sl_issue").value)>parseInt(slinv[1])){
+                alert("Tồn kho tại vị trí "+slinv[0]+" không đủ");
+                return;
+              }
+              if (document.getElementById("f_idtk").value==""){
+                alert("Vui lòng chọn ticket trước");
+                return;
+              }
+              if (document.getElementById("f_sl_req").value!=document.getElementById("f_sl_issue").value){
+                if(document.getElementById("f_rea").value==""){
+                  alert("Cấp khác số lượng yêu cầu!\nVui lòng nhập vào lý do")
+                  return;
+                }
+              }
+              document.getElementById("sel_user").value=user;
+              document.getElementById("f_idmc").disabled=false;
+              document.getElementById("f_idpart").disabled=false;
+              document.getElementById("f_idtk").disabled=false;
+              document.getElementById("f_sl_req").disabled=false;
+              document.getElementById("sel_user").disabled=false;
+              event.preventDefault();
+                        var main_url="/mec/cl_issue"
+                        var frm = $('#form_issue');
+                        $.ajax({
+                            type: "post",
+                            url: main_url,
+                            data: frm.serialize(),
+                            success: function (data) {
+                              console.log(data)
+                              if (data=="false"){
+                                alert("Hệ thống lỗi vui lòng thử lại sau")
+                              } else{
+                                alert(data)
+                                document.getElementById("f_idmc").value="";
+                                document.getElementById("f_idpart").value="";
+                                document.getElementById("f_idtk").value="";
+                                document.getElementById("f_sl_req").value="";
+                                document.getElementById("sel_user").value="";
+                                document.getElementById("f_sl_issue").value="";
+                                var x = document.getElementById("sel_loc");
+                                while (x.length >0){
+                                    x.options.remove(0);
+                                    var x = document.getElementById("sel_loc");
+                                  }
+                                document.getElementById("f_rea").value="";
+                                document.getElementById("f_idmc").disabled=true;
+                                document.getElementById("f_idpart").disabled=true;
+                                document.getElementById("f_idtk").disabled=true;
+                                document.getElementById("f_sl_req").disabled=true;
+                                document.getElementById("sel_user").disabled=true;
+                                document.getElementById("f_partname").innerText="TÊN PART:"
+                                document.getElementById("f_mec").innerText="TÊN THỢ MÁY:"
+
+                                filterdata();
+                              }
+                            },
+                            error: function () {
+                                  alert("submit failed")
+                            },
+                        })
+            } else{
+              alert(user+" không được cấp quyền issue part")
+              return
+            }
+
+
+          }
+
+          function filterdata(){
+                      event.preventDefault();
+                      var main_url="/mec/filter_adjust"
+                      var frm = $('#form_filter');
+                      $.ajax({
+                          type: "post",
+                          url: main_url,
+                          data: frm.serialize(),
+                          success: function (data) {
+                            console.log(data)
+                            if (data=="false"){
+                              alert("Hệ thống lỗi vui lòng thử lại sau")
+                            } else{
+                              info=data
+                              $('#table_ALL tbody').html("")
+                              ttdt=""
+                              if (info.length>0){
+                                for (i=0;i<info.length;i++){
+                                  ttdt+='<tr class="w3-sand"><td >'+ info[i].HBI_PART + '</td><td >' + info[i].VENDOR_PART + '</td><td >' +  info[i].ENG_NAME
+                                  ttdt+='</td><td >' + info[i].VIE_NAME+'</td><td >' + info[i].SUB_PART+'</td><td >' +info[i].MC_MODEL+'</td><td >'+info[i].TYPE
+                                  ttdt+='</td><td >' +  info[i].LOC_1+'</td><td >' + info[i].BAL_1+'</td><td >' + info[i].LOC_2
+                                  ttdt+='</td><td >' + info[i].BAL_2+'</td><td >' + info[i].TYPE+'</td><td >' + change_time(info[i].last_update) +'</td><td >' + info[i].user+'</td><td >' + info[i].NOTE+'</td></tr>';
+
+                                }
+                                $('#table_ALL tbody').html(ttdt)
+                              }
+
+                            }
+
+
+
+
+                          },
+                          error: function () {
+                                alert("submit failed")
+                          },
+                      })
+
+          }
+
+
+
+          function change_time(time){
+                return (new Date(time)).toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
+            }
+          function load_group(){
+            // alert('load group')
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false"){
+                  alert("mã số nhập vào không phải nv may!")
+                } else{
+                  sessionStorage.setItem('res_mc_stt',res_result);
+                  Draw_map();
+                }
+                }
+              };
+              var login_group=document.getElementById("sel_group").value;
+              console.log(login_group)
+              xhttp.open("get", "/mec/group/"+login_group, true);
+              xhttp.send();
+          }
+          function w3_open() {
+            w3_close();
+            document.getElementById("mySidebar").style.display = "block";
+          }
+          function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("mySidebar_right").style.display = "none";
+            
+          }
+          function open_signup(){
+            w3_close();
+            document.getElementById("mySidebar_right").style.display = "block";
+          }          
+          function show_history(){
+            w3_close()
+            document.getElementById("home_page").style.display="none";
+            document.getElementById("test").style.display="none";
+            document.getElementById("history").style.display="block";
+          }
+          function next_question(){
+              document.getElementById("sel_answer").value="-";
+              var nq=parseInt(document.getElementById("question_number").innerText)
+              if (nq<5){
+                start_answer()
+              } else{
+                alert("bạn đã hoàn thành trả lời 5 câu hỏi của lượt này!")
+                document.getElementById("div_question").style.display="none"
+                document.getElementById("start_answer").style.display="none"
+                get_detail();
+              }  
+          }
+          function submit_answer(){
+            if(document.getElementById("sel_answer").value=="-"){
+              alert('Bạn chưa chọn câu trả lời!')
+              return;
+            }
+            document.getElementById("a_confirm").innerText="Bạn đã trả lời sai!"
+            if (document.getElementById("sel_answer").value==document.getElementById("ans").value){
+              var score=parseInt(document.getElementById("score").innerText)+2
+              document.getElementById("score").innerText=score
+              document.getElementById("a_confirm").innerText="Bạn đã trả lời đúng!"
+            }
+            document.getElementById("dialog2").click();
+            document.getElementById("next_q").disabled=false;
+            document.getElementById("submit_ans").disabled=true;
+            document.getElementById("guide").innerText=". nhấn nút tiếp theo để chuyển sang câu tiếp theo!"
+            var score=parseInt(document.getElementById("score").innerText)
+            var week=document.getElementById("week_login").innerText
+            var user=document.getElementById("idnv").value
+            var t_log=document.getElementById("t_login").innerText
+                        event.preventDefault();
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                console.log(this.response)
+                                if (this.responseText=="ID không đăng nhập được"){
+                                  document.getElementById("sys_confirm").innerText=" Chưa được cập nhật _ Lỗi hệ thống"
+                                } else{
+                                  document.getElementById("sys_confirm").innerText=" Đã được cập nhật"
+                                }
+                            }
+                          };
+                          xhttp.open("get", "/lead/submit/"+user+"/"+week+"/"+t_log+"/"+score, true);
+                          xhttp.send();
+          }
+          function start_answer(){
+              event.preventDefault();
+              var login_status=document.getElementById("bt_signup").innerText;
+              var user_sign_up=document.getElementById("idnv").value
+              if (login_status=="Đăng nhập"){
+                alert("Vui lòng đăng nhập để bắt đầu!")
+                return;
+              }
+              if (document.getElementById("t_login").innerText=="6"){
+                alert("Bạn đã trả lời quá 5 lần trong tuần!\nVui lòng quay trở lại sau!");
+                return;
+              }
+              document.getElementById("div_question").style.display="grid"
+              document.getElementById("start_answer").style.display="none"
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      console.log(this.response)
+                      if (this.responseText=="error"){
+                        alert('Hệ thống đang bị lỗi \n Vui lòng quay trở lại sau')
+                      } else{
+                        var q=JSON.parse(this.response);
+                        document.getElementById("question").innerHTML="<b>Câu hỏi: "+q[0].question+"</b>";
+                        document.getElementById("answerA").innerText="Câu A: "+q[0].answerA;
+                        document.getElementById("answerB").innerText="Câu B: "+q[0].answerB;
+                        document.getElementById("answerC").innerText="Câu C: "+q[0].answerC;
+                        document.getElementById("answerD").innerText="Câu D: "+q[0].answerD;
+                        document.getElementById("a_result").innerText="Câu trả lời là: "+q[0].answer;
+                        if (q[0].answerA==q[0].answer){
+                          document.getElementById("ans").value="Câu A";
+                        }
+                        if (q[0].answerB==q[0].answer){
+                          document.getElementById("ans").value="Câu B";
+                        }
+                        if (q[0].answerC==q[0].answer){
+                          document.getElementById("ans").value="Câu C";
+                        }
+                        if (q[0].answerD==q[0].answer){
+                          document.getElementById("ans").value="Câu D";
+                        }
+                        console.log(document.getElementById("ans").value)
+                        var qu=parseInt(document.getElementById("question_number").innerText)+1
+                        document.getElementById("question_number").innerText=qu
+                        document.getElementById("next_q").disabled=true;
+                        document.getElementById("submit_ans").disabled=false;
+                        document.getElementById("guide").innerText=". Chọn câu trả lời của bạn và nhấn nút trả lời"
+                      }  
+                  }
+                };
+                xhttp.open("get", "/lead/get_question/"+user_sign_up, true);
+                xhttp.send();
+          };
+          function show_home(){
+            w3_close()
+            document.getElementById("home_page").style.display="block";
+            document.getElementById("test").style.display="none";
+            document.getElementById("history").style.display="none";
+          }
+          function show_test(){
+            w3_close()
+            document.getElementById("home_page").style.display="none";
+            document.getElementById("history").style.display="none";
+            document.getElementById("test").style.display="block";
+          }
+
+</script>
+
+</html>

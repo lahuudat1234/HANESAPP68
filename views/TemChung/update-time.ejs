@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/003c620c4b.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <style>
+        .container-fluid {
+            margin-top: 30px;
+        }
+
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .box-class {
+            border-top-color: #117a8b !important;
+            border-radius: 0.25rem;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+            background-color: #fff;
+            border-top: 5px solid #e9ecef;
+            margin-bottom: 1rem;
+            padding: 1rem;
+        }
+
+        .card {
+            margin-bottom: 1rem;
+        }
+
+        .card-header {
+            background-color: #117a8b;
+        }
+
+        .blue1 {
+            background-color: #17a2b8;
+        }
+
+        .blue2 {
+            background-color: #007bff;
+        }
+
+        .gray1 {
+            background-color: #6c757d;
+        }
+
+        .green1 {
+            background-color: #28a745;
+        }
+
+        .card-title {
+            float: left;
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin: 0;
+            color: white;
+        }
+
+        #wh_tb_filter {
+            text-align: right;
+        }
+
+        #wh_tb_filter label {
+            text-align: left;
+        }
+
+        #wh_tb_length select {
+            float: left;
+        }
+
+        #wh_tb_paginate {
+            float: right;
+        }
+
+        .menu-item {
+            color: black;
+        }
+
+        .menu-item:hover {
+            text-decoration: none;
+        }
+
+        .nav-link.active {
+            background-color: #007bff !important;
+            color: #fff !important;
+        }
+
+        /* @media (min-width: 1200px) {
+            .container {
+                max-width: 1540px;
+            }
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid"
+        style="background-color:rgb(53, 165, 209);padding-bottom: 5px;padding-top:5px;margin-top: 0px;">
+        <div class="row">
+            <div class="col-sm-6">
+                <!-- <h1>Quẹt thẻ</h1> -->
+            </div>
+            <div class="col-sm-6">
+                <!-- <p style="float: right;margin-top: 15px;font-size: 20px;margin-right: 16px;">
+                    <span style="margin-right: 20px;">
+                        <a class="menu-item" href="../assetJS/KanbanLine.pdf">HƯỚNG DẪN</a>
+                    </span>
+                </p>
+                <p style="float: right;margin-top: 15px;font-size: 20px;margin-right: 16px;">
+                    <span style="margin-right: 20px;">
+                        <a class="menu-item" href="/warehouse-kanban-pb2">PHÚ BÀI 2</a>
+                    </span>
+                </p> -->
+                <p style="float: right;margin-top: 15px;font-size: 20px;margin-right: 16px;">
+                    <span style="margin-right: 20px;">
+                        <a class="menu-item" href="/">Chỉnh giờ</a>
+                    </span>
+                </p>
+                <p style="float: right;margin-top: 15px;font-size: 20px;margin-right: 16px;">
+                    <span style="margin-right: 20px;">
+                        <a class="menu-item" href="/warehouse-kanban-pb1">Quẹt thẻ</a>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Thông tin</h3>
+                    </div>
+                    <div class="card-body" style="padding:12px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                
+                                <!-- <div class="form-group row align-items-center">
+                                    <div class="col-sm-4 d-flex align-items-center">
+                                        <label for="ngayChon" class="mb-0 mr-5">Chọn ngày:</label>
+                                        <input type="date" class="form-control w-auto" id="ngayChon" name="ngayChon">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="SelectGroupLine">Chọn nhóm chuyền:</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="SelectLine">Chọn line:</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="SelectGroupLine">
+                                                <option value="347-353">347-353</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="SelectLine">
+                                                <option value="">-</option>
+                                                <option value="015">015</option>
+                                                <option value="016">016</option>
+                                                <option value="017">017</option>
+                                                <option value="018">018</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tên</th>
+                                            <th>Giờ bắt đầu</th>
+                                            <th>Giờ kết thúc</th>
+                                            <th>Số giờ</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="main-tb">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    
+    load_data()
+    function load_data() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var res_result = this.responseText;
+                list = JSON.parse(res_result);
+                console.log(list)
+                var rr = "";
+                if (list.length > 0) {
+                    for (var i = 0; i < list.length; i++) {
+                        var row =
+                            "<tr><td>" +
+                            list[i]["id"] +
+                            "</td><td>" +
+                            list[i]["name"] +
+                            "</td><td>" +
+                            list[i]["time_in_str"] +
+                            "</td><td>" +
+                            (list[i]["time_out_str"] == null ? '': list[i]["time_out_str"]) +
+                            "</td><td>" +
+                            (list[i]["diff"] == null ? '': list[i]["diff"]) +
+                            "</td><td><button class='btn btn-info'>Edit</button></td></tr>";
+                        rr = rr + row;
+                    }
+                    document.getElementById("main-tb").innerHTML = rr;
+                } else {
+                    document.getElementById("main-tb").innerHTML = '';
+                }
+            }
+        };
+        xhttp.open("GET", "/tem-chung/data-temchung", true);
+        xhttp.send();
+    }
+    
+</script>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>CHANGE_STYLE_UPLOAD</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- day picker -->
+    <!-- Include jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+        }
+
+        /* Safari */
+        @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">CHANGE STYLE</span>
+
+                <div class="mdl-layout-spacer"></div>
+                <div id="wellcome_user" style="display: none;">
+                    <div style="float: right;">
+                        <h4 id="wellcome_username"></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+                <a href="#scroll-tab-1" class="mdl-layout__tab is-active">UPLOAD_FILE</a>
+            </div>
+        </header>
+        <%- include('menucs'); %>
+        <main class="mdl-layout__content">
+            <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+                <style>
+                    .demo-card-square.mdl-card {
+                        width: 320px;
+                        height: 320px;
+                    }
+                    
+                    .demo-card-square>.mdl-card__title {
+                        color: #fff;
+                        background: url('../assets/demos/dog.png') bottom right 15% no-repeat #46B6AC;
+                    }
+                </style>
+
+                <!--                 
+                <form style="margin-left: 0px;" id="upload_form" method='POST' action='CCS/Upload_New_PR' submit='return false;'>
+                    <input type='file' name='file' id='file'>
+                    <input type='submit' id='submit'>
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--6dp" id="btn_upload_new_PR" style="margin-left: 0px; background-color: rebeccapurple;">
+                                <i class="material-icons">upload</i>
+                            </button>
+                </form>
+                -->
+                <style>
+                    .demo-card-square.mdl-card {
+                        width: 320px;
+                        height: 320px;
+                    }
+                    
+                    .demo-card-square>.mdl-card__title {
+                        color: #fff;
+                        background: url('../assets/demos/dog.png') bottom right 15% no-repeat #46B6AC;
+                    }
+                </style>
+
+                <div style="margin:auto ;width: 1000px; height: 600px; margin-top: 100px;" class="demo-card-square mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-card--expand">
+                        <form style="margin:auto ;width: 600px; " action="CCS/Upload_New_PR" id="upload_form" method="POST" enctype="multipart/form-data">
+                            <legend style="background-color: #46B6AC;">Upload file</legend>
+                            <div class="form-group">
+                                <label for="">File</label>
+                                <input style="height: auto;" type="file" class="form-control" name="files" id='file'>
+                            </div>
+                            <button id='submit' type="submit" class="btn btn-primary">UPLOAD</button>
+                           
+                            <div></div>
+                        </form>
+                    </div>
+                    <div class="mdl-card__title mdl-card--expand">
+                        <br>
+                        <a href="/excelfile/CHANGE STYLE W00.xlsx" download>click here download template</a>
+                    </div>
+                </div>
+            </section>
+            <div class="loader" id="load" style="display: none; margin: auto;margin-top: 100px;"></div>
+        </main>
+        <script>
+            var form=document.getElementById('upload_form');
+                    form.addEventListener('submit', e=>{
+                        e.preventDefault();
+                        return false;
+            })
+            document.getElementById('submit').addEventListener('click', function() {
+                // document.getElementById('file').onchange = function() {
+                //     if (document.getElementById('file').value != '') document.getElementById('submit').click();
+                // }
+               // alert("UPLOADING...");
+                //document.getElementById('submit').value="loading..."
+                document.getElementById("load").style.display='block';
+                var form = document.getElementById('upload_form');
+                if (document.getElementById('file').value != '') {
+                    event.preventDefault();
+                    var xsend = new XMLHttpRequest();
+                    var fileInput = document.getElementById('file');
+                    var file;
+                    file = fileInput.files[0];
+                    console.log(file['name']);
+                    var formData = new FormData();
+                    formData.append('file', file);
+                    if (file != null) {
+                        xsend.open('POST', '/cs/Upload_excel_File', true);
+                        xsend.send(formData);
+                        // console.log(formData);
+                        //location.reload();
+                        
+                        xsend.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                var data = this.responseText;
+                                    if (data == "finish") {
+                                    //loaddata()
+                                    //selectweek();
+                                    document.getElementById("load").style.display='none';
+                                    alert("FILE UPLOAD SUCCESSFUL");                                   
+                                    document.getElementById('file').value = '';
+                                    document.getElementById('home_cs').click()
+
+                        // } else {
+                        //     alert("Có lỗi rồi!!!");
+                         
+                        }
+                        // document.getElementById('id01').style.display = 'none';
+                    }
+                };
+                    }
+                } else {
+                    alert("Không có tệp nào được chọn!!!")
+                    document.getElementById("load").style.display='none';
+                    document.getElementById('file').value = '';
+                }
+                // document.getElementById('file').value = '';
+                
+
+            })
+        </script>
+
+    </div>
+
+    </div>
+</body>
+
+</html>

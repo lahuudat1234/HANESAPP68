@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<title>Asia MC inventory</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../CSS/w3.css"/>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- <script src="/socket.io/socket.io.js"></script> -->
+
+
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+nav {
+  background-image: none;
+  background-image: none,none, url("../public/img_xp/bg1.jpg");
+}
+header {
+  background-image: none;
+  background-image: none,none, url("../public/img_xp/bg1.jpg");
+}
+</style>
+<body class="w3-content" style="max-width:1920px" onload="load_disposal()">
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:200px;" id="mySidebar"><br>
+  <div class="w3-container">
+    <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey" title="close menu">
+      <i class="fa fa-remove"></i>
+    </a>
+    <img src="../public/img_xp/ig.png" style="width:30%;" class="w3-round"><br><br>
+    
+    <h4 class="w3-text-white"><b>Web Services</b></h4>
+    <!-- <p class="w3-text-white">Design by ngmai1</p> -->
+  </div>
+  <div class="w3-bar-block w3-text-white">
+    <%-include ('menu_am'); %>
+  </div>
+  <!-- <div class="w3-panel w3-large w3-text-white">
+    <i class="fa fa-facebook-official w3-hover-opacity"></i>
+    <i class="fa fa-instagram w3-hover-opacity"></i>
+    <i class="fa fa-snapchat w3-hover-opacity"></i>
+    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+    <i class="fa fa-twitter w3-hover-opacity"></i>
+    <i class="fa fa-linkedin w3-hover-opacity"></i>
+  </div> -->
+</nav>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div id="main-page" class="w3-main" style="margin-left:200px">
+
+  <!-- Header -->
+  <header id="combine_plan">
+    <a href="#"><img src="./public/img_xp/ig.png" style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
+    <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+    <div class="w3-container">
+      <div class="w3-col" style="width:92%">
+        <div class="w3-container">
+          <h1 class="w3-text-white"><b>Asia Machine Inventory Monitoring</b></h1>
+          <div class="w3-section w3-bottombar w3-padding-16">
+
+              <label for="fname">Machine Tagnumber:</label><br>
+              <input type="text" id="mtag" name="mtag">
+              <button class="w3-button w3-green" onclick="search_mc()">Search</button>
+          </div>
+        </div>
+      </div>
+      <div class="w3-col" style="width:8%">
+        <h6 class="w3-text-white"><b>Hi <%= user %>!</b></h6>
+      </div>
+    </div>
+
+
+  </header>
+  
+  <!-- First Photo Grid-->
+  <div class="w3-row-padding w3-bottombar">
+    <div class="w3-row">
+      <h3 style="padding-left: 15px;">Disposal machine summary: <span id="qty_disposal"></span></h3>
+    </div>  
+  </div>
+  
+  <!-- Second Grid-->
+  <div class="w3-row-padding w3-bottombar">
+                <!-- hien thi thong tin logs -->
+                
+                    <!-- <div class="w3-row">
+                      <h3 style="padding-left: 15px;">Detatil information:<spand id="qty_tt"></spand></h3>
+                    </div>     -->
+                    <div class="w3-row">
+                      <div class="w3-col" style="width:100%">
+                        <style>
+                          #tablea {
+                              font-family: Arial, Helvetica, sans-serif;
+                              border-collapse: collapse;
+                              border-radius: 15px;
+                              /* border: 1px solid #ffffff; */
+                              overflow: scroll !important;
+                          }
+                          
+                          #tablea td {
+                              text-align: center !important;
+                              /* border: 1px solid #3a3a3a; */
+                              height: 10px !important;
+                              border: 1px solid #ddd;
+                          }
+                          
+                          #tablea th {
+                              margin-top: 0px;
+                              border: 1px solid #ddd;
+                              padding: 8px;
+                              border: 1px solid #ffffff;
+                              height: 15px !important;
+                          }
+                          
+                          #tablea tr:nth-child(even) {
+                              background-color: #f2f2f2;
+                          }
+                          
+                          #tablea tr:hover {
+                              background-color: #ddd;
+                          }
+            
+                          #tablea th {
+                              padding-top: 3px;
+                              padding-bottom: 3px;
+                              text-align: center;
+                              background-color: #0099ff;
+                              color: white;
+                          }
+                          #tablea {
+                              border-collapse: collapse;
+                              width: 100%;
+                          }
+                          thead {
+                            position: sticky;
+                            top: 0; /* Don't forget this, required for the stickiness */
+                            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+                          }
+                        </style>  
+                        <div style="height:calc(100vh - 300px); overflow-y: scroll;">
+                                <table id="tablea" style="width:98%; margin: auto;" onclick="detail_cutlot()">
+                                  <thead>
+                                    <tr>        
+                                      <th style="text-align: center;">STT</th> 
+                                      <th style="text-align: center;">PLANT</th>              
+                                      <th style="text-align: center;">Asset name</th>
+                                      <th style="text-align: center;">Seri No.</th>
+                                      <th style="text-align: center;">Model</th>
+                                      <th style="text-align: center;">Tag Number</th>
+                                      <th style="text-align: center;">Book base</th>
+                                      <th style="text-align: center;">int. Date</th>
+                                      <th style="text-align: center;">NBV</th>
+                                      <th style="text-align: center;">Remain life</th>
+                                      <th style="text-align: center;">status</th>
+                                      <th style="text-align: center;">Note/Reason</th>
+                                    </tr>                        
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                  </thead>
+                                </table>
+                        </div>
+                      </div>
+
+                    </div>     
+  </div>
+
+
+
+
+  <!-- Pagination -->
+  <!-- <div class="w3-center w3-padding-32">
+    <div class="w3-bar">
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
+      <a href="#" class="w3-bar-item w3-black w3-button">1</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
+    </div>
+  </div> -->
+
+
+  <!-- Footer -->
+  <!-- <footer class="w3-container w3-padding-32 w3-dark-grey">
+  </footer> -->
+  
+  <div class="w3-black w3-center w3-padding-24">Powered by <a href="#" title="ngoi.mai1@hanes.com" target="_blank" class="w3-hover-opacity">innovation team</a></div>
+
+<!-- End page content -->
+
+<!-- modal -->
+<!-- modal confirm kanban tub1 button show -->
+<button id="bt_dialog1" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#dialog1">Open Modal</button>
+<!-- Modal confirm kanban -->
+<div class="modal fade" id="dialog1" role="dialog" style="z-index: 9990; margin-top: 50px;">
+  <div class="modal-dialog" style="width: 90%;">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><strong>Machine inventory by Tagnumber</strong><span id="sys_confirm">.</span></h4>
+      </div>
+      <div class="modal-body">
+        <div style="width: 100%; height: 100%;" class="w3-container">
+        <!-- <div style="margin:auto ;width: 1000px; height: 100px; margin-top: 100px;" class="demo-card-square mdl-card mdl-shadow--2dp"> -->
+          <div class="w3-row">
+            <div class="w3-col" style="width:25%">
+            Tagnumber: <spand id="tagnumber"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+              SeriNo: <spand id="seri"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+              ASset: <spand id="asset"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+              Company: <spand id="company"></spand>
+            </div>
+          </div>
+
+          <div class="w3-row" style="padding-top:10px;">
+            <div class="w3-col" style="width:25%">
+            Creation Date: <spand id="crdate"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+            Book basic: <spand id="book"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+            Net Book Value: <spand id="nbv"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+            Life Remain: <spand id="life"></spand>
+            </div>
+          </div>
+          <div class="w3-row" style="padding-top:10px;">
+            <div class="w3-col" style="width:25%">
+            Model: <spand id="model"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+              Machine Type: <spand id="mc_type"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+              Producer: <spand id="producer"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+              Autotype: <spand id="auto"></spand>
+            </div>
+          </div>
+          <div class="w3-row" style="padding-top:10px;">
+            <div class="w3-col" style="width:25%">
+            Location: <spand id="model"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+            Status: <spand id="mc_type"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+            Time update: <spand id="tup"></spand>
+            </div>
+            <div class="w3-col" style="width:25%">
+            Currency code: <spand id="currency"></spand>
+            </div>
+          </div>
+          <div class="w3-row" style="padding-top:10px;">
+            Note: <spand id="note"></spand>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <div class="w3-row" style="width: 80%; margin: auto;">
+          <div class="col-md-3">
+            <button type="button" value="submit" id="BT_update" class="btn btn-primary w3-blue" onclick="send_update()"><span class="glyphicon glyphicon-ok-sign"></span> cập nhật</button>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <button type="button" value="submit" class="btn btn-primary w3-blue" onclick="inv_link()"><span class="glyphicon glyphicon-search"></span> Xem tồn kho</button>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <button type="button" value="submit" class="btn btn-primary w3-blue" onclick="cancel_click()"><span class="glyphicon glyphicon-remove-sign"></span> Hủy</button>
+          </div>
+        </div> -->
+        <button id="cl_dialog1" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script type="text/javascript">
+// Script to open and close sidebar
+// setInterval(load_ecf_data, 5000);
+
+function open_form_up() {
+  document.getElementById("dialog_form_up").click();
+}
+
+function search_mc(){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", '/api/am/search_mc', true);
+    datasend={
+      tag:$('#mtag').val()
+    }
+    console.log(datasend)
+    // var date=document.getElementById("date2").value;
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var data=this.responseText;
+          if (data=="zero"){
+            alert("Tagnumber input not available")
+            return
+          }
+          var datax = JSON.parse (this.responseText);
+          console.log(datax[0].TAG_NUMBER)
+          $("#tagnumber").html(datax[0].TAG_NUMBER)
+          $("#seri").html(datax[0].SERIAL_NUMBER)
+          $("#asset").html(datax[0].ASSET)
+          $("#company").html(datax[0].LOCATION_NAME)
+          $("#crdate").html(change_time3(datax[0].CREATION_DATE))
+          $("#book").html(datax[0].BOOK_BASIS)
+          $("#nbv").html(datax[0].NET_BOOK_VALUE)
+          $("#life").html(datax[0].LIFE_REMAIN)
+          $("#model").html(datax[0].MODEL_NUMBER)
+          $("#mc_type").html(datax[0].Machine_type)
+          $("#producer").html(datax[0].Producer)
+          $("#auto").html(datax[0].AutoType)
+          $("#location").html(datax[0].LOCATION)
+          $("#status").html(datax[0].STATUS)
+          $("#tup").html(change_time3(datax[0].TIMEUPDATE))
+          $("#currency").html(datax[0].CURRENCY_CODE)
+          $("#note").html(datax[0].Note)
+          $("#bt_dialog1").click()
+          console.log(this.responseText)
+          // $("#pmfinish").html(data[0].sltk)
+        }
+      }
+    xmlhttp.send(JSON.stringify(datasend));  
+  }
+
+
+
+
+
+function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+    document.getElementById("myOverlay").style.display = "block";
+}
+ 
+function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("myOverlay").style.display = "none";
+}
+
+// function inv_link() {
+//   var sku=document.getElementById("SKU").innerText
+//   var skus=sku.substring(5,sku.length)
+//   window.open("http://10.113.90.40/odd_inv/"+skus)
+// }
+
+function change_time3(time) {
+      return (new Date(time)).toLocaleDateString('en-US');
+
+  }
+
+function active_menu(){
+  var element = document.getElementById("menu_dis");
+  element.classList.add("w3-blue");
+}
+
+function load_disposal() {
+    active_menu()
+    var xhttp = new XMLHttpRequest();
+    event.preventDefault(); //prevent default action 
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+            var res_result=this.responseText
+            if (res_result=="err"){
+ 
+              swal("system notification!","System error!\nPlease try again later", "error");
+            } 
+            else{
+              if (res_result=="zero"){
+                swal("system notification!","No disposal machine at the moment", "success");
+                document.getElementById("qty_tt").innerText=ac_value
+                $('#tablea tbody').html('')
+                document.getElementById("close_dialog_plan_process").click();
+                // document.getElementById("close_dialog_list_prepare_tub1").click()
+              }else{
+                ls=JSON.parse(res_result)
+                  console.log(ls)
+                    if (ls.length>0){
+                      var ttdt=""
+                      for (i=0;i<ls.length;i++){ 
+                          var stt=i+1
+                          var plant=  ls[i].LOCATION_NAME
+                          var aname=  ls[i].Machine_type+' - '+ ls[i].Producer  +' - '+  ls[i].MODEL_NUMBER
+                          var seri=ls[i].SERIAL_NUMBER
+                          var model=ls[i].MODEL_NUMBER
+                          var tag_number=ls[i].TAG_NUMBER
+                          var bookbase=ls[i].BOOK_BASIS
+                          var intdate=change_time3(ls[i].CREATION_DATE)
+                          var nbv=ls[i].NET_BOOK_VALUE 
+                          var remain=ls[i].LIFE_REMAIN
+                          var status=ls[i].STATUS
+                          var reason=ls[i].Note
+
+                          ttdt+='<tr><td >'+ stt +'</td><td>'+ plant +'</td><td>'+aname+'</td><td >' + seri + '</td><td >'+model
+                          ttdt+= '</td><td >' + tag_number +'</td><td >'+bookbase +'</td><td >' +intdate
+                          ttdt+= '</td><td>'+nbv+'</td><td>'+remain+'</td><td>'+status+'</td><td>'+reason+'</td></tr>';
+                      }
+                      $('#tablea tbody').html(ttdt)
+                      document.getElementById("qty_disposal").innerText=stt + ' machines'
+
+                    }
+                    else{
+                      swal("system notification!","Machine tag number can not find", "success");
+                    }
+                  
+                  
+              }
+            }
+
+        }
+      };
+      xhttp.open("get",'/AM/get-disposal', true);
+      // var id= document.getElementById("idreq").value;
+      // send data jason
+      xhttp.setRequestHeader("Content-type", "application/json");
+      xhttp.send();
+
+}
+
+
+
+function cancel_click() {
+    document.getElementById("close_dialog_plan_process").click();
+}
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

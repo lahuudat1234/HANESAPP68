@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<title>MMS</title>
+<!-- <meta charset="UTF-8"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/JS/boostrap/w3.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Helvetica","Arial",sans-serif;
+}
+a,li{
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+}
+.w3-bar-block .w3-bar-item {padding:20px}
+body{
+  font-family: "Helvetica","Arial",sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  /* background-image: url("/public/imgbook/bodyBG2.jpg"); */
+  background-color: whitesmoke;
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+</style>
+<body onload="line_storage()">
+
+<!-- Sidebar (hidden by default) -->
+    <!-- Sidebar (hidden by default) -->
+    <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:100;width:25%;min-width:300px; background-image: url(/public/imgbook/bodyBG.jpg);" id="mySidebar">
+      <a href="/mechome" class="w3-bar-item w3-button" ><span class="glyphicon glyphicon-home" style="padding-right: 20px;"></span>Trang Chủ</a>
+      <a href="/mechome" class="w3-bar-item w3-button w3-blue"><span class="glyphicon glyphicon-inbox" style="padding-right: 20px;"></span>Quét thẻ downtime</a>
+      <a href="/mec/updateloc" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật vị trí</a>
+      <a href="/mec/update_loc_pi" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật vị trí PI</a>
+      <a href="/mec/machineupdate" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Cập nhật thông tin máy</a>
+      <a href="/mec/report" id="report_link" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-list-alt" style="padding-right: 20px;"></span>Báo cáo Realtime</a>
+      <a href="/get/autoclose" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-list-alt" style="padding-right: 20px;"></span>danh sách máy chốt cuối ca chưa sửa</a>
+      <a href="/mec/partissue" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-usd" style="padding-right: 20px;"></span>Cấp / Phát phụ tùng</a>
+      <a href="/mec/machinemovelog" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>thông tin di chuyển máy</a>
+      <a href="/mec/setupgroup" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-refresh" style="padding-right: 20px;"></span>Thiết lập nhóm chuyền</a>
+      <a href="#" class="w3-bar-item w3-button w3-purple"><span class="glyphicon glyphicon-duplicate" style="padding-right: 20px;"></span>Mechanic KPI</a>
+    </nav>
+<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-right" style="display:none;z-index:2;width:30%;min-width:300px; right: 0;" id="mySidebar_right">
+  <a href="javascript:void(0)"
+  class="w3-bar-item w3-button" id="name">Thông tin user đăng nhập</a>
+  <div class="w3-container w3-card-4 w3-light-grey" style="display:none;">
+    <a id="logout_ref" href="/logout" class="w3-bar-item w3-button">Logout</a>
+  </div>
+  <br>
+  <div class="form-group">
+    <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="logout()"><span class="glyphicon glyphicon-floppy-saved"></span> Đăng xuất</button>
+  </div>
+</nav>
+<!-- Top menu -->
+<div class="w3-top w3-center">
+  <div class="w3-purple w3-xlarge" style="width: 100%;margin:auto;">
+    <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+    <div class="w3-right w3-padding-16" onclick="open_signup()" >
+    <span class="glyphicon glyphicon-user" style="padding-right: 10px;" ></span><span id="username"><%= user %></span></div>
+    <div class="w3-center w3-padding-16" style="margin: 0 auto;"><h3 style="margin: 0 auto;">CẬP NHẬT VỊ TRÍ MÁY LINE DỰ PHÒNG</h3></div>
+    <a href="/lead" id="refresh" style="display: none;"></a>
+  </div>
+</div>
+  
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-container w3-center" style="width: 100%;margin-top:50px; margin-left: auto;" onclick="w3_close()">
+    <!-- About Section -->
+    <div class="w3-row w3-border">
+      <h1>----</h1>
+      <form style="text-align: left;" action="javascript:">
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="machine_id">mã máy:</label>
+            <input name="machine_id" type="text" id="machine_id" class="form-control" onkeypress="search_mc()" placeholder="nhập vào mã máy">
+            <br>
+            <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="find_machine()"><span class="glyphicon glyphicon-search"></span> Xem thông tin</button>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="mctype">loại máy:</label>
+            <input name="mc_type" type="text" id="mc_type" disabled class="form-control">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="line_old2">Line hiện tại:</label>
+            <input name="line_old2" type="text" id="line_old2" disabled class="form-control">
+            <label for="pos_old">Vị trí hiện tại:</label>
+            <input name="pos_old" type="number" id="pos_old" disabled class="form-control">
+            </div>
+        </div>
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="machine_id">Chọn Line Đến:</label>
+            <select class="form-control" name="sel_group" id="sel_group">
+              <option>001-007</option>
+              <option>008-014</option>
+            </select>
+            <br>
+            <button type="button" value="submit" class="btn btn-primary" style="background-color: #4B0082;" onclick="mc_in_line()"><span class="glyphicon glyphicon-refresh"></span> Xem dánh sách máy</button>
+          </div>
+        </div>
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-2">
+          <br>
+          <div class="form-group">
+            <button type="button" value="submit" id="bt_di" class="btn btn-primary" style="background-color: #4B0082;" onclick="update_loc()"><span class="glyphicon glyphicon-random"></span> Xác nhận</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="w3-panel" style="height:calc(100vh - 300px); overflow-y: scroll;">
+      <div class="w3-row-padding" style="height: 100%;">
+        <!-- <div class="w3-third">
+          <h5>Regions</h5>
+          <img src="/w3images/region.jpg" style="width:100%" alt="Google Regional Map">
+        </div> -->
+        <div class="w3-row">
+          <h5>Danh sách máy trong line<spand id="sl_anh"></spand></h5>
+          <style>
+            .tablea {
+                margin-top: 0px !important;
+                font-family: Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                border-radius: 15px;
+                /* border: 1px solid #ffffff; */
+                overflow: scroll !important;
+            }
+            
+            .tablea td {
+                text-align: left;
+                /* border: 1px solid #3a3a3a; */
+                /* height: 25px !important; */
+                text-align: center !important;
+                border: solid 1px rgb(218, 218, 218);
+            }
+            
+            .tablea th {
+                border: 1px solid #ddd;
+                padding: 4px;
+                border: 1px solid #ffffff;
+                height: 25px !important;
+                min-width: 50px;
+                border: solid 1px #7c4abe;
+            }
+            
+            .tablea tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+            
+            .tablea tr:hover {
+                background-color: #ddd;
+            }
+            
+            #tablea th {
+                height: 40px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                text-align: center;
+                background-color: #7c4abe;
+                color: rgb(255, 255, 255);
+                border: solid 1px rgb(218, 218, 218);
+            }
+            
+            .tableFixHead {
+                overflow-y: auto;
+                height: calc(100vh - 350px);
+            }
+            
+            .tableFixHead thead:not([scope=row]) {
+                position: sticky;
+                top: 0;
+            }
+            
+            .tablea {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            
+          </style>
+          <div class="tableFixHead">
+              <div class="page-content" style=" margin-top: 3px;margin-left: 0px;">
+                  <table id="tablea" class="tablea" style="width:99%; margin: auto; overflow-x: scroll;">
+                      <thead>
+                          <tr>
+                              <th style="text-align: center;" >STT / POS</th>
+                              <th style="text-align: center;" >Line</th>
+                              <th style="text-align: center;" >IDMC</th>
+                              <th style="text-align: center;" >MC Type</th>
+                              <th style="text-align: center;" >Automation</th>
+                              <th style="text-align: center;" >Line cũ</th>
+                              <th style="text-align: center;" >Mechanic</th>
+                              <th style="text-align: center;" >Timeupdate</th>
+                          </tr>
+                      </thead>
+                      <tbody style="text-align: left;">
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+  <button id="dialog_finish" style="display: none;"  type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#FModal">Open Modal</button>
+  <!-- Modal -->
+  <div class="modal fade" id="FModal" role="dialog" onload="set_forcus()">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><strong>Thông tin di chuyển máy</strong><span id="sys_confirm3">.</span></h4>
+        </div>
+        <div class="modal-body">
+          <form id="finish_fillin" action="javascript:">
+            <div class="modal-body">
+              <label class="form-control w3-left" for="idmc3">mã máy: <span id="idmc3"></span></label><br>
+              <label class="form-control w3-left" id="mc_type3">loại máy: <span id="mc_md"></span></label><br>
+              <label class="form-control w3-left" for="line_old">Line hiện tại: <span id="line_old"></span></label><br>
+              <label class="form-control w3-left" for="line_new">Line mới: <span id="line_new"></span></label><br>
+            </div>
+            <div class="modal-body">
+              <p>---------------------</p>
+            </div>
+            <div class="modal-body" id="f_nvtm">
+              <label class="form-control w3-left">Quét mã thẻ thợ máy cập nhật:</label><br>
+              <input class="form-control w3-center" style="background-color: yellow;" onkeypress="get_mec_name()" placeholder="đưa chuột vào và quét thẻ" type="number" name="id_nvtm3" id="id_nvtm3"><br>
+              <label class="form-control w3-left" id="name_nvtm3">Tên thợ máy</label>
+            </div>
+            <div class="modal-footer">
+              <div class="col-md-5">
+                <button type="button" value="submit" id="bt_firm" class="btn btn-primary" style="background-color: #4B0082;" onclick="update_loc_firm()"><span class="glyphicon glyphicon-ok-sign"></span> Cập nhật</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="close_dialog3" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- ???????????????????????????????????????????????????????????????????????????????????????? -->
+
+
+  <!-- Footer -->
+<!-- <footer class="w3-row-padding w3-padding-32 w3-center">
+</footer> -->
+
+</body>
+
+<script type="text/javascript">
+  $('#FModal').on('shown.bs.modal', function () {
+      $('#id_nvtm3').focus();
+  })  
+  function update_loc(){
+    document.getElementById("line_new").innerText=document.getElementById("sel_group").value
+    document.getElementById("mc_md").innerText=document.getElementById("mc_type").value
+    document.getElementById("idmc3").innerText=document.getElementById("machine_id").value
+    document.getElementById("line_old").innerText=document.getElementById("line_old2").value
+    if (document.getElementById("machine_id").value=="" || document.getElementById("sel_group").value=="-" ){
+      alert("Cần phải điền mã máy và chọn line đến mới tiếp tục được")
+    }
+    document.getElementById("name_nvtm3").innerText="Tên thợ máy"
+    document.getElementById("id_nvtm3").disabled=false;
+    document.getElementById("id_nvtm3").value="";
+    document.getElementById("dialog_finish").click()
+  }
+
+    
+  function update_loc_firm(){
+    // alert('load group')
+
+    var mcid=document.getElementById("machine_id").value;
+    var lineold=document.getElementById("line_old2").value;
+    var posold=document.getElementById('pos_old').value;
+    var linenew=document.getElementById('sel_group').value
+    var idtm=document.getElementById("id_nvtm3").value;
+    var mname=document.getElementById("name_nvtm3").innerText
+    if (mname=="Tên thợ máy"){
+      alert("ID khong duoc cap quyen chuyen vi tri")
+      return
+    }
+    console.log(mcid)
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", "/mec/mclocate/update", true);
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data={
+      idmc:mcid,
+      line_old:lineold,
+      pos_old:posold,
+      line_new:linenew,
+      idtm:idtm
+    }
+    xmlhttp.send(JSON.stringify(data)); 
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var res_result=this.responseText
+        console.log(res_result)
+        if (res_result=="failed"){
+          alert("mã máy  không tồn tại trên hệ thống!")
+        } else{
+          // res_result=JSON.parse(res_result);
+          alert('he thong da cap nhat')
+          document.getElementById("mc_type").value=""
+          document.getElementById("line_old2").value=""
+          document.getElementById("pos_old").value=""
+          document.getElementById("machine_id").value=""
+        }
+        }
+      };
+  }
+
+
+  function search_mc(){
+    if (event.keyCode === 13){
+        find_machine()
+      }
+  }
+  
+  
+  function find_machine(){
+    // alert('load group')
+    var xmlhttp = new XMLHttpRequest();
+    var mcid=document.getElementById("machine_id").value;
+    console.log(mcid)
+    xmlhttp.open("post", "/mec/mclocate/find", true);
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data={
+      idmc:mcid
+    }
+    xmlhttp.send(JSON.stringify(data)); 
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var res_result=this.responseText
+        console.log(res_result)
+        if (res_result=="false"){
+          alert("mã máy  không tồn tại trên hệ thống!")
+        } else{
+          res_result=JSON.parse(res_result);
+          document.getElementById("mc_type").value=res_result[0].MachineModel;
+          document.getElementById("line_old2").value=res_result[0].Line;
+          document.getElementById("pos_old").value=res_result[0].Pos;
+
+        }
+        }
+      };
+  }
+
+  function line_storage(){
+    // alert('load group')
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("get", "/mec/linestorage", true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var res_result=this.responseText
+        // console.log(res_result)
+        if (res_result=="false"){
+          alert("mã số nhập vào không phải nv may!")
+        } else{
+          var dt=JSON.parse(res_result)
+          sel_option='<option>-</option>'
+          for (i = 0; i <  dt.length; i++) {
+            sel_option+='<option>'+dt[i].Line+'</option>'
+          }
+          document.getElementById('sel_group').innerHTML=sel_option
+        }
+        }
+      };
+
+  }
+
+  function mc_in_line(){
+    // alert('load group')
+    var line=document.getElementById('sel_group').value
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("post", "/mec/mc_in_line", true);
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    data={
+      line:line
+    }
+    xmlhttp.send(JSON.stringify(data)); 
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var res_result=this.responseText
+        // console.log(res_result)
+        if (res_result=="false"){
+          alert("mã số nhập vào không phải nv may!")
+        } else{
+          var dt=JSON.parse(res_result)
+          console.log(dt)
+          trHTML=''
+          for (i = 0; i <  dt.length; i++) {
+              var Pos        =   dt[i].Pos;
+              var Line       =   dt[i].Line;
+              var Tagnumber      =   dt[i].Tagnumber;
+              var MachineModel   =   dt[i].MachineModel;
+              var Automation = dt[i].AutoType
+              var lineold  = dt[i].lineold
+              var mname= dt[i].name
+              var tu = dt[i].timeupdate
+
+              trHTML += '<tr ><td style="text-align: left;">' + Pos + '</td><td style="text-align: center;">'
+              trHTML += Line + '</td><td style="text-align: center;">' + Tagnumber + '</td><td style="text-align: left;">'
+              trHTML += MachineModel + '</td><td style="text-align: left;">' + Automation + '</td><td style="text-align: center;">'
+              trHTML += lineold + '</td><td style="text-align: left;">' + mname + '</td><td style="text-align: center;">'
+              trHTML += tu + '</td></tr>';
+          }
+          $('#tablea tbody').html(trHTML);
+        }
+        }
+      };
+
+  }
+
+  function get_mec_name(){
+    var msnv=document.getElementById('id_nvtm3').value
+    if (msnv.length>=6 && event.keyCode === 13){
+      
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("post", "/mec/idnv", true);
+      xhttp.setRequestHeader("Content-type", "application/json");
+      data={
+        idnv:msnv
+      }
+      xhttp.send(JSON.stringify(data))
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var res_result=this.responseText
+          console.log(res_result)
+          if (res_result=="wrong_id"){
+            alert("something wrong happen!")
+          } else{
+            nv=JSON.parse(res_result);
+            console.log(nv)
+            // console.log(nv[0].type)
+            if (nv[0].dept=="MEC" ||nv[0].id=="150442"||nv[0].id=="130085" || nv[0].id=="160211"|| nv[0].id=="118327"){
+              document.getElementById("name_nvtm3").innerText=nv[0].name;
+              document.getElementById("id_nvtm3").value=nv[0].id;
+              document.getElementById("id_nvtm3").disabled=true;
+              document.getElementById("bt_firm").focus();
+            }else{
+              alert("Mã số nhập vào không phải thợ máy")
+            }
+          }
+          }
+        };
+    }
+    else{
+      return
+    }
+  }
+
+
+
+  function w3_open() {
+    w3_close();
+    document.getElementById("mySidebar").style.display = "block";
+  }
+  function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("mySidebar_right").style.display = "none";
+    
+  }
+
+  function open_signup(){
+    w3_close();
+    document.getElementById("mySidebar_right").style.display = "block";
+  }
+
+</script>
+
+</html>

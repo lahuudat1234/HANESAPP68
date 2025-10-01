@@ -1,0 +1,2823 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<header>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- <link rel="stylesheet" href="/JS/mdl/material.min.css"> -->
+    <script src="/JS/mdl/material.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+    <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <!-- <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script> -->
+    <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <!-- <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script> -->
+    <!-- <script defer src="/JS/getmdl/getmdl-select.min.js"></script> -->
+    <script defer type="text/javascript" src="/JS/chart/Chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Quản lý tem</title>
+</header>
+
+<body>
+    <div id="txt_group_1" style="display: none;">
+        <%= group %>
+    </div>
+    <div id="txt_shift_1" style="display: none;">
+        <%= shift%>
+    </div>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">KIỂM TRA TEM LƯƠNG</span>
+                <%- include ("partials/headerTemplate.ejs"); -%>
+            </div>
+            <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+                <a href="#scroll-tab-1" class="mdl-layout__tab is-active">Thông tin File Scan</a>
+                <a href="#scroll-tab-2" class="mdl-layout__tab">Tìm kiếm theo Nhân Viên</a>
+                <a href="#scroll-tab-6" class="mdl-layout__tab">Tìm kiếm Bundle</a>
+                <a href="#scroll-tab-3" class="mdl-layout__tab">Tìm kiếm theo Worklot</a>
+                <a href="#scroll-tab-4" class="mdl-layout__tab" style="display: none;">Kiểm tra tem</a>
+                <a href="#scroll-tab-5" class="mdl-layout__tab">Xử lý tem trội</a>
+                <a href="#scroll-tab-9" class="mdl-layout__tab">Hướng dẫn quản lý tem</a>
+                <a href="#scroll-tab-8" class="mdl-layout__tab">Hướng dẫn điều chỉnh tem</a>
+                <a href="#scroll-tab-7" class="mdl-layout__tab">Setup Máy Scan</a>
+                
+            </div>
+        </header>
+        <%- include ("partials/navTemplate.ejs"); -%>
+            <main class="mdl-layout__content">
+                <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+                    <div class="page-content">
+                        <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                            <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 10px;">
+                                <div style="margin: 10px auto;">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder"
+                                        style="width:150px; margin-right: 50px;">
+                                        <input class="mdl-textfield__input" type="date" id="date_group_search">
+                                        <label class="mdl-textfield__label" for="date_group_search">Chọn ngày</label>
+                                    </div>
+                                    <div id="cbb_group"
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                                        style="width: 100px; margin-right: 50px;">
+                                        <input type="text" value="" class="mdl-textfield__input" id="txt_group"
+                                            readonly>
+                                        <input type="hidden" value="" name="groupScan">
+                                        <label for="groupScan" class="mdl-textfield__label">Chuyền</label>
+                                        <ul for="groupScan"
+                                            class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                                            id="groupScanList">
+                                            <li class="mdl-menu__item" data-val="001-007" data-selected="true">001-007
+                                            </li>
+                                            <li class="mdl-menu__item" data-val="008-014">008-014</li>
+                                            <li class="mdl-menu__item" data-val="015-020">015-020</li>
+                                            <li class="mdl-menu__item" data-val="021-027">021-027</li>
+                                            <li class="mdl-menu__item" data-val="028-034">028-034</li>
+                                            <li class="mdl-menu__item" data-val="035-042">035-042</li>
+                                            <li class="mdl-menu__item" data-val="043-050">043-050</li>
+                                            <li class="mdl-menu__item" data-val="051-058">051-058</li>
+                                            <li class="mdl-menu__item" data-val="059-066">059-066</li>
+                                            <li class="mdl-menu__item" data-val="067">067</li>
+                                            <li class="mdl-menu__item" data-val="067-074">067-074</li>
+                                            <li class="mdl-menu__item" data-val="075-082">075-082</li>
+                                            <li class="mdl-menu__item" data-val="083-090">083-090</li>
+
+                                            <li class="mdl-menu__item" data-val="091-098">091-098</li>
+                                            <li class="mdl-menu__item" data-val="099-105">099-105</li>
+                                            <li class="mdl-menu__item" data-val="106-111">106-111</li>
+                                            <li class="mdl-menu__item" data-val="112-118">112-118</li>
+
+                                            <li class="mdl-menu__item" data-val="201">201</li>
+                                            <li class="mdl-menu__item" data-val="202">202</li>
+                                            <li class="mdl-menu__item" data-val="203">203</li>
+                                            <li class="mdl-menu__item" data-val="201-202">202-202</li>
+                                            <li class="mdl-menu__item" data-val="201-203">201-203</li>
+                                            <li class="mdl-menu__item" data-val="202-203">202-203</li>
+                                            <li class="mdl-menu__item" data-val="200-234">200-234</li>
+                                            <li class="mdl-menu__item" data-val="204-206">204-206</li>
+                                            <li class="mdl-menu__item" data-val="208-210">208-210</li>
+                                            <li class="mdl-menu__item" data-val="204-210">204-210</li>
+                                            <li class="mdl-menu__item" data-val="211-217">211-217</li>
+                                            <li class="mdl-menu__item" data-val="218-224">218-224</li>
+                                            <li class="mdl-menu__item" data-val="225-231">225-231</li>
+                                            <li class="mdl-menu__item" data-val="229-231">229-231</li>
+                                            <li class="mdl-menu__item" data-val="231">231</li>
+                                            <li class="mdl-menu__item" data-val="234">234</li>
+                                            <li class="mdl-menu__item" data-val="232-234">232-234</li>
+                                            <li class="mdl-menu__item" data-val="239">239</li>
+                                            <li class="mdl-menu__item" data-val="239-245">239-245</li>
+                                            <li class="mdl-menu__item" data-val="246-252">246-252</li>
+                                            <li class="mdl-menu__item" data-val="253-259">253-259</li>
+                                            <li class="mdl-menu__item" data-val="260-266">260-266</li>
+                                            <li class="mdl-menu__item" data-val="267-269">267-269</li>
+                                            <li class="mdl-menu__item" data-val="270-276">270-276</li>
+                                            <li class="mdl-menu__item" data-val="277-283">277-283</li>
+                                            <li class="mdl-menu__item" data-val="284-290">284-290</li>
+                                            <li class="mdl-menu__item" data-val="291-297">291-297</li>
+                                            <li class="mdl-menu__item" data-val="298-304">298-304</li>
+                                            <li class="mdl-menu__item" data-val="298-305">298-305</li>
+                                            <li class="mdl-menu__item" data-val="305-311">305-311</li>
+                                            <li class="mdl-menu__item" data-val="306-311">306-311</li>
+                                            <li class="mdl-menu__item" data-val="312-318">312-318</li>
+                                            <li class="mdl-menu__item" data-val="319-325">319-325</li>
+                                            <li class="mdl-menu__item" data-val="326-332">326-332</li>
+                                            <li class="mdl-menu__item" data-val="333-339">333-339</li>
+                                            <li class="mdl-menu__item" data-val="340-345">340-345</li>
+                                            <li class="mdl-menu__item" data-val="346-353">346-353</li>
+                                            <li class="mdl-menu__item" data-val="347-353">347-353</li>
+                                            <li class="mdl-menu__item" data-val="981-981">981-981</li>
+                                            <li class="mdl-menu__item" data-val="982-982">982-982</li>
+                                            <!-- <li class="mdl-menu__item">500-600</li>
+                                            <li class="mdl-menu__item">700-800</li> -->
+                                        </ul>
+                                    </div>
+                                    <div id="cbb_shift"
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                                        style="width: 100px; margin-right: 50px;">
+                                        <input type="text" value="" class="mdl-textfield__input" id="txt_shift"
+                                            readonly>
+                                        <input type="hidden" value="" name="shiftScan">
+                                        <label for="shiftScan" class="mdl-textfield__label">Ca</label>
+                                        <ul for="shiftScan"
+                                            class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp"
+                                            id="shiftScanList">
+                                            <li class="mdl-menu__item" data-val="RIT" data-selected="true">RIT</li>
+                                            <li class="mdl-menu__item" data-val="BALI">BALI</li>
+                                        </ul>
+                                    </div>
+                                    <button
+                                        class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                                        id="btn_group_search">
+                                        <i class="material-icons">search</i>
+                                    </button>
+                                    <!-- <button class="mdl-button mdl-js-button mdl-button--raised 
+                                        mdl-js-ripple-effect mdl-button--accent" style="position: fixed; bottom: 20px; right:20px; z-index: 1000; background-color: green;" id="btn_group_report">
+                                        <i class="material-icons" style="margin-right: 5px;">assignment</i>XEM BẢNG LƯƠNG
+                                    </button> -->
+                                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                                        mdl-js-ripple-effect mdl-button--colored"
+                                        style="position: fixed; bottom: 50px; right:40px; z-index: 10; background-color: green;"
+                                        id="btn_group_report">
+                                        <i class="material-icons">assignment</i>
+                                    </button>
+                                    <div class="mdl-tooltip" for="btn_group_report" style="z-index: 11;">
+                                        <p style="font-size:12px">XEM BẢNG LƯƠNG</p>
+                                    </div>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                                        mdl-js-ripple-effect mdl-button--colored"
+                                        style="position: fixed; bottom: 120px; right:40px; z-index: 10; background-color: orangered;"
+                                        id="btn_group_wip">
+                                        <i class="material-icons">insert_chart</i>
+                                    </button>
+                                    <div class="mdl-tooltip" for="btn_group_wip" style="z-index: 11;">
+                                        <p style="font-size:12px">XEM BÁO CÁO</p>
+                                    </div>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                                        mdl-js-ripple-effect mdl-button--colored"
+                                        style="position: fixed; bottom: 190px; right:40px; z-index: 10; background-color: blue;"
+                                        id="btn_group_output">
+                                        <i class="material-icons">description</i>
+                                    </button>
+                                    <div class="mdl-tooltip" for="btn_group_output" style="z-index: 11;">
+                                        <p style="font-size:12px;">THÔNG TIN SẢN LƯỢNG</p>
+                                    </div>
+                                </div>
+                                <div style="width: 100%;">
+                                    <div id="table_group_spinner" style="margin-left: 50%;"></div>
+                                </div>
+                                <div style="width: 90%; margin: 0px auto;">
+                                    <ul style="margin:0px 0px;">
+                                        <li class="mdl-list__item" style="margin-top: 0px;">
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: right; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: green;">scanner</i>
+                                                <div id="txt_image_scanned" onclick="show_group_detail()">
+                                                    Số tem Hệ thống ghi nhận: 0
+                                                </div>
+                                                <div class="mdl-tooltip" for="txt_image_scanned"
+                                                    style="font-size: 15px;">
+                                                    Chọn để xem chi tiết
+                                                </div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: left; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: red;">warning</i>
+                                                <div id="txt_image_error_scan">Số ảnh thiếu Tem QC hoặc ID NV: 0</div>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                    <!-- <div style="color: red; width: 90%;">
+                                        <i class="material-icons" style="margin-right: 20px;">policy</i>Chú ý: <b>VỆ SINH MÁY NẾU THẤY 1 VẠCH DỌC TRÊN ẢNH SCAN VÀ SCAN LẠI!</b>
+                                    </div> -->
+                                </div>
+                                <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                                    <style>
+                                        .mdl-badge[data-badge]:after {
+                                            background-color: indigo;
+                                            color: white;
+                                        }
+                                    </style>
+                                    <div class="mdl-tabs__tab-bar" style='border: none;'>
+                                        <a href="#scan-check" class="mdl-tabs__tab is-active">Thiếu tem Scan</span></a>
+                                        <a href="#double-check" class="mdl-tabs__tab"><span class="mdl-badge"
+                                                id="txt_badge_double">NV có trên 1 CĐ/1 tờ tem</span></a>
+                                        <a href="#wip-check" class="mdl-tabs__tab"><span class="mdl-badge"
+                                                id="txt_badge_wip">WIP Scan</span></a>
+                                        <a href="#notprocess-check" class="mdl-tabs__tab"><span class="mdl-badge"
+                                                id="txt_badge_err">không xử lý được</span></a>
+                                    </div>
+                                    <div class="mdl-tabs__panel is-active" id="scan-check">
+                                        <div id="table_group_search" class="mdl-card"
+                                            style="width: 90% ; margin: 10px auto; overflow-x:auto; border-radius: 10px; display:none;">
+                                            <ul style="margin:0px 0px;">
+                                                <li class="mdl-list__item" style="margin-top: 0px;">
+                                                    <span class="mdl-list__item-primary-content"
+                                                        style="width: 50%; text-align: right; float:left;">
+                                                        <i class="material-icons mdl-list__item-icon"
+                                                            style="color: orange;">credit_card</i>
+                                                        <div id="txt_image_error_bundle">Thiếu tem NV: 0</div>
+                                                    </span>
+                                                    <span class="mdl-list__item-primary-content"
+                                                        style="width: 50%; text-align: left; float:left;">
+                                                        <i class="material-icons mdl-list__item-icon"
+                                                            style="color: blue;">toys</i>
+                                                        <div id="txt_image_error_qc">Thiếu tem QC: 0</div>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                            <div class="mdl-card mdl-shadow--8dp"
+                                                style="width: 100% ; margin: 10px auto; overflow-x:auto; border-radius: 10px;">
+                                                <table class="mdl-data-table mdl-js-data-table"
+                                                    style="border: none; width: 100%;">
+                                                    <thead style="background-color: green;">
+                                                        <tr>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">STT</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">BUNDLE</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">QC</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">TÌNH TRẠNG</th>
+                                                            <th class="mdl-data-table__cell--non-numeric"
+                                                                style="color: white;">FILE SCAN</th>
+                                                            <!-- <th class="mdl-data-table__cell--non-numeric" style="color: white;">FILE HT</th> -->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="table_group_search_body">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-tabs__panel" id="double-check">
+                                        <div id="table_double_search" class="mdl-card"
+                                            style="width: 90% ; margin: 10px auto; overflow-x:auto; border-radius: 10px; display:none;">
+                                            <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                                <thead style="background-color: indigo;">
+                                                    <tr>
+                                                        <th class="mdl-data-table__cell--non-numeric"
+                                                            style="color: white;">STT</th>
+                                                        <th class="mdl-data-table__cell--non-numeric"
+                                                            style="color: white;">MÃ NHÂN VIÊN</th>
+                                                        <th class="mdl-data-table__cell--non-numeric"
+                                                            style="color: white;">QC</th>
+                                                        <th class="mdl-data-table__cell--non-numeric"
+                                                            style="color: white;">SỐ TEM</th>
+                                                        <th class="mdl-data-table__cell--non-numeric"
+                                                            style="color: white;">FILE</th>
+                                                        <!-- <th class="mdl-data-table__cell--non-numeric">FILE HT</th> -->
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="table_double_search_body">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-tabs__panel" id="wip-check">
+                                        <div id="table_wip_search" class="mdl-card"
+                                            style="width: 90% ; margin: 10px auto; overflow-x:auto; border-radius: 10px; display:none;">
+                                            <ul style="margin:0px 0px;">
+                                                <li class="mdl-list__item" style="margin-top: 0px;">
+                                                    <span class="mdl-list__item-primary-content"
+                                                        style="width: 50%; text-align: left; float:left;">
+                                                        <i class="material-icons mdl-list__item-icon"
+                                                            style="color: indigo;">assignment</i>
+                                                        <div id="txt_wip">WIP Sewing: 0</div>
+                                                    </span>
+                                                    <span class="mdl-list__item-primary-content"
+                                                        style="width: 50%; text-align: left; float:right;">
+                                                        <i class="material-icons mdl-list__item-icon"
+                                                            style="color: orangered;">lock</i>
+                                                        <div id="txt_wip_ns">WIP Non-Sewing: 0</div>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                            <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                                <thead style="background-color: orange;">
+                                                    <tr>
+                                                        <th class="mdl-data-table__cell--non-numeric">STT</th>
+                                                        <th class="mdl-data-table__cell--non-numeric">BUNDLE</th>
+                                                        <th class="mdl-data-table__cell--non-numeric">QC</th>
+                                                        <th class="mdl-data-table__cell--non-numeric">IS FULL</th>
+                                                        <th class="mdl-data-table__cell--non-numeric">FILE SCAN</th>
+                                                        <!-- <th class="mdl-data-table__cell--non-numeric">FILE HT</th> -->
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="table_wip_search_body">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-tabs__panel" id="notprocess-check">
+                                        <div id="table_error_search" class="mdl-card"
+                                            style="width: 90% ; margin: 10px auto; overflow-x:auto; border-radius: 10px; display:none;">
+                                            <ul style="margin:0px 0px;">
+                                                <li class="mdl-list__item" style="margin-top: 0px;">
+                                                    <span class="mdl-list__item-primary-content"
+                                                        style="width: 50%; text-align: left; float:left;">
+                                                        <i class="material-icons mdl-list__item-icon"
+                                                            style="color: rgb(0, 255, 0);">info</i>
+                                                        <div id="txt_error_scan">Hệ thống không xử lý được: 0</div>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                            <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                                <thead style="background-color: rgb(116, 116, 116);">
+                                                    <tr>
+                                                        <th class="mdl-data-table__cell--non-numeric"
+                                                            style="color: white;">STT</th>
+                                                        <th class="mdl-data-table__cell--non-numeric"
+                                                            style="color: white;">FILE</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="table_error_search_body">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+                    <div class="page-content">
+                        <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                            <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 10px;">
+                                <div style="margin: 10px auto;">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder"
+                                        style="width:150px; margin-right: 50px;">
+                                        <input class="mdl-textfield__input" type="date" id="date_ID_search_from">
+                                        <label class="mdl-textfield__label" for="date_ID_search_from">Từ ngày</label>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder"
+                                        style="width:150px; margin-right: 50px;">
+                                        <input class="mdl-textfield__input" type="date" id="date_ID_search">
+                                        <label class="mdl-textfield__label" for="date_ID_search">Đến ngày</label>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                                        style="width: 200px; margin-right: 50px;">
+                                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?"
+                                            id="txt_ID">
+                                        <label class="mdl-textfield__label" for="txt_ID">Nhập mã ID Công Nhân</label>
+                                        <span class="mdl-textfield__error">ID là 1 con số!</span>
+                                    </div>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                                            mdl-js-ripple-effect mdl-button--colored" id="btn_ID_search">
+                                        <i class="material-icons">search</i>
+                                    </button>
+                                </div>
+                                <div style="width: 100%;">
+                                    <div id="table_ID_spinner" style="margin-left: 50%; margin-top: 5px;"></div>
+                                </div>
+                                <div style="width: 90%; margin: 0px auto;">
+                                    <ul style="margin:0px 0px;">
+                                        <li class="mdl-list__item">
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 70%; text-align: left; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: indigo;">face</i>
+                                                <div id="txt_ID_name" style="color: indigo;">Họ và Tên:</div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: right; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: red;">fingerprint</i>
+                                                <div id="txt_ID_ID" style="color: red;">ID:</div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: left; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: green;">brightness_1</i>
+                                                <div id="txt_ID_shift" style="color: green;">Ca:</div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: right; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: orange;">location_on</i>
+                                                <div id="txt_ID_line" style="color: orange;">Line:</div>
+                                            </span>
+                                        </li>
+                                        <hr>
+                                        <li class="mdl-list__item">
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: left; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: green;">art_track</i>
+                                                <div id="txt_sum_ticket">Tổng tem: 0</div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: right; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: orange;">person</i>
+                                                <div id="txt_sum_sah">Earn Hours: 0</div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: left; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: blue;">timer</i>
+                                                <div id="txt_reg_hrs">Giờ quẹt thẻ: 0</div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: right; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: red;">eco</i>
+                                                <div id="txt_ot">Giờ tăng ca: 0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item">
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: left; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: indigo;">filter_3</i>
+                                                <div id="txt_cd03">Giờ 03: 0</div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: right; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: gray;">filter_8</i>
+                                                <div id="txt_cd08">Giờ 08: 0</div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: left; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: violet;">filter_9</i>
+                                                <div id="txt_cd09">Giờ 09: 0</div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: right; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: yellow;">menu_book</i>
+                                                <div id="txt_efficiency">Hiệu suất: 0</div>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="table_ID_search" class="mdl-card mdl-shadow--6dp"
+                                    style="width: 90% ; margin: 10px auto; overflow-x:auto; border-radius: 10px; display:none;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                        <thead style="background-color: gray;">
+                                            <tr>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    BUNDLE</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">CODE
+                                                </th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">SAM
+                                                </th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    UNITS</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">
+                                                    WORKLOT</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white;">FILE
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_ID_search_body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-6">
+                    <div class="page-content">
+                        <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                            <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 10px;">
+                                <div style="margin: 10px auto;">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                                        id="div_bundle_search" style="width: 200px; margin-right: 50px;">
+                                        <input class="mdl-textfield__input" type="text" id="txt_bundle_search"
+                                            value="a">
+                                        <label class="mdl-textfield__label" for="txt_bundle_search">Nhập mã
+                                            Bundle</label>
+                                    </div>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                                            mdl-js-ripple-effect mdl-button--colored" id="btn_bundle_search">
+                                        <i class="material-icons">search</i>
+                                    </button>
+                                </div>
+                                <div style="width: 100%;">
+                                    <div id="table_bundle_spinner" style="margin-left: 50%; margin-top: 20px;"></div>
+                                </div>
+                                <div id="table_bundle_search" class="mdl-card mdl-shadow--6dp"
+                                    style="width: 90% ; margin: 10px auto; overflow-x:auto; border-radius: 10px; display:none;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                        <!-- <col width="15px">  -->
+                                        <!-- <col width="50px">  -->
+                                        <thead style="background-color: orange;">
+                                            <tr>
+                                                <th class="mdl-data-table__cell--non-numeric">STT</th>
+                                                <th class="mdl-data-table__cell--non-numeric">TICKET</th>
+                                                <th class="mdl-data-table__cell--non-numeric">NHÂN VIÊN</th>
+                                                <th class="mdl-data-table__cell--non-numeric">NGÀY EARN</th>
+                                                <th class="mdl-data-table__cell--non-numeric">SAM</th>
+                                                <th class="mdl-data-table__cell--non-numeric">WORKLOT</th>
+                                                <th class="mdl-data-table__cell--non-numeric">FILE SCAN</th>
+                                                <th class="mdl-data-table__cell--non-numeric">CHỈNH SỬA</th>
+                                                <th class="mdl-data-table__cell--non-numeric">QC</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_bundle_search_body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-3">
+                    <div class="page-content">
+                        <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                            <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 10px;">
+                                <div style="margin: 10px auto;">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                                        style="width: 200px; margin-right: 50px;">
+                                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?"
+                                            id="txt_worklot">
+                                        <label class="mdl-textfield__label" for="txt_worklot">Nhập mã Worklot</label>
+                                        <span class="mdl-textfield__error">Worklot là 1 con số!</span>
+                                    </div>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                                            mdl-js-ripple-effect mdl-button--colored" id="btn_worklot_summary">
+                                        <i class="material-icons">search</i>
+                                    </button>
+                                </div>
+                                <div style="width: 100%;">
+                                    <div id="table_worklot_spinner" style="margin-left: 50%; margin-top: 20px;"></div>
+                                </div>
+                                <div style="width: 90%; margin: 0px auto;">
+                                    <!-- <div style="width:90%; margin: 10px auto; background-color: white; display: none;" id="worklot_chart_div">
+                                        <canvas id="worklot_chart"></canvas>
+                                    </div> -->
+                                    <ul style="margin:0px 0px;">
+                                        <li class="mdl-list__item">
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: left; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: green;">art_track</i>
+                                                <div id="txt_issue">Số tờ đã in: 0</div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: right; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: orange;">scanner</i>
+                                                <div id="txt_scan">Số tờ đã scan: 0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item">
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: left; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: red;">close</i>
+                                                <div id="txt_notscan">Số tờ chưa scan: 0</div>
+                                            </span>
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: right; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: blue;">keyboard_return</i>
+                                                <div id="txt_ia">Số tờ trả IA: 0</div>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item">
+                                            <span class="mdl-list__item-primary-content"
+                                                style="width: 50%; text-align: left; float:left;">
+                                                <i class="material-icons mdl-list__item-icon"
+                                                    style="color: indigo;">send</i>
+                                                <div id="txt_sup_release" onclick="func_supervisor_release_bundle()"
+                                                    style="cursor: pointer;">Phát tem: 0</div>
+                                                <div class="mdl-tooltip" style="font-size: 12px;"
+                                                    data-mdl-for="txt_sup_release">
+                                                    Chọn để hiển thị chi tiết
+                                                </div>
+                                            </span>
+                                            <!-- <span class="mdl-list__item-primary-content" style="width: 50%; text-align: right; float:left;">
+                                                <i class="material-icons mdl-list__item-icon" style="color: blue;">keyboard_return</i>
+                                                    <div id="txt_ia">Số tờ trả IA: 0</div>
+                                            </span> -->
+                                        </li>
+                                    </ul>
+                                </div>
+                                <h5 style="margin-left: 90px">Các tờ bị thiếu tem lẻ:</h5>
+                                <div id="table_worklot_summary" class="mdl-card mdl-shadow--6dp"
+                                    style="width: 90% ; margin: 10px auto; overflow-x:auto; border-radius: 10px; display:none;">
+                                    <table class="mdl-data-table mdl-js-data-table">
+                                        <!-- <col width="21px"> -->
+                                        <thead style="background-color: indigo;">
+                                            <tr>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white">
+                                                    Bundle</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white">Tem
+                                                </th>
+                                                <!-- <th class="mdl-data-table__cell--non-numeric">Ngày Tạo</th> -->
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white">Kho
+                                                    in</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white">Đã
+                                                    scan</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white">Trả
+                                                    IA</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white">Còn
+                                                    lại</th>
+                                                <th class="mdl-data-table__cell--non-numeric" style="color: white">Tình
+                                                    trạng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_worklot_summary_body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="table_worklot_search" class="mdl-card"
+                                    style="width: 90% ; margin: 10px auto; overflow-x:auto; border-radius: 10px; display:none;">
+                                    <table class="mdl-data-table mdl-js-data-table">
+                                        <col width="21px">
+                                        <thead>
+                                            <tr>
+                                                <th class="mdl-data-table__cell--non-numeric">BUNDLE</th>
+                                                <th class="mdl-data-table__cell--non-numeric">Ngày Tạo</th>
+                                                <th class="mdl-data-table__cell--non-numeric">Nhân Viên</th>
+                                                <th class="mdl-data-table__cell--non-numeric">Ngày Ăn</th>
+                                                <th class="mdl-data-table__cell--non-numeric">Mã Công Đoạn</th>
+                                                <th class="mdl-data-table__cell--non-numeric">SAM</th>
+                                                <th class="mdl-data-table__cell--non-numeric">Đơn Vị</th>
+                                                <th class="mdl-data-table__cell--non-numeric">FILE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_worklot_search_body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-4">
+                    <div class="page-content">
+                        <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                            <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 10px;">
+                                <div style="margin: 10px auto;">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                                        style="width: 200px; margin-right: 50px;">
+                                        <input class="mdl-textfield__input" type="text" id="txt_ticket_search"
+                                            maxlength="10">
+                                        <label class="mdl-textfield__label" for="txt_ticket_search">Scan Ticket</label>
+                                    </div>
+                                    <p id="txt_ticket_status"></p>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab 
+                                            mdl-js-ripple-effect mdl-button--colored" id="btn_ticket_delete">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                                <div style="width: 100%;">
+                                    <div id="table_ticket_spinner" style="margin-left: 50%; margin-top: 20px;"></div>
+                                </div>
+                                <div id="table_ticket_search" class="mdl-card"
+                                    style="width: 90% ; margin: 10px auto; overflow-x:auto; border-radius: 10px;">
+                                    <table class="mdl-data-table mdl-js-data-table" style="border: none;">
+                                        <thead>
+                                            <tr>
+                                                <th class="mdl-data-table__cell--non-numeric">STT</th>
+                                                <th class="mdl-data-table__cell--non-numeric">TICKET</th>
+                                                <th class="mdl-data-table__cell--non-numeric">TRẠNG THÁI</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_ticket_search_body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-5">
+                    <div class="page-content" style="margin:10px auto; width:95vw; height: 85vh; ">
+                        <!-- <div>
+                            <embed src="../Assets/HuongDanQlyTem.pdf" style="width: 95vw; height: 85vh; margin: 10px auto;"/>
+                        </div> -->
+                        <div style="width: 95%; margin: 10px auto; border-radius: 10px;">
+                            <div class="mdl-grid mdl-shadow--6dp" style="background: white; border-radius: 10px;">
+                                <div style="margin: 10px auto;">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder"
+                                        style="width:150px; margin-right: 50px;">
+                                        <input class="mdl-textfield__input" type="date" id="date_change_scan">
+                                        <label class="mdl-textfield__label" for="date_change_scan">Chọn ngày</label>
+                                    </div>
+                                    <form id='upload_change_scan' method='POST'
+                                        action='/Payroll_Search/Update_Date_Scan' style="display: none;"
+                                        submit='return false;'>
+                                        <input type='file' name='file' id='file' style="display: none;"
+                                            onchange="upload_file_event(this)" multiple>
+                                        <input type='submit' id='submit' style='display: none;'>
+                                    </form>
+                                    <button
+                                        class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                                        id="btn_change_scan">
+                                        <i class="material-icons">flip_camera_android</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-7">
+                    <div class="page-content" style="margin:10px auto; width:95vw; height: 85vh; ">
+                        <div>
+                            <embed src="../Assets/Huong_dan_cai_scan_tem_luong.pdf"
+                                style="width: 95vw; height: 85vh; margin: 10px auto;" />
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-8">
+                    <div class="page-content" style="overflow-y: scroll;">
+                        <div>
+                            <embed src="../Assets/sop_fixloi.pdf"
+                                style="width: 95vw; height: 85vh; margin: 10px auto;" />
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-9">
+                    <div class="page-content" style="overflow-y: scroll;">
+                        <div>
+                            <embed src="../Assets/huongdanqlytem.pdf"
+                                style="width: 95vw; height: 85vh; margin: 10px auto;" />
+                        </div>
+                    </div>
+                </section>
+            </main>
+    </div>
+</body>
+<dialog id='data' style="border: none; border-radius: 10px; transition: width 2s; width: 1100px;">
+    <!-- <img src="../image/RIT/001008/001007R_08-05-2020_0613_0001_done.jpg" alt="Scan Anh"> -->
+    <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+    <div class='mdl-grid'>
+        <div class="mdl-cell mdl-cell--10-col">
+            <img id="show_image" alt="Scan Anh"
+                src='../image/Backup/20210709/BALI/035042/035042B_09-07-2021_132702_44885_done.jpg'>
+        </div>
+        <div class="mdl-cell mdl-cell--2-col">
+            <div style="position: fixed; top:20px;">
+                <h4 style="color: indigo; margin: 0px auto;">ĐIỀU CHỈNH TEM</h4>
+                <div>
+                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1"
+                        style="margin-top: 15px; width: 200px; display: none">
+                        <input type="radio" id="option-1" class="mdl-radio__button" name="cb_option" value="1" checked>
+                        <span class="mdl-radio__label">Danh sách</span>
+                    </label>
+                </div>
+                <div>
+                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2"
+                        style="margin-top: 10px; width: 200px; display: none;">
+                        <input type="radio" id="option-2" class="mdl-radio__button" name="cb_option" value="2" disabled>
+                        <span class="mdl-radio__label">Nhập tay</span>
+                    </label>
+                </div>
+                <!-- <div style="margin-right: 50px; color: red; width: 150px;"><b>K'0' (số không)</b>, không phải KO (chữ O)</div> -->
+                <div id="cbb_bundle"
+                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height"
+                    style="width: 150px; ">
+                    <input type="text" value="" class="mdl-textfield__input" id="bundleScan">
+                    <!-- readonly -->
+                    <input type="hidden" value="" name="bundleScan">
+                    <label for="bundleScan" class="mdl-textfield__label">Mã Bundle</label>
+                    <ul for="bundleScan" class="mdl-menu mdl-menu--bottom-left mdl-js-menu" id="bundleScanList">
+                    </ul>
+                </div>
+                <div id='txt_bundle' class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                    style="width: 150px; display: none;">
+                    <input class="mdl-textfield__input" type="text" id="bundleScan_txt" maxlength="10">
+                    <label class="mdl-textfield__label" for="bundleScan_txt">Bundle</label>
+                    <span class="mdl-textfield__error">Mã Bundle có 10 chữ số!</span>
+                </div>
+                <!-- <div> -->
+                <div></div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 150px;">
+                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="txt_ID_add"
+                        maxlength="5">
+                    <label class="mdl-textfield__label" for="txt_ID_add">ID Nhân viên</label>
+                    <span class="mdl-textfield__error">Mã NV có 5 chữ số!</span>
+                </div>
+                <div id='txt_name' style="color: indigo"></div>
+                <div>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                        style="margin-top:10px; width: 150px; color: white; background-color: green;"
+                        id="btn_bundle_submit">
+                        Xác nhận
+                        <i class="material-icons">done</i>
+                    </button>
+                    <div></div>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                        style="width: 150px; color: white; background-color: red; margin-top: 5px;"
+                        id="btn_bundle_cancel">
+                        Quay lại
+                        <i class="material-icons">clear</i>
+                    </button>
+                    <div></div>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                        style="width: 150px; color: white; background-color: purple; margin-top: 30px; display: none;"
+                        id="btn_bundle_skip">
+                        Bỏ qua ảnh
+                        <i class="material-icons">clear_all</i>
+                    </button>
+                    <div></div>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                        style="width: 150px; color: white; background-color: purple; margin-top: 30px; display: none;"
+                        id="btn_bundle_confirm">
+                        Đã scan lại
+                        <i class="material-icons">low_priority</i>
+                    </button>
+                    <div style=' margin-top: 5px; color: orangered;'>Ticket - Mã nhân viên</div>
+                    <div id="txt_note" style="color: indigo; font-size: 13px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- thoong tin scan nhom 21-27 -->
+    <div class='mdl-grid' id="021027_dialog">
+        <div class="mdl-cell mdl-cell--10-col">
+            <table class="mdl-data-table mdl-js-data-table" id="021027_tb" style="border: none; width: 100%;">
+                <thead style="background-color: orange;">
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric">STT</th>
+                        <th class="mdl-data-table__cell--non-numeric">BUNDLE</th>
+                        <th class="mdl-data-table__cell--non-numeric">EMPLOYEE</th>
+                        <th class="mdl-data-table__cell--non-numeric">NAME</th>
+                        <th class="mdl-data-table__cell--non-numeric">SCAN</th>
+                        <!-- <th class="mdl-data-table__cell--non-numeric">FILE HT</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</dialog>
+<dialog id='dialog_group_report' style="border: none; border-radius: 10px; transition: width 2s; width: 1100px;">
+    <div style="width: 100%;">
+        <div id="dialog_group_report_spinner" style="margin-left: 50%;"></div>
+    </div>
+    <div id="table_group_report" style="margin: 0px auto; overflow-x:auto; display: none;">
+        <table class="mdl-data-table mdl-js-data-table" style="width: 100%;">
+            <col width="21px">
+            <thead style="background-color: green;">
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">STT</th>
+                    <th class="mdl-data-table__cell--non-numeric">ID</th>
+                    <th class="mdl-data-table__cell--non-numeric">TÊN</th>
+                    <th class="mdl-data-table__cell--non-numeric">LINE</th>
+                    <th class="mdl-data-table__cell--non-numeric">CÔNG ĐOẠN</th>
+                    <th class="mdl-data-table__cell--non-numeric">SỐ TEM</th>
+                    <!-- <th class="mdl-data-table__cell--non-numeric">QUẸT THẺ</th>
+                        <th class="mdl-data-table__cell--non-numeric">NGHỈ SX</th>
+                        <th class="mdl-data-table__cell--non-numeric">HIỆU SUẤT</th> -->
+                </tr>
+            </thead>
+            <tbody id="table_group_report_body">
+            </tbody>
+        </table>
+    </div>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+        style="width: 100px; color: white; background-color: purple; margin-top: 20px;" id="btn_group_report_close">
+        Đóng
+        <i class="material-icons">close</i>
+    </button>
+</dialog>
+<dialog id='dialog_group_detail' style="border: none; border-radius: 10px; transition: width 2s; width: 1100px;">
+    <div style="width: 100%;">
+        <div id="dialog_group_detail_spinner" style="margin-left: 50%;"></div>
+    </div>
+    <div id="table_group_detail" style="margin: 0px auto; overflow-x:auto; display: none;">
+        <table class="mdl-data-table mdl-js-data-table" style="width: 100%;">
+            <col width="21px">
+            <thead style="background-color: indigo;">
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric" style="color: white">STT</th>
+                    <th class="mdl-data-table__cell--non-numeric" style="color: white">TÊN ẢNH</th>
+                    <th class="mdl-data-table__cell--non-numeric" style="color: white">KHUNG GIỜ</th>
+                    <th class="mdl-data-table__cell--non-numeric" style="color: white">TEM ĂN/TỔNG TEM</th>
+                    <th class="mdl-data-table__cell--non-numeric" style="color: white">LẦN ĐẦU SCAN</th>
+                    <th class="mdl-data-table__cell--non-numeric" style="color: white">SCAN LẠI</th>
+                    <th class="mdl-data-table__cell--non-numeric" style="color: white">TÊN SERIES</th>
+                </tr>
+            </thead>
+            <tbody id="table_group_detail_body">
+            </tbody>
+        </table>
+    </div>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+        style="width: 100px; color: white; background-color: purple; position: fixed; bottom: 10px; left: 20px;"
+        id="btn_group_detail_close">
+        Đóng
+        <i class="material-icons">close</i>
+    </button>
+</dialog>
+<dialog id='dialog_wip_detail' style="border: none; border-radius: 10px; transition: width 2s; width: 90%;">
+    <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+        <div class="mdl-tabs__tab-bar" style="border: none;">
+            <a href="#wip_tab" class="mdl-tabs__tab is-active">Báo cáo WIP</a>
+            <a href="#colorbalancing_tab" class="mdl-tabs__tab">Báo cáo Cân Bằng Màu</a>
+            <a href="#kickout_tab" class="mdl-tabs__tab">Báo cáo KickOut</a>
+            <a href="#endline_tab" class="mdl-tabs__tab">Báo cáo EndLine</a>
+        </div>
+        <div class="mdl-tabs__panel is-active" id="wip_tab">
+            <img id="wip_img" alt="WIP" style="width: 100%;">
+        </div>
+        <div class="mdl-tabs__panel is-active" id="colorbalancing_tab">
+            <div class="mdl-grid">
+                <img id="color_img1" alt="ColorBalancing1" style="width: 60%; margin: 10px auto;">
+                <img id="color_img" alt="ColorBalancing" style="width: 100%;">
+            </div>
+        </div>
+        <div class="mdl-tabs__panel is-active" id="kickout_tab">
+            <img id="kickout_img" alt="KickOutput" style="width: 100%;">
+        </div>
+        <div class="mdl-tabs__panel is-active" id="endline_tab">
+            <img id="endline_img" alt="EndLine" style="width: 100%;">
+        </div>
+    </div>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+        style="width: 100px; color: white; background-color: purple; position: fixed; bottom: 10px; left: 20px;"
+        id="btn_wip_detail_close">
+        Đóng
+        <i class="material-icons">close</i>
+    </button>
+</dialog>
+<dialog id='dialog_output_detail' style="border: none; border-radius: 10px; transition: width 2s; width: 90%;">
+    <div style="width: 100%;">
+        <div id="dialog_output_detail_spinner" style="margin-left: 50%;"></div>
+    </div>
+    <!-- <div id="table_output_detail" style="margin: 0px auto; overflow-x:auto; ">
+            <table class="mdl-data-table mdl-js-data-table" style="width: 100%;">
+                <thead style="background-color: green;">
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">CÔNG ĐOẠN</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">HEADCOUNT</th>
+                        <th class="mdl-data-table__cell--non-numeric" style="color: white;">OUTPUT</th>
+                    </tr>
+                </thead>
+                <tbody id="table_output_detail_body">
+                </tbody>
+            </table>
+        </div> -->
+    <div style="width:90%; margin: 10px auto; background-color: white; display: grid;" id="group_chart_div">
+        <canvas id="group_chart"></canvas>
+    </div>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+        style="width: 100px; color: white; background-color: purple; position: fixed; bottom: 10px; left: 20px;"
+        id="btn_output_detail_close">
+        Đóng
+        <i class="material-icons">close</i>
+    </button>
+</dialog>
+<dialog id="dialog_worklot_infor" style="border-radius: 10px; border: none; padding: 0; width: 500px;">
+    <div class="mdl-card mdl-shadow--2dp" style="width: 100%; border-radius: 10px;">
+        <div class="mdl-card__title" style="background-color:indigo; ">
+            <h2 class="mdl-card__title-text" style="color: white; font-weight: bold;" id="txt_sup_release_worklot">
+                WORKLOT
+            </h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <div id="txt_sum_sup_release" style="font-size: 15px; margin-top: 10px; color: black">Đã phát: 0</div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="txt_sup_release_quantity" style="color:black;">
+                <label class="mdl-textfield__label" for="txt_sup_release_quantity">Nhập số tờ phát</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="txt_sup_note" style="color:black;">
+                <label class="mdl-textfield__label" for="txt_sup_note">Nhập ghi chú</label>
+            </div>
+            <div style="overflow-x: scroll;">
+                <table class="mdl-data-table mdl-js-data-table table-hover mdl-shadow--2dp"
+                    style="width: 100%; border: none; margin:0 auto; margin-top: 20px;">
+                    <thead STYLE="background-color: indigo;">
+                        <tr style="border-radius: 10px;">
+                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">STT</th>
+                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">SỐ LƯỢNG</th>
+                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">USER</th>
+                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">GHI CHÚ</th>
+                            <th class="mdl-data-table__cell--non-numeric" style="color: white;">THỜI GIAN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_worklot_infor_body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- <div class="mdl-card__actions mdl-card--border">
+                <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_asslot_infor_prepare" style="float: right;">
+                    ĐỒNG Ý
+                </button>
+            </div> -->
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="btn_worklot_infor_close">
+                <i class="material-icons" style="color: white;">close</i>
+            </button>
+        </div>
+    </div>
+</dialog>
+
+</html>
+<script>
+    // window.onload= function(){
+    //     console.log('hello');
+    //     // console.log(System.getProperty("user.name"));
+    //     console.log(GetUserName());
+    // }
+    // var WinNetwork = new ActiveXObject("WScript.Network");
+    // alert(WinNetwork.UserName); 
+    // function GetUserName() {
+    //     var wshell = ActiveXObject && new ActiveXObject("WScript.Shell");
+    //     return wshell && wshell.ExpandEnvironmentStrings("%USERNAME%");
+    // }
+
+    document.getElementById('txt_bundle_search').value = "";
+    var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    var today = localISOTime;
+    var table_group_search = document.getElementById('table_group_search');
+    var tabel_wip_search = document.getElementById('table_wip_search');
+    var table_ID_search = document.getElementById('table_ID_search');
+    var table_error_search = document.getElementById('table_error_search');
+    var table_worklot_search = document.getElementById('table_worklot_search');
+    var table_double_seach = document.getElementById('table_double_search');
+    document.getElementById('date_group_search').value = today.substr(0, 10);
+    document.getElementById('date_ID_search_from').value = today.substr(0, 10);
+    document.getElementById('date_ID_search').value = today.substr(0, 10);
+    //yesterday
+    var yesterdate = new Date();
+    yesterdate.setDate(yesterdate.getDate() - 5);
+    var localISOTime_yesterday = yesterdate.toISOString().slice(0, -1);
+    document.getElementById('date_change_scan').value = localISOTime_yesterday.substr(0, 10);
+    document.getElementById('date_change_scan').min = localISOTime_yesterday.substr(0, 10);
+    document.getElementById('date_change_scan').max = localISOTime.substr(0, 10);
+    var group_data;
+    var shift;
+    var group = '';
+    var QC = '';
+    var group_detail_data;
+    var tab_mode = 0;
+    var date_tab = "0";
+    // init();
+    // function init() {
+    //     txt_group = document.getElementById('txt_group_1').innerHTML;
+    //     txt_shift = document.getElementById('txt_shift_1').innerHTML;
+    //     group = '001-008';
+    //     switch (txt_group) {
+    //         // case '009-014':
+    //         //     group='010-014';
+    //         //     break;
+    //         case '009-014':
+    //             group = '010-014';
+    //             break;
+    //         case '015-024':
+    //             group = '015-019';
+    //             break;
+    //         case '051-058':
+    //             group = '051-059';
+    //             break;
+    //         default:
+    //             group = txt_group;
+    //     }
+    //     shift = 'RIT';
+    //     if (txt_shift == 'R') shift = 'RIT';
+    //     else shift = 'BALI';
+    //     console.log(group, shift);
+    //     $('ul[for="groupScan"] li[data-val="' + group + '"]').attr("data-selected", "true");
+    //     $('ul[for="shiftScan"] li[data-val="' + shift + '"]').attr("data-selected", "true");
+    // }
+
+    function group_search_data(group) {
+        table_group_search.style.display = "none";
+        tabel_wip_search.style.display = "none";
+        table_error_search.style.display = "none";
+        var full_date = document.getElementById('date_group_search').value;
+        year = full_date.substr(0, 4);
+        month = full_date.substr(5, 2);
+        day = full_date.substr(8, 2);
+        var table_group_load_spinner = document.getElementById('table_group_spinner');
+        table_group_load_spinner.setAttribute("class", "mdl-spinner mdl-js-spinner is-active");
+        componentHandler.upgradeElement(table_group_load_spinner);
+        var body_table_group_search = document.getElementById("table_group_search_body");
+        var body_table_wip_search = document.getElementById("table_wip_search_body");
+        var body_table_error_search = document.getElementById('table_error_search_body');
+        while (body_table_group_search.childNodes.length > 0)
+            body_table_group_search.removeChild(body_table_group_search.childNodes[0]);
+        while (body_table_wip_search.childNodes.length > 0)
+            body_table_wip_search.removeChild(body_table_wip_search.childNodes[0]);
+        while (body_table_error_search.childNodes.length > 0)
+            body_table_error_search.removeChild(body_table_error_search.childNodes[0]);
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Production/Payroll_Search/GroupNew", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                my_data = JSON.parse(xsend.responseText);
+                var err_scan = 0;
+                var err_bundle = 0;
+                var err_qc = 0;
+                var wip = 0;
+                var wip_ns = 0;
+                var wip_s = 0;
+                console.log(my_data);
+                var data = my_data.image_list;
+                var error_list = my_data.error_list;
+                var sum_scan = data.length;
+                if (data == 'empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                    document.getElementById('txt_image_scanned').innerHTML = 'Số tem hệ thống ghi nhận: 0';
+                    document.getElementById('txt_image_error_scan').innerHTML = 'Số ảnh thiếu Tem QC hoặc ID NV: 0';
+                    document.getElementById('txt_image_error_bundle').innerHTML = 'Thiếu tem NV: 0';
+                    document.getElementById('txt_image_error_qc').innerHTML = 'Thiếu tem QC: 0';
+                    document.getElementById('txt_error_scan').innerHTML = 'Hệ thống không xử lý được: 0';
+                    document.getElementById('txt_badge_wip').setAttribute('data-badge', '0');
+                    document.getElementById('txt_badge_err').setAttribute('data-badge', '0');
+                    table_group_load_spinner.removeAttribute("class");
+                }
+                else {
+                    console.log("group new");
+
+                    table_group_load_spinner.removeAttribute("class");
+                    table_group_search.style.display = "grid";
+                    tabel_wip_search.style.display = "grid";
+                    table_error_search.style.display = "grid";
+                    var rowIndexKickOut = 0;
+                    var rowIndexWip = 0;
+                    group_detail_data = data;
+                    for (var i = 0; i < data.length; i++) {
+                        timeUpdateISO = new Date(data[i].TimeUpdate);
+                        var tzoffset1 = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+                        var timeUpdateLocal = (new Date(timeUpdateISO - tzoffset1)).toISOString().slice(0, -1);
+                        var hourUpdate = data[i].FILE.substring(19, 21);//timeUpdateLocal.substr(11,2);
+                        var minUpdate = data[i].FILE.substring(21, 23);//timeUpdateLocal.substr(14,2);
+                        dateUpdate = data[i].FILE.substring(8, 10);
+                        var timeUpdate = parseFloat(hourUpdate) + parseFloat(minUpdate / 60);
+                        console.log('DateUpdate', dateUpdate, day, hourUpdate, minUpdate, timeUpdate);
+                        if (data[i].IASCAN > 0) continue;
+                        if (data[i].QC == '888888' || (timeUpdate <= 14.00 && timeUpdate >= 13.33 && data[i].IS_FULL > '0') || (timeUpdate <= 23.50 && timeUpdate >= 21.50 && data[i].IS_FULL > '0') || (timeUpdate <= 6.00 && timeUpdate >= 5.00 && data[i].IS_FULL > '0')) {
+                            wip = wip + 1;
+                            var tr = document.createElement("tr");
+                            //STT
+                            var tdSTT = document.createElement("td");
+                            tdSTT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(rowIndexKickOut);
+                            tdSTT.appendChild(node);
+                            tr.appendChild(tdSTT);
+                            //Bundle
+                            var tdBundle = document.createElement("td");
+                            tdBundle.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(data[i].BUNDLE);
+                            tdBundle.appendChild(node);
+                            tr.appendChild(tdBundle);
+                            //QC
+                            var tdQC = document.createElement("td");
+                            tdQC.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            qc = data[i].QC;
+                            if (data[i].QC == null) qc = '';
+                            var node = document.createTextNode(qc);
+                            tdQC.appendChild(node);
+                            tr.appendChild(tdQC);
+                            //IS_FULL
+                            var tdFull = document.createElement("td");
+                            tdFull.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].IS_FULL == 0)
+                                node = document.createTextNode('Đủ tem');
+                            // else if (data[i].IS_FULL>=100)
+                            //     node=document.createTextNode('Đã chỉnh sửa');
+                            else
+                                node = document.createTextNode('Thiếu tem');
+                            tdFull.appendChild(node);
+                            tr.appendChild(tdFull);
+                            //FILE
+                            var tdFile = document.createElement("td");
+                            tdFile.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(data[i].FILE);
+                            tdFile.appendChild(node);
+                            tr.appendChild(tdFile);
+                            tr.setAttribute('ondblclick', 'function_group_search(this, 1)');
+                            componentHandler.upgradeElement(tr);
+                            body_table_wip_search.appendChild(tr);
+                            rowIndexKickOut = rowIndexKickOut + 1;
+                        }
+                        else if (data[i].IS_FULL > '0') {
+                            err_scan = err_scan + 1;
+                            var tr = document.createElement("tr");
+                            //STT
+                            var tdSTT = document.createElement("td");
+                            tdSTT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(rowIndexWip);
+                            tdSTT.appendChild(node);
+                            tr.appendChild(tdSTT);
+                            //Bundle
+                            var tdBundle = document.createElement("td");
+                            tdBundle.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(data[i].BUNDLE);
+                            tdBundle.appendChild(node);
+                            tr.appendChild(tdBundle);
+                            //QC
+                            if (data[i].QC == '') err_qc = err_qc + 1;
+                            var tdQC = document.createElement("td");
+                            tdQC.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            qc = data[i].QC;
+                            if (data[i].QC == null) qc = '';
+                            var node = document.createTextNode(qc);
+                            tdQC.appendChild(node);
+                            tr.appendChild(tdQC);
+                            //IS_FULL
+                            if (data[i].IS_FULL == '0') err_bundle = err_bundle + 1;
+                            var tdFull = document.createElement("td");
+                            tdFull.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node;
+                            if (data[i].IS_FULL == 0)
+                                node = document.createTextNode('Đủ tem');
+                            // else if (data[i].IS_FULL>=100)
+                            //     node=document.createTextNode('Đã chỉnh sửa');
+                            else
+                                node = document.createTextNode('Thiếu tem');
+                            tdFull.appendChild(node);
+                            tr.appendChild(tdFull);
+                            //FILE
+                            var tdFile = document.createElement("td");
+                            tdFile.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(data[i].FILE);
+                            tdFile.appendChild(node);
+                            tr.appendChild(tdFile);
+                            // //ISSUE FILE
+                            // var tdIssue=document.createElement("td");
+                            // tdIssue.setAttribute("class","mdl-data-table__cell--non-numeric");
+                            // var node=document.createTextNode(data[i].ISSUE_FILE);
+                            // tdIssue.appendChild(node);
+                            // tr.appendChild(tdIssue);
+                            tr.setAttribute('ondblclick', 'function_group_search(this, 1)');
+                            componentHandler.upgradeElement(tr);
+                            body_table_group_search.appendChild(tr);
+                            rowIndexWip = rowIndexWip + 1;
+                        }
+                    }
+                    if (error_list != 'empty') {
+                        var rowIndexErrorImage = 0;
+                        for (var i = 0; i < error_list.length; i++) {
+                            var tr = document.createElement("tr");
+                            //STT
+                            var tdSTT = document.createElement("td");
+                            tdSTT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(rowIndexErrorImage);
+                            tdSTT.appendChild(node);
+                            tr.appendChild(tdSTT);
+                            //FILE
+                            var tdFile = document.createElement("td");
+                            tdFile.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(error_list[i].FILE);
+                            tdFile.appendChild(node);
+                            tr.appendChild(tdFile);
+                            tr.setAttribute('ondblclick', 'function_group_error_search(this)');
+                            componentHandler.upgradeElement(tr);
+                            body_table_error_search.appendChild(tr);
+                            rowIndexErrorImage = rowIndexErrorImage + 1;
+                        }
+                        document.getElementById('txt_error_scan').innerHTML = 'Hệ thống không xử lý được: ' + error_list.length;
+                        document.getElementById('txt_badge_err').setAttribute('data-badge', error_list.length);
+                    } else {
+                        document.getElementById('txt_error_scan').innerHTML = 'Hệ thống không xử lý được: 0';
+                        document.getElementById('txt_badge_err').setAttribute('data-badge', 0);
+                    }
+                    document.getElementById('txt_wip').innerHTML = 'WIP Sewing: ' + wip_s.toString();
+                    document.getElementById('txt_wip_ns').innerHTML = 'WIP Non-Sewing: ' + wip_ns.toString();
+                    document.getElementById('txt_badge_wip').setAttribute('data-badge', wip);
+                    document.getElementById('txt_image_scanned').innerHTML = 'Số tem hệ thống ghi nhận: ' + (sum_scan - wip);
+                    document.getElementById('txt_image_error_scan').innerHTML = 'Số ảnh thiếu Tem QC hoặc ID NV: ' + err_scan.toString();
+                    document.getElementById('txt_image_error_bundle').innerHTML = 'Thiếu tem NV: ' + err_bundle.toString();
+                    document.getElementById('txt_image_error_qc').innerHTML = 'Thiếu tem QC: ' + err_qc.toString();
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var date = year + month + day;
+        data = { group: group, date: date };
+        xsend.send(JSON.stringify(data));
+    }
+
+    function group_search_special(group) {
+        console.log('multiple operation')
+        table_double_search.style.display = "none";
+        var body_table_double_search = document.getElementById("table_double_search_body");
+        while (body_table_double_search.childNodes.length > 0)
+            body_table_double_search.removeChild(body_table_double_search.childNodes[0]);
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Production/Payroll_Search/GroupMultipleOperations", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                if (data.length == 0) {
+                    table_double_search.style.display = "none";
+                    return;
+                }
+                table_double_search.style.display = "grid";
+                var rowIndex = 0;
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    var tr = document.createElement("tr");
+                    //STT
+                    var tdSTT = document.createElement("td");
+                    tdSTT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(rowIndex);
+                    tdSTT.appendChild(node);
+                    tr.appendChild(tdSTT);
+                    //Employee
+                    var tdEmployee = document.createElement("td");
+                    tdEmployee.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].EMPLOYEE);
+                    tdEmployee.appendChild(node);
+                    tr.appendChild(tdEmployee);
+                    //NumOp
+                    var tdNumOp = document.createElement("td");
+                    tdNumOp.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].QC);
+                    tdNumOp.appendChild(node);
+                    tr.appendChild(tdNumOp);
+                    //NumTicket
+                    var tdNumTicket = document.createElement("td");
+                    tdNumTicket.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].TICKET);
+                    tdNumTicket.appendChild(node);
+                    tr.appendChild(tdNumTicket);
+                    //FILE
+                    var tdFile = document.createElement("td");
+                    tdFile.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].FILE);
+                    tdFile.appendChild(node);
+                    tr.appendChild(tdFile);
+                    tr.setAttribute('ondblclick', 'function_group_search(this, 2)');
+                    componentHandler.upgradeElement(tr);
+                    body_table_double_search.appendChild(tr);
+                    rowIndex = rowIndex + 1;
+                }
+                document.getElementById('txt_badge_double').setAttribute('data-badge', rowIndex);
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var full_date = document.getElementById('date_group_search').value;
+        year = full_date.substr(0, 4);
+        month = full_date.substr(5, 2);
+        day = full_date.substr(8, 2);
+        var date = year + month + day;
+        data = { group: group, date: date };
+        xsend.send(JSON.stringify(data));
+    }
+    document.getElementById('btn_group_search').addEventListener('click', function () {
+        tab_mode = 1;
+        group_data = document.getElementById('txt_group').value;
+        shift = document.getElementById('txt_shift').value;
+        if (group_data == '001-007' && shift == 'BALI') group_data = '001-007';
+        if (group_data == '010-017' && shift == 'RIT') group_data = '001-007';
+        var fromLine = group_data.substr(0, 3);
+        var toLine = group_data.substr(4, 3);
+        if (shift == 'RIT') {
+            group = fromLine + toLine + 'R';
+        }
+        else {
+            group = fromLine + toLine + 'B';
+        }
+        group_search_data(group);
+
+        group_search_special(group);
+    });
+    var listInput = document.getElementsByName('cb_option')[0];
+    var handInput = document.getElementsByName('cb_option')[1];
+    listInput.addEventListener('change', function () {
+        if (listInput.checked == true) {
+            // document.getElementById('cbb_bundle').style.display='grid';
+            // document.getElementById('txt_bundle').style.display='none';
+        }
+    });
+    handInput.addEventListener('change', function () {
+        if (handInput.checked == true) {
+            // document.getElementById('cbb_bundle').style.display='none';
+            // document.getElementById('txt_bundle').style.display='grid';
+        }
+    });
+    function imageExists(image_url, callback) {
+        console.log(image_url);
+        var http = new XMLHttpRequest();
+        http.open('HEAD', image_url, false);
+        http.send();
+        return http.status != 404;
+    }
+    var fileName = '';
+    function function_group_search(x, mode, col = 0) {
+        console.log(mode);
+        document.getElementById('btn_bundle_submit').disabled = false;
+        $('#021027_tb tbody').html('')
+        document.getElementById('txt_note').innerHTML = ''
+        if (mode == 3) {
+            image_name = x.childNodes[col].innerHTML;
+            var dateBundle = "";
+            if (col == 8) dateBundle = x.childNodes[3].innerHTML;
+            console.log(image_name);
+            var full_date = document.getElementById('date_group_search').value;
+            console.log(full_date)
+            var image_date = image_name.substr(8, 10);
+            var image_day = image_date.substr(0, 2);
+            var image_month = image_date.substr(3, 2);
+            var image_year = image_date.substr(6, 4);
+            var image_dated = image_year + '-' + image_month + '-' + image_day;
+            var image_date_record = image_year + image_month + image_day;
+            var image_shift_record = image_name[6];
+            var shift_record = 'RIT';
+            if (image_shift_record == 'R') shift_record = 'RIT';
+            if (image_shift_record == 'B') shift_record = 'BALI';
+            full_date = image_dated;
+            folder_name = image_name.substring(0, 6);
+            if (folder_name == '001007') folder_name = '001007';
+            if (folder_name == '001009') folder_name = '001007';
+            if (group == '010017R') folder_name = '001007';
+            s = image_name.substring(6, 7);
+            if (s == 'R') shift = 'RIT';
+            else if (s == 'B') shift = 'BALI';
+            console.log(folder_name, shift, image_name);
+            fileName = image_name;
+            if (full_date != today.substr(0, 10)) {
+                year = full_date.substr(0, 4);
+                month = full_date.substr(5, 2);
+                day = full_date.substr(8, 2);
+                var date = year + month + day;
+
+                folder_root = image_name.substring(0, 7);
+                i = 7;
+                while (i < image_name.length && image_name[i] != '_') {
+                    folder_root += image_name[i];//.substring(8, image_name.length);
+                    i++;
+                }
+                image_name_root = image_name.substring(i + 1, image_name.length);
+                document.getElementById('show_image').src = "";
+                if (imageExists('../image/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image10/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image10/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image10/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image10/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image/' + date + '/BALI/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image/' + date + '/BALI/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image/' + date + '/RIT/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image/' + date + '/RIT/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image/' + image_date_record + '/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image/' + image_date_record + '/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image/Backup/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image/Backup/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image/Backup/' + image_date_record + '/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image/Backup/' + image_date_record + '/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image9/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image9/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image9/' + image_date_record + '/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image9/' + image_date_record + '/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image9/20210709/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image/20210709/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image/20210709/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image9/20210709/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg';
+                else if (imageExists('../image/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                    document.getElementById('show_image').src = '../image/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+            } else {
+                document.getElementById('show_image').src = '../image/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                console.log(' show ' + '../image/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg')
+            }
+            document.getElementById('btn_bundle_confirm').style.display = 'none';
+        }
+        else {
+            document.getElementById('txt_name').innerHTML = '';
+            image_name = x.childNodes[4].innerHTML;
+            bundle_anh = x.childNodes[1].innerHTML;
+            group_anh = image_name.substring(0, 6)
+            d_anh = image_name.substring(8, 10)
+            m_anh = image_name.substring(11, 13)
+            console.log("group anh danh rieng cho 2127")
+            console.log(bundle_anh)
+            console.log(d_anh)
+            console.log(m_anh)
+            console.log(group_anh)
+            if (group_anh == "021020") {
+                console.log("display model")
+                // alert("dang build chuc nang cho tem RFID")
+                // return
+                document.getElementById('show_image').src = '../image/Backup/20210709/abcxyz2_done.jpg';
+                var xsend = new XMLHttpRequest();
+                xsend.open("POST", "/Production/Payroll_Search/RFbundle", true);
+                xsend.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        data = JSON.parse(xsend.responseText);
+                        console.log("du lieu 2127")
+                        console.log(data)
+                        ttdt = ""
+                        if (data.length > 0) {
+                            for (i = 0; i < data.length; i++) {
+                                var ticket = data[i].ticket
+                                var operation = data[i].OPERATION
+                                var employee = ""
+                                if (data[i].EMPLOYEE != null) {
+                                    employee = data[i].EMPLOYEE
+                                }
+                                var name = data[i].Name
+                                if (data[i].Name == null) {
+                                    name = ""
+                                }
+                                var sc = data[i].sc
+                                if (data[i].sc == null) {
+                                    sc = ""
+                                }
+                                ttdt += '<tr><td >' + ticket + '</td><td style="text-align:left;">' + operation + '</td><td>' + employee + '</td><td style="text-align:left;" >' + name + '</td><td>' + sc + '</td></tr>'
+
+                            }
+                            $('#021027_tb tbody').html(ttdt)
+
+                        }
+                        console.log("xong du lieu")
+                        document.getElementById('data').showModal();
+                        return
+                        if (data == 'empty') return;
+                    }
+                }
+                xsend.setRequestHeader("Content-type", "application/json");
+                data = { bundle: bundle_anh };
+                xsend.send(JSON.stringify(data))
+                return
+            }
+            else {
+                console.log(image_name);
+                var dateBundle = "";
+                if (col == 8) dateBundle = x.childNodes[3].innerHTML;
+                folder_name = group.substring(0, 6);
+                if (folder_name == '001007') folder_name = '001007';
+                if (folder_name == '001009') folder_name = '001007';
+                if (group == '010017R') folder_name = '001007';
+                // if (folder_name=='204210') shift='BALI';
+                fileName = image_name;
+                var full_date = document.getElementById('date_group_search').value;
+                var image_date = image_name.substr(8, 10);
+                var image_day = image_date.substr(0, 2);
+                var image_month = image_date.substr(3, 2);
+                var image_year = image_date.substr(6, 4);
+                var image_dated = image_year + '-' + image_month + '-' + image_day;
+                var image_date_record = image_year + image_month + image_day;
+                var image_shift_record = image_name[6];
+                var shift_record = 'RIT';
+                if (image_shift_record == 'R') shift_record = 'RIT';
+                if (image_shift_record == 'B') shift_record = 'BALI';
+                full_date = image_dated;
+                document.getElementById('show_image').src = "";
+                if (full_date != today.substr(0, 10)) {
+                    year = full_date.substr(0, 4);
+                    month = full_date.substr(5, 2);
+                    day = full_date.substr(8, 2);
+                    var date = year + month + day;
+                    folder_root = image_name.substring(0, 7);
+                    i = 7;
+                    while (i < image_name.length && image_name[i] != '_') {
+                        folder_root += image_name[i];//.substring(8, image_name.length);
+                        i++;
+                        console.log(i);
+                    }
+                    // print('ehllo')
+                    image_name_root = image_name.substring(i + 1, image_name.length);
+                    console.log(image_name_root, folder_root);
+                    if (imageExists('../image/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                        document.getElementById('show_image').src = '../image/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                    else if (imageExists('../image10/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                        document.getElementById('show_image').src = '../image10/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                    else if (imageExists('../image/Backup/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                        document.getElementById('show_image').src = '../image/Backup/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                    else if (imageExists('../image/Backup/' + image_date_record + '/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                        document.getElementById('show_image').src = '../image/Backup/' + image_date_record + '/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg';
+                    else if (imageExists('../image9/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                        document.getElementById('show_image').src = '../image9/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                    else if (imageExists('../image/Backup/20210709/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                        document.getElementById('show_image').src = '../image/Backup/20210709/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg';
+                    // else if (imageExists('../image9/'+date+'/'+shift+'/'+folder_name+'/'+image_name+'_done.jpg'))
+                    //     document.getElementById('show_image').src='../image9/'+date+'/'+shift+'/'+folder_name+'/'+image_name+'_done.jpg';
+                    // else if (imageExists('../image/20210331/RIT/'+folder_name+'/'+image_name+'_done.jpg'))
+                    //     document.getElementById('show_image').src='../image/20210331/RIT/'+folder_name+'/'+image_name+'_done.jpg';
+                    // else if (imageExists('../image/20210331/BALI/'+folder_name+'/'+image_name+'_done.jpg'))
+                    //     document.getElementById('show_image').src='../image/20210331/BALI/'+folder_name+'/'+image_name+'_done.jpg';
+                } else {
+                    if (imageExists('../image/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                        document.getElementById('show_image').src = '../image/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                    else if (imageExists('../image10/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                        document.getElementById('show_image').src = '../image10/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+                    else if (imageExists('../image/pilot/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                        document.getElementById('show_image').src = '../image/pilot/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg';
+                    console.log('go herre' + '../image/pilot/' + shift_record + '/' + folder_name + '/' + image_name + '_done.jpg')
+                }
+
+            }
+
+        }
+        listInput.parentNode.MaterialRadio.check();
+        handInput.parentNode.MaterialRadio.uncheck();
+        QC = x.childNodes[2].innerHTML;
+        if (tab_mode == 3) QC = x.childNodes[8].innerHTML;
+        bundle = x.childNodes[1].innerHTML;
+        var txt_note = document.getElementById('txt_note');
+        txt_note.innerHTML = '';
+        var list = document.getElementById("bundleScanList");
+        while (list.childNodes.length > 0) {
+            list.removeChild(list.childNodes[0]);
+        }
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Production/Payroll_Search/BundleNew", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                console.log(data)
+                if (data == 'empty') return;
+                console.log("pay mode");
+                document.getElementById('txt_ID_add').value = '';
+                document.getElementById('bundleScan').value = '';
+                if (mode == 1 || mode == 3) {
+                    document.getElementById('btn_bundle_skip').style.display = 'none';
+                    console.log("mode 1");
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].EMPLOYEE == null && data[i].TICKET != null) {
+                            var bundle_row = data[i].TICKET;
+                            var li = document.createElement("li");
+                            li.setAttribute("class", "mdl-menu__item");
+                            var textNode = document.createTextNode(bundle_row);
+                            li.appendChild(textNode);
+                            list.appendChild(li);
+                            getmdlSelect.init("#cbb_bundle");
+                        }
+                        if (data[i].QC!=null && data[i].QC.length>=6){
+                            QC=data[i].QC
+                        }
+                    }
+                }
+                // else if (mode==3){
+                //     document.getElementById('btn_bundle_skip').style.display='none';
+                //     console.log("mode 3");
+                //     for (var i=0; i<data.length; i++){
+                //         var bundle_row=data[i].TICKET;
+                //         var li=document.createElement("li");
+                //         li.setAttribute("class","mdl-menu__item");
+                //         var textNode=document.createTextNode(bundle_row);
+                //         li.appendChild(textNode);
+                //         list.appendChild(li);ok see
+                //         getmdlSelect.init("#cbb_bundle");
+                //     }
+                //}
+                else if (mode == 2) {
+                    document.getElementById('btn_bundle_skip').style.display = 'grid';
+                    console.log("mode 2");
+                    employee = x.childNodes[1].innerHTML;
+                    console.log(employee);
+                    console.log(data);
+                    for (var i = 0; i < data.length; i++) {
+                        console.log(data[i].TICKET)
+                        if (employee == data[i].EMPLOYEE) {
+                            var li = document.createElement("li");
+                            li.setAttribute("class", "mdl-menu__item");
+                            var textNode = document.createTextNode(data[i].TICKET);
+                            li.appendChild(textNode);
+                            list.appendChild(li);
+                            getmdlSelect.init("#cbb_bundle");
+                        }
+                    }
+                }
+
+                if (data != 'empty')
+                    console.log(data)
+                for (var i = 0; i < data.length; i++)
+                    if (data[i].EMPLOYEE != null) txt_note.innerHTML += "<div><b>" + data[i].TICKET + " - " + data[i].EMPLOYEE + "</b></div>";
+
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var full_date = document.getElementById('date_group_search').value;
+        year = full_date.substr(0, 4);
+        month = full_date.substr(5, 2);
+        day = full_date.substr(8, 2);
+        var date = year + month + day;
+        data = { file: image_name, date: date, bundle: bundle };
+        xsend.send(JSON.stringify(data));
+        document.getElementById('btn_bundle_confirm').style.display = 'none';
+        // document.getElementById('btn_bundle_skip').style.display='grid';
+        document.getElementById('data').showModal();
+    }
+    function function_group_error_search(x) {
+        image_name = x.childNodes[1].innerHTML;
+        document.getElementById('btn_bundle_confirm').style.display = 'grid';
+        document.getElementById('btn_bundle_submit').disabled = true;
+        // document.getElementById('btn_bundle_skip').style.display='none';
+        folder_name = group.substring(0, 6);
+        if (folder_name == '001007') folder_name = '001007';
+        if (folder_name == '001009') folder_name = '001007';
+        if (group == '010017R') folder_name = '001007';
+        // if (group=='284290B') folder_name='284290';
+        // if (folder_name=='204210') shift='BALI';
+        fileName = image_name;
+        var full_date = document.getElementById('date_group_search').value;
+        if (full_date != today.substr(0, 10)) {
+            year = full_date.substr(0, 4);
+            month = full_date.substr(5, 2);
+            day = full_date.substr(8, 2);
+            var date = year + month + day;
+            if (imageExists('../image/Backup/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                document.getElementById('show_image').src = '../image/Backup/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+            else if (imageExists('../image10/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                document.getElementById('show_image').src = '../image10/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+            else if (imageExists('../image/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                document.getElementById('show_image').src = '../image/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+            else if (imageExists('../image10/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                document.getElementById('show_image').src = '../image10/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+            else if (imageExists('../image7/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                document.getElementById('show_image').src = '../image7/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+            else if (imageExists('../image8/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg'))
+                document.getElementById('show_image').src = '../image8/' + date + '/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+            // document.getElementById('show_image').src='../image/Backup/'+date+'/'+shift+'/'+folder_name+'/'+image_name+'_done.jpg';
+            document.getElementById('show_image').style.width = '880px';
+        } else {
+            document.getElementById('show_image').src = '../image/pilot/' + shift + '/' + folder_name + '/' + image_name + '_done.jpg';
+            document.getElementById('show_image').style.width = '880px';
+        }
+        document.getElementById('btn_bundle_confirm').style.display = 'grid';
+        // document.getElementById('btn_bundle_skip').style.display='grid';
+        document.getElementById('data').showModal();
+    }
+    document.getElementById('btn_bundle_skip').addEventListener('click', function () {
+        console.log('skip button');
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Production/Payroll_Search/Skip", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                console.log(data);
+                if (data.result == 'done') {
+                    document.getElementById('data').close();
+                    document.getElementById('btn_group_search').click();
+                } else {
+                    alert('Hãy thử lại');
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var full_date = document.getElementById('date_group_search').value;
+        year = full_date.substr(0, 4);
+        month = full_date.substr(5, 2);
+        day = full_date.substr(8, 2);
+        var date = year + month + day;
+
+        data = { date: date, file: fileName, QC: QC };
+        console.log(data);
+        xsend.send(JSON.stringify(data));
+    });
+    document.getElementById('txt_ID').addEventListener('keyup', function (event) {
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("btn_ID_search").click();
+        }
+    });
+    function ID_search_workHrs() {
+        var xsend2 = new XMLHttpRequest();
+        xsend2.open("POST", "/Production/Payroll_Search/GetTimeSheet", true);
+        xsend2.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend2.responseText);
+                console.log(data)
+                if (data != 'empty') {
+                    document.getElementById('txt_reg_hrs').innerHTML = "Giờ quẹt thẻ: " + data[0].REG_HRS;
+                    document.getElementById('txt_ot').innerHTML = "Giờ tăng ca: " + data[0].OT;
+                    document.getElementById('txt_cd03').innerHTML = "Giờ 03: " + data[0].CD03;
+                    document.getElementById('txt_cd08').innerHTML = "Giờ 08: " + data[0].CD08;
+                    document.getElementById('txt_cd09').innerHTML = "Giờ 09: " + data[0].CD09;
+                    sah = document.getElementById('txt_sum_sah').innerHTML.split(": ")[1];
+                    workHrs = data[0].WORK_HRS - data[0].CD09;
+                    eff = 0;
+                    console.log(sah);
+                    if (workHrs > 0) eff = Math.round(sah / workHrs * 100);
+                    document.getElementById('txt_efficiency').innerHTML = "Hiệu suất: " + eff + "%";
+                    // document.getElementById('btn_bundle_submit').disabled=false;
+                } else {
+                    alert('Không tìm thấy thông tin nhân viên!');
+                    document.getElementById('txt_reg_hrs').innerHTML = "Giờ quẹt thẻ: ";
+                    document.getElementById('txt_ot').innerHTML = "Giờ tăng ca: ";
+                    document.getElementById('txt_cd03').innerHTML = "Giờ 03: ";
+                    document.getElementById('txt_cd08').innerHTML = "Giờ 08: ";
+                    document.getElementById('txt_cd09').innerHTML = "Giờ 09: ";
+
+                }
+            }
+        }
+        var full_date = document.getElementById('date_ID_search').value;
+        year = full_date.substr(0, 4);
+        month = full_date.substr(5, 2);
+        day = full_date.substr(8, 2);
+        var date = year + month + day;
+        var full_date_from = document.getElementById('date_ID_search_from').value;
+        year_from = full_date_from.substr(0, 4);
+        month_from = full_date_from.substr(5, 2);
+        day_from = full_date_from.substr(8, 2);
+        var date_from = year_from + month_from + day_from;
+        var id = document.getElementById('txt_ID').value;
+        if (id.length == 6) id = id.substring(1, 6);
+        if (isNaN(id)) {
+            alert('ID là số có 5 chữ số');
+            return;
+        }
+        data = { ID: id, date: date, datefrom: date_from };
+        console.log(data);
+        xsend2.setRequestHeader("Content-type", "application/json");
+        xsend2.send(JSON.stringify(data));
+    }
+    document.getElementById('btn_ID_search').addEventListener('click', function () {
+        tab_mode = 3;
+        //show information
+        var id = document.getElementById('txt_ID').value;
+        if (id.length == 6) id = id.substring(1, 6);
+
+        if (isNaN(id)) {
+            alert('ID là số có 5 hoặc 6 chữ số!');
+            return;
+        }
+        var xsend1 = new XMLHttpRequest();
+        xsend1.open("POST", "/Production/Payroll_Search/GetName", true);
+        xsend1.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend1.responseText);
+                if (data.result != 'empty') {
+                    document.getElementById('txt_ID_name').innerHTML = "Họ và Tên: " + data[0].Name;
+                    document.getElementById('txt_ID_ID').innerHTML = "ID: " + data[0].ID;
+                    document.getElementById('txt_ID_shift').innerHTML = "Ca: " + data[0].Shift;
+                    document.getElementById('txt_ID_line').innerHTML = "Line: " + data[0].Line;
+                    // document.getElementById('btn_bundle_submit').disabled=false;
+                } else {
+                    alert('Không tìm thấy thông tin nhân viên!');
+                    document.getElementById('txt_ID_name').innerHTML = "Họ và Tên: ";
+                    document.getElementById('txt_ID_ID').innerHTML = "ID: ";
+                    document.getElementById('txt_ID_shift').innerHTML = "Ca: ";
+                    document.getElementById('txt_ID_line').innerHTML = "Line: ";
+                }
+            }
+        }
+
+        xsend1.setRequestHeader("Content-type", "application/json");
+        data = { ID: id };
+        xsend1.send(JSON.stringify(data));
+
+        //show SAH
+        table_ID_search.style.display = "none";
+        var table_ID_load_spinner = document.getElementById('table_ID_spinner');
+        table_ID_load_spinner.setAttribute("class", "mdl-spinner mdl-js-spinner is-active");
+        componentHandler.upgradeElement(table_ID_load_spinner);
+        var body_table_ID_search = document.getElementById("table_ID_search_body");
+        while (body_table_ID_search.childNodes.length > 0)
+            body_table_ID_search.removeChild(body_table_ID_search.childNodes[0]);
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Production/Payroll_Search/ID", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                var sum_sah = 0;
+                if (data == 'empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                    document.getElementById('txt_sum_ticket').innerHTML = 'Tổng tem: 0';
+                    document.getElementById('txt_sum_sah').innerHTML = 'Earned Hours: 0';
+                } else {
+                    table_ID_load_spinner.removeAttribute("class");
+                    table_ID_search.style.display = "grid";
+                }
+                for (var i = 0; i < data.length; i++) {
+                    var tr = document.createElement("tr");
+                    //Bundle
+                    var tdBundle = document.createElement("td");
+                    tdBundle.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].BUNDLE);
+                    tdBundle.appendChild(node);
+                    tr.appendChild(tdBundle);
+                    //CODE
+                    var tdCode = document.createElement("td");
+                    tdCode.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].OPERATION_CODE);
+                    tdCode.appendChild(node);
+                    tr.appendChild(tdCode);
+                    //SAH
+                    if (data[i].EARNED_HOURS != 'null') sum_sah = sum_sah + data[i].EARNED_HOURS;
+                    else tr.setAttribute("style", "background-color: orange");
+                    var tdSAM = document.createElement("td");
+                    tdSAM.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(Math.round(data[i].EARNED_HOURS * 100) / 100);
+                    tdSAM.appendChild(node);
+                    tr.appendChild(tdSAM);
+                    //UNITS
+                    var tdUnit = document.createElement("td");
+                    tdUnit.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].UNITS);
+                    tdUnit.appendChild(node);
+                    tr.appendChild(tdUnit);
+                    //Worklot
+                    var tdWorklot = document.createElement("td");
+                    tdWorklot.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].WORK_LOT);
+                    tdWorklot.appendChild(node);
+                    tr.appendChild(tdWorklot);
+                    //UNITS
+                    var tdFile = document.createElement("td");
+                    tdFile.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    var node = document.createTextNode(data[i].FILE);
+                    tdFile.appendChild(node);
+                    tr.appendChild(tdFile);
+                    // tr.setAttribute('ondblclick', 'function_group_search(this, 3, 5)');
+                    tr.setAttribute('ondblclick', 'function_find_bundle(this)');
+                    componentHandler.upgradeElement(tr);
+                    body_table_ID_search.appendChild(tr);
+                }
+                document.getElementById('txt_sum_ticket').innerHTML = 'Tổng tem: ' + data.length;
+                document.getElementById('txt_sum_sah').innerHTML = 'Earned Hours: ' + Math.round(sum_sah / 60 * 100) / 100;
+                //show workHrs
+                ID_search_workHrs();
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var full_date = document.getElementById('date_ID_search').value;
+        year = full_date.substr(0, 4);
+        month = full_date.substr(5, 2);
+        day = full_date.substr(8, 2);
+        var date = year + month + day;
+        var full_date_from = document.getElementById('date_ID_search_from').value;
+        year_from = full_date_from.substr(0, 4);
+        month_from = full_date_from.substr(5, 2);
+        day_from = full_date_from.substr(8, 2);
+        var date_from = year_from + month_from + day_from;
+        data = { id: id, date: date, datefrom: date_from };
+        xsend.send(JSON.stringify(data));
+
+    });
+
+    document.getElementById('txt_worklot').addEventListener('keyup', function (event) {
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("btn_worklot_summary").click();
+        }
+    });
+
+    document.getElementById('btn_worklot_summary').addEventListener('click', function () {
+        tab_mode = 4;
+        table_worklot_summary.style.display = "none";
+        var table_worklot_load_spinner = document.getElementById('table_worklot_spinner');
+        table_worklot_load_spinner.setAttribute("class", "mdl-spinner mdl-js-spinner is-active");
+        componentHandler.upgradeElement(table_worklot_load_spinner);
+        var body_table_worklot_summary = document.getElementById("table_worklot_summary_body");
+        while (body_table_worklot_summary.childNodes.length > 0)
+            body_table_worklot_summary.removeChild(body_table_worklot_summary.childNodes[0]);
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Production/Payroll_Search/WorklotSummary", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                if (data == 'empty') {
+                    alert('Không tìm thấy dữ liệu!');
+                    document.getElementById('txt_sum_wl').innerHTML = 'Tổng tem: 0';
+                    document.getElementById('txt_notscan_wl').innerHTML = 'Đã scan: 0';
+                }
+                else {
+                    table_worklot_load_spinner.removeAttribute("class");
+                    table_worklot_summary.style.display = "grid";
+                }
+                var labels = new Array();
+                var values = new Array();
+                sum_issue = 0;
+                sum_scan = 0;
+                sum_ia = 0;
+                sum_left = 0;
+                for (var i = 0; i < data.length; i++) {
+                    sum_issue += 1;//data[i].ISSUE;
+                    if (data[i].EARN > 0)
+                        sum_scan += 1;
+                    if (data[i].IA > 0)
+                        sum_ia += 1;
+                    if (data[i].NOT_EARN == data[i].ISSUE)
+                        sum_left += 1;
+                    if (data[i].NOT_EARN > 0) {
+                        var tr = document.createElement("tr");
+                        //BUNDLE
+                        var tdBundle = document.createElement("td");
+                        tdBundle.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].BUNDLE);
+                        tdBundle.appendChild(node);
+                        tr.appendChild(tdBundle);
+                        //FILE
+                        var tdCreate = document.createElement("td");
+                        tdCreate.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].FILE);
+                        tdCreate.appendChild(node);
+                        tr.appendChild(tdCreate);
+                        //ISSUE
+                        var tdEmployee = document.createElement("td");
+                        tdEmployee.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].ISSUE);
+                        tdEmployee.appendChild(node);
+                        tr.appendChild(tdEmployee);
+                        //EARN
+                        var tdEarn = document.createElement("td");
+                        tdEarn.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].EARN);
+                        tdEarn.appendChild(node);
+                        tr.appendChild(tdEarn);
+                        //IA
+                        var tdCode = document.createElement("td");
+                        tdCode.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].IA);
+                        tdCode.appendChild(node);
+                        tr.appendChild(tdCode);
+                        //NOT_EARN
+                        var tdSAM = document.createElement("td");
+                        tdSAM.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].NOT_EARN);
+                        tdSAM.appendChild(node);
+                        tr.appendChild(tdSAM);
+                        //NOT_EARN
+                        var tdStatus = document.createElement("td");
+                        tdStatus.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var nodeTxt = "";
+                        if (data[i].NOT_EARN < data[i].ISSUE) nodeTxt = "Thiếu tem";
+                        else nodeTxt = "Thiếu nguyên tờ";
+                        var node = document.createTextNode(nodeTxt);
+                        tdStatus.appendChild(node);
+                        tr.appendChild(tdStatus);
+                        if (nodeTxt == "Thiếu tem") tr.setAttribute("style", "background-color: orange");
+                        tr.setAttribute('ondblclick', 'function_find_bundle(this)');
+                        componentHandler.upgradeElement(tr);
+                        body_table_worklot_summary.appendChild(tr);
+                    }
+                }
+                // labels.push('Kho in'); values.push(sum_issue);
+                // labels.push('Đã scan'); values.push(sum_scan);
+                // labels.push('Trả IA'); values.push(sum_ia);
+                // labels.push('Còn lại'); values.push(sum_left);
+                // document.getElementById("worklot_chart_div").innerHTML='<canvas id="worklot_chart"></canvas>';
+                // document.getElementById("worklot_chart_div").style.display="grid";
+                // draw_graph(labels, values, '', 'worklot_chart', 'doughnut', "Scan", false);
+                document.getElementById('txt_issue').innerHTML = 'Số tờ đã in: ' + sum_issue;
+                document.getElementById('txt_scan').innerHTML = 'Số tờ đã scan: ' + sum_scan;
+                document.getElementById('txt_ia').innerHTML = 'Số tờ trả IA: ' + sum_ia;
+                document.getElementById('txt_notscan').innerHTML = 'Số tờ chưa scan: ' + sum_left;
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var worklot = document.getElementById('txt_worklot').value.trim();
+        get_sum_wl_release(worklot);
+        data = { worklot: worklot };
+        xsend.send(JSON.stringify(data));
+    });
+
+    function function_find_bundle(x) {
+        bundle = x.childNodes[0].innerHTML;
+        // document.getElementById('div_bundle_search').focus();
+        // console.log(document.querySelectorAll("a[href='#scroll-tab-6']"));
+        document.querySelectorAll("a[href='#scroll-tab-6']")[0].click();
+        document.getElementById('txt_bundle_search').value = bundle;
+        document.getElementById('txt_bundle_search').parentNode.classList.add('is-dirty');
+        document.getElementById('btn_bundle_search').click();
+    }
+
+    document.getElementById('btn_bundle_cancel').addEventListener('click', function () {
+        document.getElementById('data').close();
+        document.getElementById('btn_group_search').click();
+    });
+
+    document.getElementById('txt_ID_add').addEventListener('keyup', function (event) {
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("btn_bundle_submit").click();
+        }
+        if (document.getElementById('txt_ID_add').value.length == 5) {
+            var ID = document.getElementById('txt_ID_add').value;
+            if (isNaN(ID)) {
+                // document.getElementById('btn_bundle_submit').disabled=true;
+                alert('ID là số có 5 chữ số');
+                return;
+            }
+            var xsend = new XMLHttpRequest();
+            xsend.open("POST", "/Production/Payroll_Search/GetName", true);
+            xsend.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    data = JSON.parse(xsend.responseText);
+                    console.log(data);
+                    if (data.result != 'empty') {
+                        document.getElementById('txt_name').innerHTML = "<b>" + data[0].Name + "</b>";
+                        // document.getElementById('btn_bundle_submit').disabled=false;
+                    } else {
+                        document.getElementById('txt_name').innerHTML = 'Không tìm thấy';
+                        // alert('Không tìm thấy nhân viên trong hệ thống. Không thể thực hiện');
+                        // document.getElementById('btn_bundle_submit').disabled=true;
+                        // return;
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data = { ID: ID };
+            xsend.send(JSON.stringify(data));
+        } else {
+            document.getElementById('txt_name').innerHTML = '';
+        }
+    });
+
+    document.getElementById('btn_bundle_submit').addEventListener('click', function () {
+        var bundle = '';
+        bundle = document.getElementById('bundleScan').value;
+        if (bundle.length < 10) {
+            alert('Bạn chưa nhập đủ 10 ký tự!');
+            return;
+        }
+        if (document.getElementById('txt_name').innerHTML == 'Không tìm thấy') {
+            alert('Không tìm thấy nhân viên trong hệ thống. Xác nhận không thành công!');
+            return;
+        }
+        var ID = document.getElementById('txt_ID_add').value;
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Production/Payroll_Search/Submit", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                if (data.result == 'done') alert('Đã cập nhật thành công');
+                document.getElementById('txt_ID_add').value = '';
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var full_date = document.getElementById('date_group_search').value;
+        year = full_date.substr(0, 4);
+        month = full_date.substr(5, 2);
+        day = full_date.substr(8, 2);
+        var date = year + month + day;
+        if (ID.length < 5) {
+            alert('Bạn chưa nhập đủ ID Nhân viên');
+            return;
+        }
+        if (isNaN(ID)) {
+            alert('ID là số có 5 chữ số');
+            return;
+        }
+        if (bundle == '') {
+            alert('Bạn chưa chọn mã Bundle');
+            return;
+        }
+        if (tab_mode == 3) {
+            console.log('hello');
+            console.log(date_tab);
+            date = date_tab;
+
+        }
+        data = { bundle: bundle, ID: ID, date: date, QC: QC, file: fileName };
+        console.log(tab_mode, data)
+        xsend.send(JSON.stringify(data));
+    });
+
+    var groupReportDialog = document.getElementById('dialog_group_report');
+
+    document.getElementById('btn_group_report').addEventListener('click', function () {
+        groupReportDialog.showModal();
+        group_data = document.getElementById('txt_group').value;
+        console.log(group_data);
+        if (group_data == '051-059') group_data = '051-058';
+        if (group_data == '060-066') group_data = '059-066';
+        shift = document.getElementById('txt_shift').value;
+        var dialog_group_report_load_spinner = document.getElementById('dialog_group_report_spinner');
+        dialog_group_report_load_spinner.setAttribute("class", "mdl-spinner mdl-js-spinner is-active");
+        componentHandler.upgradeElement(dialog_group_report_load_spinner);
+        var body_table_group_report = document.getElementById("table_group_report_body");
+        while (body_table_group_report.childNodes.length > 0)
+            body_table_group_report.removeChild(body_table_group_report.childNodes[0]);
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Production/Payroll_Search/GroupReport", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                // console.log(data);
+                dialog_group_report_load_spinner.removeAttribute("class");
+                var rowIndex = 0;
+                if (data.length > 0) {
+                    document.getElementById('table_group_report').style.display = 'grid';
+                } else {
+                    alert('Không tìm thấy thông tin');
+                    groupReportDialog.close();
+                    return;
+                }
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Operation != null) {
+                        var tr = document.createElement("tr");
+                        //STT
+                        var tdSTT = document.createElement("td");
+                        tdSTT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(rowIndex);
+                        tdSTT.appendChild(node);
+                        tr.appendChild(tdSTT);
+                        //ID
+                        var tdID = document.createElement("td");
+                        tdID.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].ID);
+                        tdID.appendChild(node);
+                        tr.appendChild(tdID);
+                        //Name
+                        var tdName = document.createElement("td");
+                        tdName.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].Name);
+                        tdName.appendChild(node);
+                        tr.appendChild(tdName);
+                        //Line
+                        var tdLine = document.createElement("td");
+                        tdLine.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].Line);
+                        tdLine.appendChild(node);
+                        tr.appendChild(tdLine);
+                        //Operation
+                        var tdOperation = document.createElement("td");
+                        tdOperation.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].Operation);
+                        tdOperation.appendChild(node);
+                        tr.appendChild(tdOperation);
+                        //Bundle
+                        var tdBundle = document.createElement("td");
+                        tdBundle.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].Bundle);
+                        tdBundle.appendChild(node);
+                        tr.appendChild(tdBundle);
+                        componentHandler.upgradeElement(tr);
+                        body_table_group_report.appendChild(tr);
+                    }
+                    rowIndex = rowIndex + 1;
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        var full_date = document.getElementById('date_group_search').value;
+        year = full_date.substr(0, 4);
+        month = full_date.substr(5, 2);
+        day = full_date.substr(8, 2);
+        var date = year + month + day;
+        // if (group=='200-234'){
+        //     return;
+        // }
+        data = { group: group_data, shift: shift, date: date };
+        xsend.send(JSON.stringify(data));
+    });
+
+    document.getElementById('btn_group_report_close').addEventListener('click', function () {
+        groupReportDialog.close();
+    });
+
+    var groupDetailDialog = document.getElementById('dialog_group_detail');
+    var body_table_group_detail = document.getElementById('table_group_detail_body');
+    function show_group_detail() {
+        if (group_detail_data != null) {
+            var rowIndex = 1;
+            document.getElementById('table_group_detail').style.display = 'Grid';
+            while (body_table_group_detail.childNodes.length > 0)
+                body_table_group_detail.removeChild(body_table_group_detail.childNodes[0]);
+            for (var i = 0; i < group_detail_data.length; i++) {
+                var tr = document.createElement("tr");
+                //STT
+                var tdSTT = document.createElement("td");
+                tdSTT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                var node = document.createTextNode(group_detail_data.length - rowIndex + 1);
+                tdSTT.appendChild(node);
+                tr.appendChild(tdSTT);
+                //FILE
+                var tdFile = document.createElement("td");
+                tdFile.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                var node = document.createTextNode(group_detail_data[i].FILE);
+                tdFile.appendChild(node);
+                tr.appendChild(tdFile);
+                //Time
+                var tdTime = document.createElement("td");
+                tdTime.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                var node = document.createTextNode(group_detail_data[i].FILE.substring(19, 21) + ' : ' + group_detail_data[i].FILE.substring(21, 23));
+                tdTime.appendChild(node);
+                tr.appendChild(tdTime);
+                //Tem
+                var tdTicket = document.createElement("td");
+                tdTicket.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                var node = document.createTextNode(group_detail_data[i].SCAN + "/" + group_detail_data[i].ISSUE);
+                tdTicket.appendChild(node);
+                tr.appendChild(tdTicket);
+                //TimeUpdate
+                var tdTimeUpdate = document.createElement("td");
+                tdTimeUpdate.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                var timeUpdate = (new Date(group_detail_data[i].TimeUpdate)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
+                var node = document.createTextNode(timeUpdate);
+                tdTimeUpdate.appendChild(node);
+                tr.appendChild(tdTimeUpdate);
+                //TimeModified
+                var tdTimeModified = document.createElement("td");
+                tdTimeModified.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                var node;
+                if (group_detail_data[i].TimeModified != null) {
+                    var timeModified = (new Date(group_detail_data[i].TimeModified)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
+                    node = document.createTextNode(timeModified);
+                }
+                else
+                    node = document.createTextNode('');
+                tdTimeModified.appendChild(node);
+                tr.appendChild(tdTimeModified);
+                //Issue
+                var tdIssue = document.createElement("td");
+                tdIssue.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                var node = document.createTextNode(group_detail_data[i].ISSUE_FILE);
+                tdIssue.appendChild(node);
+                tr.appendChild(tdIssue);
+                componentHandler.upgradeElement(tr);
+                body_table_group_detail.appendChild(tr);
+                rowIndex = rowIndex + 1;
+            }
+        } else {
+            alert('Không tìm thấy thông tin!');
+            return;
+        }
+        groupDetailDialog.showModal();
+    }
+
+    document.getElementById('btn_group_detail_close').addEventListener('click', function () {
+        groupDetailDialog.close();
+    });
+
+    document.getElementById('txt_bundle_search').addEventListener('keyup', function (event) {
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("btn_bundle_search").click();
+        }
+    });
+
+    document.getElementById('btn_bundle_search').addEventListener('click', function () {
+        tab_mode = 3;
+        var bundle = document.getElementById('txt_bundle_search').value.toUpperCase();
+        var xsend = new XMLHttpRequest();
+        var body_table_bundle_search = document.getElementById('table_bundle_search_body');
+        xsend.open("POST", "/Production/Payroll_Search/BundleSearch", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                if (data != 'empty') {
+                    console.log(data);
+                    document.getElementById('table_bundle_search').style.display = 'Grid';
+                    while (body_table_bundle_search.childNodes.length > 0)
+                        body_table_bundle_search.removeChild(body_table_bundle_search.childNodes[0]);
+                    var rowIndex = 0;
+                    console.log(data.length);
+                    date_tab = data[0].DATE;
+                    for (var i = 0; i < data.length; i++) {
+                        var tr = document.createElement("tr");
+                        //STT
+                        var tdSTT = document.createElement("td");
+                        tdSTT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(rowIndex);
+                        tdSTT.appendChild(node);
+                        tr.appendChild(tdSTT);
+                        //Ticket
+                        var tdTicket = document.createElement("td");
+                        tdTicket.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].TICKET);
+                        tdTicket.appendChild(node);
+                        tr.appendChild(tdTicket);
+                        //Employee
+                        var tdEmployee = document.createElement("td");
+                        tdEmployee.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].EMPLOYEE);
+                        tdEmployee.appendChild(node);
+                        tr.appendChild(tdEmployee);
+                        //Date
+                        var tdDate = document.createElement("td");
+                        tdDate.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].DATE);
+                        tdDate.appendChild(node);
+                        tr.appendChild(tdDate);
+                        //EARN
+                        var tdSAH = document.createElement("td");
+                        tdSAH.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].EARNED_HOURS);
+                        tdSAH.appendChild(node);
+                        tr.appendChild(tdSAH);
+                        //Worklot
+                        var tdWL = document.createElement("td");
+                        tdWL.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].WORK_LOT);
+                        tdWL.appendChild(node);
+                        tr.appendChild(tdWL);
+                        //File
+                        var tdFile = document.createElement("td");
+                        tdFile.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        var node = document.createTextNode(data[i].FILE);
+                        tdFile.appendChild(node);
+                        tr.appendChild(tdFile);
+                        //NgtdMode
+                        var tdMode = document.createElement("td");
+                        tdMode.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        modified = '';
+                        if (data[i].MODIFIED != null && data[i].MODIFIED != '') modified = data[i].MODIFIED;
+                        var node = document.createTextNode(modified);
+                        tdMode.appendChild(node);
+                        tr.appendChild(tdMode);
+                        //QC
+                        var tdQC = document.createElement("td");
+                        tdQC.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                        qc = ''
+                        if (data[i].QC != null) qc = data[i].QC;
+                        var node = document.createTextNode(qc);
+                        tdQC.appendChild(node);
+                        tr.appendChild(tdQC);
+                        tr.setAttribute('ondblclick', 'function_group_search(this, 3, 6)');
+                        componentHandler.upgradeElement(tr);
+                        body_table_bundle_search.appendChild(tr);
+                        rowIndex = rowIndex + 1;
+                    }
+                } else {
+                    alert('Không tìm thấy thông tin!');
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { bundle: bundle };
+        xsend.send(JSON.stringify(data));
+    });
+
+    document.getElementById('btn_bundle_confirm').addEventListener('click', function () {
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Production/Payroll_Search/Dismiss_error", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(xsend.responseText);
+                console.log(data);
+                if (data.result == 'done') {
+                    alert('Đã xác nhận scan lại!');
+                    document.getElementById('data').close();
+                    document.getElementById('btn_group_search').click();
+                }
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { fileName: fileName };
+        xsend.send(JSON.stringify(data));
+    });
+    var ticketIndex = 0;
+    var body_table_ticket_search = document.getElementById('table_ticket_search_body');
+    var txt_ticket_status = document.getElementById('txt_ticket_status');
+    document.getElementById('txt_ticket_search').addEventListener('keyup', function (event) {
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            var ticket = document.getElementById('txt_ticket_search').value;
+            if (ticket.length == 10) {
+                var xsend = new XMLHttpRequest();
+                xsend.open("POST", "/Production/Payroll_Search/Ticket", true);
+                xsend.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        data = JSON.parse(xsend.responseText);
+                        console.log(data);
+                        if (data.result == 'empty') {
+                            txt_ticket_status.innerHTML = ticket + " không tìm thấy!";
+                            txt_ticket_status.setAttribute('style', 'color: Red');
+                            var tr = document.createElement("tr");
+                            //STT
+                            var tdSTT = document.createElement("td");
+                            tdSTT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(ticketIndex);
+                            tdSTT.appendChild(node);
+                            tr.appendChild(tdSTT);
+                            //Ticket
+                            var tdTicket = document.createElement("td");
+                            tdTicket.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode(ticket);
+                            tdTicket.appendChild(node);
+                            tr.appendChild(tdTicket);
+                            //Status
+                            var tdStatus = document.createElement("td");
+                            tdStatus.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                            var node = document.createTextNode('Chưa tồn tại');
+                            tdStatus.appendChild(node);
+                            tr.appendChild(tdStatus);
+                            componentHandler.upgradeElement(tr);
+                            body_table_ticket_search.appendChild(tr);
+                            ticketIndex = ticketIndex + 1;
+                            document.getElementById('txt_ticket_search').parentElement.MaterialTextfield.change("");
+                        } else {
+                            txt_ticket_status.innerHTML = ticket + " đã tồn tại!";
+                            txt_ticket_status.setAttribute('style', 'color: Green');
+                            document.getElementById('txt_ticket_search').parentElement.MaterialTextfield.change("");
+                        }
+                    }
+                }
+                xsend.setRequestHeader("Content-type", "application/json");
+                data = { ticket: ticket };
+                xsend.send(JSON.stringify(data));
+            }
+        }
+    });
+
+    document.getElementById('btn_ticket_delete').addEventListener('click', function () {
+        while (body_table_ticket_search.childNodes.length > 0)
+            body_table_ticket_search.removeChild(body_table_ticket_search.childNodes[0]);
+    });
+
+    document.getElementById('btn_group_wip').addEventListener('click', function () {
+        // document.getElementById('wip_img').src = "../report/WIP/Report.png";
+        // document.getElementById('color_img1').src = "../report/ColorBalancing/Report1.png";
+        // document.getElementById('color_img').src = "../report/ColorBalancing/Report.png";
+        // document.getElementById('kickout_img').src = "../report/KickOut/Report.png";
+        // document.getElementById('endline_img').src = "../report/EndLine/Report.png";
+        // document.getElementById('dialog_wip_detail').showModal();
+        alert("FAIL")
+    });
+
+    document.getElementById('btn_wip_detail_close').addEventListener('click', function () {
+        document.getElementById('dialog_wip_detail').close();
+    });
+
+    document.getElementById('btn_group_output').addEventListener('click', function () {
+        document.getElementById('dialog_output_detail').showModal();
+        var dialog_output_detail_spinner = document.getElementById('dialog_output_detail_spinner');
+        dialog_output_detail_spinner.setAttribute("class", "mdl-spinner mdl-js-spinner is-active");
+        componentHandler.upgradeElement(dialog_output_detail_spinner);
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Production/Payroll_Search/GroupOutput", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                dialog_output_detail_spinner.removeAttribute("class");
+                data = JSON.parse(xsend.responseText);
+                var operation_list = new Array();
+                var output_list = new Array();
+                for (var i = 0; i < data.length; i++) {
+                    operation_list.push(data[i].OPERATION + ' (' + data[i].HC + ')');
+                    output_list.push(data[i].OUTPUT);
+                }
+                document.getElementById("group_chart_div").innerHTML = '<canvas id="group_chart"></canvas>';
+                draw_graph(operation_list, output_list, 'OUTPUT', 'group_chart', 'horizontalBar');
+            }
+        }
+        group_data = document.getElementById('txt_group').value;
+        if (group_data == '051-059') group_data = '051-058';
+        if (group_data == '060-066') group_data = '059-066';
+        shift = document.getElementById('txt_shift').value;
+        var full_date = document.getElementById('date_group_search').value;
+        year = full_date.substr(0, 4);
+        month = full_date.substr(5, 2);
+        day = full_date.substr(8, 2);
+        var date = year + month + day;
+        // data={group: group, date: date};
+        var dateFile = '_' + day + '-' + month + '-' + year + '_';
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { group: group_data, shift: shift, date: date, dateFile: dateFile };
+        console.log(data)
+        xsend.send(JSON.stringify(data));
+    });
+
+    document.getElementById('btn_output_detail_close').addEventListener('click', function () {
+        document.getElementById('dialog_output_detail').close();
+    });
+
+    var form = document.getElementById("upload_change_scan");
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+        return false;
+    });
+    document.getElementById('btn_change_scan').addEventListener('click', function () {
+        document.getElementById('file').click();
+        document.getElementById("file").onchange = function () {
+            if (document.getElementById("file").value != "")
+                document.getElementById('submit').click();
+        };
+        var form = document.getElementById("upload_change_scan");
+        form.addEventListener("submit", e => {
+            if (document.getElementById('file').value != '') {
+                e.preventDefault();
+                var xsend = new XMLHttpRequest();
+                xsend.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var data = JSON.parse(xsend.responseText);
+                        if (data.result == 'done') {
+                            alert("Đã cập nhật thành công!");
+                        }
+                    }
+                }
+                var fileInput = document.getElementById('file');
+                var file_name = new Array();
+                var file_name_str = '';
+                for (var i = 0; i < fileInput.files.length; i++) {
+                    extend = fileInput.files[i].name.split('.')[1];
+                    file = fileInput.files[i].name.split('.')[0];
+                    file_name.push({ 'file': file })
+                    file_name_str += file.substring(0, file.length - 5) + ';';
+                }
+                file_name_str = file_name_str.substring(0, file_name_str.length - 1);
+                if (file_name_str.length != 0) {
+                    var date_change_scan = document.getElementById('date_change_scan').value;
+                    year = date_change_scan.substring(0, 4);
+                    month = date_change_scan.substring(5, 7);
+                    day = date_change_scan.substring(8, 10);
+                    date = year + month + day;
+                    data = { date: date, file_x: file_name_str };
+                    console.log(JSON.stringify(data));
+                    var r = confirm("Bạn đã chắc chắn đây là những tem cần đổi ngày?");
+                    if (r == true) {
+                        document.getElementById("file").value = '';
+                        xsend.open('POST', '/Production/Payroll_Search/Update_Date_Scan1', true);
+                        xsend.setRequestHeader("Content-type", "application/json");
+                        xsend.send(JSON.stringify(data));
+                    } else {
+                        return;
+                    }
+                }
+            }
+            return false;
+        });
+    });
+
+    function func_supervisor_release_bundle() {
+        // asslot=document.getElementById('txt_worklot').value;
+        document.getElementById('dialog_worklot_infor').showModal();
+    }
+
+    function get_sum_wl_release(asslot) {
+        document.getElementById('txt_sup_release_worklot').innerHTML = asslot.toString();
+        var xsend = new XMLHttpRequest();
+        xsend.open("POST", "/Production/Payroll_Search/Sup_Release", true);
+        xsend.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                asslot = JSON.parse(xsend.responseText);
+                console.log(asslot);
+                table_worklot_infor_body = document.getElementById('table_worklot_infor_body');
+                while (table_worklot_infor_body.childNodes.length > 0)
+                    table_worklot_infor_body.removeChild(table_worklot_infor_body.childNodes[0]);
+                sum_wl = 0;
+                for (i = 0; i < asslot.length; i++) {
+                    var tr = document.createElement("tr");
+                    //STT
+                    var tdSTT = document.createElement("td");
+                    tdSTT.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    tdSTT.setAttribute("style", "color: black;");
+                    var node = document.createTextNode(i + 1);
+                    tdSTT.appendChild(node);
+                    tr.appendChild(tdSTT);
+                    //Quality
+                    var tdQuantity = document.createElement("td");
+                    tdQuantity.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    tdQuantity.setAttribute("style", "color: black;");
+                    var node = document.createTextNode(asslot[i].QTY_ISSUE);
+                    tdQuantity.appendChild(node);
+                    tr.appendChild(tdQuantity);
+                    sum_wl += parseInt(asslot[i].QTY_ISSUE);
+                    //User
+                    var tdUser = document.createElement("td");
+                    tdUser.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    tdUser.setAttribute("style", "color: black;");
+                    var node = document.createTextNode(asslot[i].USER);
+                    tdUser.appendChild(node);
+                    tr.appendChild(tdUser);
+                    //Note
+                    var tdNote = document.createElement("td");
+                    tdNote.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    tdNote.setAttribute("style", "color: black;");
+                    var node = document.createTextNode(asslot[i].NOTE);
+                    tdNote.appendChild(node);
+                    tr.appendChild(tdNote);
+                    //TimeUpdate
+                    var tdTime = document.createElement("td");
+                    tdTime.setAttribute("class", "mdl-data-table__cell--non-numeric");
+                    tdTime.setAttribute("style", "color: black;");
+                    var node = document.createTextNode(asslot[i].TIME_RELEASE);
+                    tdTime.appendChild(node);
+                    tr.appendChild(tdTime);
+                    componentHandler.upgradeElement(tr);
+                    table_worklot_infor_body.appendChild(tr);
+                }
+                document.getElementById('txt_sup_release').innerHTML = 'Phát tem: ' + sum_wl.toString();
+            }
+        }
+        xsend.setRequestHeader("Content-type", "application/json");
+        data = { asslot: asslot };
+        xsend.send(JSON.stringify(data));
+    }
+    document.getElementById('btn_worklot_infor_close').addEventListener('click', function () {
+        document.getElementById('dialog_worklot_infor').close();
+    });
+
+    document.getElementById('txt_sup_note').addEventListener('keyup', function (event) {
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            worklot = document.getElementById('txt_sup_release_worklot').innerHTML;
+            quantity = document.getElementById('txt_sup_release_quantity').value;
+            note = document.getElementById('txt_sup_note').value;
+            if (worklot == '' || quantity == '') {
+                alert('Thông tin chưa đầy đủ');
+                return;
+            }
+            document.getElementById('txt_sup_release_worklot').innerHTML = worklot;
+            var xsend = new XMLHttpRequest();
+            xsend.open("POST", "/Production/Payroll_Search/Sup_Release_Submit", true);
+            xsend.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    data = JSON.parse(xsend.responseText);
+                    get_sum_wl_release(worklot);
+                    document.getElementById('txt_sup_release_quantity').value = '';
+                    document.getElementById('txt_sup_note').value = '';
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data = { worklot: worklot, quantity: quantity, note: note };
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+    });
+
+    function draw_graph(name, list_data, label, chart_name, typeChar, title = "", grid = true) {
+        var color = new Array();
+        for (var i = 0; i < name.length; i++) {
+            color.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
+        }
+        var ctx = document.getElementById(chart_name).getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: typeChar,//'bar',
+
+            data: {
+                labels: name,
+                datasets: [{
+                    label: label,//'Sản lượng theo Công đoạn',
+                    data: list_data,
+                    backgroundColor: color,
+                    borderWidth: 1,
+                    fill: false
+                }]
+            }
+            , options: {
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart,
+                            ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(15, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'center';
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var data = dataset.data[index];
+                                ctx.fillText(data, bar._model.x + 25, bar._model.y);
+                            });
+                        });
+                    }
+                },
+                title: {
+                    display: true,
+                    text: title,
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: grid//true
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: grid//true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+</script>

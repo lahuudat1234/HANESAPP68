@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title><%= title %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+</head>
+
+<style>
+    .tableFixHead {
+      overflow-y: auto;
+      height: 500px;
+    }
+    .tableFixHead thead th {
+      position: sticky;
+      top: 0;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .tableFixHead th,
+    .tableFixHead td {
+      padding: 8px 16px;
+      border: 1px solid #ccc;
+    }
+    .tableFixHead th {
+      background: #eee;
+    }
+</style>
+
+<body>
+
+    <div class="container-fluid my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-12" style="float: right; margin-bottom: 10px;">
+                <h2><%= title %></h2>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <span>Họ tên: <span id="full-name"></span> /</span>
+                        <span>Ca: <span id="shift"></span> /</span>
+                        <span>Tổng số tem: <span id="sum-tem"></span> /</span>
+                        <span>Lương sản phẩm: <span id="erned-hours"></span> /</span>
+                        <span> Tổng SAH: <span id="sum-sah"></span> </span>
+                    </div>
+                    <div class="col-lg-4">
+                        <input id="DateId" name="dates" style="float: right;" >
+                        <input id="EmployeeId" type="text" placeholder="Nhập ID nhân viên" style="float: right; margin-right: 10px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="tableFixHead">
+                    <table>
+                      <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Employee</th>
+                            <th>Date</th>
+                            <th>BUNDLE</th>
+                            <th>WORK_LOT</th>
+                            <th>OPERATION_CODE</th>
+                            <th>SAM</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tb">
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>
+
+<script>
+$(document).ready(function(){
+    $('input[name="dates"]').daterangepicker({
+        locale: {
+            format: 'DD/MM/YYYY'
+        }
+    });
+    $("#EmployeeId").keypress(function (e) {
+        if (e.which != 13) {
+            return
+        }
+        if ($('#EmployeeId').val() == '') {
+            alert('Nhập ID nhân viên')
+            document.getElementById("tb").innerHTML = "";
+            document.getElementById("sum-tem").innerHTML = '';
+            document.getElementById("sum-sah").innerHTML = '';
+            document.getElementById("full-name").innerHTML = '';
+            return
+        } 
+        var idnv=$('#EmployeeId').val()
+        var id5=idnv.substr(1,5)
+        get_data(id5, $('#DateId').val())
+        get_name(id5)   
+    });
+
+    $('#DateId').change(function() {
+        if ($('#EmployeeId').val() == '') {
+            alert('Nhập ID nhân viên')
+            document.getElementById("tb").innerHTML = "";
+            document.getElementById("sum-tem").innerHTML = '';
+            document.getElementById("sum-sah").innerHTML = '';
+            document.getElementById("full-name").innerHTML = '';
+            return
+        } 
+        var date = $(this).val();
+        var idnv=$('#EmployeeId').val()
+        var id5=idnv.substr(1,5)
+        get_data(id5, date)
+        get_name(id5)  
+    });
+});
+
+    function get_data(employee, date) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var res_result = this.responseText;
+                list = JSON.parse(res_result);
+                console.log(list)
+                var rr = "";
+                var sumEo = 0;
+                if (list.length > 0) {
+                    for (var i = 0; i < list.length; i++) {
+                        if (list[i]["EARNED_HOURS"] != null ) {
+                            sumEo = sumEo + parseFloat(list[i]["EARNED_HOURS"])
+                        }
+                        var row =
+                        "<tr><td>" +
+                        (i+1) + 
+                        "</td><td>" +
+                        list[i]["EMPLOYEE"] +
+                        "</td><td>" +
+                        list[i]["DATE"] +
+                        "</td><td>" +
+                        list[i]["BUNDLE"] +
+                        "</td><td>" +
+                        list[i]["WORK_LOT"] +
+                        "</td><td>" +
+                        list[i]["OPERATION_CODE"] +
+                        "</td><td>" +
+                        list[i]["EARNED_HOURS"] +
+                        "</td></tr>";
+                        rr = rr + row;
+                    }
+                    document.getElementById("tb").innerHTML = rr;
+                    document.getElementById("sum-sah").innerHTML = (sumEo/60).toFixed(2);
+                    document.getElementById("erned-hours").innerHTML = numberWithCommas(((sumEo/60)*6000).toFixed(0));
+                } else {
+                    document.getElementById("tb").innerHTML = "";
+                    document.getElementById("sum-sah").innerHTML = 0;
+                    document.getElementById("erned-hours").innerHTML = 0;
+                }
+                document.getElementById("sum-tem").innerHTML = list.length;
+                
+            }
+        };
+        xhttp.open("GET", "/get_data_scan_ticket?employee=" + employee + "&date=" + date, true);
+        xhttp.send();
+    }
+
+    function get_name(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var res_result = this.responseText;
+                list = JSON.parse(res_result);
+                console.log(list)
+                if (list.length > 0) {
+                    document.getElementById("full-name").innerHTML = list[0]['Name'];
+                    document.getElementById("shift").innerHTML = list[0]['Shift'];
+                } else {
+                    document.getElementById("full-name").innerHTML = "";
+                    document.getElementById("shift").innerHTML = "";
+                }    
+            }
+        };
+        xhttp.open("GET", "/get_name?id=" + id, true);
+        xhttp.send();
+    }
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+</script>

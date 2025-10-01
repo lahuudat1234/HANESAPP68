@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MEC setup group</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- day picker -->
+    <!-- Include jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+</head>
+<style>
+    .mdl-layout__header {
+        width: 100%;
+        height: 50px;
+        background-color: rgb(197, 37, 136);
+        color: white;
+        font-weight: bold;
+
+    }
+
+    body {
+        background-image: url(../backgroundweb.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+
+<body onload="loaddata()">
+    <!-- Always shows a header, even in smaller screens. -->
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row" style="margin-left: auto;margin-right: auto;">
+                <!-- Title -->
+                <span class="mdl-layout-title" style="font-size: 30px;"><b><i class="material-icons"
+                            style="font-size: 30px; margin-right: 15px;">menu_group</i>SETUP GROUP</b></span>
+                <!-- Add spacer, to align navigation to the right -->
+                <div class="mdl-layout-spacer">
+
+                </div>
+
+            </div>
+        </header>
+        <style>
+            .mdl-layout__drawer {
+                width: 360px;
+                left: -250px;
+            }
+
+            .mdl-layout__drawer.is-visible {
+                left: 0;
+            }
+
+            .abc {
+                color: black;
+            }
+        </style>
+        <div class="mdl-layout__drawer" style="border: none;">
+            <div style="max-width: 100%; min-height: 220px;padding: 3%; background-image: url('../uommam.jpg');
+        background-repeat: no-repeat; background-size: cover;">
+                <!-- <span class="mdl-layout-title"
+                    style="text-align: center; color: white;font-size: 40px;margin-top: 60px;">HDI</span> -->
+            </div>
+            <nav class="mdl-navigation">
+                <a style="color: black;" class="mdl-navigation__link" href="http://pbvweb01v/Mechome"><b><i class="material-icons"
+                            style="margin-right: 10px;">domain</i>Trang Chủ</b></a>
+                <!-- <hr>
+                <h6 style="margin-left: 25px;"><b>I. BOOKS</b></h6>
+
+                <a style="color: black;" class="mdl-navigation__link" href="/HDILibrary/1Leadership"><i
+                        class="material-icons" style="margin-right: 10px;">leaderboard</i>1. Leadership & Soft Skills
+                    Books</a>
+
+                <a style="color: black;" class="mdl-navigation__link" href=""><i class="material-icons"
+                        style="margin-right: 10px;">science</i>2. Technical
+                    Books</a>
+
+                <a style="color: black;" class="mdl-navigation__link" href=""><i class="material-icons"
+                        style="margin-right: 10px;">public</i>3. Life Skills Books</a>
+
+                <a style="color: black;" class="mdl-navigation__link" href=""><i class="material-icons"
+                        style="margin-right: 10px;">library_books</i>4. English Books</a>
+
+                <a style="color: black;" class="mdl-navigation__link" href=""><i class="material-icons"
+                        style="margin-right: 10px;">all_inclusive</i>5. Others</a>
+                <hr>
+                <h6 style="margin-left: 25px;"><b>II. GAME BANK</b></h6>
+
+                <a style="color: black;" class="mdl-navigation__link" href=""><i class="material-icons"
+                        style="margin-right: 10px;">connect_without_contact</i>SOCIAL GAME</a>
+
+                <a style="color: black;" class="mdl-navigation__link" href=""><i class="material-icons"
+                        style="margin-right: 10px;">transfer_within_a_station</i>INDIVIDUAL GAME</a>
+                <hr>
+                <h6 style="margin-left: 25px;"><b>III. SLIDE/LESSON PLAN SHARING</b></h6>
+
+                <a style="color: black;" class="mdl-navigation__link" href="/HDILibrary/HDI_3_1Leadership_SoftSkill"><i class="material-icons"
+                        style="margin-right: 10px;">6_ft_apart</i>1. Leadership & Soft Skills</a>
+
+                <a style="color: black;" class="mdl-navigation__link" href=""><i class="material-icons"
+                        style="margin-right: 10px;">engineering</i>2. Technical</a>
+                <hr>
+                <h6 style="margin-left: 25px;"><a href=""><b>IV. VIDEO </b></a></h6>
+                <hr>
+                <h6 style="margin-left: 25px;"><a href=""><b>V. BORROWING BOOKS</b></a></h6>
+                <hr>
+                <br>  -->
+                <a style="color: black;" class="mdl-navigation__link" href="http://10.113.90.45/mec/setupgroup"><i class="material-icons"
+                        style="margin-right: 10px;">control_point_duplicate</i><b>Setup Group</b></a>
+            </nav>
+        </div>
+
+        <!-- Begin Main -->
+        <main class="mdl-layout__content" style="margin:20px;">
+            <style>
+                .card {
+                    width: 98%;
+                    height: 90px;
+                    border: 2px solid red;
+                    border-radius: 5px;
+                    color: white;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+            </style>
+            <div class="card mdl-shadow--2d" style="position: fixed; z-index: 1000; background-color: darkslategray;">
+
+                <div class="mdl-layout-spacer" style="width: 100%;height: 60px; ">
+                    <div class="mdl-grid" style="margin-top:auto;">
+
+                        <div class="mdl-cell mdl-cell--2-col">
+                            <div class="form-group">
+                                <label for="id_line">line</label>
+                                <input type="text" class="form-control" id="id_line">
+                            </div>
+                        </div>
+
+                        <div class="mdl-cell mdl-cell--3-col">
+                            <div class="form-group">
+                                <label for="id_group">group</label>
+                                <input type="text" class="form-control" id="id_group">
+                            </div>
+                        </div>
+
+                        <div class="mdl-cell mdl-cell--2-col">
+                            <div class="form-group">
+                                <label for="id_zone">Zone:</label>
+                                <input type="number" class="form-control" id="id_zone">
+                            </div>
+                        </div>
+
+                        <div class="mdl-cell mdl-cell--2-col">
+
+                            <button type="button" class="btn btn-primary" id="btn_upload"
+                                style="margin-top: 23px;margin-left: 10px;">Upload</button>
+
+                        </div>
+
+                        <div class="mdl-cell mdl-cell--2-col">
+
+                            <div class="form-group" style="padding-top: 23px;">
+                                <span id="username"><%= user %></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+            <hr>
+            <!-- Table -->
+            <div style="width: 100%; padding-top: 100px;">
+                <!-- Square card -->
+                <style>
+                    #customers {
+                        font-family: Arial, Helvetica, sans-serif;
+                        border-collapse: collapse;
+                        width: 100%;
+                        border-radius: 15px;
+                        table-layout: auto;
+                    }
+
+                    /* cài đặt nội dung  trong ô*/
+                    #customers td {
+                        text-align: left;
+                    }
+
+                    #customers th {
+
+                        border: 1px solid #ddd;
+                        padding: 8px;
+
+                    }
+
+                    #customers tr:nth-child(even) {
+                        background-color: #f2f2f2;
+                    }
+
+                    #customers tr:hover {
+                        background-color: #ddd;
+                    }
+
+                    #customers th {
+                        height: 30px;
+                        padding-top: 12px;
+                        padding-bottom: 12px;
+                        text-align: center;
+                        background-color: #46B6AC;
+                        color: white;
+                    }
+
+                    .demo-card-square.mdl-card {
+                        width: 98%;
+                    }
+                </style>
+                <div class="demo-card-square mdl-card mdl-shadow--2dp" style="margin-left: auto;margin-right: auto;">
+                    <div class="table-responsive" style="overflow-x:auto;height: auto; text-align: center;">
+                        <table id="customers"
+                            class=" mdl-data-table mdl-js-data-table mdl-shadow--6dp table table-hover "
+                            style="margin:auto;height: auto;"
+                            onclick="detail_ticket()">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>LINE</th>
+                                    <th>GROUP</th>
+                                    <th>ZONE</th>
+                                    <th>người cập nhật</th>
+                                </tr>
+                            </thead>
+                            <tbody style="text-align: left;">
+                                <!-- Update Data lên đây -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- footer -->
+            <footer class="mdl-mini-footer">
+                <div class="mdl-mini-footer__left-section">
+                    <div class="mdl-logo">
+                        Copyright Phubai Innovation
+                    </div>
+                    <ul class="mdl-mini-footer__link-list">
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">Privacy and Terms</a></li>
+                        <li><a href="#">User Agreement</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </main>
+        <!-- End Main -->
+        <script>
+            function loaddata() {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("get", '/mec/loading_group', true);
+                event.preventDefault(); //prevent default action 
+                xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var jsonObject = JSON.parse(this.responseText);
+                        var trHTML = '';
+                        console.log(jsonObject);
+                        var i;
+                        for (i = 0; i < jsonObject.length; i++) {
+                            var No = i+1;
+                            var line = jsonObject[i].line;
+                            var groupname = jsonObject[i].groupname;
+                            // const filePath = String.raw`\\pbvfps1\PBShare2\TranMung\sach`;
+                            var Zone = jsonObject[i].Zone;
+                            // const filePath2 = String.raw`\\pbvfps1\PBShare2\TranMung\sach\book`;
+                            var userid = jsonObject[i].Note;
+                            // var CountSee = jsonObject[i].CountSee;
+                            // var UploadBy = jsonObject[i].UploadBy;
+                            // var Noted = jsonObject[i].Noted;
+
+                            trHTML += '<tr><td style="text-align: center;">' + No + '</td><td style="text-align: center;">' + line + '</td><td style="text-align: center;">' + groupname + '</td><td style="text-align: center;">' + Zone + '</td><td style="text-align: center;">' + userid + '</td></tr>';
+                        };
+                        // console.log(myjsonObject);
+                        // trHTML=myjsonObject.IDMachine;
+                        // console.log(trHTML);
+                        $('#customers tbody').html(trHTML);
+                    }
+                };
+                // Kiem tra console ra man hinh
+                // ===============================================================
+                xmlhttp.setRequestHeader("Content-type", "application/json");
+                xmlhttp.send();
+
+            };
+            document.getElementById('btn_upload').addEventListener('click', function () {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("post", '/mec/updateline', true);
+                event.preventDefault(); //prevent default action 
+                var line = document.getElementById("id_line").value;
+                var groupname = document.getElementById("id_group").value;
+                var zone = document.getElementById("id_zone").value;
+                var user=document.getElementById("username").innerText;
+                console.log(user)
+                if(user!="ngmai1"&&user!="mabach"&&user!="duvinh"){
+                    alert("user không được cấp quyền");
+                    return;
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var data=this.responseText;
+                        if (data=="ok"){
+                            loaddata() 
+                            document.getElementById("id_line").value="";
+                            document.getElementById("id_group").value="";
+                            document.getElementById("id_zone").value="";  
+                            alert("ĐÃ CẬP NHẬT THÀN CÔNG");
+                        } else{
+                            alert("Có lỗi rồi!!!");
+                        }
+
+                // location.reload();                     
+                    }
+                };
+                // Kiem tra console ra man hinh
+                // ===============================================================
+                xmlhttp.setRequestHeader("Content-type", "application/json");
+                data = {
+                    line:line,
+                    groupname:groupname,
+                    Zone:zone,
+                    Note:user
+                };
+                console.log(data);
+                xmlhttp.send(JSON.stringify(data));
+                // xmlhttp.send();
+            });
+
+            function detail_ticket(){
+              var table = document.getElementById("customers");
+              event.stopImmediatePropagation;
+              if (table) {
+                for (var i = 0; i < table.rows.length; i++) {
+                  table.rows[i].ondblclick = function(e) {
+                    tableText(this);
+                  };
+                };
+              };
+            }
+            function tableText(tableRow) {
+              document.getElementById("id_line").value=tableRow.childNodes[1].innerText;
+              document.getElementById("id_group").value=tableRow.childNodes[2].innerText;
+              document.getElementById("id_zone").value=tableRow.childNodes[3].innerText;
+            };
+
+
+        </script>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>IE WEB LineBalancing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<style>
+  /* The side navigation menu */
+  .sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #6C3483 ; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  }
+  
+  /* The navigation menu links */
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  /* When you mouse over the navigation links, change their color */
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  /* Position and style the close button (top right corner) */
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+  #main {
+    transition: margin-left .5s;
+    padding: 2px;
+  }
+  
+  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+  .modal {
+     /* position: absolute; */
+     top: 10px;
+     right: 100px;
+     bottom: 0;
+     left: 0;
+     z-index: 10040;
+     overflow: auto;
+     overflow-y: auto;
+  }
+  /* spin */
+  .loader{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    position: relative;
+    margin: 0 auto;
+  }
+  
+  /* LOADER 1 */
+  
+  #loader-1:before, #loader-1:after{
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    border: 10px solid transparent;
+    border-top-color: #3498db;
+  }
+  
+  #loader-1:before{
+    z-index: 100;
+    animation: spin 1s infinite;
+  }
+  
+  #loader-1:after{
+    border: 10px solid #ccc;
+  }
+  
+  @keyframes spin{
+    0%{
+      -webkit-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+  
+    100%{
+      -webkit-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  
+  
+  /* tab */
+  * {box-sizing: border-box}
+  
+  /* Set height of body and the document to 100% */
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial;
+  }
+  
+  /* Style tab links */
+  .tablink {
+    background-color: #6C3483 ;
+    color: whitesmoke;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 20%;
+  }
+  
+  .tablink:hover {
+    background-color: #B3E5FC;
+  }
+  
+  /* Style the tab content (and add height:100% for full page content) */
+  .tabcontent {
+    color: black;
+    display: none;
+    padding: 100px 20px;
+    height: 100%;
+  }
+  
+  #Home {background-color: #B3E5FC;}
+  #News {background-color: #B3E5FC;}
+  #Contact {background-color: #B3E5FC;}
+  #About {background-color: #B3E5FC;}
+  
+  
+  
+  
+  /* Just for styling */
+  .styling {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    /* height: 150px;
+    overflow: auto; */
+  }
+  table, th, td {
+    border: 1px solid black;
+  }
+  
+  .fixed_header{
+      width: 400px;
+      table-layout: fixed;
+      border-collapse: collapse;
+  }
+  
+  .fixed_header tbody{
+    display:block;
+    width: 100%;
+    overflow: auto;
+    height: 100px;
+  }
+  
+  .fixed_header thead tr {
+     display: block;
+  }
+  
+  .fixed_header thead {
+    background: #314261;
+    color:#6C3483 ;
+  }
+  
+  .fixed_header th, .fixed_header td {
+    padding: 5px;
+    text-align: left;
+    width: 200px;
+  }
+    div.round1 {
+    border: 2px solid #6C3483 ;
+    border-radius: 5px;
+    }
+    body {
+      background-color: rgb(252, 250, 255);
+      font: 400 15px Lato, Lato;
+      line-height: 1.8;
+      color: #210b3a;
+    }
+    h2 {
+      font-size: 24px;
+      text-transform: uppercase;
+      color: #303030;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+    h4 {
+      font-size: 19px;
+      line-height: 1.375em;
+      color: #303030;
+      font-weight: 400;
+      margin-bottom: 30px;
+    }  
+    .jumbotron {
+      background-color: #f4511e;
+      color: #fff;
+      padding: 25px 25px;
+      font-family: times, serif;
+    }
+    .bg-grey {
+      background-color: #f6f6f6;
+    }
+    .thumbnail {
+      padding: 0 0 15px 0;
+      border: none;
+      border-radius: 0;
+    }
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      margin-bottom: 10px;
+    }
+    .carousel-control.right, .carousel-control.left {
+      background-image: none;
+      color: #f4511e;
+    }
+    .carousel-indicators li {
+      border-color: #f4511e;
+    }
+    .carousel-indicators li.active {
+      background-color: #f4511e;
+    }
+    .item h4 {
+      font-size: 19px;
+      line-height: 1.375em;
+      font-weight: 400;
+      font-style: italic;
+      margin: 70px 0;
+    }
+    .item span {
+      font-style: normal;
+    }
+    .panel {
+      border: 1px solid #6C3483 ; 
+      border-radius:0 !important;
+      transition: box-shadow 0.5s;
+    }
+    .panel:hover {
+      box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+    }
+    .panel-footer .btn:hover {
+      border: 1px solid #6C3483 ;
+      background-color: #fff !important;
+      color: #6C3483 ;
+    }
+    .panel-heading {
+      color: #fff !important;
+      background-color: #6C3483  !important;
+      padding: 25px;
+      border-bottom: 1px solid transparent;
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .panel-footer {
+      background-color: white !important;
+    }
+    .panel-footer h3 {
+      font-size: 32px;
+    }
+    .panel-footer h4 {
+      color: #aaa;
+      font-size: 14px;
+    }
+    .panel-footer .btn {
+      margin: 15px 0;
+      background-color: #f4511e;
+      color: #fff;
+    }
+    .navbar {
+      margin-bottom: 0;
+      background-color: #6C3483 ;
+      z-index: 9999;
+      border: 0;
+      font-size: 12px !important;
+      line-height: 1.42857143 !important;
+      letter-spacing: 4px;
+      border-radius: 0;
+      font-family: Arial;
+    }
+    .navbar li a, .navbar .navbar-brand {
+      color: black !important;
+    }
+    .navbar-nav li a:hover, .navbar-nav li.active a {
+      color: #6C3483  !important;
+      background-color: #fff !important;
+    }
+    .navbar-default .navbar-toggle {
+      border-color: transparent;
+      color: #fff !important;
+    }
+    footer .glyphicon {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #f4511e;
+    }
+  
+    @keyframes slide {
+      0% {
+        opacity: 0;
+        transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        transform: translateY(0%);
+      }
+    }
+    @-webkit-keyframes slide {
+      0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .col-sm-4 {
+        text-align: center;
+        margin: 25px 0;
+      }
+      .btn-lg {
+        width: 100%;
+        margin-bottom: 35px;
+      }
+    }
+    @media screen and (max-width: 480px) {
+      .logo {
+        font-size: 150px;
+      }
+    }
+</style>
+<div class="container">
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <br>
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+          <li><a><span class="glyphicon glyphicon-user"></span> User:</a></li>
+          <li><a><input name="user_sign_up" type="text" id="user_sign_up"></a></li>
+          <li><a><span class="glyphicon glyphicon-log-in"></span> Pass:</a></li>
+          <li><a><input name="pass_sign_up" type="password" id="pass_sign_up"></a></li>
+          <li onclick="login()" id="login"><a><span class="glyphicon glyphicon-log-in"id="login_status"> Login</span></a></li>
+      </ul>
+    </div>
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="/IE/LineBalancing">CBC chi tiết</a>
+      <a href="/IE/summaryLineBalance">Tổng hợp CBC</a>
+      <a href="/IE/headcountAdjust">Head count chuyền</a>
+      <a href="/IE/loadDataCBC">load cbc Excel</a>
+      <a href="/IE/loadDataLongShift">load cbc ca dài</a>
+      <a href="/IE/LineBalancingls">CBC ca dài</a>
+      <a href="/IE/summaryLineBalancels">Tổng hợp CBC ca dài</a>
+      <a href="/off_standard">quét thẻ</a>
+      <a href="http://pbvweb01v/Production/PayrollCheck">Web Scan Tem</a>
+    </div>
+  </nav>
+</div>
+</head>
+<div id="main" onclick="closeNav()">
+<body class="container" style="margin: 1px auto; width: 100%;">
+  <br>
+  <br>
+  <div class="container" style="margin: 1px auto; width: 100%;">
+    <div class="container" style="margin: 1px auto; width: 100%;">
+      <div class="col-md-9">
+        <h2> Tổng hợp Head Count</h2>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-1"  style="display: none;">
+        <h1 ><a id="refresh_link" href="#">refresh page</a></h1>
+      </div>
+    </div>
+  </div>
+  <div class="loader" id="loader-1" style="display: none; margin: 5px auto;"></div>
+<!-- nhập thông tin nhóm chuyền , ca và mã hàng -->
+  <div class=" row" style="margin: auto;">
+    <form id="form_calculate" action="/IE/getbalance" method="GET">
+      <div class="col-md-1">
+        <label for="sel_shift">chọn ca:</label>
+        <select class="form-control" name="sel_shift" id="sel_shift">
+          <option> - </option>
+          <option>RIT</option>
+          <option>BALI</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label for="group_name">Chọn Chuyền:</label><br>
+        <select class="form-control" name="group_name" id="group_name">
+          <option> - </option>
+          <option><%- listgroup %></option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label for="sel_week">chọn tuần CBC:</label>
+        <select class="form-control" name="sel_week" id="sel_week">
+          <option>chọn tuần</option>
+          <%
+            var i=1;
+            for (i=1;i<=53;i++)
+            { %> <option><%= i%></option>
+            <% }; %>
+          <option>69</option>
+        </select>
+      </div>
+      <div class="col-md-1">
+        <br>
+        <input id="refresh_bt" type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke;" value="Refresh" onclick="submit_form()">
+      </div>
+      <div class="col-md-2">
+        <label for="msnv">mã số nhân viên</label>
+        <input class="form-control" id="msnv" type="number" name="msnv">
+      </div>
+
+        <div class="col-md-2">
+        <!-- not display -->
+        <div style="display: none;">
+          <input type="text" id="ie_cbc" name="ie_cbc">
+          <input type="text" id="week_ie" name="week_ie">
+        </div>
+        <br>
+      </div>
+    </form>
+    <br>
+  </div>
+  <div>
+    <p><strong id="text_result" style="color: #4B0082; font-family: Arial; font-size: x-large;">Danh sách head count chi tiết</strong></p>
+   
+        <div class="row" style="width:100%; margin-left: auto; margin-right: auto;">
+          <div class="table-responsive" style="height: 600px; width: 100%; margin-left: auto; margin-right: auto;">
+            <table id="ds_content" class="table" style="margin-left: auto; margin-right: auto;" ondblclick="change_HC()">
+              <!-- <table id="table_content"> style="height: 310px;" week,groupcbc,shift,style,size,output,eff,rate,headcount,ie_cbc -->
+              <thead>
+                <tr >
+                  <th >WEEK</th>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th >Line</th>
+                  <th >CA</th>
+                  <th>ML</th>
+                  <th>Line mới</th>
+                  <th >Ca mới</th>
+                  <th>IE Chuyển</th>
+                </tr>
+              </thead>  
+              <tbody style="height: 565px;">
+                <%- table_body_ds %>
+              </tbody>
+            </table>
+          </div>
+          <br>
+        </div>
+  </div>
+  <!-- form no display -->
+  <button id="dialog1" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">thông tin nhân viên</h4>
+        </div>
+        <div class="modal-body">
+          <form id="changeline">
+            <input class="form-control" type="text" id="idnv" name="idnv">
+            <label for="name_emp">Tên nhân viên:</label>
+            <input class="form-control" type="text" id="name_emp" name="name_emp">
+            <label for="line_new">Line mới:</label>
+            <input class="form-control" type="text" id="line_new" name="line_new">
+            <label for="shift_new">Ca mới:</label>
+            <select class="form-control" name="shift_new" id="shift_new">
+              <option>RIT</option>
+              <option>RIT-MAT</option>
+              <option>RITCHILD</option>
+              <option>BALI</option>
+              <option>BALI-MAT</option>
+              <option>BALICHILD</option>
+            </select>
+            <label for="ML_new">Code trừ head count:</label>
+            <select class="form-control" name="ML_new" id="ML_new">
+              <option></option>
+              <option>NDH</option>
+              <option>ML</option>
+              <option>NV</option>
+            </select>
+            <br>
+            <input type="button" class="btn btn-primary" style="background-color: #4B0082; color: whitesmoke;" value="Cập nhật" onclick="change_line()">
+            <input type="text" id="ie_change" name="ie_change" style="display: none;">
+            <input type="text" id="week_change" name="week_change" style="display: none;">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="close_dialog" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      var login_status
+      var login_user
+      var kq_cbc=JSON.stringify("");
+
+
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "300px";
+        document.getElementById("main").style.marginLeft = "300px";
+        // document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+      }
+
+      /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+      }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      // Get the element with id="defaultOpen" and click on it
+      // document.getElementById("defaultOpen").click();
+      function change_line(){
+        document.getElementById("idnv").disabled=false;
+        document.getElementById("name_emp").disabled=false;
+        document.getElementById("close_dialog").click();
+        var main_url = "/IE/changeline";
+        var referrer = "/IE/linebalancing";
+        event.preventDefault();
+        var frm = $('#changeline');
+        $.ajax({
+            type: "post",
+            url: main_url,
+            data: frm.serialize(),
+            // headers: {'X-Alt-Referer': referrer },
+            success: function (data) {
+              alert(data);
+              document.getElementById("refresh_bt").click();
+            },
+            error: function () {
+                alert("submit failed")
+            },
+        });
+      };
+        // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      function submit_form(){
+                // document.getElementById("loader-1").style.display="grid";
+                // alert('chưa bật chức năng lọc! vui lòng thử lại sau')
+                // return;
+                // $('#table_content tbody').html('');
+                // $('#ds_content tbody').html('');
+                kq_cbc=JSON.stringify("");
+                document.getElementById("ie_cbc").value=document.getElementById("user_sign_up").value
+                var main_url = "/IE/headcountAdjust";
+                var referrer = "/IE/linebalancing";
+                event.preventDefault();
+                var frm = $('#form_calculate');
+                $.ajax({
+                    type: "post",
+                    url: main_url,
+                    data: frm.serialize(),
+                    // headers: {'X-Alt-Referer': referrer },
+                    success: function (data) {
+                          document.getElementById("loader-1").style.display="none";
+                          console.log(data);
+                          var jsonObjectAll = data;
+                          var jsonObject=jsonObjectAll['danhsach'];
+                          console.log(jsonObject);
+                          var i;
+                          var trHTML='';
+                          var mat=0;
+                          for (i = 0; i < jsonObject.length; i++) {
+                            trHTML += '<tr><td >' + jsonObject[i].WEEK + '</td><td >' + jsonObject[i].ID+ '</td><td >' + jsonObject[i].NAME + '</td><td >' + jsonObject[i].Line + '</td><td >' + jsonObject[i].Shift + '</td><td >'+jsonObject[i].ML+'</td><td >' + jsonObject[i].line_new +'</td><td >' + jsonObject[i].shift_new+'</td><td >' + jsonObject[i].ie+'</td></tr>';
+                          };
+                          $('#ds_content tbody').html(trHTML);
+                          var hd_act=jsonObjectAll['HC_Active']
+                          console.log(hd_act[0].HC)
+                          document.getElementById("text_result").innerText="Head count active = "+hd_act[0].HC;
+
+                    },
+                    error: function () {
+                        alert("submit failed")
+                    },
+                });
+            };
+          // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      function tableText(tableRow) {
+              var idnv = tableRow.childNodes[1].innerHTML;
+              var name = tableRow.childNodes[2].innerHTML;
+              var Line = tableRow.childNodes[6].innerHTML;
+              var shift = tableRow.childNodes[7].innerHTML;
+              var ML=tableRow.childNodes[5].innerHTML;
+              var ie=document.getElementById("user_sign_up").value
+              var week=document.getElementById("sel_week").value;
+              document.getElementById("week_change").value=week;
+              document.getElementById("idnv").value=idnv;
+              document.getElementById("idnv").disabled=true;
+              document.getElementById("name_emp").value=name;
+              document.getElementById("name_emp").disabled=true;
+              document.getElementById("line_new").value=Line;
+              document.getElementById("shift_new").value=shift;
+              document.getElementById("ML_new").value=ML;
+              document.getElementById("ie_change").value=ie;
+              document.getElementById("dialog1").click();
+            }
+      function change_HC(){
+              if (document.getElementById("login_status").innerHTML!=" Login_success"){
+                 alert("Bạn cần đăng nhập để cập nhật!")
+                 return;
+              }
+              var table = document.getElementById("ds_content");
+              event.stopImmediatePropagation;
+              if (table) {
+                for (var i = 0; i < table.rows.length; i++) {
+                  table.rows[i].ondblclick = function(e) {
+                    tableText(this);
+                  };
+                };
+              };
+            };
+          // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      function login() {
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                  var result_login=this.responseText
+                  if (result_login=="success"){
+                    document.getElementById("user_sign_up").disabled = true;
+                    document.getElementById("pass_sign_up").disabled = true;
+                    document.getElementById("login_status").innerHTML=" Login_success"
+                    alert("bạn đã đăng nhập thành công")
+                  } else{
+                      alert(result_login)
+                  }
+                  }
+                };
+                var login_status=document.getElementById("login_status").innerText
+                var user_sign_up=document.getElementById("user_sign_up").value
+                var pass_sign_up=document.getElementById("pass_sign_up").value
+                if (login_status==" Login"){
+                    if (user_sign_up==''){
+                    alert('Bạn chưa nhập User');
+                    return;
+                    }
+                    if (pass_sign_up==''){
+                        alert('Bạn chưa nhập password');
+                        return;
+                    }
+                    xhttp.open("get", "/IE/login/"+user_sign_up+"/"+pass_sign_up, true);
+                    xhttp.send();
+                }
+                };
+        ///////////////////////////////////////////////////////////////////////////////////////
+    function save_cbc(){
+          var result_cbc=JSON.parse(kq_cbc);
+          console.log(result_cbc)
+          var xhttp= new XMLHttpRequest();
+          xhttp.onreadystatechange = function(){
+            if (this.readyState==4 && this.status==200){
+              var res=this.responseText
+              alert(res);
+            }
+          }
+          if (result_cbc.Min>0){
+            alert('lưu cbc')
+            if (document.getElementById("login_status").innerText!=" Login_success"){
+              alert('IE cần đăng nhập để lưu dữ liệu');
+              return;
+            }
+            if (document.getElementById("sel_week").value=="Hằng ngày"){
+              alert('chọn tuần để lưu dữ liệu');
+              return;
+            }
+
+            document.getElementById("save_cbc_group").value=document.getElementById("group_name").value
+            document.getElementById("save_cbc_shift").value=document.getElementById("sel_shift").value
+            document.getElementById("save_cbc_style").value=document.getElementById("style_detail").value
+            document.getElementById("save_cbc_size").value=document.getElementById("sel_size").value
+            document.getElementById("save_cbc_ie").value=document.getElementById("user_sign_up").value
+            document.getElementById("save_cbc_output").value=result_cbc.Min
+            document.getElementById("save_cbc_eff").value=result_cbc.Eff
+            document.getElementById("save_cbc_HC").value=result_cbc.Head_Count
+            document.getElementById("save_cbc_rate").value=result_cbc.Rate
+            document.getElementById("save_cbc_week").value=document.getElementById("sel_week").value
+            // alert(document.getElementById("save_cbc_group").value)
+            // alert(document.getElementById("save_cbc_ie").value)
+            // alert(document.getElementById("save_cbc_style").value)
+            // alert(document.getElementById("save_cbc_size").value)
+            var frm_save_cbc = $('#save_cbc_form');
+            var main_url="/IE/save_cbc";
+            $.ajax({
+                type: "post",
+                url: main_url,
+                data: frm_save_cbc.serialize(),
+                // headers: {'X-Alt-Referer': referrer },
+                success: function (data) {
+                    alert(data)
+                  },
+                  error: function () {
+                            alert("save failed")
+                  },
+            });
+
+          } else {
+            alert('bạn chưa chạy cbc')
+          }
+
+    };
+
+  </script>
+
+
+
+</body>
+</div>
+</html>

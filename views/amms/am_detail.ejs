@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html>
+<title>Asia MC inventory</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../CSS/w3.css"/>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- <script src="/socket.io/socket.io.js"></script> -->
+
+
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+nav {
+  background-image: none;
+  background-image: none,none, url("../public/img_xp/bg1.jpg");
+}
+header {
+  background-image: none;
+  background-image: none,none, url("../public/img_xp/bg1.jpg");
+}
+</style>
+<body class="w3-content" style="max-width:1920px" onload="first_load()">
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:200px;" id="mySidebar"><br>
+  <div class="w3-container">
+    <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey" title="close menu">
+      <i class="fa fa-remove"></i>
+    </a>
+    <img src="../public/img_xp/ig.png" style="width:30%;" class="w3-round"><br><br>
+    
+    <h4 class="w3-text-white"><b>Web Services</b></h4>
+    <!-- <p class="w3-text-white">Design by ngmai1</p> -->
+  </div>
+  <div class="w3-bar-block w3-text-white">
+    <%-include ('menu_am'); %>
+  </div>
+  <!-- <div class="w3-panel w3-large w3-text-white">
+    <i class="fa fa-facebook-official w3-hover-opacity"></i>
+    <i class="fa fa-instagram w3-hover-opacity"></i>
+    <i class="fa fa-snapchat w3-hover-opacity"></i>
+    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+    <i class="fa fa-twitter w3-hover-opacity"></i>
+    <i class="fa fa-linkedin w3-hover-opacity"></i>
+  </div> -->
+</nav>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div id="main-page" class="w3-main" style="margin-left:200px">
+
+  <!-- Header -->
+  <header id="combine_plan">
+    <a href="#"><img src="./public/img_xp/ig.png" style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
+    <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+    <div class="w3-container">
+      <div class="w3-col" style="width:92%">
+        <div class="w3-container">
+          <h1 class="w3-text-white"><b>Asia Machine Inventory Monitoring</b></h1>
+          <div class="w3-section w3-bottombar w3-padding-16">
+            <span class="w3-margin-right w3-text-white">Filter:</span> 
+            <button class="w3-button w3-black w3-hide-small"><i class="fa fa-braille w3-margin-right"></i>Summary by plant</button>
+            <button class="w3-button w3-white w3-hide-small" onclick="open_form_up()"><i class="fa fa-file-archive-o w3-margin-right"></i>upload inv</button>
+          </div>
+        </div>
+      </div>
+      <div class="w3-col" style="width:8%">
+        <h6 class="w3-text-white"><b>Hi <%= user %>!</b></h6>
+      </div>
+    </div>
+
+
+  </header>
+  
+  <!-- First Photo Grid-->
+  <div class="w3-row-padding w3-bottombar">
+    <div class="w3-row">
+      <h3 style="padding-left: 15px;">Dash board:</h3>
+    </div>  
+    <div class="w3-row"  style="background-color: rgb(255, 255, 255); margin-top: 3px; border: solid 1px rgb(255, 255, 255) ;" >
+        <div class="w3-col" style="width: 60%; border: #37474F; background-color: #c2cdda;"> 
+            <strong style="color: rgb(19, 111, 231); font-size: 20px; padding-left: 15px;">information explaination</strong>
+            <p style="padding-left: 15px;">Good: good condition</p>
+            <p style="padding-left: 15px;">Failed: repare cost less than 1/3 machine price</p>
+            <p style="padding-left: 15px;">Poor: repare cost higher than 2/3 machine price</p>
+        </div>    
+        <div class="w3-col" style="width: 40%;">
+          <div class="w3-row" style="padding-top: 5px; padding-bottom: 5px; padding-left: 15px; background-color: #343c44; margin: auto;">
+            <strong style="color: rgb(19, 111, 231); font-size: 20px;">Filter area:</strong>
+          </div> 
+          <div class="w3-row" style="margin-bottom: 5px;">  
+            <div class="w3-row w3-hover-blue w3-blue-grey w3-leftbar w3-border-blue">
+              <div class="w3-col" style="width: 20%;">
+                <label style="text-align: left; padding-top:5px" id="size">plant:</label><br>
+              </div>
+              <div class="w3-col" style="width: 40%; font-size:12px">
+                <select class="form-control" type="text" name="plant_search" id="plant_search" onchange="change_plant()">
+                  <option>98 - Phu Bai</option>
+                  <option>96 - HYS</option>
+                  <option>95 - HYS</option>
+                  <option>91 - HYN</option>
+                  <option>EL - HYN</option>
+                </select>
+              </div>
+              <div class="w3-col" style="width: 10%;">
+                
+              </div>
+            </div>   
+
+            <div class="w3-row w3-hover-blue w3-blue-grey w3-leftbar w3-border-blue">
+              <div class="w3-col" style="width: 20%;">
+                <label style="text-align: left; padding-top:5px" id="size">Machine type:</label><br>
+              </div>
+              <div class="w3-col" style="width: 40%; font-size:12px">
+                <select class="form-control" type="text" name="machine_type" id="machine_type" >
+                  <option>-</option>
+                </select>
+              </div>
+              <div class="w3-col" style="width: 15%;">
+                <button style="margin-left: 15px;"  type="button" value="submit" class="btn btn-primary w3-green" onclick="plant_search()"><span class="glyphicon glyphicon-search"></span>Search</button>
+              </div>
+              <div class="w3-col" style="width: 15%;">
+                <button style="margin-left: 15px;"  type="button" value="submit" class="btn btn-primary w3-green"><span class="glyphicon glyphicon-download-alt"></span>Download Excel</button>
+              </div>
+            </div> 
+
+
+          </div>
+        </div>
+    </div>
+  </div>
+  
+  <!-- Second Grid-->
+  <div class="w3-row-padding w3-bottombar">
+                <!-- hien thi thong tin logs -->
+                
+                    <div class="w3-row">
+                      <h3 style="padding-left: 15px;">Detatil information:<spand id="qty_tt"></spand></h3>
+                    </div>    
+                    <div class="w3-row">
+                      <div class="w3-col" style="width:100%">
+                        <style>
+                          #tablea {
+                              font-family: Arial, Helvetica, sans-serif;
+                              border-collapse: collapse;
+                              border-radius: 15px;
+                              /* border: 1px solid #ffffff; */
+                              overflow: scroll !important;
+                          }
+                          
+                          #tablea td {
+                              text-align: center !important;
+                              /* border: 1px solid #3a3a3a; */
+                              height: 10px !important;
+                              border: 1px solid #ddd;
+                          }
+                          
+                          #tablea th {
+                              margin-top: 0px;
+                              border: 1px solid #ddd;
+                              padding: 8px;
+                              border: 1px solid #ffffff;
+                              height: 15px !important;
+                          }
+                          
+                          #tablea tr:nth-child(even) {
+                              background-color: #f2f2f2;
+                          }
+                          
+                          #tablea tr:hover {
+                              background-color: #ddd;
+                          }
+            
+                          #tablea th {
+                              padding-top: 3px;
+                              padding-bottom: 3px;
+                              text-align: center;
+                              background-color: #0099ff;
+                              color: white;
+                          }
+                          #tablea {
+                              border-collapse: collapse;
+                              width: 100%;
+                          }
+                          thead {
+                            position: sticky;
+                            top: 0; /* Don't forget this, required for the stickiness */
+                            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+                          }
+                        </style>  
+                        <div style="height:calc(100vh - 450px); overflow-y: scroll;">
+                                <table id="tablea" style="width:98%; margin: auto;" onclick="detail_cutlot()">
+                                  <thead>
+                                    <tr>                      
+                                      <th style="text-align: center;">machine type</th>
+                                      <th style="text-align: center;">Producer</th>
+                                      <th style="text-align: center;">Model</th>
+                                      <th style="text-align: center;">location</th>
+                                      <th style="text-align: center;">tagnumber</th>
+                                      <th style="text-align: center;">Company</th>
+                                      <th style="text-align: center;">NBV</th>
+                                      <th style="text-align: center;">status</th>
+                                      <th style="text-align: center;">Note</th>
+                                    </tr>                        
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                  </thead>
+                                </table>
+                        </div>
+                      </div>
+
+                    </div>     
+  </div>
+
+
+
+
+  <!-- Pagination -->
+  <!-- <div class="w3-center w3-padding-32">
+    <div class="w3-bar">
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
+      <a href="#" class="w3-bar-item w3-black w3-button">1</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
+    </div>
+  </div> -->
+
+
+  <!-- Footer -->
+  <!-- <footer class="w3-container w3-padding-32 w3-dark-grey">
+  </footer> -->
+  
+  <div class="w3-black w3-center w3-padding-24">design <a href="#" title="ngoi.mai1@hanes.com" target="_blank" class="w3-hover-opacity">innovation team</a></div>
+
+<!-- End page content -->
+
+<!-- modal -->
+<!-- modal confirm kanban tub1 button show -->
+<button id="dialog_form_up" style="display: none;" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal_plan_process">Open Modal</button>
+<!-- Modal confirm kanban -->
+<div class="modal fade" id="myModal_plan_process" role="dialog" style="z-index: 9990; margin-top: 50px;">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><strong>Excel upload inv</strong><span id="sys_confirm">.</span></h4>
+      </div>
+      <div class="modal-body">
+        <div style="width: 100%; height: 100%;" class="w3-container">
+        <!-- <div style="margin:auto ;width: 1000px; height: 100px; margin-top: 100px;" class="demo-card-square mdl-card mdl-shadow--2dp"> -->
+          <div >
+              <form style="margin:auto ;width: 100%; " action="am/Upload_New_Inv" id="upload_form" method="POST" enctype="multipart/form-data">
+                  <!-- <legend style="background-color: #46B6AC;">Upload file</legend> -->
+                  <div class="form-group">
+                      <label for="">File</label>
+                      <input style="height: auto;" type="file" class="form-control" name="file_excel" id='file_excel'>
+                  </div>
+                  <p id="spin_up" style="display: none;"><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p>
+                  <button id='submit' type="submit" class="btn btn-primary" onclick="check_submit_form()">UPLOAD</button>                       
+              </form>
+        <!-- </div> -->
+              <div class="loader" id="loadd" style="display: none; margin: auto;margin-top: 100px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <div class="w3-row" style="width: 80%; margin: auto;">
+          <div class="col-md-3">
+            <button type="button" value="submit" id="BT_update" class="btn btn-primary w3-blue" onclick="send_update()"><span class="glyphicon glyphicon-ok-sign"></span> cập nhật</button>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <button type="button" value="submit" class="btn btn-primary w3-blue" onclick="inv_link()"><span class="glyphicon glyphicon-search"></span> Xem tồn kho</button>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <button type="button" value="submit" class="btn btn-primary w3-blue" onclick="cancel_click()"><span class="glyphicon glyphicon-remove-sign"></span> Hủy</button>
+          </div>
+        </div> -->
+        <button id="close_dialog_upload" style="display: none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script type="text/javascript">
+// Script to open and close sidebar
+// setInterval(load_ecf_data, 5000);
+
+
+
+function open_form_up() {
+  document.getElementById("dialog_form_up").click();
+}
+
+
+function first_load() {
+  var element = document.getElementById("menu_detail");
+  element.classList.add("w3-blue");
+  // alert("first load")
+  change_plant()
+}
+
+function check_submit_form(){
+        // submitForm()
+        // console.log("submited")
+        // return
+        document.getElementById("spin_up").style.display="block";
+        var fi=document.getElementById("file_excel").value;
+        console.log(fi)
+        if (fi.indexOf(".xlsx")>-1){
+
+          // đủ điều kiện submit form
+          var form = document.getElementById('upload_form');
+          let formData = new FormData(form);
+          if (fi!= "") {
+            event.preventDefault();
+            var xsend = new XMLHttpRequest();
+            xsend.open('POST', '/AM/Upload_New_Inv', true);
+            xsend.send(formData);
+            xsend.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                var abc=this.responseText
+                if (abc.indexOf("imported")>-1){
+                  // let ts = Date.now();
+                  // let date_ob = new Date(ts);
+                  // let date = date_ob.getDate();
+                  // let month = date_ob.getMonth() + 1;
+                  // let year = date_ob.getFullYear();
+                  // var dsubmit=year+"-"+ month+"-" + date
+                  // // prints date & time in YYYY-MM-DD format
+                  
+                  // console.log(dsubmit);
+                  document.getElementById("spin_up").style.display="none";
+                  swal("system notification!",abc, "success");
+                  document.getElementById('close_dialog_upload').click();
+                }
+                else{
+                  // alert(abc)
+                  document.getElementById("spin_up").style.display="none";
+                  swal("system notification!",abc, "error");
+                  // document.getElementById('close_dialog_upload').click();
+                  alert("submit informaiton wrong! please contact admin")
+                  
+                }
+              }
+            }
+          }
+
+        }else{
+          document.getElementById("spin_up").style.display="none";
+          swal("system notification!","vui lòng chọn file word (*.xlsx) để load lên", "warning");
+          
+          return
+        }
+}
+
+
+
+
+
+
+function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+    document.getElementById("myOverlay").style.display = "block";
+}
+ 
+function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("myOverlay").style.display = "none";
+}
+
+// function inv_link() {
+//   var sku=document.getElementById("SKU").innerText
+//   var skus=sku.substring(5,sku.length)
+//   window.open("http://10.113.90.40/odd_inv/"+skus)
+// }
+
+function change_plant() {
+    plant=document.getElementById("plant_search").value
+    // alert(plant)
+    pl=plant.substring(0,2);
+    var xhttp = new XMLHttpRequest();
+    event.preventDefault(); //prevent default action 
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+            var res_result=this.responseText
+            if (res_result=="err"){
+ 
+              swal("system notification!","system error!\nPlease try again later", "error");
+            } 
+            else{
+              if (res_result=="zero"){
+                swal("system notification!","There are no inventory from plant selected", "success");
+                // document.getElementById("qty_tt").innerText=ac_value
+                $('#tablea tbody').html('')
+                document.getElementById("close_dialog_plan_process").click();
+                // document.getElementById("close_dialog_list_prepare_tub1").click()
+              }else{
+
+                var x = document.getElementById("machine_type");
+                while (x.length > 0) {
+                  x.remove(x.length-1);
+                  var x = document.getElementById("machine_type");
+                }
+                ls=JSON.parse(res_result)
+                  console.log(ls)
+                    if (ls.length>0){
+
+                      for (i=0; i<ls.length; i++){
+
+                        $('#machine_type').append($('<option>',
+                        {
+                            value: ls[i].machine_type,
+                            text : ls[i].machine_type
+                        }));
+
+
+
+                      }
+
+                    }
+                    else{
+                      alert("No data from system")
+                    }
+                  
+                  
+              }
+            }
+
+        }
+      };
+      xhttp.open("post",'/AM/getplant', true);
+      // var id= document.getElementById("idreq").value;
+      // send data jason
+      xhttp.setRequestHeader("Content-type", "application/json");
+      data_send = {
+          pl: pl
+      };
+      xhttp.send(JSON.stringify(data_send));
+
+}
+
+
+function plant_search() {
+    plant=document.getElementById("plant_search").value
+    mc=document.getElementById("machine_type").value;
+    console.log(mc)
+    pl=plant.substring(0,2);
+    var xhttp = new XMLHttpRequest();
+    event.preventDefault(); //prevent default action 
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+            var res_result=this.responseText
+            if (res_result=="err"){
+ 
+              swal("system notification!","system error!\nPlease try again later", "error");
+            } 
+            else{
+              if (res_result=="zero"){
+                swal("system notification!","don't have available inventory", "success");
+                document.getElementById("qty_tt").innerText=ac_value
+                $('#tablea tbody').html('')
+                document.getElementById("close_dialog_plan_process").click();
+                // document.getElementById("close_dialog_list_prepare_tub1").click()
+              }else{
+                ls=JSON.parse(res_result)
+                  console.log(ls)
+                    if (ls.length>0){
+                      var ttdt=""
+                      for (i=0;i<ls.length;i++){    
+                          ttdt+='<tr><td >'+ ls[i].machine_type +'</td><td>'+ls[i].producer+'</td><td >' +  ls[i].model_number + '</td><td >'+ ls[i].location 
+                          ttdt+= '</td><td >' + ls[i].tag_number+'</td><td >'+ls[i].company+'</td><td>'+ ls[i].net_book_value 
+                          ttdt+= '</td><td>'+ls[i].status+'</td><td>'+ls[i].note+'</td></tr>';
+                      }
+                      $('#tablea tbody').html(ttdt)
+                      // document.getElementById("qty_tt").innerText=ac_value
+
+                    }
+                    else{
+                      alert("Don't have data to show")
+                    }
+                  
+                  
+              }
+            }
+
+        }
+      };
+      xhttp.open("post",'/AM/getinfor_mc', true);
+      // var id= document.getElementById("idreq").value;
+      // send data jason
+      xhttp.setRequestHeader("Content-type", "application/json");
+      data_send = {
+          pl: pl,
+          mc:mc
+      };
+      xhttp.send(JSON.stringify(data_send));
+
+}
+
+
+function send_update() {
+  document.getElementById("BT_update").disabled=true;
+  var alot=document.getElementById("alot").value;
+  var clot=document.getElementById("clot").value;
+  var cut=document.getElementById("cut_in").value;
+  var sew=document.getElementById("sew_in").value;
+  var odd=document.getElementById("odd_in").value;
+  var xhttp = new XMLHttpRequest();
+  event.preventDefault(); //prevent default action 
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+          var res_result=this.responseText
+          if (res_result=="false"){
+            alert("system error!\nPlease try again later")
+          } 
+          else{
+            if (res_result=="ok"){
+              swal("system notification!",res_result, "success");
+              document.getElementById("close_dialog_plan_process").click();
+              // document.getElementById("close_dialog_list_prepare_tub1").click();
+
+              
+            }else{
+              swal("system notification!",res_result, "warning");
+            }
+          }
+          cancel_click();
+          load_combine_data()
+
+      }
+    };
+    xhttp.open("post", '/odd_combine/send_update', true);
+    // var id= document.getElementById("idreq").value;
+    // send data jason
+    xhttp.setRequestHeader("Content-type", "application/json");
+    data_send = {
+        alot: alot,
+        clot:clot,
+        cut_in:cut,
+        sew_in:sew,
+        odd_in:odd
+    };
+    xhttp.send(JSON.stringify(data_send));
+
+}
+
+
+function cancel_click() {
+    document.getElementById("close_dialog_plan_process").click();
+}
+
+
+function load_combine_data(){
+        var user="admin"
+        var xhttp = new XMLHttpRequest();
+        //event.preventDefault(); //prevent default action 
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+                var res_result=this.responseText
+                console.log(res_result)
+                if (res_result=="false"){
+                  alert('something wrong, please contact admin')
+                } 
+                else{
+                  ls=JSON.parse(res_result)
+                  console.log(ls)
+                    if (ls.length>0){
+                      var ttdt=""
+                      var ac_value=0
+                      for (i=0;i<ls.length;i++){
+                          var tu="---"
+         
+                          let date_ob = new Date(ls[i].timeupdate);
+                          let date = date_ob.getDate();
+                          if (date<10) date="0"+date;
+                          let month = date_ob.getMonth() + 1;
+                          if (month <10) month="0"+month;
+                          let year = date_ob.getFullYear();
+                          // current hours
+                          let hours = date_ob.getHours();
+                          if (hours<10) hours ="0"+hours;
+                          // current minutes
+                          let minutes = date_ob.getMinutes();
+                          if (minutes<10) minutes="0"+minutes
+                          // current seconds
+                          let seconds = date_ob.getSeconds();
+                          if (seconds<10) seconds="0"+seconds
+                          tu=date+"-" + month+" "+hours+":"+minutes+":"+seconds
+                          console.log(tu)
+                          var cb=String(ls[i].odd_combine)
+                          console.log(cb)
+                          idd=cb.indexOf(".")
+                          if (idd>=0){
+                            cb=ls[i].odd_combine+"000"
+                            cb=cb.substr(0,cb.indexOf(".")+3)
+                          }
+                          
+                          var sttx="err"
+                          if (ls[i].result==null){
+                            sttx="plan"
+                          }else{
+                            sttx=ls[i].result
+                            ac_value+=1
+                          }
+                          ttdt+='<tr><td >'+ tu +'</td><td>W'+ls[i].week+'_' +  ls[i].cut_date +'_S'+ls[i].shift+ '</td><td >' +  ls[i].assort + '</td><td >'+ ls[i].lot + '</td><td >' + ls[i].keyx
+                          ttdt+='</td><td >'+ls[i].need_dz+'</td><td>'+cb+'</td><td>' + ls[i].new_need_dz + '</td><td >'+  ls[i].CUT_STATUS + '</td><td>'+ls[i].ODD_STATUS+'</td><td >'+  ls[i].SEW_STATUS 
+                          ttdt+= '</td><td>'+sttx+'</td><td>'+ls[i].UserUpdate+'</td></tr>';
+                      }
+                      $('#tablea tbody').html(ttdt)
+                      document.getElementById("pl_value").innerText =ls.length;
+                      document.getElementById("ac_value").innerText =ac_value;
+
+                    }
+                  
+                  
+                  }
+            }
+            
+          };
+
+          xhttp.open("post", '/odd_combine/plan', true);
+          // var id= document.getElementById("idreq").value;
+          // send data jason
+          xhttp.setRequestHeader("Content-type", "application/json");
+          data_send = {
+              // timereq: timereq,
+              username: user
+              // id:id
+          };
+          xhttp.send(JSON.stringify(data_send));
+      }
+
+function detail_cutlot() {      
+  var table = document.getElementById("tablea");
+  // console.log(table)
+  event.stopImmediatePropagation;
+  console.log("inside table")
+  for (var i = 1; i < table.rows.length; i++) {
+      table.rows[i].ondblclick = function(e) {
+          console.log(this)
+          tableText(this);
+      };
+  };
+  
+}
+
+
+
+function tableText(tableRow) {
+  // document.getElementById("tb2_group").value = tableRow.childNodes[0].innerText;
+  // var group_cs=tableRow.childNodes[0].innerText;
+  // alert("tableText")
+  document.getElementById("alot").value = tableRow.childNodes[2].innerText;
+  document.getElementById("clot").value = tableRow.childNodes[3].innerText;
+  document.getElementById("plan").innerText ="Plan: "+ tableRow.childNodes[1].innerText;
+  document.getElementById("SKU").innerText ="SKU: "+ tableRow.childNodes[4].innerText;
+  document.getElementById("dz").innerText ="Need Dz: "+ tableRow.childNodes[5].innerText;
+  document.getElementById("cb_odd").innerText ="Combine Odd: "+ tableRow.childNodes[6].innerText;
+  document.getElementById("dz_new").innerText ="New Need Dz: "+ tableRow.childNodes[7].innerText;
+  document.getElementById("cut_in").value=tableRow.childNodes[8].innerText;
+  document.getElementById("odd_in").value=tableRow.childNodes[9].innerText;
+  document.getElementById("sew_in").value=tableRow.childNodes[10].innerText;
+  document.getElementById("BT_update").disabled=false;
+  document.getElementById("dialog_plan_process").click();
+
+};
+
+</script>
+
+</body>
+</html>

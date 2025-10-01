@@ -1,0 +1,3806 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>BÁO CÁO PHÂN TÍCH</title>
+       
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        
+        <link rel="shortcut icon" type="image/ico" href="../images/HanesLogo.png"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+        <script data-require="jquery" data-semver="2.1.4" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="../css/IE_System.css">  
+    </head>
+    <body>
+
+        <!--wrapper start-->
+    <div class="wrapper">
+        <!--header menu start-->
+        <div class="header">
+            <div class="header-menu">
+                <div class="title">PHÂN TÍCH<span></span>
+                </div>
+                <div class="sidebar-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div>
+                    <input id="usernameIE" type="text" name="username" placeholder="Nhập tên">
+                    <input id="passwordIE" type="password" name="password" placeholder="Nhập mật khẩu" onchange="getUser_Password()">
+                <div class="msCaplock">
+
+            </div>
+        </div>
+                   
+        </div>
+    </div>
+            <!--header menu end-->
+            <!--sidebar start-->
+    <div class="sidebar">
+        <div class="sidebar-menu">
+            <center class="profile">
+                        <img src="../images/HanesLogo.png" alt="">
+                        <p>HANES BRANDS INC</p>
+            </center>
+                    <li class="item">
+                        <a href="http://pbvweb01v/IE/linebalancing" class="menu-btn">
+                            <i class="fas fa-balance-scale-left" title="TRANG CBC"></i><span>TRANG CBC</span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a  class="menu-btn" href="/IE/KT_System">
+                            <i class="far fa-handshake" style="cursor:pointer;"  title="TRANG ĐÀO TẠO"></i><span  style="cursor:pointer;">ĐÀO TẠO</span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a class="menu-btn">
+                            <i class="fas fa-sort-alpha-up-alt"  style="cursor:pointer;"  onclick="canhbao()" title="LAYOUT"></i><span  style="cursor:pointer;"  onclick="canhbao()">LAYOUT</span>
+                        </a>
+                    </li>
+                    
+                    <li class="item">
+                        <a  class="menu-btn">
+                            <i class="fas fa-question" href="#" onclick="help_OP()" style="cursor:pointer;" title="HỖ TRỢ"></i><span href="#" onclick="help_OP()"  style="cursor:pointer;">HELP</span>
+                        </a>
+                    </li>
+        </div>
+    </div>
+            <!--sidebar end-->
+            <!--main container start-->
+    <div class="main-container">
+        <button class="tablink" onclick="openPage('CBC1', this, 'pink')" id="defaultOpen">BÁO CÁO THEO NGÀY</button>
+        <button class="tablink" onclick="openPage('CBC2', this, 'green')">BÁO CÁO THEO TUẦN</button>               
+        <button class="tablink" onclick="openPage('temSewing', this, 'green')">KIỂM TRA TEM SEWING</button>    
+        <button class="tablink" onclick="openPage('temNonSewing', this, 'green')">KIỂM TRA TEM NON_SEWING</button> 
+        <button class="tablink" onclick="openPage('Other', this, 'green')">KHÁC</button> 
+      
+                
+                 <!--bắt đầu táp 1------------------------------------------------------------> 
+                
+        <div id="CBC1" class="tabcontent">  
+            <div  class="content" id="KT_content">
+                <div class="container">
+                    <div >                            
+                        <input id="date1_tab1_tb1" type="date" class="ngay" title="Ngày cần tracking ca mong muốn" onchange="droplist_tab1_tb1()">                      
+                       
+                        <select id="group_tab1_tb1" class="droplist" onchange="droplist_tab1_tb1()"></select> 
+                        <select id="shift_tab1_tb1" class="shift" onchange="droplist_tab1_tb1()">                                                                                               
+                            <option value="R" name="RIT">RIT</option>
+                            <option value="B" name="BAL">BAL</option>
+                        </select>
+                        <select id="style_tab1_tb1" name="droplist_tab1_tb1" class="droplist" title="Chọn style (vui lòng chọn ngày và group trước !!!"></select>
+                        <select id="size_tab1_tb1" class="droplist" title="Chọn size (vui lòng chọn ngày và group trước !!!"> </select>                        
+                        <button id="refresh_tab1_tb1" class="btn_OK" onclick="show_full_day()" >SHOW_DAY</button>  
+                                                      
+                    </div>
+                    <div class="Report_tab1_tb1">
+                        <div class="popup-showCBC" id="popup-showCBC"> 
+                            <div class= "popup-showCBC-content">  
+                                <button class="btnClose" id="close_tab1_tab1" >X</button>  
+                                        <br>   <br>                     
+                                <label class="label_chinh" id="label_cbc">KẾT QUẢ CÂN BẰNG CHUYỀN</label> 
+                                <button id="showListCN_2CD" class="btn_OK"  >2 CD</button> 
+                                <button id="showListCN_CN" class="btn_OK"  >LIST_CN</button>
+                                <button id="showDownTime" class="btn_OK"  >DownTime</button> 
+                                <button id="showEndLine" class="btn_OK"  >Endline</button> 
+                                
+                                        <br>   <br>  
+                                <label class="label_kq" id="kq_tong">Kết quả</label> 
+                                <table class="table_tab" id="tab1_tb1" style="width:100%"  border = "width:0.2px" cellspacing="0">
+                                    <tr><th rowspan="3" style="width: 2%;">NO </th> 
+                                        <th rowspan="3" style="width: 20%;">CÔNG ĐOẠN </th> 
+                                        <th rowspan="3"style="width: 5%;">SAM</th>    
+                                        <th rowspan="1" colspan="4" style="width: 5%;" >HEAD COUNT</th>                                                                                                  
+                                        <th rowspan="1" colspan="3" style="width: 15%;background-color:#1c89d1;">HIỆU SUẤT</th>                                                     
+                                        <th rowspan="1" colspan="6" style="width: 35%;">OUTPUT (dz)</th>                                                   
+                                        <th rowspan="1" colspan="5" style="width: 5%;background-color: #1c89d1;">TỔNG THỂ</th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="1"style="width: 5%;">TỔNG</th>
+                                        <th rowspan="1"style="width: 5%;">MAT</th>
+                                        <th rowspan="1"style="width: 5%;" title="HC có đi làm">HOẠT ĐỘNG</th>
+                                        <th rowspan="1"style="width: 5%;" title="SỐ LƯỢNG VẮNG">+/-</th>                                                  
+                                        <th rowspan="1"style="width: 5%;background-color: #1c89d1;" >CBC</th>
+                                        <th rowspan="1"style="width: 5%;background-color: #1c89d1;" >ĐẠT ĐƯỢC</th>                                                   
+                                        <th rowspan="1"style="width: 5%;background-color: #1c89d1;" title="CHÊNH LỆCH GIỮA HS THỰC TẾ SEWING VÀ  HS IE CBC">+/-</th>
+                                        <th rowspan="2"style="width: 5%" >CBC</th>
+                                        <th rowspan="2"style="width: 5%;" >WIP (CA TRƯỚC)</th>                                                   
+                                        <th rowspan="2"style="width: 5%;" >SCAN</th>
+                                        <th rowspan="2"style="width: 5%;" >WIP (ĐỂ LẠI)</th>
+                                        <th rowspan="2"style="width: 5%;" title="ĐẠT ĐƯỢC= WIP CA TRƯỚC + OUTPUT SCAN TRONG CA HIỆN TẠI - WIP ĐỂ LẠI">ĐẠT ĐƯỢC</th>  
+                                        <th rowspan="1"style="width: 5%;" title="CHÊNH LỆCH GIỮA OUTPUT TẠI BẢO VỆ VẢ OUTPUT IE CBC" >+/-</th>                                                     
+                                        <th rowspan="1" style="width: 5%;background-color: #1c89d1;">END LINE</th>
+                                        <th rowspan="1" style="width: 5%;background-color: #1c89d1;">DOWN TIME (PHÚT)</th>
+                                        <th rowspan="2" style="width: 5%;background-color: #1c89d1;">CBC 2 CA</th>  
+                                        <th rowspan="2" style="width: 5%;background-color: #1c89d1;">OUTPUT 2 CA</th>
+                                        <th rowspan="2" style="width: 5%;background-color: #1c89d1;">+/-</th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="1"style="width: 5%;" id="sumHC_IE"></th>
+                                        <th rowspan="1"style="width: 5%;" id="sumHC_IE_MAT"></th>
+                                        <th rowspan="1"style="width: 5%;" id="sumHC_TT_CN"></th>                                                 
+                                        <th rowspan="1"style="width: 5%;" id="varHC" title="SỐ LƯỢNG VẮNG"></th>  
+                                        <th rowspan="1"style="width: 5%;background-color: #1c89d1;" id="sumHS_Target"></th>
+                                        <th rowspan="1"style="width: 5%;background-color: #1c89d1;" id="sumHS_Actual"></th>                                                 
+                                        <th rowspan="1"style="width: 5%;background-color: #1c89d1;" id="varHS" title="CHÊNH LỆCH GIỮA HS THỰC TẾ SEWING VÀ  HS IE CBC"></th>  
+                                        <th rowspan="1"style="width: 5%;" id="varOutput" title="CHÊNH LỆCH GIỮA OUTPUT TẠI BẢO VỆ VẢ OUTPUT IE CBC"></th>                                         
+                                        <th rowspan="1"style="width: 5%;background-color: #1c89d1;" id="SumEndline"></th>  
+                                        <th rowspan="1"style="width: 5%;background-color: #1c89d1;" id="SumDownTime"></th> 
+                                    </tr>
+                                    <tbody id="tab1_tb1_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div>
+                    <div class="Report_tab1_tb2">
+                        <div class="popup-showListCN" id="popup-showListCN"> 
+                            <div class= "popup-showListCN-content">                                             
+                                <button class="btnClose" id="close_tab1_tab2" >X</button>   
+                                        <br>   <br>                    
+                                <label id="listcn_CN" class="label_chinh" value="DANH SÁCH CÔNG NHÂN">DANH SÁCH CÔNG NHÂN</label> 
+                                <button id="showListCN_LINE" class="btn_OK"  >ALL_LIST_SCANNED</button>
+                                    <br>   <br>  
+                                <table class="table_tab" id="tab1_tb1_header" style="width:100%"  border = "width:0.2px" cellspacing="0">
+                                    <tr><th style="width: 2%;">NO </th>  
+                                        <th style="width: 5%;">ID</th>
+                                        <th style="width: 15%;">TÊN</th>                                                
+                                        <th style="width: 2%;">CA</th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN IE</th>
+                                        <th style="width: 5%;">HIỆU SUẤT MỤC TIÊU</th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN THỰC TẾ</th>
+                                        <th style="width: 5%;">HIỆU SUẤT THỰC TẾ</th>
+                                        <th style="width: 5%;">VAR</th>
+                                        <th style="width: 5%;">OUTPUT</th>  
+                                        <th style="width: 2%;">
+                                            <select class="filter_tab1_tb2">
+                                                <option value="all">SLCD</option>
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option> 
+                                                <option value="4">4</option>                                                  
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                </select> </th>
+                                        <th style="width: 2%;">ENDLINE</th>  
+                                        <th style="width: 2%;">DOWNTIME</th>   
+                                    </tr>
+                                        <tbody id="tab1_tb2_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div>
+                    <div class="Report_tab1_tb3">
+                        <div class="popup-showHSnhieungayCN" id="popup-showHSnhieungayCN"> 
+                            <div class= "popup-showHSnhieungayCN-content">
+                                <button class="btnClose" id="close_tab1_tab3" >X</button>
+                                    <br>   <br>                       
+                                <label class="label_chinh">CHI TIẾT TỪNG NGÀY</label> 
+                                        <br>   <br> 
+                                <label class="label_cap1">ID</label>    
+                                <input id="id_OP" type="text" class="textbox">
+                                <label class="label_cap1">NGÀY BẮT ĐẦU</label>    
+                                <input id="date_tab1_tb3_01" type="date" class="ngay1">
+                                <label class="label_cap1">NGÀY KẾT THÚC</label> 
+                                <input id="date_tab1_tb3_02" type="date" class="ngay1">
+                                <button id="refresh_tab1_tb3" class="btn_OK" onclick="refreshHStungCN()" >REFRESH</button>
+                                    <br>   <br>  
+                                <table class="table_tab" id="tab1_tb1_header" style="width:100%"  border = "width:0.2px" cellspacing="0">
+                                    <tr><th style="width: 2%;">NGÀY </th>  
+                                        <th style="width: 5%;">ID</th>
+                                        <th style="width: 15%;">TÊN</th>                                                
+                                        <th style="width: 5%;">GROUP</th>
+                                        <th style="width: 10%;">CA</th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN IE</th>
+                                        <th style="width: 5%;">HIỆU SUẤT IE</th>                                         
+                                        <th style="width: 30%;">CÔNG ĐOẠN THỰC TẾ</th>
+                                        <th style="width: 5%;">HIỆU SUẤT THỰC TẾ</th>                                                                                            
+                                        <th style="width: 2%;"> 
+                                            <select class="filter_tab1_tb3">
+                                                <option value="all">SLCD</option>
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option> 
+                                                <option value="4">4</option>                                                  
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select> </th>                  
+                                    </tr>                                            
+                                        <tbody id="tab1_tb3_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div>
+                    <div class="Report_tab1_tb4">
+                        <div class="popup-showHStungCN_LINE" id="popup-showHStungCN_LINE"> 
+                            <div class= "popup-showHStungCN_LINE-content">                                            
+                                <button class="btnClose" id="close_tab1_tab4" >X</button>
+                                    <br>   <br>                       
+                                <label class="label_chinh">TOÀN BỘ DANH SÁCH SCAN TẠI CHUYỀN</label> 
+                                    <br>   <br> 
+                                <table class="table_tab" id="tab1_tb1_header" style="width:100%"  border = "width:0.2px" cellspacing="0">
+                                    <tr><th style="width: 2%;">NO </th>  
+                                        <th style="width: 5%;">ID</th>
+                                        <th style="width: 15%;">TÊN</th>                                                
+                                        <th style="width: 5%;">GROUP</th>
+                                        <th style="width: 10%;">CA</th>
+                                        <th style="width: 10%;">
+                                            <select class="filter_tab1_tb4">
+                                                <option value="all">SHIFT</option>
+                                                <option value="RIT">RIT</option>
+                                                <option value="BAL">BAL</option>
+                                                
+                                            </select></th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN</th>
+                                        <th style="width: 5%;">OUTPUT</th>                                                                                           
+                                        <th style="width: 2%;"> 
+                                            <select class="filter_tab1_tb4">
+                                                <option value="all">SLCD</option>
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option> 
+                                                <option value="4">4</option>                                                  
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select> </th>                  
+                                    </tr> 
+                                        <tbody id="tab1_tb4_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="Report_tab1_tb5">
+                        <div class="popup-showListCN-2CD" id="popup-showListCN-2CD"> 
+                            <div class= "popup-showListCN-2CD-content">                                             
+                                <button class="btnClose" id="close_tab1_tab5" >X</button>   
+                                        <br>   <br>                    
+                                <label id="listcn_CN" class="label_chinh" value="DANH SÁCH CÔNG NHÂN">DANH SÁCH CÔNG NHÂN CÓ 2 CÔNG ĐOẠN TRỞ LÊN</label>                                 
+                                    <br>   <br>  
+                                <table class="table_tab" id="tab1_tb5_header" style="width:100%"  border = "width:0.2px" cellspacing="0">
+                                    <tr><th style="width: 2%;">NO </th>  
+                                        <th style="width: 5%;">ID</th>
+                                        <th style="width: 15%;">TÊN</th>                                                
+                                        <th style="width: 7%;">CA</th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN IE</th>
+                                        <th style="width: 5%;">HIỆU SUẤT MỤC TIÊU</th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN THỰC TẾ</th>
+                                        <th style="width: 5%;">HIỆU SUẤT THỰC TẾ</th>
+                                        <th style="width: 5%;">VAR</th>
+                                        <th style="width: 5%;">OUTPUT</th>  
+                                        <th style="width: 2%;">
+                                            <select class="filter_tab1_tb5">
+                                                <option value="all">SLCD</option>
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option> 
+                                                <option value="4">4</option>                                                  
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                </select> </th>
+                                        <th style="width: 2%;">ENDLINE</th>  
+                                        <th style="width: 2%;">DOWNTIME</th>   
+                                    </tr>
+                                        <tbody id="tab1_tb5_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="Report_tab1_tb6">
+                        <div class="popup-showEndLine" id="popup-showEndLine"> 
+                            <div class= "popup-showEndLine-content">                                             
+                                <button class="btnClose" id="close_tab1_tab6" >X</button>   
+                                        <br>   <br>                    
+                                <label id="listcn_CN" class="label_chinh" >CHI TIẾT END LINE</label>                                 
+                                    <br>   <br>  
+                                <table class="table_tab" id="tab1_tb6_header" style="width:100%"  border = "width:0.2px" cellspacing="0">
+                                    <tr><th style="width: 2%;">NO </th>  
+                                        <th style="width: 5%;">ID</th>
+                                        <th style="width: 15%;">TÊN</th>                                                
+                                        <th style="width: 7%;">CA</th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN IE</th>
+                                        <th style="width: 5%;">HIỆU SUẤT MỤC TIÊU</th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN THỰC TẾ</th>
+                                        <th style="width: 5%;">HIỆU SUẤT THỰC TẾ</th>
+                                        <th style="width: 5%;">VAR</th> 
+                                        <th style="width: 2%;">SỐ LƯỢNG LỖI</th>                                                                               
+                                        <th style="width: 15%;">CHI TIẾT LỖI</th>  
+                                       
+                                    </tr>
+                                        <tbody id="tab1_tb6_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="Report_tab1_tb7">
+                        <div class="popup-showDownTime" id="popup-showDownTime"> 
+                            <div class= "popup-showDownTime-content">                                             
+                                <button class="btnClose" id="close_tab1_tab7" >X</button>   
+                                        <br>   <br>                    
+                                <label id="listcn_CN" class="label_chinh" >CHI TIẾT DOWN TIME</label>                                 
+                                    <br>   <br>  
+                                <table class="table_tab" id="tab1_tb7_header" style="width:100%"  border = "width:0.2px" cellspacing="0">
+                                    <tr><th style="width: 2%;">NO </th>  
+                                        <th style="width: 5%;">ID</th>
+                                        <th style="width: 15%;">TÊN</th>                                                
+                                        <th style="width: 7%;">CA</th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN IE</th>
+                                        <th style="width: 5%;">HIỆU SUẤT MỤC TIÊU</th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN THỰC TẾ</th>
+                                        <th style="width: 5%;">HIỆU SUẤT THỰC TẾ</th>
+                                        <th style="width: 5%;">VAR</th> 
+                                        <th style="width: 2%;">CODE MÁY</th>   
+                                        <th style="width: 15%;">TÊN LỖI</th>                                                                          
+                                        <th style="width: 2%;">GIỜ DOWN TIME (PHÚT)</th>  
+                                        
+                                    </tr>
+                                        <tbody id="tab1_tb7_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div>             
+                </div>
+            </div>
+        </div>
+                <!--kết thúc táp 1------------------------------------------------------------> 
+                <!--bắt đầu tap 2------------------------------------------------------------> 
+        <div id="CBC2" class="tabcontent">
+            <div  class="content" id="KT_content"> 
+                <div class="container">
+                    <div >            
+                        <input id="date1_tab2_tb1" type="date" class="ngay" title="Ngày bắt đầu">
+                        <input id="date2_tab2_tb1" type="date" class="ngay" title="Ngày kết thúc"> 
+                        <select id="group_tab2_tb1" class="droplist" onchange="droplist_tab1_tb1()"></select> 
+                        <button id="refresh_tab2_tb1" class="btn_OK" onclick="tap2_show_data()">SHOW DATA</button>  
+                        <button  class="btn_OK" onclick="get_Actual_Depend_On_CN_2()" >TEST</button> 
+                    </div>
+                    <div class="Report_tab2_tb1">
+                        <div class="popup-tap2-style" id="popup-tap2-style"> 
+                            <div class= "popup-tap2-style-content">  
+                                <button class="btnClose" id="close_tab2_tb1" >X</button>  
+                                    <br>   <br>                     
+                                <label class="label_chinh">THÔNG TIN MÃ HÀNG</label>                                           
+                                    <br>   
+                                <button id="showWeeklyOutput" class="btn_OK" >Output</button> 
+                                <button id="showWeeklyEff" class="btn_OK" >Hiệu suất</button>                             
+                                <button id="showWeeklyEndLine" class="btn_OK" >Endline</button> 
+                                <button id="showWeeklyDowntime" class="btn_OK">DownTime</button> 
+                                <button id="showWeeklyHC" class="btn_OK">HeadCount</button> 
+                                <button id="showWeeklyWIP" class="btn_OK">WIP</button>                                              
+                                <table class="table_tab" id="tab2_tb1" style="width:100%"  border = "width:0.2px" cellspacing="0">                                    
+                                    <tr>                                        
+                                        <th rowspan="1" style="width: 3%;">SHIFT </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 1 </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 2 </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 3 </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 4 </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 5 </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 6 </th>
+                                        <th rowspan="1" style="width: 3%;">NGÀY 7 </th>
+                                    </tr>
+                                   
+                                        <tbody id="tab2_tb1_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="Report_tab2_tb1">
+                        <div class="popup-tap2-output" id="popup-tap2-output"> 
+                            <div class= "popup-tap2-output-content">  
+                                <button class="btnClose" id="close_tab2_tb2" >X</button>  
+                                    <br>   <br>                     
+                                <label class="label_chinh">THÔNG TIN OUTPUT TẠI BẢO VỆ</label>                                         
+                                    <br>                                                                                               
+                                <button id="showWeeklyOutput_detail" class="btn_OK" >CHI TIẾT OUTPUT</button> 
+                                                                          
+                                <table class="table_tab" id="tab2_tb2" style="width:100%"  border = "width:0.2px" cellspacing="0">                                    
+                                    <tr>                                        
+                                        <th rowspan="1" style="width: 3%;">SHIFT </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 1 </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 2 </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 3 </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 4 </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 5 </th> 
+                                        <th rowspan="1" style="width: 3%;">NGÀY 6 </th>
+                                        <th rowspan="1" style="width: 3%;">NGÀY 7 </th>
+                                    </tr>
+                                   
+                                        <tbody id="tab2_tb2_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div>                               
+                </div> 
+            </div> 
+        </div> 
+                    
+                <!--Hết tap 2----------------------------------------------------------->        
+                <!--TAP 3--------------------------------------------------------------------------------------------------------->
+        <div id="temSewing" class="tabcontent">
+            <div  class="content" id="KT_content"> 
+                <div class="container">                       
+                    <div >            
+                        <input id="date1_tab3_tb1" type="date" class="ngay" title="Ngày cần kiểm tra">                      
+                        <button id="refresh_tab3_tb1" class="btn_OK" onclick="show_all_tem_SEWING()" >SHOW DATA</button> 
+                        <button id="refresh_tab3_tb1" class="btn_OK" onclick="get_Name_Group_Shift()">Test</button>     
+                    </div>
+                    <div class="Report_tab3_tb1">
+                        <div class="popup-showTemCN" id="popup-showTemCN"> 
+                            <div class= "popup-showTemCN-content">  
+                                <button class="btnClose" id="close_tab3_tb1" >X</button>  
+                                    <br>   <br>                     
+                                <label class="label_chinh">TOÀN BỘ LIST CÔNG NHÂN</label>                                            
+                                    <br>   <br>  
+                                <button id="showTemCN_2CD" class="btn_OK"  >TOTAL</button>                                       
+                                <table class="table_tab" id="tab3_tb1_header" style="width:100%"  border = "width:0.2px" cellspacing="0">
+                                    <tr><th style="width: 2%;">NO </th>  
+                                        <th style="width: 5%;">ID</th>
+                                        <th style="width: 15%;">TÊN</th>                                                
+                                        <th style="width: 5%;">GROUP</th>
+                                        <th style="width: 4%;">CA</th>
+                                        <th style="width: 4%;">CA2</th>
+                                        <th style="width: 10%;">MÃ HÀNG</th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN IE</th>
+                                        <th style="width: 5%;">HIỆU SUẤT MỤC TIÊU</th>
+                                        <th style="width: 15%;">CÔNG ĐOẠN THỰC TẾ</th>
+                                        <th style="width: 5%;">HIỆU SUẤT THỰC TẾ</th>
+                                        <th style="width: 5%;">VAR</th>
+                                        <th style="width: 3%;">SLCD</th>
+                                        <th style="width: 7%;">CD TRÙNG</th>
+                                                                              
+                                    </tr>
+                                   
+                                        <tbody id="tab3_tb1_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="Report_tab3_tb2">
+                        <div class="popup-showTemCN-2CD" id="popup-showTemCN-2CD"> 
+                            <div class= "popup-showTemCN-2CD-content">  
+                                <button class="btnClose" id="close_tab3_tb2" >X</button>  
+                                    <br>   <br>                     
+                                <label class="label_chinh">TỔNG KẾT</label>                                            
+                                    <br>   <br>  
+                                                                    
+                                <table class="table_tab" id="tab3_tb1_header" style="width:100%"  border = "width:0.2px" cellspacing="0">
+                                    <tr><th rowspan="2" style="width: 2%;">NO </th>  
+                                        <th rowspan="2" style="width: 5%;">GROUP</th>
+                                        <th rowspan="2" style="width: 40%;">STYLE</th>  
+                                        <th colspan="4" style="width: 23%;">RIT</th>
+                                        <th colspan="4" style="width: 23%;">BAL</th>
+                                       
+                                        
+                                                                              
+                                    </tr>
+                                    <tr>                                                
+                                        <th style="width: 5%;">HC</th>
+                                        <th style="width: 4%;">VẮNG</th>
+                                        <th style="width: 4%;">KHÔNG ĐÚNG CD</th>
+                                        <th style="width: 10%;">TRÊN 2 CÔNG ĐOẠN</th>
+                                        <th style="width: 5%;">HC</th>
+                                        <th style="width: 4%;">VẮNG</th>
+                                        <th style="width: 4%;">KHÔNG ĐÚNG CD</th>
+                                        <th style="width: 10%;">TRÊN 2 CÔNG ĐOẠN</th>
+                                        
+                                                                              
+                                    </tr>
+                                        <tbody id="tab3_tb2_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div>                    
+                </div> 
+            </div>                   
+        </div>  
+         <!--TAP 4--------------------------------------------------------------------------------------------------------->
+         <div id="temNonSewing" class="tabcontent">
+            <div  class="content" id="KT_content"> 
+                <div class="container">   
+                    <div >            
+                        <input id="date1_tab4_tb1" type="date" class="ngay" title="Ngày cần kiểm tra">                      
+                        <button id="refresh_tab4_tb1" class="btn_OK" onclick="show_all_Non_Sewing()">SHOW DATA</button> 
+                        <button id="refresh_tab4_tb1" class="btn_OK" onclick="getlist_NonSewing()" >Test</button>     
+                    </div>
+                    <div class="Report_tab4_tb1">
+                        <div class="popup-showTemCN_NonSewing" id="popup-showTemCN_NonSewing"> 
+                            <div class= "popup-showTemCN_NonSewing-content">  
+                                <button class="btnClose" id="close_tab4_tb1" >X</button>  
+                                    <br>   <br>                     
+                                <label class="label_chinh">TOÀN BỘ LIST CÔNG NHÂN NON SEWING</label>                                            
+                                    <br>   <br>  
+                          
+                                <button id="showList_NoSewingToSewing" class="btn_OK"  >LIST_SEWING</button>                                          
+                                <table class="table_tab" id="tab4_tb1_header" style="width:100%"  border = "width:0.2px" cellspacing="0">
+                                    <tr><th style="width: 2%;">NO </th>  
+                                        <th style="width: 5%;">ID</th>
+                                        <th style="width: 15%;">TÊN</th>                                                
+                                        <th style="width: 5%;">GROUP</th>
+                                        <th style="width: 7%;">CA</th>
+                                        <th style="width: 4%;">CA2</th>
+                                        <th style="width: 7%;">CÔNG ĐOẠN IE</th>
+                                        <th style="width: 10%;">CÔNG ĐOẠN THỰC TẾ</th>
+                                        <th style="width: 3%;">HIỆU SUẤT</th>
+                                        <th style="width: 5%;">SLCD</th>  
+                                        <th style="width: 10%;">TEM SEWING</th>                                          
+                                                                              
+                                    </tr>
+                                        <tbody id="tab4_tb1_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div>
+                    <div class="Report_tab4_tb2">
+                        <div class="popup-showTemCN_NonSewingToSewing" id="popup-showTemCN_NonSewingToSewing"> 
+                            <div class= "popup-showTemCN_NonSewingToSewing-content">  
+                                <button class="btnClose" id="close_tab4_tb2" >X</button>  
+                                    <br>   <br>                     
+                                <label class="label_chinh">LIST CÔNG NHÂN NON SEWING CÓ MAY SEWING</label>                                            
+                                    <br>   <br>                                                                          
+                                <table class="table_tab" id="tab4_tb2_header" style="width:100%"  border = "width:0.2px" cellspacing="0">
+                                    <tr><th style="width: 2%;">NO </th>  
+                                        <th style="width: 5%;">ID</th>
+                                        <th style="width: 15%;">TÊN</th>                                                
+                                        <th style="width: 5%;">GROUP</th>
+                                        <th style="width: 7%;">CA</th>
+                                        <th style="width: 4%;">CA2</th>
+                                        <th style="width: 7%;">CÔNG ĐOẠN IE</th>
+                                        <th style="width: 10%;">CÔNG ĐOẠN THỰC TẾ</th>
+                                        <th style="width: 3%;">HIỆU SUẤT</th>
+                                        <th style="width: 5%;">SLCD</th>  
+                                        <th style="width: 10%;">TEM SEWING</th>                                          
+                                                                              
+                                    </tr>
+                                        <tbody id="tab4_tb2_body"></tbody>                              
+                                </table>
+                            </div> 
+                        </div> 
+                    </div>                                    
+                                
+                </div> 
+            </div>                   
+        </div> 
+         <!--TAP 5--------------------------------------------------------------------------------------------------------->
+         <div id="Other" class="tabcontent">
+            <div  class="content" id="KT_content"> 
+                <div class="container">                       
+                                
+                </div> 
+            </div>                   
+        </div> 
+                
+    </div>
+    <!--main container end-->
+        <!--wrapper end-->
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $(".sidebar-btn").click(function(){
+                    $(".wrapper").toggleClass("collapse");
+                });
+            });
+        </script>
+        <script type="text/javascript">
+                window.addEventListener('load', function() {
+                var username = GetUserName();
+                document.getElementById('username').innerHTML = 'Welcome, '+username;
+                });
+
+                function GetUserName() {
+            var wshell = ActiveXObject && new ActiveXObject("WScript.Shell");
+            return wshell && wshell.ExpandEnvironmentStrings("%USERNAME%");
+                }
+           
+        </script>
+        <script>
+            var IEuser="";
+            var IEpassword="";
+            function getUser_Password(){
+                var myUser=  document.getElementById("usernameIE").value
+                var myPassword=document.getElementById("passwordIE").value
+                IEuser=myUser;
+                IEpassword=myPassword;
+
+                if ( IEuser=="qudo" && IEpassword=="iepb131" ){
+                    alert("Quyền đăng nhập thành công")
+                }else if  (IEuser=="Duvan" && IEpassword=="iepb0111" ){
+                    alert("Dũng đăng nhập thành công");                
+                }else if (IEuser=="netran"  && IEpassword=="iepb305" ){
+                    alert("Ms Ne đăng nhập thành công");
+                }else if ( IEuser=="tanguye4" && IEpassword=="iepb338" ){
+                    alert("Tâm đăng nhập thành công");
+                }else if ( IEuser=="trnguye4"  && IEpassword=="iepb234" ){
+                    alert("Ms Trâm đăng nhập thành công");
+                } else if (IEuser=="gidoan" && IEpassword=="iepb332" ){
+                    alert("Mrs Giang đăng nhập thành công");
+                }else {
+                    alert("Tên hoặc mật khẩu không đúng, vui lòng nhập lại!!!")
+                }
+
+            };
+
+</script>
+
+<script>
+    function openPage(pageName,elmnt,color) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].style.backgroundColor = "";
+    }
+    document.getElementById(pageName).style.display = "block";
+         elmnt.style.backgroundColor = color;
+    }
+            //document.getElementById(pageName).style.click();
+            // Get the element with id="defaultOpen" and click on it
+           //window.addEventListener("load", function(event) {
+    document.getElementById("defaultOpen").click();
+           // });
+    </script>    
+      
+        
+<script>
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+    var today = year + "-" + month + "-" + day;   
+ 
+    document.getElementById("date1_tab1_tb1").value = today;  
+    document.getElementById("date1_tab2_tb1").value = today;    
+    document.getElementById("date2_tab2_tb1").value = today;   
+    document.getElementById("date1_tab3_tb1").value = today; 
+    document.getElementById("date1_tab4_tb1").value = today;      
+
+    Date.prototype.getWeek = function(){   
+
+        var day_miliseconds = 86400000,
+            onejan = new Date(this.getFullYear(),0,1,0,0,0),
+            onejan_day = (onejan.getDay()==0) ? 7 : onejan.getDay(),
+            days_for_next_monday = (8-onejan_day),
+            onejan_next_monday_time = onejan.getTime() + (days_for_next_monday * day_miliseconds),
+        
+            first_monday_year_time = (onejan_day>1) ? onejan_next_monday_time : onejan.getTime(),
+            this_date = new Date(this.getFullYear(), this.getMonth(),this.getDate(),0,0,0),// This at 00:00:00
+            this_time = this_date.getTime(),
+            days_from_first_monday = Math.round(((this_time - first_monday_year_time) / day_miliseconds));
+        var first_monday_year = new Date(first_monday_year_time); 
+
+        return (days_from_first_monday>=0 && days_from_first_monday<364) ? Math.ceil((days_from_first_monday+1)/7) : 52;
+        }
+
+    Date.prototype.addDays = function(days) {
+        var dat = new Date(this.valueOf())
+        dat.setDate(dat.getDate() + days);
+        return dat;
+    }
+
+        function getDates(startDate, stopDate) {
+        var dateArray = new Array();
+        var currentDate = startDate;
+        while (currentDate <= stopDate) {
+            dateArray.push(currentDate)
+            currentDate = currentDate.addDays(1);
+        }
+        return dateArray;
+        }
+  // list dates range from weeknum and year
+  
+ 
+function getDateRangeOfWeek(weekNo, y){
+    var d1, numOfdaysPastSinceLastMonday, rangeIsFrom, rangeIsTo;
+    d1 = new Date(''+y+'');
+    numOfdaysPastSinceLastMonday = d1.getDay() - 1;
+    d1.setDate(d1.getDate() - numOfdaysPastSinceLastMonday);
+    d1.setDate(d1.getDate() + (7 * (weekNo - d1.getWeek())));
+    rangeIsFrom = (d1.getMonth() + 1) + "-" + d1.getDate() + "-" + d1.getFullYear();
+    d1.setDate(d1.getDate() + 6);
+    rangeIsTo = (d1.getMonth() + 1) + "-" + d1.getDate() + "-" + d1.getFullYear() ;
+    return rangeIsFrom , rangeIsTo;
+};
+</script>
+       
+<script>   
+
+//tao droplist
+
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value 
+    
+
+
+    if(group_tab1_tb1.length==7){
+        var group1=group_tab1_tb1.substring(0, 3); 
+        var group2=group_tab1_tb1.substring(5, 7); 
+        var group=group+group2
+
+    }else{
+        group=group_tab1_tb1+group_tab1_tb1
+    }
+    var gopGroupvaShift=group+shift_tab1_tb1
+
+    //droplist group tab1
+
+let dropdown_group = document.getElementById('group_tab1_tb1');
+let dropdown_group2 = document.getElementById('group_tab2_tb1');
+dropdown_group.length = 0;
+dropdown_group2.length = 0;
+
+    let defaultOption_group = document.createElement('option');
+    let defaultOption_group2 = document.createElement('option');
+    defaultOption_group.text = 'Chọn group';
+    defaultOption_group2.text = 'Chọn group';
+
+    dropdown_group.add(defaultOption_group);
+    dropdown_group2.add(defaultOption_group);
+    dropdown_group.selectedIndex = 0;
+    dropdown_group2.selectedIndex = 0;
+
+    
+    const request_group = new XMLHttpRequest();
+    request_group.open("POST", "/KT/droplist_tab1_tb1_group",false);
+
+    request_group.onload = function() {    
+    
+    if (request_group.status === 200) {
+    const data = JSON.parse(request_group.responseText);
+    let option_group;
+    let option_group2;
+    for (let i = 0; i < data.length; i++) {
+        option_group = document.createElement('option');
+        option_group2 = document.createElement('option');
+        option_group.text = data[i].groupName;   
+        option_group2.text = data[i].groupName;  
+        option_group.value = data[i].groupName;
+        option_group2.value = data[i].groupName;
+        dropdown_group.add(option_group);
+        dropdown_group2.add(option_group2);
+    }
+   } else {
+    // Reached the server, but it returned an error
+  }   
+}
+request_group.onerror = function() {
+request_group.error('Đã có lỗi kết nối database');
+};
+
+request_group.send();
+    
+// drop style
+function droplist_tab1_tb1(){
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value 
+    
+    var group=""
+    if(group_tab1_tb1.length==7){
+        var group1=group_tab1_tb1.substring(0, 3); 
+        var group2=group_tab1_tb1.substring(4, 7); 
+        var group=group1+group2
+
+    }else{
+        group=group_tab1_tb1+group_tab1_tb1
+    }
+    var gopGroupvaShift=group+shift_tab1_tb1
+
+    sendCondition={Group_Shift:gopGroupvaShift, ngay1_tab1_tb1:date1_tab1_tb1, group:group_tab1_tb1, shift:shift_tab1_tb1}
+
+    //tao droplist style
+
+    let dropdown_style = document.getElementById('style_tab1_tb1');
+    dropdown_style.length = 0;
+
+    let defaultOption_style = document.createElement('option');
+    defaultOption_style.text = 'Chọn style';
+    defaultOption_style.value = 0;
+
+    dropdown_style.add(defaultOption_style);
+    dropdown_style.selectedIndex = 0;
+
+    
+    const request_style = new XMLHttpRequest();
+    request_style.open("POST", "/KT/droplist_tab1_tb1_style",false);
+    request_style.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')      
+   
+    request_style.onload = function() {       
+
+            if (request_style.status === 200) {
+            const data = JSON.parse(request_style.responseText);
+            let option_style;
+            for (let i = 0; i < data.length; i++) {
+                option_style = document.createElement('option');
+                option_style.text = data[i].STYLE_DETAIL+" (SAH:"+data[i].SAH_EARNED.toFixed(0)+")";   
+                option_style.value = data[i].STYLE_DETAIL;
+                dropdown_style.add(option_style);
+            }
+        } else {
+            // Reached the server, but it returned an error
+        }   
+    }
+request_style.onerror = function() {
+request_style.error('Đã có lỗi kết nối database');
+};
+
+request_style.send(JSON.stringify(sendCondition));
+
+//droplist range size
+
+let dropdown_size = document.getElementById('size_tab1_tb1');
+dropdown_size.length = 0;
+
+    let defaultOption_size = document.createElement('option');
+    defaultOption_size.text = 'Chọn size';
+    defaultOption_size.value = 0;
+
+    dropdown_size.add(defaultOption_size);
+    dropdown_size.selectedIndex = 0;
+
+    
+    const request_size = new XMLHttpRequest();
+    request_size.open("POST", "/KT/droplist_tab1_tb1_size",false);
+    request_size.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')     
+    request_size.onload = function() {    
+    
+    if (request_size.status === 200) {
+    const data = JSON.parse(request_size.responseText);
+    let option_size;
+    for (let i = 0; i < data.length; i++) {
+        option_size = document.createElement('option');
+        option_size.text = data[i].SIZE+" (SAH:"+data[i].SAH_EARNED.toFixed(0)+"-"+ data[i].STYLE_DETAIL+")";   
+        option_size.value = data[i].SIZE;
+        dropdown_size.add(option_size);
+    }
+   } else {
+    // Reached the server, but it returned an error
+  }   
+}
+request_size.onerror = function() {
+    request_size.error('Đã có lỗi kết nối database');
+};
+
+request_size.send(JSON.stringify(sendCondition));
+
+
+//droplist worklot
+
+}
+
+</script>
+<script>
+    //script dành cho tab1
+
+        // lệnh ở tab1
+
+
+
+var nhan_SAM_Process =[]
+function get_SAM_Process(){
+        
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value   
+    var group=""   
+
+
+    if(group_tab1_tb1.length==7){
+        var group1=group_tab1_tb1.substring(0, 3); 
+        var group2=group_tab1_tb1.substring(4, 7); 
+        var group=group1+group2
+
+    }else{
+        group=group_tab1_tb1+group_tab1_tb1
+    }
+    var gopGroupvaShift=group+shift_tab1_tb1
+
+    sendCondition={Group_Shift:gopGroupvaShift, ngay1_tab1_tb1:date1_tab1_tb1, style:style_tab1_tb1, size:size_tab1_tb1}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_SAM_Process = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getSAM_Process",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+        
+
+}
+
+//----------------------------------------------------
+
+var nhan_Target_From_IE=[];
+function get_Target_From_IE() {
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value 
+
+    var range_size=""
+
+    if(size_tab1_tb1=="S" || size_tab1_tb1=="M" ||size_tab1_tb1=="L"||size_tab1_tb1=="XL"||size_tab1_tb1=="LG"){
+
+        range_size="NORMAL"
+    }else if (size_tab1_tb1=="2X" || size_tab1_tb1=="2XL" ||size_tab1_tb1=="3X"||size_tab1_tb1=="3XL"||size_tab1_tb1=="4X" ||size_tab1_tb1=="4XL"){
+        range_size="BIG"
+
+    }else if (size_tab1_tb1=="02" || size_tab1_tb1=="03" ||size_tab1_tb1=="04"||size_tab1_tb1=="2"||size_tab1_tb1=="3" ||size_tab1_tb1=="4" ||size_tab1_tb1=="02/03" || size_tab1_tb1=="2/3"){
+        range_size="BOY"
+
+    }else {
+
+        
+    }
+    var getYear= date1_tab1_tb1.substring(0, 4); 
+    var getMonth= date1_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var Numweek=myDate.getWeek() 
+
+
+
+    sendCondition={group:group_tab1_tb1, ngay1_tab1_tb1:date1_tab1_tb1, style:style_tab1_tb1, rangesize:range_size,numweek:Numweek, shift:shift_tab1_tb1,nam:getYear}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_Target_From_IE = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getTargetFromIE",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+        
+
+}
+//--------------------------------------
+var nhan_TargetTotal_From_IE=[];
+function get_TargetTotal_From_IE() {
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value 
+
+    var range_size=""
+
+    if(size_tab1_tb1=="S" || size_tab1_tb1=="M" ||size_tab1_tb1=="L"||size_tab1_tb1=="XL"||size_tab1_tb1=="LG"){
+
+        range_size="NORMAL"
+    }else if (size_tab1_tb1=="2X" || size_tab1_tb1=="2XL" ||size_tab1_tb1=="3X"||size_tab1_tb1=="3XL"||size_tab1_tb1=="4X" ||size_tab1_tb1=="4XL"){
+        range_size="BIG"
+
+    }else if (size_tab1_tb1=="02" || size_tab1_tb1=="03" ||size_tab1_tb1=="04"||size_tab1_tb1=="2"||size_tab1_tb1=="3" ||size_tab1_tb1=="4" ||size_tab1_tb1=="02/03" ||size_tab1_tb1=="2/3"){
+        range_size="BOY"
+
+    }else {
+        
+    }
+    var getYear= date1_tab1_tb1.substring(0, 4); 
+    var getMonth= date1_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var Numweek=myDate.getWeek() 
+
+
+
+    sendCondition={group:group_tab1_tb1, ngay1_tab1_tb1:date1_tab1_tb1, style:style_tab1_tb1, rangesize:range_size,numweek:Numweek, shift:shift_tab1_tb1}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_TargetTotal_From_IE = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getTargetTotalFromIE",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+        
+
+}
+//-----------------------------------------------------------------
+var nhan_Target_From_IE_re=[];
+function get_Target_From_IE_re() {
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value 
+
+    var range_size=""
+
+    if(size_tab1_tb1=="S" || size_tab1_tb1=="M" ||size_tab1_tb1=="L"||size_tab1_tb1=="XL"||size_tab1_tb1=="LG"){
+
+        range_size="NORMAL"
+    }else if (size_tab1_tb1=="2X" || size_tab1_tb1=="2XL" ||size_tab1_tb1=="3X"||size_tab1_tb1=="3XL"||size_tab1_tb1=="4X" ||size_tab1_tb1=="4XL"){
+        range_size="BIG"
+
+    }else if (size_tab1_tb1=="02" || size_tab1_tb1=="03" ||size_tab1_tb1=="04"||size_tab1_tb1=="2"||size_tab1_tb1=="3" ||size_tab1_tb1=="4"  ||size_tab1_tb1=="02/03" ||size_tab1_tb1=="2/3"){
+        range_size="BOY"
+
+    }else {
+
+        
+    }
+    if(shift_tab1_tb1=="R"){
+        shift_tab1_tb1="B"
+    }else if (shift_tab1_tb1=="B"){
+        shift_tab1_tb1="R"
+    }
+    var getYear= date1_tab1_tb1.substring(0, 4); 
+    var getMonth= date1_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var Numweek=myDate.getWeek() 
+    sendCondition={group:group_tab1_tb1, ngay1_tab1_tb1:date1_tab1_tb1, style:style_tab1_tb1, rangesize:range_size,numweek:Numweek, shift:shift_tab1_tb1, nam:getYear}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_Target_From_IE_re = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getTargetFromIE_re",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+        
+
+}
+//----------------------------------------
+
+var nhan_TargetTotal_From_IE_re=[];
+function get_TargetTotal_From_IE_re() {
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value 
+    if(shift_tab1_tb1=="R"){
+        shift_tab1_tb1="B"
+    }
+    var range_size=""
+
+    if(size_tab1_tb1=="S" || size_tab1_tb1=="M" ||size_tab1_tb1=="L"||size_tab1_tb1=="XL"||size_tab1_tb1=="LG"){
+
+        range_size="NORMAL"
+    }else if (size_tab1_tb1=="2X" || size_tab1_tb1=="2XL" ||size_tab1_tb1=="3X"||size_tab1_tb1=="3XL"||size_tab1_tb1=="4X" ||size_tab1_tb1=="4XL"){
+        range_size="BIG"
+
+    }else if (size_tab1_tb1=="02" || size_tab1_tb1=="03" ||size_tab1_tb1=="04"||size_tab1_tb1=="2"||size_tab1_tb1=="3" ||size_tab1_tb1=="4" ||size_tab1_tb1=="02/03" ||size_tab1_tb1=="2/3"){
+        range_size="BOY"
+
+    }else {
+        
+    }
+    var getYear= date1_tab1_tb1.substring(0, 4); 
+    var getMonth= date1_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var Numweek=myDate.getWeek() 
+
+
+
+    sendCondition={group:group_tab1_tb1, ngay1_tab1_tb1:date1_tab1_tb1, style:style_tab1_tb1, rangesize:range_size,numweek:Numweek, shift:shift_tab1_tb1}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_TargetTotal_From_IE_re = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getTargetTotalFromIE_re",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+        
+
+}
+//--------------------------------------------------
+
+var nhan_Infor_LongShift=[];
+function get_Inf_LongShift() {
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    sendCondition={ngay1_tab1_tb1:date1_tab1_tb1}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_Infor_LongShift = JSON.parse(rs); 
+            }
+        };
+        xmlhttp.open("POST", "/KT/getInf_LongShift",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+
+}
+
+
+//-----------------------------------------------------------------
+var nhan_Actual_Depend_On_CN=[];
+
+function get_Actual_Depend_On_CN(){
+
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value 
+    
+    var range_size=""
+
+    if(size_tab1_tb1=="S" || size_tab1_tb1=="M" ||size_tab1_tb1=="L"||size_tab1_tb1=="XL" ||size_tab1_tb1=="XS"||size_tab1_tb1=="LG"){
+
+        range_size="NORMAL"
+    }else if (size_tab1_tb1=="2X" || size_tab1_tb1=="2XL" ||size_tab1_tb1=="3X"||size_tab1_tb1=="3XL"||size_tab1_tb1=="4X" ||size_tab1_tb1=="4XL"){
+        range_size="BIG"
+
+    }else if (size_tab1_tb1=="02" || size_tab1_tb1=="03" ||size_tab1_tb1=="04"||size_tab1_tb1=="2"||size_tab1_tb1=="3" ||size_tab1_tb1=="4" ||size_tab1_tb1=="02/03" ||size_tab1_tb1=="2/3"){
+        range_size="BOY"
+
+    }else {
+
+        
+    }
+    var getYear= date1_tab1_tb1.substring(0, 4); 
+    var getMonth= date1_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var Numweek=myDate.getWeek() 
+
+
+    sendCondition={group:group_tab1_tb1, ngay1_tab1_tb1:date1_tab1_tb1, style:style_tab1_tb1, rangesize:range_size,numweek:Numweek, shift:shift_tab1_tb1,nam:getYear}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_Actual_Depend_On_CN = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getActual_HS_OUTPUT_CN",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+
+}
+//-------------------------------------------------
+
+var nhan_Actual_Depend_On_CN_2=[];
+
+function get_Actual_Depend_On_CN_2(){
+
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value 
+    
+    var range_size=""
+
+    if(size_tab1_tb1=="S" || size_tab1_tb1=="M" ||size_tab1_tb1=="L"||size_tab1_tb1=="XL"|| size_tab1_tb1=="XS"||size_tab1_tb1=="LG"){
+
+        range_size="NORMAL"
+    }else if (size_tab1_tb1=="2X" || size_tab1_tb1=="2XL" ||size_tab1_tb1=="3X"||size_tab1_tb1=="3XL"||size_tab1_tb1=="4X" ||size_tab1_tb1=="4XL"){
+        range_size="BIG"
+
+    }else if (size_tab1_tb1=="02" || size_tab1_tb1=="03" ||size_tab1_tb1=="04"||size_tab1_tb1=="2"||size_tab1_tb1=="3" ||size_tab1_tb1=="4" ||size_tab1_tb1=="02/03" ||size_tab1_tb1=="2/3"){
+        range_size="BOY"
+
+    }else {
+
+        
+    }
+    var getYear= date1_tab1_tb1.substring(0, 4); 
+    var getMonth= date1_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var Numweek=myDate.getWeek() 
+
+
+    sendCondition={group:group_tab1_tb1, ngay1_tab1_tb1:date1_tab1_tb1, style:style_tab1_tb1, rangesize:range_size,numweek:Numweek, shift:shift_tab1_tb1,nam:getYear}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_Actual_Depend_On_CN_2 = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getActual_HS_OUTPUT_CN_2",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+
+}
+
+
+//------------------------------------------------------------------------------------------
+
+
+var nhan_Actual_Depend_On_LINE=[];
+
+function get_Actual_Depend_On_LINE(){
+    var note_shift=note_ls
+    var s_ls=shift_ls
+    if(note_shift==""){
+        note_shift="Normal shift"
+    }
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value   
+    var group=""   
+    if(group_tab1_tb1.length==7){
+        var group1=group_tab1_tb1.substring(0, 3); 
+        var group2=group_tab1_tb1.substring(4, 7); 
+        var group=group1+group2
+
+    }else{
+        group=group_tab1_tb1+group_tab1_tb1
+    }
+    var gopGroupvaShift=group+shift_tab1_tb1
+    var getYear= date1_tab1_tb1.substring(0, 4); 
+    var getMonth= date1_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var Numweek=myDate.getWeek() 
+
+    sendCondition={group_shift:gopGroupvaShift, ngay1_tab1_tb1:date1_tab1_tb1, numweek:Numweek, style:style_tab1_tb1, group:group_tab1_tb1, shift:shift_tab1_tb1,notels:note_shift,shiftls:s_ls}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_Actual_Depend_On_LINE = JSON.parse(rs); 
+            }
+        };
+        xmlhttp.open("POST", "/KT/getActual_HS_OUTPUT_LINE",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+
+}
+
+var nhan_Actual_ReverseShift_1=[];
+
+function get_Actual_ReverseShift_1(){
+
+    var date3_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value 
+    
+    var range_size=""
+    var shift="";
+    var note_shift=note_ls
+    var s_ls=shift_ls
+    if(size_tab1_tb1=="S" || size_tab1_tb1=="M" ||size_tab1_tb1=="L"||size_tab1_tb1=="XL"||size_tab1_tb1=="LG"){
+
+        range_size="NORMAL"
+    }else if (size_tab1_tb1=="2X" || size_tab1_tb1=="2XL" ||size_tab1_tb1=="3X"||size_tab1_tb1=="3XL"||size_tab1_tb1=="4X" ||size_tab1_tb1=="4XL"){
+        range_size="BIG"
+
+    }else if (size_tab1_tb1=="02" || size_tab1_tb1=="03" ||size_tab1_tb1=="04"||size_tab1_tb1=="2"||size_tab1_tb1=="3" ||size_tab1_tb1=="4" ||size_tab1_tb1=="02/03" ||size_tab1_tb1=="2/3"){
+        range_size="BOY"
+
+    }else {
+        
+    }
+
+    if(shift_tab1_tb1=="R"){
+        shift="B"
+    }else if(shift_tab1_tb1=="B"){
+        shift="R"
+    }
+    var getYear= date3_tab1_tb1.substring(0, 4); 
+    var getMonth= date3_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date3_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var Numweek=myDate.getWeek() 
+
+
+    sendCondition={group:group_tab1_tb1, ngay1_tab1_tb1:date3_tab1_tb1, style:style_tab1_tb1, rangesize:range_size,numweek:Numweek, shift:shift,nam:getYear}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_Actual_ReverseShift_1 = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getActual_HS_OUTPUT_ReverseShift_1",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+
+}
+
+
+//------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------
+
+
+var nhan_Actual_ReverseShift_2=[];
+
+function get_Actual_ReverseShift_2(){
+
+    var date3_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value   
+    var group=""  
+    var shift=""  
+    var note_shift=note_ls
+    var s_ls=shift_ls  
+    if(group_tab1_tb1.length==7){
+        var group1=group_tab1_tb1.substring(0, 3); 
+        var group2=group_tab1_tb1.substring(4, 7); 
+        var group=group1+group2
+
+    }else{
+        group=group_tab1_tb1+group_tab1_tb1
+    }
+    if(shift_tab1_tb1=="R"){
+        shift="B"
+    }else if(shift_tab1_tb1=="B"){
+        shift="R"
+    }
+    var gopGroupvaShift=group+shift
+    var getYear= date3_tab1_tb1.substring(0, 4); 
+    var getMonth= date3_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date3_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var Numweek=myDate.getWeek() 
+
+    sendCondition={group_shift:gopGroupvaShift, ngay1_tab1_tb1:date3_tab1_tb1, numweek:Numweek, style:style_tab1_tb1, shift:shift, group:group_tab1_tb1,notels:note_shift,shiftls:s_ls}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_Actual_ReverseShift_2 = JSON.parse(rs); 
+            }
+        };
+        xmlhttp.open("POST", "/KT/getActual_HS_OUTPUT_ReverseShift_2",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+
+}
+
+//--------------------------------------------------------------------------------------------
+
+var nhan_EndLine=[];
+
+function get_Endline(){
+
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value   
+    var group=""    
+    if(group_tab1_tb1.length==7){
+        var group1=group_tab1_tb1.substring(0, 3); 
+        var group2=group_tab1_tb1.substring(4, 7); 
+        var group=group1+group2
+
+    }else{
+        group=group_tab1_tb1+group_tab1_tb1
+    }
+   
+   
+    sendCondition={group:group, ngay1_tab1_tb1:date1_tab1_tb1, shift:shift_tab1_tb1}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_EndLine = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getEndline",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+
+}
+//----------------------------------------------
+
+var nhan_Downtime=[];
+function get_Downtime(){
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value  
+    var getYear= date1_tab1_tb1.substring(0, 4); 
+    var getMonth= date1_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var Numweek=myDate.getWeek() 
+    sendCondition={group:group_tab1_tb1, ngay1_tab1_tb1:date1_tab1_tb1, shift:shift_tab1_tb1,year1:getYear,tuan:Numweek}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_Downtime = JSON.parse(rs); 
+            }
+        };
+        xmlhttp.open("POST", "/KT/getDowntime",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+
+}
+
+//---------------nhan HS CN cho table 2-------------------------------
+var nhan_HSCN_tab1_tb2=[];
+
+function get_HSCN_tab1_tb2(){
+
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+    var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+    var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+    var size_tab1_tb1=document.getElementById('size_tab1_tb1').value      
+    var range_size=""
+
+    if(size_tab1_tb1=="S" || size_tab1_tb1=="M" ||size_tab1_tb1=="L"||size_tab1_tb1=="XL"||size_tab1_tb1=="LG"){
+
+        range_size="NORMAL"
+    }else if (size_tab1_tb1=="2X" || size_tab1_tb1=="2XL" ||size_tab1_tb1=="3X"||size_tab1_tb1=="3XL"||size_tab1_tb1=="4X" ||size_tab1_tb1=="4XL"){
+        range_size="BIG"
+
+    }else if (size_tab1_tb1=="02" || size_tab1_tb1=="03" ||size_tab1_tb1=="04"||size_tab1_tb1=="2"||size_tab1_tb1=="3" ||size_tab1_tb1=="4" ||size_tab1_tb1=="02/03" || size_tab1_tb1=="2/3"){
+        range_size="BOY"
+
+    }else {
+
+        
+    }
+    var getYear= date1_tab1_tb1.substring(0, 4); 
+    var getMonth= date1_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var Numweek=myDate.getWeek() 
+    sendCondition={group:group_tab1_tb1, ngay1_tab1_tb1:date1_tab1_tb1, shift:shift_tab1_tb1,numweek:Numweek,style:style_tab1_tb1, rangesize:range_size,nam:getYear}
+    var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_HSCN_tab1_tb2 = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getData_HSCN_tab1_tb2",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(sendCondition));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+
+}
+
+// get output scan tại bảo vệ
+
+var nhanOutput_at_security=""
+                
+    function get_Output_at_Security() {
+       
+        var shift_at_Security = document.getElementById('shift_tab1_tb1').value
+        var group_at_Security = document.getElementById('group_tab1_tb1').value
+        var date_at_Security = document.getElementById('date1_tab1_tb1').value
+
+        data={sendshift_at_Security:shift_at_Security, sendgroup_at_Security:group_at_Security,senddate_at_Security:date_at_Security}
+                
+        var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+           
+            if (this.readyState == 4 && this.status == 200) {
+                var rs = this.responseText   
+                var data = JSON.parse(rs); 
+                nhanOutput_at_security=data[0].SUM_Dz;
+                if(nhanOutput_at_security=="" ||nhanOutput_at_security==null)   {
+                    nhanOutput_at_security=0
+                }             
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/TrackingOutput_at_security",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(data));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+    }
+// lấy HS thực tế tổng toàn chuyền
+
+var nhanEff_allGroup=""
+                
+    function getEff_allGroup() {
+       
+        var shift_tab1_tb1 = document.getElementById('shift_tab1_tb1').value
+        var group_tab1_tb1 = document.getElementById('group_tab1_tb1').value
+        var date1_tab1_tb1 = document.getElementById('date1_tab1_tb1').value
+        var style_tab1_tb1 = document.getElementById('style_tab1_tb1').value
+        var getYear= date1_tab1_tb1.substring(0, 4); 
+        var getMonth= date1_tab1_tb1.substring(5, 7)-1; 
+        var getDate= date1_tab1_tb1.substring(8, 10); 
+        var myDate = new Date(getYear, getMonth, getDate);   
+        var Numweek=myDate.getWeek() 
+        var size_tab1_tb1=document.getElementById('size_tab1_tb1').value 
+
+        var range_size=""
+
+        if(size_tab1_tb1=="S" || size_tab1_tb1=="M" ||size_tab1_tb1=="L"||size_tab1_tb1=="XL"||size_tab1_tb1=="LG"){
+
+            range_size="NORMAL"
+        }else if (size_tab1_tb1=="2X" || size_tab1_tb1=="2XL" ||size_tab1_tb1=="3X"||size_tab1_tb1=="3XL"||size_tab1_tb1=="4X" ||size_tab1_tb1=="4XL"){
+            range_size="BIG"
+
+        }else if (size_tab1_tb1=="02" || size_tab1_tb1=="03" ||size_tab1_tb1=="04"||size_tab1_tb1=="2"||size_tab1_tb1=="3" ||size_tab1_tb1=="4" ||size_tab1_tb1=="02/03" || size_tab1_tb1=="2/3"){
+            range_size="BOY"
+
+        }else {
+        }
+        data={ngay:date1_tab1_tb1,shift:shift_tab1_tb1, year1:getYear,group:group_tab1_tb1,tuan:Numweek, rangesize:range_size, style:style_tab1_tb1}
+                
+        var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+           
+            if (this.readyState == 4 && this.status == 200) {
+                var rs = this.responseText   
+                var data = JSON.parse(rs); 
+                nhanEff_allGroup=data[0].HS;
+                if(nhanEff_allGroup=="" ||nhanEff_allGroup==null)   {
+                    nhanEff_allGroup=0
+                } 
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getActualEff",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(data));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+    }
+
+// show all day---------------------------------------------------------------------------------------------------
+note_ls="";
+shift_ls="";
+function show_full_day(){
+    if (confirm("Bạn có muốn refresh báo cáo không ???")) { 
+        
+        document.getElementById('tab1_tb1_body').innerHTML = "";
+        document.getElementById('sumHC_IE').innerHTML = "";
+        document.getElementById('sumHC_IE_MAT').innerHTML = "";
+        document.getElementById('sumHC_TT_CN').innerHTML ="";           
+        document.getElementById('varHC').innerHTML ="";
+        document.getElementById('tab1_tb2_body').innerHTML ="";
+        document.getElementById('tab1_tb5_body').innerHTML ="";
+        document.getElementById('tab1_tb6_body').innerHTML ="";
+        document.getElementById('tab1_tb7_body').innerHTML ="";
+        document.getElementById('SumEndline').innerHTML ="";
+        document.getElementById('SumDownTime').innerHTML="";
+        document.getElementById('kq_tong').innerHTML=""
+        document.getElementById('varOutput').innerHTML=""
+        document.getElementById('listcn_CN').innerHTML="";
+        document.getElementById('sumHS_Target').innerHTML=""
+        document.getElementById('sumHS_Actual').innerHTML=""
+        document.getElementById('varHS').innerHTML=""
+        
+        var nhanSAM_Process=[]
+        var nhanTarget_From_IE=[];
+        var nhanTarget_From_IE_re=[];
+        var nhanActual_Depend_On_CN_2= [];
+        var nhanActual_Depend_On_CN= [];
+        var nhanActual_Depend_On_LINE=[];
+        var nhanWIP_1=[];
+        var nhanWIP_2=[];  
+        var nhanActual_ReverseShift_2=[];
+        var nhanEndline=[];
+        var nhanDowntime=[];
+        var nhanOutputatsecurity="";
+        var getlongshift=[]
+        var nhanTargetTotal_From_IE=[]
+        var nhanTargetTotal_From_IE_re=[]
+        var eff_actual_total=0
+
+        html_tab1_tb1 ="";
+        html_tab1_tb2 ="";
+        html_tab1_tb5 ="";
+        html_tab1_tb6 ="";
+        html_tab1_tb7 ="";
+        var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+        var group_tab1_tb1=document.getElementById('group_tab1_tb1').value 
+        var shift_tab1_tb1=document.getElementById('shift_tab1_tb1').value    
+        var style_tab1_tb1=document.getElementById('style_tab1_tb1').value 
+        var size_tab1_tb1=document.getElementById('size_tab1_tb1').value  
+        var ca
+        if(shift_tab1_tb1=="R"){
+            ca="RITMO"
+        }else if(shift_tab1_tb1=="B"){
+            ca="BALI"
+        }
+        if(group_tab1_tb1==0 || shift_tab1_tb1==0 || style_tab1_tb1==0 || size_tab1_tb1==0 ){
+            alert("Chưa chọn group hoặc ca hoặc style hoặc rangsize, vui lòng kiểm tra lại !!!")
+        }else{
+            get_Inf_LongShift();  
+            getlongshift=nhan_Infor_LongShift              
+            note_ls= getlongshift[0].Note  
+            shift_ls= getlongshift[0].Shift                     
+            get_SAM_Process();
+            get_Target_From_IE();
+            get_Target_From_IE_re();
+            get_Actual_Depend_On_CN_2();
+            get_Actual_Depend_On_CN();
+            get_Actual_Depend_On_LINE();
+            get_WIP_1();           
+            get_WIP_2();          
+            get_Endline();
+            get_Downtime();           
+            get_Actual_ReverseShift_2();  
+            get_Output_at_Security() 
+            get_TargetTotal_From_IE()
+            get_TargetTotal_From_IE_re()
+            getEff_allGroup()
+             
+            nhanSAM_Process=nhan_SAM_Process;
+            nhanTarget_From_IE=nhan_Target_From_IE;
+            nhanTarget_From_IE_re=nhan_Target_From_IE_re;
+            nhanActual_Depend_On_CN_2= nhan_Actual_Depend_On_CN_2;
+            nhanActual_Depend_On_CN= nhan_Actual_Depend_On_CN;
+            nhanActual_Depend_On_LINE=nhan_Actual_Depend_On_LINE;
+            nhanTargetTotal_From_IE=nhan_TargetTotal_From_IE
+            nhanTargetTotal_From_IE_re=nhan_TargetTotal_From_IE_re
+            nhanWIP_1=nhan_WIP_1;
+            nhanWIP_2=nhan_WIP_2;         
+           
+            nhanActual_ReverseShift_2=nhan_Actual_ReverseShift_2;
+            nhanEndline=nhan_EndLine;
+            nhanDowntime=nhan_Downtime;
+            nhanOutputatsecurity=nhanOutput_at_security   
+            eff_actual_total=parseFloat(nhanEff_allGroup)            
+            var eff_target_total_IE=parseFloat(nhanTargetTotal_From_IE[0].eff )
+             
+            var output_target_total_IE=parseFloat(nhanTargetTotal_From_IE[0].OUTPUT) 
+            if(nhanTargetTotal_From_IE.length==0) {
+                eff_target_total_IE=0
+                output_target_total_IE=0
+            }
+            
+            var eff_target_total_IE_re=nhanTargetTotal_From_IE_re[0].eff 
+            var output_target_total_IE_re=parseFloat(nhanTargetTotal_From_IE_re[0].OUTPUT)
+            if(nhanTargetTotal_From_IE_re.length==0) {
+                eff_target_total_IE_re=0
+                output_target_total_IE_re=0
+            }
+               
+            var stt="" 
+            var HC_MAT_IE=""
+            var HC_MAT_IE_re=""
+            var html_tab1_tb1=""
+            var sumHC_IE=0;
+            var sumHC_IE_re=0;
+            var sumHC_MAT_IE=0;
+            var sumHC_MAT_IE_re=0;
+            var sumHC_Actual_CN=0;
+            var sumHC_Actual_CN_2=0;
+            var sumHC_Actual_LINE=0;
+            var sumEndline=0;
+            var sumDownTime=0;   
+                
+           
+           var hs_target_all=0;
+           var hs_tt_all=0;  
+           var output_cbc1=0;
+           var output_cbc2=0;
+            var text_red="color:#FF0000" 
+            var Output_cbc1=0;
+            var Output_cbc2=0;   
+            var HC_cbc1=0;
+            var HC_cbc2=0          
+            
+            for (a = 0; a < nhanSAM_Process.length; a ++ ) {
+                
+                var stt=nhanSAM_Process[a].SEQUENCE
+                var cd=nhanSAM_Process[a].OPERATION
+                var SAM=nhanSAM_Process[a].SAM
+                var HC_IE=0;
+                var HC_IE_re=0;
+                var HC_MAT_IE=0;  
+                var HC_MAT_IE_re=0;  
+                var EFF_IE=0;
+                var EFF_IE_re=0;
+                var SumEFF_IE=0;
+                var SumEFF_IE_re=0;
+                var HC_Actual_CN=0; 
+                var HC_Actual_CN_2=0; 
+                var HC_Actual_LINE=0; 
+                var EFF_Actual_CN=0;
+                var SumEFF_Actual_CN=0;
+                var VarHS=0;
+                var Output_IE=0;
+                var Output_IE_re=0;
+                var Output_WIP_1=0;
+                var Output_WIP_2=0;
+                var Output_Actual_CN_2=0;
+                var Output_Actual_CN=0;
+                var varOutput_CN_IE=0;
+                var Output_Actual_LINE=0;
+                var varOutput_LINE_IE=0;
+                var Output_Actual_ReverseShift_1=0;
+                var Output_Actual_ReverseShift_2=0;
+                var sl_loi=0;
+                var irrName="";
+                var gio_downtime=0;
+                var downtimeIrrName="";  
+                var output_total_Actual=0;
+                var colortextvarHS="color:black"
+                var colortextvarHC="color:black"
+                var colortextVar1="color:black"
+                var colortextVar2="color:black"
+                var colortextEndline="color:black"
+                var colortextDowntime="color:black"
+                var colorVarOutput_2shift="color:black"               
+                var varHC="";
+                var Output_final="";
+                var output_total_IE=0  ;
+                var varOutput_2shift=0;                      
+                for (b = 0; b < nhanTarget_From_IE.length; b ++ ) {
+                    var cd_IE=nhanTarget_From_IE[b].OPERATION
+                    var MAT= nhanTarget_From_IE[b].work_hs;
+                    var HS_IE= nhanTarget_From_IE[b].EFF;
+                    if (cd_IE==cd){
+                        HC_IE=HC_IE+1;
+                        SumEFF_IE=SumEFF_IE+HS_IE
+                        if(MAT==382){
+                            HC_MAT_IE=HC_MAT_IE+1
+                            sumHC_MAT_IE=sumHC_MAT_IE+1
+                        }
+                    }
+                
+                }
+                EFF_IE=SumEFF_IE/HC_IE
+                sumHC_IE= sumHC_IE+HC_IE
+                
+                for (g = 0; g < nhanTarget_From_IE_re.length; g ++ ) {
+                    var cd_IE_re=nhanTarget_From_IE_re[g].OPERATION
+                    var MAT_re= nhanTarget_From_IE_re[g].work_hs;
+                    var HS_IE_re= nhanTarget_From_IE_re[g].EFF;
+                  
+                    if (cd_IE_re==cd){
+                        HC_IE_re=HC_IE_re+1;
+                        SumEFF_IE_re=SumEFF_IE_re+HS_IE_re
+                        if(MAT_re==382){
+                            HC_MAT_IE_re=HC_MAT_IE_re+1
+                            sumHC_MAT_IE_re=sumHC_MAT_IE_re+1
+                        }
+                    }                  
+                }
+               
+                EFF_IE_re=SumEFF_IE_re/HC_IE_re
+                sumHC_IE_re= sumHC_IE_re+HC_IE_re
+                
+                for (c = 0; c < nhanActual_Depend_On_CN_2.length; c ++ ) {
+                    var cd_Actual_CN_2=nhanActual_Depend_On_CN_2[c].OPERATION;               
+                    var OUTPUT_Actual_CN_2=nhanActual_Depend_On_CN_2[c].OUTPUT;
+            
+                    if (cd_Actual_CN_2==cd){                                 
+                        Output_Actual_CN_2=Output_Actual_CN_2+OUTPUT_Actual_CN_2
+                        HC_Actual_CN_2=HC_Actual_CN_2+1;                        
+                    }                
+                }             
+                
+                sumHC_Actual_CN_2=sumHC_Actual_CN_2+HC_Actual_CN_2
+                
+                for (c = 0; c < nhanActual_Depend_On_CN.length; c ++ ) {
+                    var cd_Actual_CN=nhanActual_Depend_On_CN[c].OPERATION;
+                    var HSTT_Actual_CN=nhanActual_Depend_On_CN[c].HSTT;
+                    var OUTPUT_Actual_CN=nhanActual_Depend_On_CN[c].OUTPUT;     
+                    if  (HSTT_Actual_CN==null || HSTT_Actual_CN==undefined) {
+                        HSTT_Actual_CN=0
+                    }   
+                    if (cd_Actual_CN==cd){                       
+                        if(HSTT_Actual_CN!=0){
+                        EFF_Actual_CN=EFF_Actual_CN+HSTT_Actual_CN;                        
+                        HC_Actual_CN=HC_Actual_CN+1;
+                        }
+                        Output_Actual_CN=Output_Actual_CN+OUTPUT_Actual_CN
+                    }
+                
+                }       
+                
+                SumEFF_Actual_CN=EFF_Actual_CN/HC_Actual_CN;
+                sumHC_Actual_CN = sumHC_Actual_CN+  HC_Actual_CN  
+
+                for (d = 0; d < nhanActual_Depend_On_LINE.length; d ++ ) {
+                    var cd_Actual_LINE=nhanActual_Depend_On_LINE[d].OPERATION;          
+                    var OUTPUT_Actual_LINE=nhanActual_Depend_On_LINE[d].OUTPUT;
+            
+                    if (cd_Actual_LINE==cd){
+                        HC_Actual_LINE=HC_Actual_LINE+1;
+                        sumHC_Actual_LINE=sumHC_Actual_LINE+1
+                        Output_Actual_LINE=Output_Actual_LINE+OUTPUT_Actual_LINE
+
+                    }
+                
+                }
+              
+                for (e = 0; e < nhanWIP_1.length; e ++ ) {
+                    var cd_WIP_1=nhanWIP_1[e].OPERATION;          
+                    var OUTPUT_WIP_1=nhanWIP_1[e].WIP;
+            
+                    if (cd_WIP_1==cd){
+                        Output_WIP_1=OUTPUT_WIP_1
+                        
+                    }
+                
+                }
+               
+                for (e = 0; e < nhanWIP_2.length; e ++ ) {
+                    var cd_WIP_2=nhanWIP_2[e].OPERATION;          
+                    var OUTPUT_WIP_2=nhanWIP_2[e].WIP;
+            
+                    if (cd_WIP_2==cd){
+                        Output_WIP_2=OUTPUT_WIP_2
+                        
+                    }
+                
+                }
+               
+                
+               
+                for (f = 0; f < nhanActual_ReverseShift_2.length; f ++ ) {
+                    var cd_Actual_ReverseShift_2=nhanActual_ReverseShift_2[f].OPERATION;          
+                    var OUTPUT_Actual_ReverseShift_2=nhanActual_ReverseShift_2[f].OUTPUT;
+            
+                    if (cd_Actual_ReverseShift_2==cd){               
+                    
+                        Output_Actual_ReverseShift_2=Output_Actual_ReverseShift_2+OUTPUT_Actual_ReverseShift_2
+                    }
+                
+                }
+
+                for (g = 0; g < nhanEndline.length; g ++ ) {
+                    var cd_Endline=nhanEndline[g].CD;  
+                    var irr_Name= nhanEndline[g].IRR_Name;             
+                    if (cd_Endline==cd){
+                        sl_loi=sl_loi+1
+                        irrName=irr_Name +", "+ irrName               
+                        
+                    }
+                
+                }
+                sumEndline=sumEndline+sl_loi
+                for (h = 0; h < nhanDowntime.length; h ++ ) {
+                    var cd_Downtime=nhanDowntime[h].operation;  
+                    var downtime_Irr_Name= nhanDowntime[h].broken_code_nv;  
+                    var downtime= nhanDowntime[h].Dowtime;  
+                    var id_machine= nhanDowntime[h].IDMC;  
+                
+            
+                    if (cd_Downtime==cd){
+                        gio_downtime=gio_downtime+downtime
+                        downtimeIrrName="Code: "+id_machine+"("+downtime_Irr_Name+"-"+downtime+"phút), "+downtimeIrrName
+                    
+                    
+                    }
+                
+                }
+                sumDownTime=sumDownTime+gio_downtime
+            
+                VarHS=SumEFF_Actual_CN-EFF_IE                
+                Output_IE=output_target_total_IE                 
+                Output_IE_re=output_target_total_IE_re                      
+                           
+                if (isNaN(Output_IE_re)) Output_IE_re = 0
+                if (isNaN(Output_IE)) Output_IE = 0
+                if(note_ls=="Long Shift"){
+                    Output_IE=Output_IE+(Output_IE*3.5)/7.35
+                    Output_IE_re=0
+                    
+                }
+                  
+                output_total_IE=Output_IE+Output_IE_re
+                varOutput_CN_IE=Output_WIP_1+Output_Actual_CN_2-Output_IE
+                Output_final=Output_Actual_LINE+Output_WIP_1-Output_WIP_2
+                varOutput_LINE_IE=Output_final- Output_IE
+                HC_cbc1=HC_cbc1+HC_IE;
+                HC_cbc2=HC_cbc2+HC_IE_re;
+                Output_cbc1=Output_IE*HC_IE+Output_cbc1
+                Output_cbc2=Output_IE_re*HC_IE_re+Output_cbc2
+                
+                if(VarHS<0){
+                    colortextvarHS=text_red;
+                }
+                if(varOutput_CN_IE<0){
+                    colortextVar1=text_red;
+                }
+
+                if(varOutput_LINE_IE<0){
+                    colortextVar2=text_red;
+                }
+
+                if(sl_loi>0){
+                    colortextEndline=text_red;
+                }
+
+                if(gio_downtime>0){
+                    colortextDowntime=text_red;
+                }
+                varHC=HC_Actual_CN - HC_IE
+                output_total_Actual=Output_Actual_LINE+Output_Actual_ReverseShift_2+Output_WIP_1-Output_WIP_2
+                varOutput_2shift=output_total_Actual-output_total_IE
+               if (varHC<0){
+                colortextvarHC=text_red;
+
+               }
+
+               if(varOutput_2shift<0){
+                colorVarOutput_2shift=text_red
+
+               }
+               
+                html_tab1_tb1 += "<tr>";
+                    html_tab1_tb1 += "<td>" + stt + "</td>";
+                    html_tab1_tb1 += "<td>" + cd + "</td>";
+                    html_tab1_tb1 += "<td>" + SAM + "</td>";
+                    html_tab1_tb1 += "<td>" + HC_IE + "</td>";
+                    html_tab1_tb1 += "<td>" + HC_MAT_IE + "</td>";                   
+                    html_tab1_tb1 += "<td>" + HC_Actual_CN + "</td>";                    
+                    html_tab1_tb1 += "<td style='"+colortextvarHC+"'>" + varHC + "</td>";    
+                    html_tab1_tb1 += "<td>" + EFF_IE.toFixed(2) + "</td>";
+                    html_tab1_tb1 += "<td>" + SumEFF_Actual_CN.toFixed(2) + "</td>";
+                    html_tab1_tb1 += "<td style='"+colortextvarHS+"'>" + VarHS.toFixed(2) + "</td>";                                  
+                    html_tab1_tb1 += "<td>" + Output_IE.toFixed(0) + "</td>";                                     
+                    html_tab1_tb1 += "<td>" + Output_WIP_1.toFixed(0) + "</td>";                                   
+                    html_tab1_tb1 += "<td >" + Output_Actual_LINE.toFixed(0) + "</td>";
+                    html_tab1_tb1 += "<td>" + Output_WIP_2.toFixed(0) + "</td>";   
+                    html_tab1_tb1 += "<td>" + Output_final.toFixed(0) + "</td>";
+                    html_tab1_tb1 += "<td style='"+colortextVar2+"'>"+varOutput_LINE_IE.toFixed(0)+"</td>";                     
+                    html_tab1_tb1 += "<td title='"+irrName+"' style='"+colortextEndline+"'>" + sl_loi + "</td>";
+                    html_tab1_tb1 += "<td title='"+downtimeIrrName+"' style='"+colortextDowntime+"'>" + gio_downtime + "</td>";                    
+                    html_tab1_tb1 += "<td>" + output_total_IE.toFixed(0) + "</td>"; 
+                    html_tab1_tb1 += "<td>" + output_total_Actual.toFixed(0) + "</td>";
+                    html_tab1_tb1 += "<td style='"+colorVarOutput_2shift+"'>"+varOutput_2shift.toFixed(0)+"</td>";
+                    html_tab1_tb1 += "</tr>";
+                    
+            
+            }
+            var var_hc=0
+            var_hc=sumHC_Actual_CN-sumHC_IE
+            document.getElementById("tab1_tb1_body").innerHTML += html_tab1_tb1;
+            document.getElementById("sumHC_IE").innerHTML += sumHC_IE;
+            document.getElementById("sumHC_IE_MAT").innerHTML += sumHC_MAT_IE;
+            document.getElementById("sumHC_TT_CN").innerHTML += sumHC_Actual_CN;       
+            document.getElementById("varHC").innerHTML += sumHC_Actual_CN-sumHC_IE;
+            document.getElementById("SumEndline").innerHTML += sumEndline;
+            document.getElementById("SumDownTime").innerHTML += sumDownTime;
+            document.getElementById("listcn_CN").innerHTML="DANH SÁCH CÔNG NHÂN CỦA GROUP: "+group_tab1_tb1+", CA: " +ca
+
+                            
+              var bttneck_output=0;
+              var bttneck_cd=""           
+              
+                                 
+              var var_hs=0
+              var var_output=0
+                var table = document.getElementById('tab1_tb1');
+                bttneck_output=parseFloat(table.rows[3].cells[14].innerHTML)
+                bttneck_cd=table.rows[3].cells[1].innerHTML
+                
+
+                for (var r = 4, n = table.rows.length; r < n; r++) {  
+                var check_Output=parseFloat(table.rows[r].cells[14].innerHTML);
+                var check_CD=table.rows[r].cells[1].innerHTML;  
+
+                   if(bttneck_output>check_Output) {
+                    bttneck_output=check_Output
+                    bttneck_cd=check_CD;
+                   }
+                    
+                }
+               
+               
+                ca1=""
+                if(note_ls=="Long Shift" && shift_ls!=shift_tab1_tb1){
+                    if(shift_tab1_tb1=="R"){
+                        ca1="RITMO"
+                    }else{
+                        ca1="BALI"
+                    }
+                    document.getElementById('kq_tong').innerHTML="    Hôm nay ca "+ca1+" không làm việc, vui lòng chọn lại!!!"
+                }else{
+                    document.getElementById('kq_tong').innerHTML="  MinOutput: "+ bttneck_output+" (dz), HS: "+eff_actual_total.toFixed(2)+"% , CĐ Min: "+bttneck_cd+" , SL lỗi: "+sumEndline+" , T/gian máy hỏng: "+ sumDownTime+" (phút), Output tại bv: "+nhanOutputatsecurity+" (dz)"
+                    
+                }
+                var_output=nhanOutputatsecurity-Output_IE
+                var_hs=eff_actual_total-eff_target_total_IE                
+                document.getElementById('sumHS_Target').innerHTML=eff_target_total_IE.toFixed(2)+"%"
+                document.getElementById('sumHS_Actual').innerHTML=eff_actual_total.toFixed(2)+"%"
+                document.getElementById('varHS').innerHTML=var_hs.toFixed(2)+"%"              
+                document.getElementById('varOutput').innerHTML=var_output.toFixed(0)
+                
+                //anhyeu
+                if(var_output<0){
+                    document.getElementById('varOutput').style.color="#FF0000"
+                    document.getElementById('varOutput').style.background="yellow"
+                }else{
+                    document.getElementById('varOutput').style.color="white"
+                    document.getElementById('varOutput').style.background="#4CAF50"
+                }
+                if(var_hs<0){
+                    document.getElementById('varHS').style.color="#FF0000"
+                    document.getElementById('varHS').style.background="yellow"
+                }else{
+                    document.getElementById('varHS').style.color="white"
+                    document.getElementById('varHS').style.background="#1c89d1" 
+                }
+                if(var_hc<0){
+                    document.getElementById('varHC').style.color="#FF0000"
+                    document.getElementById('varHC').style.background="yellow"
+                }else{
+                    document.getElementById('varHC').style.color="white"
+                    document.getElementById('varHC').style.background="#4CAF50"
+                }
+                if(sumEndline>0){
+                    document.getElementById('SumEndline').style.color="#FF0000"
+                    document.getElementById('SumEndline').style.background="yellow"
+                }else{
+                    document.getElementById('SumEndline').style.color="white"
+                    document.getElementById('SumEndline').style.background="#1c89d1"
+                }
+                if(sumDownTime>0){
+                    document.getElementById('SumDownTime').style.color="#FF0000"
+                    document.getElementById('SumDownTime').style.background="yellow"
+                }else{
+                    document.getElementById('SumDownTime').style.color="white"
+                    document.getElementById('SumDownTime').style.background="#1c89d1"
+                }
+
+
+               
+        }
+        
+            // table 2 và table 5---------------------------------------------------------------------------------
+
+            get_HSCN_tab1_tb2();
+            var nhanHSCN_tab1_tb2=nhan_HSCN_tab1_tb2;
+           var stt5=0;
+           var stt6=0;
+           var stt7=0;            
+            for (a = 0; a < nhanTarget_From_IE.length; a ++ ) {               
+                    var id_IE=nhanTarget_From_IE[a].EMPLOYEE
+                    var name_IE=nhanTarget_From_IE[a].NAME
+                    var shift_IE=nhanTarget_From_IE[a].SHIFT
+                    var cd_IE=nhanTarget_From_IE[a].OPERATION   
+                    var HS_IE= nhanTarget_From_IE[a].EFF;
+                    var laySam=0;
+                    for (e = 0; e < nhanSAM_Process.length; e ++ ) {
+                    var stt=nhanSAM_Process[e].SEQUENCE
+                    var cd=nhanSAM_Process[e].OPERATION
+                    var SAM=nhanSAM_Process[e].SAM
+                        if(cd==cd_IE){
+                            laySam=SAM;
+                        }
+                    }
+                    var stt_tab1_tb2=a+1
+                    var cd_HSCN_t1_t1=""
+                    var SAH_HSCN_t1_t1=0; 
+                    var target_sotem= (HS_IE/100*442)/laySam;               
+                    var sotem_HSCN_t1_t1 = cd_IE +" ("+target_sotem.toFixed(0)+")";
+                    var slcd_HSCN_t1_t1=0;
+                    var HS_HSCN_t1_t1=0;
+                    var varHS=0;
+                    var output_HSCN_t1_t1=0;
+                    var soluongloi=0;
+                    var gio_downtime=0;
+                    var wh=0;
+                    var irrName=""
+                    var downtimeIrrName=""
+                    var colortextVarHSCN="color:black"
+                    var colortextEndlineHSCN="color:black"
+                    var colortextDowntimeHSCN="color:black"                    
+             for (b = 0; b < nhanHSCN_tab1_tb2.length; b ++ ) {
+                var id_HSCN_tab1_tb2=nhanHSCN_tab1_tb2[b].EMPLOYEE
+                var cd_HSCN_tab1_tb2=nhanHSCN_tab1_tb2[b].OPERATION
+                var SAH_HSCN_tab1_tb2=nhanHSCN_tab1_tb2[b].SAH
+                var TEM_HSCN_tab1_tb2=nhanHSCN_tab1_tb2[b].TEM
+                var wh_HSCN_tab1_tb2=nhanHSCN_tab1_tb2[b].WORK_HRS
+                    if(id_HSCN_tab1_tb2==id_IE){
+                        cd_HSCN_t1_t1=cd_HSCN_tab1_tb2+" ("+TEM_HSCN_tab1_tb2+"), "+cd_HSCN_t1_t1
+                        SAH_HSCN_t1_t1=SAH_HSCN_t1_t1+SAH_HSCN_tab1_tb2
+                        slcd_HSCN_t1_t1=slcd_HSCN_t1_t1+1
+                        output_HSCN_t1_t1=output_HSCN_t1_t1+TEM_HSCN_tab1_tb2*3
+                        wh=wh_HSCN_tab1_tb2
+                    }
+                }
+                for (c = 0; c < nhanEndline.length; c ++ ) {
+                    var id_Endline=nhanEndline[c].ID;  
+                    var irr_Name= nhanEndline[c].IRR_Name;             
+                    if (id_Endline==id_IE){
+                        soluongloi=soluongloi+1
+                        irrName=irr_Name +", "+ irrName                        
+                    }                
+                }
+                for (d = 0; d < nhanDowntime.length; d ++ ) {
+                    var id_Downtime=nhanDowntime[d].idnv;  
+                    var id5_Downtime=id_Downtime.substring(id_Downtime.length - 5, id_Downtime.length)
+                    var downtime_Irr_Name= nhanDowntime[d].broken_code_nv;  
+                    var downtime= nhanDowntime[d].Dowtime;  
+                    var id_machine= nhanDowntime[d].IDMC;           
+            
+                    if (id5_Downtime==id_IE){
+                        gio_downtime=gio_downtime+downtime
+                        downtimeIrrName="Code: "+id_machine+"("+downtime_Irr_Name+"-"+downtime+"phút), "+downtimeIrrName
+                        var ID_machine=id_machine
+                        var downtimeIrr_Name=downtime_Irr_Name                    
+                    }                
+                }                
+                HS_HSCN_t1_t1=(SAH_HSCN_t1_t1/wh)*100;
+                if (isNaN(HS_HSCN_t1_t1)) HS_HSCN_t1_t1 = 0
+                varHS=HS_HSCN_t1_t1-HS_IE
+                if(HS_HSCN_t1_t1==0){                  
+                    varHS=0
+                }
+                if(varHS<0){
+                    colortextVarHSCN=text_red;
+                }
+                if(soluongloi>0){
+                    stt6=stt6+1
+                    colortextEndlineHSCN=text_red;                
+                    html_tab1_tb6 += "<tr>";
+                        html_tab1_tb6 += "<td >" + stt6 + "</td>";
+                        html_tab1_tb6 += "<td>" + id_IE + "</td>";
+                        html_tab1_tb6 += "<td>" + name_IE + "</td>";
+                        html_tab1_tb6 += "<td>" + shift_IE + "</td>";
+                        html_tab1_tb6 += "<td>" + sotem_HSCN_t1_t1 + "</td>";           
+                        html_tab1_tb6 += "<td>" + HS_IE.toFixed(2) + "</td>";
+                        html_tab1_tb6 += "<td>" + cd_HSCN_t1_t1 + "</td>";
+                        html_tab1_tb6 += "<td>" + HS_HSCN_t1_t1.toFixed(2) + "</td>";
+                        html_tab1_tb6 += "<td  style='"+colortextVarHSCN+"'>" + varHS.toFixed(2) + "</td>";      
+                        html_tab1_tb6 += "<td>" + soluongloi + "</td>";       
+                        html_tab1_tb6 += "<td>" + irrName + "</td>"; 
+                    html_tab1_tb6 += "</tr>";     
+                }
+                if(gio_downtime>0){
+                    stt7=stt7+1
+                    colortextDowntimeHSCN=text_red;
+                    html_tab1_tb7 += "<tr>";
+                        html_tab1_tb7 += "<td >" + stt7 + "</td>";
+                        html_tab1_tb7 += "<td>" + id_IE + "</td>";
+                        html_tab1_tb7 += "<td>" + name_IE + "</td>";
+                        html_tab1_tb7 += "<td>" + shift_IE + "</td>";
+                        html_tab1_tb7 += "<td>" + sotem_HSCN_t1_t1 + "</td>";           
+                        html_tab1_tb7 += "<td>" + HS_IE.toFixed(2) + "</td>";
+                        html_tab1_tb7 += "<td>" + cd_HSCN_t1_t1 + "</td>";
+                        html_tab1_tb7 += "<td>" + HS_HSCN_t1_t1.toFixed(2) + "</td>";
+                        html_tab1_tb7 += "<td  style='"+colortextVarHSCN+"'>" + varHS.toFixed(2) + "</td>";      
+                        html_tab1_tb7 += "<td>" + ID_machine + "</td>";       
+                        html_tab1_tb7 += "<td>" + downtimeIrr_Name + "</td>";  
+                        html_tab1_tb7 += "<td>" + gio_downtime + "</td>";  
+                    html_tab1_tb7 += "</tr>";     
+                }
+               
+                if (slcd_HSCN_t1_t1>1){
+                    stt5=stt5+1;   
+                    var createClass_tab1_tb5="content_tab1_tb5"
+                    html_tab1_tb5 += "<tr class='"+createClass_tab1_tb5+"'>";
+                        html_tab1_tb5 += "<td >" + stt5 + "</td>";
+                        html_tab1_tb5 += "<td>" + id_IE + "</td>";
+                        html_tab1_tb5 += "<td>" + name_IE + "</td>";
+                        html_tab1_tb5 += "<td>" + shift_IE + "</td>";
+                        html_tab1_tb5 += "<td>" + sotem_HSCN_t1_t1 + "</td>";           
+                        html_tab1_tb5 += "<td>" + HS_IE.toFixed(2) + "</td>";
+                        html_tab1_tb5 += "<td>" + cd_HSCN_t1_t1 + "</td>";
+                        html_tab1_tb5 += "<td>" + HS_HSCN_t1_t1.toFixed(2) + "</td>";
+                        html_tab1_tb5 += "<td  style='"+colortextVarHSCN+"'>" + varHS.toFixed(2) + "</td>";
+                        html_tab1_tb5 += "<td>" + output_HSCN_t1_t1.toFixed(0) + "</td>";
+                        html_tab1_tb5 += "<td>" + slcd_HSCN_t1_t1 + "</td>";
+                        html_tab1_tb5 += "<td title='"+irrName+"'  style='"+colortextEndlineHSCN+"'>" + soluongloi + "</td>";
+                        html_tab1_tb5 += "<td title='"+downtimeIrrName+"'  style='"+colortextDowntimeHSCN+"'>" + gio_downtime + "</td>";                        
+                    html_tab1_tb5 += "</tr>";  
+                }
+                var createClass_tab1_tb2="content_tab1_tb2"
+                html_tab1_tb2 += "<tr class='"+createClass_tab1_tb2+"'>";
+                    html_tab1_tb2 += "<td >" + stt_tab1_tb2 + "</td>";
+                    html_tab1_tb2 += "<td>" + id_IE + "</td>";
+                    html_tab1_tb2 += "<td>" + name_IE + "</td>";
+                    html_tab1_tb2 += "<td>" + shift_IE + "</td>";
+                    html_tab1_tb2 += "<td>" + sotem_HSCN_t1_t1 + "</td>";           
+                    html_tab1_tb2 += "<td>" + HS_IE.toFixed(2) + "</td>";
+                    html_tab1_tb2 += "<td>" + cd_HSCN_t1_t1 + "</td>";
+                    html_tab1_tb2 += "<td>" + HS_HSCN_t1_t1.toFixed(2) + "</td>";
+                    html_tab1_tb2 += "<td  style='"+colortextVarHSCN+"'>" + varHS.toFixed(2) + "</td>";
+                    html_tab1_tb2 += "<td>" + output_HSCN_t1_t1.toFixed(0) + "</td>";
+                    html_tab1_tb2 += "<td>" + slcd_HSCN_t1_t1 + "</td>";
+                    html_tab1_tb2 += "<td title='"+irrName+"'  style='"+colortextEndlineHSCN+"'>" + soluongloi + "</td>";
+                    html_tab1_tb2 += "<td title='"+downtimeIrrName+"'  style='"+colortextDowntimeHSCN+"'>" + gio_downtime + "</td>";                    
+                html_tab1_tb2 += "</tr>"; 
+            }
+            document.getElementById("tab1_tb2_body").innerHTML += html_tab1_tb2;
+            document.getElementById("tab1_tb5_body").innerHTML += html_tab1_tb5;
+            document.getElementById("tab1_tb6_body").innerHTML += html_tab1_tb6;
+            document.getElementById("tab1_tb7_body").innerHTML += html_tab1_tb7;
+        }
+         // table 4---------------------------------------------------------------------------------
+         var stt_tab1_tb4=0;
+         var html_tab1_tb4=""
+         document.getElementById("tab1_tb4_body").innerHTML="";
+         for (a = 0; a < nhanActual_Depend_On_LINE.length; a ++ ) {
+                trung=0; 
+                slcd=0                 
+                cd=""   
+                output=0                
+                stt_tab1_tb4=a+1
+                var createClass4="content_tab1_tb4"
+                var html_tab1_tb4="";
+               if (a==0){
+                var id_Actual_LINE=nhanActual_Depend_On_LINE[a].EMPLOYEE; 
+                var name_Actual_LINE=nhanActual_Depend_On_LINE[a].Name; 
+                var group_Actual_LINE=nhanActual_Depend_On_LINE[a].groupname;
+                var shift_Actual_LINE=nhanActual_Depend_On_LINE[a].Shift;
+                var cd_Actual_LINE=nhanActual_Depend_On_LINE[a].OPERATION;          
+                var OUTPUT_Actual_LINE=nhanActual_Depend_On_LINE[a].OUTPUT;
+                var tem_Actual_LINE=(nhanActual_Depend_On_LINE[a].OUTPUT)/3;                 
+                    cd=cd_Actual_LINE+" ("+tem_Actual_LINE.toFixed(0)+")"
+                    slcd=slcd+1
+                    output=output+OUTPUT_Actual_LINE                    
+                    for(var b = a+1; b < nhanActual_Depend_On_LINE.length; b++) {
+                    var id_Actual_LINE2=nhanActual_Depend_On_LINE[b].EMPLOYEE; 
+                    var name_Actual_LINE2=nhanActual_Depend_On_LINE[b].Name; 
+                    var group_Actual_LINE2=nhanActual_Depend_On_LINE[b].groupname;
+                    var shift_Actual_LINE2=nhanActual_Depend_On_LINE[b].Shift;
+                    var cd_Actual_LINE2=nhanActual_Depend_On_LINE[b].OPERATION;          
+                    var OUTPUT_Actual_LINE2=nhanActual_Depend_On_LINE[b].OUTPUT;                 
+                    var tem_Actual_LINE2=(nhanActual_Depend_On_LINE[b].OUTPUT)/3;  
+                  
+                        if (id_Actual_LINE==id_Actual_LINE2){
+                            cd= cd_Actual_LINE2 + " ("+ tem_Actual_LINE2.toFixed(0) + "), " + cd   
+                            slcd=slcd+1
+                            output=output+OUTPUT_Actual_LINE2                           
+                        }
+                    }                    
+                    var shift_3=shift_Actual_LINE.substring(0,3);
+                    html_tab1_tb4 += "<tr class='"+createClass4+"'>";                        
+                        html_tab1_tb4 += "<td>" + stt_tab1_tb4 + "</td>";
+                        html_tab1_tb4 += "<td>" + id_Actual_LINE + "</td>";
+                        html_tab1_tb4 += "<td>" + name_Actual_LINE + "</td>";
+                        html_tab1_tb4 += "<td>" + group_Actual_LINE + "</td>";
+                        html_tab1_tb4 += "<td>" + shift_Actual_LINE + "</td>";
+                        html_tab1_tb4 += "<td>" + shift_3 + "</td>";
+                        html_tab1_tb4 += "<td>" + cd + "</td>";
+                        html_tab1_tb4 += "<td>" + output.toFixed(0) + "</td>";
+                        html_tab1_tb4 += "<td>" + slcd + "</td>";
+                       
+                    html_tab1_tb4 += "</tr>";
+                 
+               
+                }               
+                else if(a==1){
+                    var id_0=nhanActual_Depend_On_LINE[0].EMPLOYEE
+                    var id_1=nhanActual_Depend_On_LINE[1].EMPLOYEE  
+                    if(id_0!=id_1){
+
+                        var id_Actual_LINE=nhanActual_Depend_On_LINE[a].EMPLOYEE; 
+                        var name_Actual_LINE=nhanActual_Depend_On_LINE[a].Name; 
+                        var group_Actual_LINE=nhanActual_Depend_On_LINE[a].groupname;
+                        var shift_Actual_LINE=nhanActual_Depend_On_LINE[a].Shift;
+                        var cd_Actual_LINE=nhanActual_Depend_On_LINE[a].OPERATION;          
+                        var OUTPUT_Actual_LINE=nhanActual_Depend_On_LINE[a].OUTPUT;
+                        var tem_Actual_LINE=(nhanActual_Depend_On_LINE[a].OUTPUT)/3;                 
+                        cd=cd_Actual_LINE+" ("+tem_Actual_LINE.toFixed(0)+")"
+                        slcd=slcd+1
+                        output=output+OUTPUT_Actual_LINE
+                        for(var b = a+1; b < nhanActual_Depend_On_LINE.length; b++) {
+                        var id_Actual_LINE2=nhanActual_Depend_On_LINE[b].EMPLOYEE; 
+                        var name_Actual_LINE2=nhanActual_Depend_On_LINE[b].Name; 
+                        var group_Actual_LINE2=nhanActual_Depend_On_LINE[b].groupname;
+                        var shift_Actual_LINE2=nhanActual_Depend_On_LINE[b].Shift;
+                        var cd_Actual_LINE2=nhanActual_Depend_On_LINE[b].OPERATION;          
+                        var OUTPUT_Actual_LINE2=nhanActual_Depend_On_LINE[b].OUTPUT;
+                        var tem_Actual_LINE2=(nhanActual_Depend_On_LINE[b].OUTPUT)/3;   
+                            if (id_Actual_LINE==id_Actual_LINE2){
+                                cd=  cd_Actual_LINE2+" ("+tem_Actual_LINE2.toFixed(0)+"), " + cd   
+                                slcd=slcd+1
+                                output=output+OUTPUT_Actual_LINE2
+                            }
+
+                        }
+                    
+                    var shift_3=shift_Actual_LINE.substring(0,3);
+                    html_tab1_tb4 += "<tr  class='"+createClass4+"'>";
+                        html_tab1_tb4 += "<td>" + stt_tab1_tb4 + "</td>";
+                        html_tab1_tb4 += "<td>" + id_Actual_LINE + "</td>";
+                        html_tab1_tb4 += "<td>" + name_Actual_LINE + "</td>";
+                        html_tab1_tb4 += "<td>" + group_Actual_LINE + "</td>";
+                        html_tab1_tb4 += "<td>" + shift_Actual_LINE + "</td>";
+                        html_tab1_tb4 += "<td>" + shift_3 + "</td>";
+                        html_tab1_tb4 += "<td>" + cd + "</td>";
+                        html_tab1_tb4 += "<td>" + output.toFixed(0) + "</td>";
+                        html_tab1_tb4 += "<td>" + slcd + "</td>";
+                       
+                    html_tab1_tb4 += "</tr>";
+                       
+
+                    }
+                } else if (a>1) {
+                    trung=0
+                    for(var ktTrung = 0; ktTrung < a; ktTrung++) {                       
+                        var id1=nhanActual_Depend_On_LINE[a].EMPLOYEE
+                        var id_trung=nhanActual_Depend_On_LINE[ktTrung].EMPLOYEE
+                        if(id1==id_trung){
+                            trung=trung+1
+                        }
+
+                    }
+                    if(trung<1){
+                        var id_Actual_LINE=nhanActual_Depend_On_LINE[a].EMPLOYEE; 
+                        var name_Actual_LINE=nhanActual_Depend_On_LINE[a].Name; 
+                        var group_Actual_LINE=nhanActual_Depend_On_LINE[a].groupname;
+                        var shift_Actual_LINE=nhanActual_Depend_On_LINE[a].Shift;
+                        var cd_Actual_LINE=nhanActual_Depend_On_LINE[a].OPERATION;          
+                        var OUTPUT_Actual_LINE=nhanActual_Depend_On_LINE[a].OUTPUT;
+                        var tem_Actual_LINE=(nhanActual_Depend_On_LINE[a].OUTPUT)/3;                 
+                        cd=cd_Actual_LINE+" ("+tem_Actual_LINE.toFixed(0)+")"
+                        slcd=slcd+1
+                        output=output+OUTPUT_Actual_LINE
+                        for(var b = a+1; b < nhanActual_Depend_On_LINE.length; b++) {
+                        var id_Actual_LINE2=nhanActual_Depend_On_LINE[b].EMPLOYEE; 
+                        var name_Actual_LINE2=nhanActual_Depend_On_LINE[b].Name; 
+                        var group_Actual_LINE2=nhanActual_Depend_On_LINE[b].groupname;
+                        var shift_Actual_LINE2=nhanActual_Depend_On_LINE[b].Shift;
+                        var cd_Actual_LINE2=nhanActual_Depend_On_LINE[b].OPERATION;          
+                        var OUTPUT_Actual_LINE2=nhanActual_Depend_On_LINE[b].OUTPUT;
+                        var tem_Actual_LINE2=(nhanActual_Depend_On_LINE[b].OUTPUT)/3;   
+                            if (id_Actual_LINE==id_Actual_LINE2){
+                                cd=  cd_Actual_LINE2+" ("+tem_Actual_LINE2.toFixed(0)+"), " +cd   
+                                slcd=slcd+1
+                                output=output+OUTPUT_Actual_LINE2
+                            }
+
+                        }
+                    
+                        var shift_3=shift_Actual_LINE.substring(0,3);
+                        html_tab1_tb4 += "<tr  class='"+createClass4+"'>";
+                            html_tab1_tb4 += "<td>" + stt_tab1_tb4 + "</td>";
+                            html_tab1_tb4 += "<td>" + id_Actual_LINE + "</td>";
+                            html_tab1_tb4 += "<td>" + name_Actual_LINE + "</td>";
+                            html_tab1_tb4 += "<td>" + group_Actual_LINE + "</td>";
+                            html_tab1_tb4 += "<td>" + shift_Actual_LINE + "</td>";
+                            html_tab1_tb4 += "<td>" + shift_3 + "</td>";
+                            html_tab1_tb4 += "<td>" + cd + "</td>";
+                            html_tab1_tb4 += "<td>" + output.toFixed(0) + "</td>";                        
+                            html_tab1_tb4 += "<td>" + slcd + "</td>";
+                        
+                        html_tab1_tb4 += "</tr>";
+                       
+
+                    }
+
+            }
+           
+            document.getElementById("tab1_tb4_body").innerHTML += html_tab1_tb4;
+                
+        }
+
+}
+
+//-------click vào dòng table
+
+        document.querySelector("#tab1_tb2_body").addEventListener("click",event => {
+     
+        document.querySelector(".popup-showHSnhieungayCN").style.display="flex";  
+        document.querySelector(".popup-showListCN").style.display="none"
+        document.querySelector(".popup-showCBC").style.display="none"
+        var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+        let data_tab1_tb2 = event.target.parentNode;       
+        let tab1_tb2_IdNV = data_tab1_tb2.querySelectorAll("td")[1].innerText;
+        let tab1_tb2_Name = data_tab1_tb2.querySelectorAll("td")[2].innerText;  
+        let tab1_tb2_Shift = data_tab1_tb2.querySelectorAll("td")[3].innerText;  
+        let tab1_tb2_CDIE = data_tab1_tb2.querySelectorAll("td")[4].innerText;  
+        let tab1_tb2_HSIE = data_tab1_tb2.querySelectorAll("td")[5].innerText;  
+
+         document.getElementById("id_OP").value=tab1_tb2_IdNV
+       var trung=0;
+       var sah=0
+       var tem=0
+       var cdtt=""
+       var hstt=0;
+       var workhour=0
+       var slcd=0;
+       document.getElementById("tab1_tb3_body").innerHTML="";
+        var html_tab1_tb3=""
+
+        var date_begin=document.getElementById('date_tab1_tb3_01').value 
+        var tenGroup=document.getElementById('group_tab1_tb1').value 
+        var date_end=date1_tab1_tb1
+        document.getElementById('date_tab1_tb3_02').value=date_end  
+        if(date_begin==0){
+            date_begin=date1_tab1_tb1
+            document.getElementById('date_tab1_tb3_01').value=date_end  
+        }    
+        dataHSCN=[]
+        var dateArray = getDates(new Date(date_begin), (new Date(date_end)));   
+        for (i = 0; i < dateArray.length; i ++ ) { 
+                var eachDate=dateArray[i]; 
+                data={sendEachDate:eachDate, IdOP:tab1_tb2_IdNV}
+                var xmlhttp = new window.XMLHttpRequest();   
+                xmlhttp.onreadystatechange = function() {
+                                                
+                if (this.readyState == 4 && this.status == 200) {              
+                var rs1 = this.responseText;  
+                var rs1JSON = JSON.parse(rs1);  
+                dataHSCN = dataHSCN.concat(rs1JSON);  
+                
+                
+                                                                
+                }
+                }; 
+            xmlhttp.open("POST", "/KT/getData_HSCN_tab1_tb3",false);   
+            xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+            xmlhttp.send(JSON.stringify(data));
+            xmlhttp.addEventListener( "Lỗi", function( event ) {
+            alert( 'Có lỗi rồi đó bạn' );
+            } );   
+        } 
+    
+        if(dataHSCN.length==0){
+            alert("Không tìm thấy data, vui lòng kiểm tra lại")
+        }else{
+            for(var a = 0; a < dataHSCN.length; a++) {
+                trung=0; 
+                slcd=0  
+                ngay=""    
+                cd=""   
+                sah=0
+                tem=0
+                workhour=0        
+                hstt=0
+                var c=a
+               if (a==0){
+                
+                    var ngay1=dataHSCN[a].DATE
+                    var cd1=dataHSCN[a].OPERATION
+                    var sah1=dataHSCN[a].SAH;
+                    var tem1=dataHSCN[a].TEM
+                    var workhours1=dataHSCN[a].WORK_HRS
+                    ngay=ngay1
+                    cd=cd1+" ("+tem1.toFixed(0)+")"
+                    sah=sah1
+                    slcd=slcd+1
+                    workhour=workhours1;
+               
+
+                    for(var b = a+1; b < dataHSCN.length; b++) {
+                        var ngay2=dataHSCN[b].DATE
+                        var cd2=dataHSCN[b].OPERATION
+                        var sah2=dataHSCN[b].SAH;
+                        var tem2=dataHSCN[b].TEM
+                        if (ngay1==ngay2){
+                            cd=cd+", "+cd2+" ("+tem2.toFixed(0)+")"
+                            sah=sah+sah2    
+                            slcd=slcd+1                     
+                        }
+
+                    }
+                    hstt=(sah/workhour)*100
+                    html_tab1_tb3 += "<tr>";
+                        html_tab1_tb3 += "<td>" + ngay + "</td>";
+                        html_tab1_tb3 += "<td>" + tab1_tb2_IdNV + "</td>";
+                        html_tab1_tb3 += "<td>" + tab1_tb2_Name + "</td>";
+                        html_tab1_tb3 += "<td>" + tenGroup + "</td>";
+                        html_tab1_tb3 += "<td>" + tab1_tb2_Shift + "</td>";
+                        html_tab1_tb3 += "<td>" + tab1_tb2_CDIE + "</td>";
+                        html_tab1_tb3 += "<td>" + tab1_tb2_HSIE + "</td>";
+                        html_tab1_tb3 += "<td>" + cd + "</td>";
+                        html_tab1_tb3 += "<td>" + hstt.toFixed(2) + "</td>";
+                        html_tab1_tb3 += "<td>" + slcd + "</td>";
+
+                    html_tab1_tb3 += "</tr>";
+                   
+                }
+                else if(a==1){
+                    var ngay_0=dataHSCN[0].DATE
+                    var ngay_1=dataHSCN[1].DATE  
+                    if(ngay_0!=ngay_1){
+
+                        var ngay1=dataHSCN[1].DATE
+                        var cd1=dataHSCN[1].OPERATION
+                        var sah1=dataHSCN[1].SAH;
+                        var tem1=dataHSCN[1].TEM
+                        var workhours1=dataHSCN[1].WORK_HRS
+                        ngay=ngay1
+                        cd=cd1+" ("+tem1.toFixed(0)+")"
+                        sah=sah1
+                        workhour=workhours1;
+                        slcd=slcd+1
+                        
+                        for(var b = 2; b < dataHSCN.length; b++) {
+                            var ngay2=dataHSCN[b].DATE
+                            var cd2=dataHSCN[b].OPERATION
+                            var sah2=dataHSCN[b].SAH;
+                            var tem2=dataHSCN[b].TEM
+                            if (ngay1==ngay2){
+                                cd=cd+", "+cd2+" ("+tem2.toFixed(0)+")"
+                                sah=sah+sah2 
+                                slcd=slcd+1                        
+                            }
+
+                        }
+                        hstt=(sah/workhour)*100
+                        html_tab1_tb3 += "<tr>";
+                            html_tab1_tb3 += "<td>" + ngay + "</td>";
+                            html_tab1_tb3 += "<td>" + tab1_tb2_IdNV + "</td>";
+                            html_tab1_tb3 += "<td>" + tab1_tb2_Name + "</td>";
+                            html_tab1_tb3 += "<td>" + tenGroup + "</td>";
+                            html_tab1_tb3 += "<td>" + tab1_tb2_Shift + "</td>";
+                            html_tab1_tb3 += "<td>" + tab1_tb2_CDIE + "</td>";
+                            html_tab1_tb3 += "<td>" + tab1_tb2_HSIE + "</td>";
+                            html_tab1_tb3 += "<td>" + cd + "</td>";
+                            html_tab1_tb3 += "<td>" + hstt.toFixed(2) + "</td>";
+                            html_tab1_tb3 += "<td>" + slcd + "</td>";
+
+                        html_tab1_tb3 += "</tr>";
+                       
+
+                    }
+                } else if (a>1) {
+                    trung=0
+                    for(var ktTrung = 0; ktTrung < a; ktTrung++) {                       
+                        var ngay1=dataHSCN[a].DATE
+                        var ngay_trung=dataHSCN[ktTrung].DATE
+                        if(ngay1==ngay_trung){
+                            trung=trung+1
+                        }
+
+                    }
+                    if(trung<1){
+                        var ngay1=dataHSCN[a].DATE
+                        var cd1=dataHSCN[a].OPERATION
+                        var sah1=dataHSCN[a].SAH;
+                        var tem1=dataHSCN[a].TEM
+                        var workhours1=dataHSCN[a].WORK_HRS
+                        ngay=ngay1
+                        cd=cd1+" ("+tem1.toFixed(0)+")"
+                        sah=sah1
+                        workhour=workhours1;
+                        slcd=slcd+1   
+                        
+                        for(var b = a+1; b < dataHSCN.length; b++) {
+                            var ngay2=dataHSCN[b].DATE
+                            var cd2=dataHSCN[b].OPERATION
+                            var sah2=dataHSCN[b].SAH;
+                            var tem2=dataHSCN[b].TEM
+                            if (ngay1==ngay2){
+                                cd=cd+", "+cd2+" ("+tem2.toFixed(0)+")"
+                                sah=sah+sah2  
+                                slcd=slcd+1                          
+                            }
+
+                        }
+                        hstt=(sah/workhour)*100
+                        
+                        html_tab1_tb3 += "<tr>";
+                            html_tab1_tb3 += "<td>" + ngay + "</td>";
+                            html_tab1_tb3 += "<td>" + tab1_tb2_IdNV + "</td>";
+                            html_tab1_tb3 += "<td>" + tab1_tb2_Name + "</td>";
+                            html_tab1_tb3 += "<td>" + tenGroup + "</td>";
+                            html_tab1_tb3 += "<td>" + tab1_tb2_Shift + "</td>";
+                            html_tab1_tb3 += "<td>" + tab1_tb2_CDIE + "</td>";
+                            html_tab1_tb3 += "<td>" + tab1_tb2_HSIE + "</td>";
+                            html_tab1_tb3 += "<td>" + cd + "</td>";
+                            html_tab1_tb3 += "<td>" + hstt.toFixed(2) + "</td>";
+                            html_tab1_tb3 += "<td>" + slcd + "</td>";
+
+                        html_tab1_tb3 += "</tr>";
+                       
+
+                    }
+
+                }
+
+            }
+            document.getElementById("tab1_tb3_body").innerHTML += html_tab1_tb3;
+        }
+     
+///----------------tb6
+
+
+
+//----------------------------
+
+        });
+
+        $('.Report_tab1_tb2').on('change','select',function(ev) {
+        var filters=[];
+        $('.filter_tab1_tb2').each((k,s)=>{
+            if (s.value!='all')                                    // exclude "all" as a non-selection
+            filters.push([$(s).closest('th').index(),s.value]);  // return: [positon, filtertext]
+        });
+        $('.content_tab1_tb2').each(function(i,tr){
+            let tds=$('td',tr).map((j,td)=>td.textContent).toArray(); // collects individual TD texts
+            $(tr).toggle( filters.every(f=>tds[f[0]].search(f[1])>-1 ) ); // show or hide!
+        });
+        });
+
+        $('.Report_tab1_tb3').on('change','select',function(ev) {
+        var filters=[];
+        $('.filter_tab1_tb3').each((k,s)=>{
+            if (s.value!='all')                                    // exclude "all" as a non-selection
+            filters.push([$(s).closest('th').index(),s.value]);  // return: [positon, filtertext]
+        });
+        $('.content_tab1_tb3').each(function(i,tr){
+            let tds=$('td',tr).map((j,td)=>td.textContent).toArray(); // collects individual TD texts
+            $(tr).toggle( filters.every(f=>tds[f[0]].search(f[1])>-1 ) ); // show or hide!
+        });
+        });
+        $('.Report_tab1_tb4').on('change','select',function(ev) {
+        var filters=[];
+        $('.filter_tab1_tb4').each((k,s)=>{
+            if (s.value!='all')                                    // exclude "all" as a non-selection
+            filters.push([$(s).closest('th').index(),s.value]);  // return: [positon, filtertext]
+        });
+        $('.content_tab1_tb4').each(function(i,tr){
+            let tds=$('td',tr).map((j,td)=>td.textContent).toArray(); // collects individual TD texts
+            $(tr).toggle( filters.every(f=>tds[f[0]].search(f[1])>-1 ) ); // show or hide!
+        });
+        });
+        $('.Report_tab1_tb5').on('change','select',function(ev) {
+        var filters=[];
+        $('.filter_tab1_tb5').each((k,s)=>{
+            if (s.value!='all')                                    // exclude "all" as a non-selection
+            filters.push([$(s).closest('th').index(),s.value]);  // return: [positon, filtertext]
+        });
+        $('.content_tab1_tb5').each(function(i,tr){
+            let tds=$('td',tr).map((j,td)=>td.textContent).toArray(); // collects individual TD texts
+            $(tr).toggle( filters.every(f=>tds[f[0]].search(f[1])>-1 ) ); // show or hide!
+        });
+        });
+        $('.Report_tab2_tb1').on('change','select',function(ev) {
+        var filters=[];
+        $('.filter_tab2_tb1').each((k,s)=>{
+            if (s.value!='all')                                    // exclude "all" as a non-selection
+            filters.push([$(s).closest('th').index(),s.value]);  // return: [positon, filtertext]
+        });
+        $('.content_tab2_tb1').each(function(i,tr){
+            let tds=$('td',tr).map((j,td)=>td.textContent).toArray(); // collects individual TD texts
+            $(tr).toggle( filters.every(f=>tds[f[0]].search(f[1])>-1 ) ); // show or hide!
+        });
+        });
+        $('.Report_tab2_tb2').on('change','select',function(ev) {
+        var filters=[];
+        $('.filter_tab2_tb2').each((k,s)=>{
+            if (s.value!='all')                                    // exclude "all" as a non-selection
+            filters.push([$(s).closest('th').index(),s.value]);  // return: [positon, filtertext]
+        });
+        $('.content_tab2_tb1').each(function(i,tr){
+            let tds=$('td',tr).map((j,td)=>td.textContent).toArray(); // collects individual TD texts
+            $(tr).toggle( filters.every(f=>tds[f[0]].search(f[1])>-1 ) ); // show or hide!
+        });
+        });
+        document.querySelector("#close_tab1_tab1").addEventListener("click",event => {
+        document.querySelector(".popup-showCBC").style.display="none"
+        document.querySelector(".popup-showListCN").style.display="flex"
+        });  
+      
+
+        document.querySelector("#close_tab1_tab2").addEventListener("click",event => {
+        document.querySelector(".popup-showListCN").style.display="none"
+        document.querySelector(".popup-showCBC").style.display="flex"
+        
+        });  
+
+        document.querySelector("#close_tab1_tab3").addEventListener("click",event => {
+        document.querySelector(".popup-showListCN").style.display="flex"
+        document.querySelector(".popup-showCBC").style.display="none"
+        document.querySelector(".popup-showHSnhieungayCN").style.display="none";  
+        document.querySelector(".popup-showHStungCN_LINE").style.display="none";  
+       
+
+        });  
+        document.querySelector("#close_tab1_tab4").addEventListener("click",event => {
+        document.querySelector(".popup-showListCN").style.display="flex"
+        document.querySelector(".popup-showCBC").style.display="none"
+        document.querySelector(".popup-showHSnhieungayCN").style.display="none";  
+        document.querySelector(".popup-showHStungCN_LINE").style.display="none";  
+       
+
+        });  
+        document.querySelector("#close_tab1_tab5").addEventListener("click",event => {
+        document.querySelector(".popup-showListCN").style.display="none"
+        document.querySelector(".popup-showListCN-2CD").style.display="none"
+        document.querySelector(".popup-showCBC").style.display="flex"
+        document.querySelector(".popup-showHSnhieungayCN").style.display="none";  
+        document.querySelector(".popup-showHStungCN_LINE").style.display="none";  
+       
+
+        });  
+        document.querySelector("#close_tab1_tab6").addEventListener("click",event => {
+        document.querySelector(".popup-showListCN").style.display="none"
+        document.querySelector(".popup-showListCN-2CD").style.display="none"
+        document.querySelector(".popup-showCBC").style.display="flex"
+        document.querySelector(".popup-showHSnhieungayCN").style.display="none";  
+        document.querySelector(".popup-showHStungCN_LINE").style.display="none";  
+        document.querySelector(".popup-showEndLine").style.display="none"; 
+        document.querySelector(".popup-showDownTime").style.display="none"; 
+       
+
+        });  
+        document.querySelector("#close_tab1_tab7").addEventListener("click",event => {
+        document.querySelector(".popup-showListCN").style.display="none"
+        document.querySelector(".popup-showListCN-2CD").style.display="none"
+        document.querySelector(".popup-showCBC").style.display="flex"
+        document.querySelector(".popup-showHSnhieungayCN").style.display="none";  
+        document.querySelector(".popup-showHStungCN_LINE").style.display="none";  
+        document.querySelector(".popup-showEndLine").style.display="none"; 
+        document.querySelector(".popup-showDownTime").style.display="none"; 
+       
+
+        });  
+
+
+      
+
+        document.querySelector("#refresh_tab1_tb1").addEventListener("click",event => {
+        document.querySelector(".popup-showCBC").style.display="flex"
+       
+        });  
+        document.querySelector("#showListCN_LINE").addEventListener("click",event => {
+        document.querySelector(".popup-showHStungCN_LINE").style.display="flex"
+        document.querySelector(".popup-showListCN").style.display="none"
+        document.querySelector(".popup-showCBC").style.display="none"
+        document.querySelector(".popup-showHSnhieungayCN").style.display="none";
+       
+        }); 
+        document.querySelector("#showListCN_CN").addEventListener("click",event => {
+        document.querySelector(".popup-showHStungCN_LINE").style.display="none"
+        document.querySelector(".popup-showListCN").style.display="flex"
+        document.querySelector(".popup-showCBC").style.display="none"
+        document.querySelector(".popup-showHSnhieungayCN").style.display="none";
+       
+        }); 
+        document.querySelector("#showListCN_2CD").addEventListener("click",event => {
+        document.querySelector(".popup-showHStungCN_LINE").style.display="none"
+        document.querySelector(".popup-showListCN").style.display="none"
+        document.querySelector(".popup-showListCN-2CD").style.display="flex"
+        document.querySelector(".popup-showCBC").style.display="none"
+        document.querySelector(".popup-showHSnhieungayCN").style.display="none";
+       
+        }); 
+        document.querySelector("#showDownTime").addEventListener("click",event => {
+        document.querySelector(".popup-showHStungCN_LINE").style.display="none"
+        document.querySelector(".popup-showListCN").style.display="none"
+        document.querySelector(".popup-showListCN-2CD").style.display="none"
+        document.querySelector(".popup-showCBC").style.display="none"
+        document.querySelector(".popup-showDownTime").style.display="flex";
+        document.querySelector(".popup-showEndLine").style.display="none";
+        document.querySelector(".popup-showHSnhieungayCN").style.display="none";
+       
+        }); 
+        document.querySelector("#showEndLine").addEventListener("click",event => {
+        document.querySelector(".popup-showHStungCN_LINE").style.display="none"
+        document.querySelector(".popup-showListCN").style.display="none"
+        document.querySelector(".popup-showListCN-2CD").style.display="none"
+        document.querySelector(".popup-showCBC").style.display="none"
+        document.querySelector(".popup-showDownTime").style.display="none";
+        document.querySelector(".popup-showEndLine").style.display="flex";
+        document.querySelector(".popup-showHSnhieungayCN").style.display="none";
+       
+        }); 
+
+
+
+        var nhan_WIP_1;
+        function get_WIP_1(){ 
+        var note_shift=note_ls
+        var s_ls=shift_ls 
+        var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value        
+        var Nhom=document.getElementById('group_tab1_tb1').value 
+        var shift=document.getElementById('shift_tab1_tb1').value  
+        var date_year= date1_tab1_tb1.substring(0, 4); 
+        var date_month= date1_tab1_tb1.substring(5, 7); 
+        var date_day= date1_tab1_tb1.substring(8, 10);            
+        var date = new Date(date_year,date_month-1,date_day);        
+  
+        var data={Shift:shift,ngay:date1_tab1_tb1,yes_date:date, nhom:Nhom, notels: note_shift,shiftls: s_ls}          
+
+        var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_WIP_1 = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getWIP_1",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(data));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+        }
+      //---------------------------------------//
+
+      var nhan_WIP_2;
+
+        function get_WIP_2(){ 
+
+        var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value        
+        var Nhom=document.getElementById('group_tab1_tb1').value 
+        var Shift=document.getElementById('shift_tab1_tb1').value 
+      
+        var data={Shift:Shift,ngay:date1_tab1_tb1, nhom:Nhom}          
+
+        var xmlhttp = new window.XMLHttpRequest();   
+        xmlhttp.onreadystatechange = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {              
+                var rs = this.responseText; 
+                nhan_WIP_2 = JSON.parse(rs); 
+                
+                
+            }
+        };
+        xmlhttp.open("POST", "/KT/getWIP_2",false);   
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+        xmlhttp.send(JSON.stringify(data));
+        xmlhttp.addEventListener( "Lỗi", function( event ) {
+        alert( 'Có lỗi rồi đó bạn' );
+        } );
+        }
+      //-------------------------------------------//
+      
+       
+        
+    function refreshHStungCN(){
+
+        idCN=document.getElementById("id_OP").value
+        layInf_OP();
+        var laydataInFOP=Inf_OP;
+        var nameOP=laydataInFOP[0].NAME       
+        var Shift=laydataInFOP[0].shift
+        var Group=laydataInFOP[0].groupline
+        var cd_IE=""
+        var hs_IE=""
+       var trung=0;
+       var sah=0
+       var tem=0
+       var cdtt=""
+       var hstt=0;
+       var workhour=0
+       var slcd=0;
+       document.getElementById("tab1_tb3_body").innerHTML="";
+        var html_tab1_tb3=""
+
+        var createClass3="content_tab1_tb3";    
+
+        var date_begin=document.getElementById('date_tab1_tb3_01').value 
+       var date_end=document.getElementById('date_tab1_tb3_02').value        
+    
+        dataHSCN=[]
+
+        var dateArray = getDates(new Date(date_begin), (new Date(date_end)));   
+
+        for (i = 0; i < dateArray.length; i ++ ) {
+               
+                
+                var eachDate=dateArray[i]; 
+                data={sendEachDate:eachDate, IdOP:idCN}
+                var xmlhttp = new window.XMLHttpRequest();   
+                xmlhttp.onreadystatechange = function() {
+                                                
+                if (this.readyState == 4 && this.status == 200) {              
+                var rs1 = this.responseText;  
+                var rs1JSON = JSON.parse(rs1);  
+                dataHSCN = dataHSCN.concat(rs1JSON);  
+                
+                
+                                                                
+                }
+                }; 
+            xmlhttp.open("POST", "/KT/getData_HSCN_tab1_tb3",false);   
+            xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+            xmlhttp.send(JSON.stringify(data));
+            xmlhttp.addEventListener( "Lỗi", function( event ) {
+            alert( 'Có lỗi rồi đó bạn' );
+            } );   
+        } 
+    
+        if(dataHSCN.length==0){
+            alert("Không tìm thấy data, vui lòng kiểm tra lại")
+        }else{
+            for(var a = 0; a < dataHSCN.length; a++) {
+                trung=0; 
+                slcd=0  
+                ngay=""    
+                cd=""   
+                sah=0
+                tem=0
+                workhour=0        
+                hstt=0
+                var c=a
+               if (a==0){
+                
+                    var ngay1=dataHSCN[a].DATE
+                    var cd1=dataHSCN[a].OPERATION
+                    var sah1=dataHSCN[a].SAH;
+                    var tem1=dataHSCN[a].TEM
+                    var workhours1=dataHSCN[a].WORK_HRS
+                    ngay=ngay1
+                    cd=cd1+" ("+tem1.toFixed(0)+")"
+                    sah=sah1
+                    slcd=slcd+1
+                    workhour=workhours1;
+               
+
+                    for(var b = a+1; b < dataHSCN.length; b++) {
+                        var ngay2=dataHSCN[b].DATE
+                        var cd2=dataHSCN[b].OPERATION
+                        var sah2=dataHSCN[b].SAH;
+                        var tem2=dataHSCN[b].TEM
+                        if (ngay1==ngay2){
+                            cd=cd+", "+cd2+" ("+tem2.toFixed(0)+")"
+                            sah=sah+sah2    
+                            slcd=slcd+1                     
+                        }
+
+                    }
+                    
+                    hstt=(sah/workhour)*100
+                    html_tab1_tb3 += "<tr  class='"+createClass3+"'>";
+                        html_tab1_tb3 += "<td>" + ngay + "</td>";
+                        html_tab1_tb3 += "<td>" + idCN + "</td>";
+                        html_tab1_tb3 += "<td>" + nameOP + "</td>";
+                        html_tab1_tb3 += "<td>" + Group + "</td>";
+                        html_tab1_tb3 += "<td>" + Shift + "</td>";
+                        html_tab1_tb3 += "<td>" + cd_IE + "</td>";
+                        html_tab1_tb3 += "<td>" + hs_IE + "</td>";
+                        html_tab1_tb3 += "<td>" + cd + "</td>";
+                        html_tab1_tb3 += "<td>" + hstt.toFixed(2) + "</td>";
+                        html_tab1_tb3 += "<td>" + slcd + "</td>";
+
+                    html_tab1_tb3 += "</tr>";
+                   
+                }
+                else if(a==1){
+                    var ngay_0=dataHSCN[0].DATE
+                    var ngay_1=dataHSCN[1].DATE  
+                    if(ngay_0!=ngay_1){
+
+                        var ngay1=dataHSCN[1].DATE
+                        var cd1=dataHSCN[1].OPERATION
+                        var sah1=dataHSCN[1].SAH;
+                        var tem1=dataHSCN[1].TEM
+                        var workhours1=dataHSCN[1].WORK_HRS
+                        ngay=ngay1
+                        cd=cd1+" ("+tem1.toFixed(0)+")"
+                        sah=sah1
+                        workhour=workhours1;
+                        slcd=slcd+1
+                        
+                        for(var b = 2; b < dataHSCN.length; b++) {
+                            var ngay2=dataHSCN[b].DATE
+                            var cd2=dataHSCN[b].OPERATION
+                            var sah2=dataHSCN[b].SAH;
+                            var tem2=dataHSCN[b].TEM
+                            if (ngay1==ngay2){
+                                cd=cd+", "+cd2+" ("+tem2.toFixed(0)+")"
+                                sah=sah+sah2 
+                                slcd=slcd+1                        
+                            }
+
+                        }
+                        hstt=(sah/workhour)*100
+                        html_tab1_tb3 += "<tr  class='"+createClass3+"'>";
+                            html_tab1_tb3 += "<td>" + ngay + "</td>";
+                            html_tab1_tb3 += "<td>" + idCN + "</td>";
+                            html_tab1_tb3 += "<td>" + nameOP + "</td>";
+                            html_tab1_tb3 += "<td>" + Group + "</td>";
+                            html_tab1_tb3 += "<td>" + Shift + "</td>";
+                            html_tab1_tb3 += "<td>" + cd_IE + "</td>";
+                            html_tab1_tb3 += "<td>" + hs_IE + "</td>";
+                            html_tab1_tb3 += "<td>" + cd + "</td>";
+                            html_tab1_tb3 += "<td>" + hstt.toFixed(2) + "</td>";
+                            html_tab1_tb3 += "<td>" + slcd + "</td>";
+
+                        html_tab1_tb3 += "</tr>";
+                       
+
+                    }
+                } else if (a>1) {
+                    trung=0
+                    for(var ktTrung = 0; ktTrung < a; ktTrung++) {                       
+                        var ngay1=dataHSCN[a].DATE
+                        var ngay_trung=dataHSCN[ktTrung].DATE
+                        if(ngay1==ngay_trung){
+                            trung=trung+1
+                        }
+
+                    }
+                    if(trung<1){
+                        var ngay1=dataHSCN[a].DATE
+                        var cd1=dataHSCN[a].OPERATION
+                        var sah1=dataHSCN[a].SAH;
+                        var tem1=dataHSCN[a].TEM
+                        var workhours1=dataHSCN[a].WORK_HRS
+                        ngay=ngay1
+                        cd=cd1+" ("+tem1.toFixed(0)+")"
+                        sah=sah1
+                        workhour=workhours1;
+                        slcd=slcd+1   
+                        
+                        for(var b = a+1; b < dataHSCN.length; b++) {
+                            var ngay2=dataHSCN[b].DATE
+                            var cd2=dataHSCN[b].OPERATION
+                            var sah2=dataHSCN[b].SAH;
+                            var tem2=dataHSCN[b].TEM
+                            if (ngay1==ngay2){
+                                cd=cd+", "+cd2+" ("+tem2.toFixed(0)+")"
+                                sah=sah+sah2  
+                                slcd=slcd+1                          
+                            }
+
+                        }
+                        hstt=(sah/workhour)*100
+                        html_tab1_tb3 += "<tr  class='"+createClass3+"'>";
+                            html_tab1_tb3 += "<td>" + ngay + "</td>";
+                            html_tab1_tb3 += "<td>" + idCN + "</td>";
+                            html_tab1_tb3 += "<td>" + nameOP + "</td>";
+                            html_tab1_tb3 += "<td>" + Group + "</td>";
+                            html_tab1_tb3 += "<td>" + Shift + "</td>";
+                            html_tab1_tb3 += "<td>" + cd_IE + "</td>";
+                            html_tab1_tb3 += "<td>" + hs_IE + "</td>";
+                            html_tab1_tb3 += "<td>" + cd + "</td>";
+                            html_tab1_tb3 += "<td>" + hstt.toFixed(2) + "</td>";
+                            html_tab1_tb3 += "<td>" + slcd + "</td>";
+
+                        html_tab1_tb3 += "</tr>";
+                       
+
+                    }
+
+                }
+
+            }
+            document.getElementById("tab1_tb3_body").innerHTML += html_tab1_tb3;
+        }
+
+    }
+
+   var Inf_OP=[]
+   function layInf_OP(){
+
+    var idOP=document.getElementById("id_OP").value
+    var date1_tab1_tb1=document.getElementById('date1_tab1_tb1').value 
+    var getYear= date1_tab1_tb1.substring(0, 4); 
+    var getMonth= date1_tab1_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab1_tb1.substring(8, 10); 
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var numweek=myDate.getWeek() 
+    
+
+                data={tuan:numweek, IdOP:idOP,nam:getYear}
+                var xmlhttp = new window.XMLHttpRequest();   
+                xmlhttp.onreadystatechange = function() {
+                                                
+                if (this.readyState == 4 && this.status == 200) {              
+                var rs1 = this.responseText;  
+                Inf_OP = JSON.parse(rs1);                  
+                                                                
+                }
+                }; 
+            xmlhttp.open("POST", "/KT/getInF_OP",false);   
+            xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+            xmlhttp.send(JSON.stringify(data));
+            xmlhttp.addEventListener( "Lỗi", function( event ) {
+            alert( 'Có lỗi rồi đó bạn' );
+            } );   
+   }
+//CODE TAB 2---------------------------------------------------------------------------------------------
+var Tap2_getStyleDetail=[]
+   function Tap2_get_Style_detail(){   
+    var date1_tab2_tb1=document.getElementById('date1_tab2_tb1').value 
+    var date2_tab2_tb1=document.getElementById('date2_tab2_tb1').value 
+    var group_tab2_tb1=document.getElementById('group_tab2_tb1').value 
+    data={date1:date1_tab2_tb1, date2:date2_tab2_tb1,group:group_tab2_tb1}
+                var xmlhttp = new window.XMLHttpRequest();   
+                xmlhttp.onreadystatechange = function() {                                                
+                if (this.readyState == 4 && this.status == 200) {              
+                var rs1 = this.responseText;  
+                Tap2_getStyleDetail = JSON.parse(rs1);                  
+                                                                
+                }
+                }; 
+            xmlhttp.open("POST", "/KT/Tap2_getStyleDetail",false);   
+            xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+            xmlhttp.send(JSON.stringify(data));
+            xmlhttp.addEventListener( "Lỗi", function( event ) {
+            alert( 'Có lỗi rồi đó bạn' );
+            } );   
+   }
+   var Tap2_getOutput=[]
+   function Tap2_get_Output(){   
+    var date1_tab2_tb1=document.getElementById('date1_tab2_tb1').value 
+    var date2_tab2_tb1=document.getElementById('date2_tab2_tb1').value 
+    var group_tab2_tb1=document.getElementById('group_tab2_tb1').value 
+    data={date1:date1_tab2_tb1, date2:date2_tab2_tb1,group:group_tab2_tb1}
+                var xmlhttp = new window.XMLHttpRequest();   
+                xmlhttp.onreadystatechange = function() {                                                
+                if (this.readyState == 4 && this.status == 200) {              
+                var rs1 = this.responseText;  
+                Tap2_getOutput = JSON.parse(rs1);              
+                }
+                }; 
+            xmlhttp.open("POST", "/KT/Tap2_getOutput",false);   
+            xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+            xmlhttp.send(JSON.stringify(data));
+            xmlhttp.addEventListener( "Lỗi", function( event ) {
+            alert( 'Có lỗi rồi đó bạn' );
+            } );   
+   }
+
+function tap2_show_data(){
+    var getStyleDetail=[]
+    var getOutput=[]
+    html_tab2_tb1=""
+    html_tab2_tb2=""
+    document.getElementById("tab2_tb1_body").innerHTML=""
+    document.getElementById("tab2_tb2_body").innerHTML=""
+    var date1=document.getElementById('date1_tab2_tb1').value 
+    var date2=document.getElementById('date2_tab2_tb1').value 
+    Tap2_get_Style_detail();
+    Tap2_get_Output();
+    getStyleDetail=Tap2_getStyleDetail;
+    getOutput=Tap2_getOutput;
+    var weekday = new Array(7);
+    weekday[0] = "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday"; 
+    var shift = new Array(2)
+    shift[0] = "B";
+    shift[1] = "R";  
+    // table 1-----------------------------------  
+    for (a = 0; a < shift.length; a ++ ) { 
+        ca1=shift[a];       
+        var dateArray = getDates(new Date(date1), (new Date(date2)));  
+        var inf_style=""       
+        html_tab2_tb1 += "<tr >";
+            html_tab2_tb1 += "<td>" + ca1 + "</td>";           
+            for (b = 0; b < dateArray.length; b ++ ) {               
+            var eachDate=dateArray[b];      
+            var d = new Date(eachDate);
+            var tenngay1 = weekday[d.getDay()];         
+                inf_style="" 
+                i=1
+                for(var c = 0; c < getStyleDetail.length; c++) {
+                    var tenngay2=getStyleDetail[c].NGAY                   
+                    var ca2=getStyleDetail[c].SHIFT
+                    var style=getStyleDetail[c].STYLE_DETAIL
+                    var SAH=getStyleDetail[c].SAH_EARNED
+                    var inf_style2=i+".> "+style+" (SAH "+SAH.toFixed(0)+"), "
+                    if(tenngay1==tenngay2 && ca1==ca2 ){
+                        inf_style=inf_style+inf_style2
+                        i=i+1
+                    }                   
+                }                
+             html_tab2_tb1 += "<td>" + inf_style + "</td>";                   
+             }
+                      
+        html_tab2_tb1 += "</tr>";   
+        
+    }
+    document.getElementById("tab2_tb1_body").innerHTML += html_tab2_tb1;
+    // table 2-----------------------------------  
+    for (a = 0; a < shift.length; a ++ ) { 
+        ca1=shift[a];       
+        var dateArray = getDates(new Date(date1), (new Date(date2)));             
+        html_tab2_tb2 += "<tr >";
+            html_tab2_tb2 += "<td>" + ca1 + "</td>";           
+            for (b = 0; b < dateArray.length; b ++ ) {               
+            var eachDate=dateArray[b];      
+            var d = new Date(eachDate);
+            var tenngay1 = weekday[d.getDay()];        
+            var Out_put=0
+                for(var c = 0; c < getOutput.length; c++) {
+                    var tenngay2=getOutput[c].NGAY                   
+                    var ca2=getOutput[c].SHIFT
+                    var Output=getOutput[c].Output                  
+                    if(tenngay1==tenngay2 && ca1==ca2 ){                        
+                        Out_put=Output
+                    }                   
+                }                
+                html_tab2_tb2 += "<td>" + Out_put.toFixed(0) + "</td>";                  
+             }
+                      
+             html_tab2_tb2 += "</tr>";   
+        
+    }
+    document.getElementById("tab2_tb2_body").innerHTML += html_tab2_tb2;
+}
+
+document.querySelector("#showWeeklyOutput").addEventListener("click",event => {
+        document.querySelector(".popup-tap2-output").style.display="flex"
+        document.querySelector(".popup-tap2-style").style.display="none"
+       
+       
+        }); 
+      
+
+document.querySelector("#close_tab2_tb2").addEventListener("click",event => {
+    document.querySelector(".popup-tap2-output").style.display="none"
+    document.querySelector(".popup-tap2-style").style.display="flex"
+
+        });  
+document.querySelector("#close_tab2_tb1").addEventListener("click",event => {
+    document.querySelector(".popup-tap2-output").style.display="flex"
+    document.querySelector(".popup-tap2-style").style.display="none"
+
+        });  
+    // code tab 3
+
+document.querySelector("#refresh_tab3_tb1").addEventListener("click",event => {
+        document.querySelector(".popup-showTemCN").style.display="flex"
+        document.querySelector(".popup-showTemCN-2CD").style.display="none"       
+       
+    }); 
+    document.querySelector("#close_tab3_tb1").addEventListener("click",event => {
+        document.querySelector(".popup-showTemCN").style.display="none"
+        document.querySelector(".popup-showTemCN-2CD").style.display="flex"         
+       
+    }); 
+    document.querySelector("#close_tab3_tb2").addEventListener("click",event => {
+        document.querySelector(".popup-showTemCN").style.display="flex"
+        document.querySelector(".popup-showTemCN-2CD").style.display="none"         
+       
+    }); 
+    document.querySelector("#showTemCN_2CD").addEventListener("click",event => {
+        document.querySelector(".popup-showTemCN").style.display="none"
+        document.querySelector(".popup-showTemCN-2CD").style.display="flex"         
+       
+    });
+
+var get_group_style=[]
+   function getGroup_style(){
+   
+    var date1_tab3_tb1=document.getElementById('date1_tab3_tb1').value 
+    var getYear= date1_tab3_tb1.substring(0, 4); 
+    var getMonth= date1_tab3_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab3_tb1.substring(8, 10);     
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var numweek=myDate.getWeek() 
+ 
+
+                data={date1tab3tb1:date1_tab3_tb1}
+                var xmlhttp = new window.XMLHttpRequest();   
+                xmlhttp.onreadystatechange = function() {
+                                                
+                if (this.readyState == 4 && this.status == 200) {              
+                var rs1 = this.responseText;  
+                get_group_style = JSON.parse(rs1);  
+                                                                
+                }
+                }; 
+            xmlhttp.open("POST", "/KT/getgroupstyle",false);   
+            xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+            xmlhttp.send(JSON.stringify(data));
+            xmlhttp.addEventListener( "Lỗi", function( event ) {
+            alert( 'Có lỗi rồi đó bạn' );
+            } );   
+   }
+  ///////-------------------
+
+   var getTargetall_Eff=[]
+   function getTargetAll_Eff(){
+    var getGroupStyle=[]
+    getGroup_style()
+    getGroupStyle=get_group_style;
+    var date1_tab3_tb1=document.getElementById('date1_tab3_tb1').value 
+    var getYear= date1_tab3_tb1.substring(0, 4); 
+    var getMonth= date1_tab3_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab3_tb1.substring(8, 10);     
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var numweek=myDate.getWeek() 
+    getTargetall_Eff=[]
+
+    for(var a = 0; a < getGroupStyle.length; a++) {
+        var groupline=getGroupStyle[a].LOCATION
+        var shift=getGroupStyle[a].SHIFT
+        var style=getGroupStyle[a].STYLE_DETAIL
+                           
+        data={date1tab3tb1:date1_tab3_tb1, sendWeek:numweek,sendgroupline:groupline,sendshift:shift,sendstyle:style,nam:getYear}
+                var xmlhttp = new window.XMLHttpRequest();   
+                xmlhttp.onreadystatechange = function() {
+                                                
+                if (this.readyState == 4 && this.status == 200) {              
+                var rs1 = this.responseText;  
+                var rs1JSON = JSON.parse(rs1);  
+                getTargetall_Eff = getTargetall_Eff.concat(rs1JSON);                
+                                                                
+                }
+                }; 
+            xmlhttp.open("POST", "/KT/getTarget_all_Eff",false);   
+            xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+            xmlhttp.send(JSON.stringify(data));
+            xmlhttp.addEventListener( "Lỗi", function( event ) {
+            alert( 'Có lỗi rồi đó bạn' );
+            } );   
+    }
+    
+   }
+  ///////-------------------
+
+   
+
+  var get_all_Eff_output=[]
+    
+   function getall_Eff_output(){
+   
+    var date1_tab3_tb1=document.getElementById('date1_tab3_tb1').value 
+    var getYear= date1_tab3_tb1.substring(0, 4); 
+    var getMonth= date1_tab3_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab3_tb1.substring(8, 10);     
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var numweek=myDate.getWeek() 
+ 
+
+                data={date1tab3tb1:date1_tab3_tb1}
+                var xmlhttp = new window.XMLHttpRequest();   
+                xmlhttp.onreadystatechange = function() {
+                                                
+                if (this.readyState == 4 && this.status == 200) {              
+                var rs1 = this.responseText;  
+                get_all_Eff_output = JSON.parse(rs1);  
+                                                                
+                }
+                }; 
+            xmlhttp.open("POST", "/KT/get_all_Eff_output",false);   
+            xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+            xmlhttp.send(JSON.stringify(data));
+            xmlhttp.addEventListener( "Lỗi", function( event ) {
+            alert( 'Có lỗi rồi đó bạn' );
+            } );   
+
+}
+
+//-----------------------------
+var get_NameGroupShift=[]
+    
+    function get_Name_Group_Shift(){
+    
+     var date1_tab3_tb1=document.getElementById('date1_tab3_tb1').value 
+     var getYear= date1_tab3_tb1.substring(0, 4); 
+     var getMonth= date1_tab3_tb1.substring(5, 7)-1; 
+     var getDate= date1_tab3_tb1.substring(8, 10);     
+     var myDate = new Date(getYear, getMonth, getDate);   
+     var numweek=myDate.getWeek() 
+  
+ 
+                 data={date1tab3tb1:date1_tab3_tb1}
+                 var xmlhttp = new window.XMLHttpRequest();   
+                 xmlhttp.onreadystatechange = function() {
+                                                 
+                 if (this.readyState == 4 && this.status == 200) {              
+                 var rs1 = this.responseText;  
+                 get_NameGroupShift = JSON.parse(rs1);  
+                                                                 
+                 }
+                 }; 
+             xmlhttp.open("POST", "/KT/get_NameGroupShift",false);   
+             xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+             xmlhttp.send(JSON.stringify(data));
+             xmlhttp.addEventListener( "Lỗi", function( event ) {
+             alert( 'Có lỗi rồi đó bạn' );
+             } );   
+ 
+ }
+///--------------------------------------------
+
+
+
+function show_all_tem_SEWING(){
+
+    if (confirm("Bạn có muốn refresh báo cáo không ???")) { 
+        get_NameGroupShift=[]
+        getTargetall_Eff=[];
+        get_all_Eff_output=[];
+        getTargetAll_Eff();
+        getall_Eff_output();
+        get_Name_Group_Shift()
+
+        var getTargetallEff=getTargetall_Eff
+        var getallEffoutput=get_all_Eff_output
+        var getNameGroupShift=get_NameGroupShift
+        var html_tab3_tb1="";
+        document.getElementById("tab3_tb1_body").innerHTML="";
+        var html_tab3_tb2="";
+        document.getElementById("tab3_tb2_body").innerHTML="";
+        stt1=0;
+        for(var a = 0; a < getTargetallEff.length; a++) {
+        
+            var stt=a+1;       
+        var sah=0;
+        var cd_tem1="";
+        var cd_tem2="";
+        var HS_actual=0;
+        var varHS=0;
+        var slcd=0;
+        var sl_tem1=0;
+        var work_hrs=0;
+        var sam=0;  
+        var trung=0;    
+
+            var ID1=getTargetallEff[a].EMPLOYEE
+            var nameOP=getTargetallEff[a].NAME
+            var groupname=getTargetallEff[a].groupline
+            var shift=getTargetallEff[a].shift
+            var hours_OP=getTargetallEff[a].work_hs
+            var style1=getTargetallEff[a].STYLE_DETAIL
+            var CD1=getTargetallEff[a].OPERATION
+            var HS1=getTargetallEff[a].HS
+            
+            for(var b = 0; b < getallEffoutput.length; b++) {
+                var ID2=getallEffoutput[b].EMPLOYEE
+                var style2=getallEffoutput[b].STYLE_DETAIL
+                var CD2=getallEffoutput[b].OPERATION
+                var SAH_earned=getallEffoutput[b].SAH_TOTAL
+                var sl_tem2=getallEffoutput[b].SLTem
+                var sam_cd=getallEffoutput[b].SAM
+                var work_hrs=getallEffoutput[b].WORK_HRS
+                
+                if (ID1==ID2 && style1==style2){
+                    sah=SAH_earned
+                    cd_tem2=cd_tem2+ CD2+" ("+sl_tem2.toFixed(0)+")," ;
+                    slcd=slcd+1;
+                    sam=sam_cd;
+                    hs_target=HS1
+                    if(hours_OP==382 && CD1==CD2){  
+                        sl_tem1= HS1/100*382/sam
+                    }else {
+                        sl_tem1= HS1/100*442/sam
+                    }
+                    if (CD1==CD2){
+                        trung=trung+1
+                    }
+
+                }
+            
+            }
+            if (sah==0){
+                trung="Absent"
+            }
+            HS_actual=sah/work_hrs*100
+            varHS=HS_actual-HS1  
+            cd_tem1= CD1 +" (" + sl_tem1.toFixed(0) + ")"
+            var shift2= shift.substring(0, 3); 
+            
+            html_tab3_tb1 += "<tr >";
+                html_tab3_tb1 += "<td>" + stt + "</td>";
+                html_tab3_tb1 += "<td>" + ID1 + "</td>";
+                html_tab3_tb1 += "<td>" + nameOP + "</td>";
+                html_tab3_tb1 += "<td>" + groupname + "</td>";
+                html_tab3_tb1 += "<td>" + shift + "</td>";
+                html_tab3_tb1 += "<td>" + shift2 + "</td>";
+                html_tab3_tb1 += "<td>" + style1 + "</td>";
+                html_tab3_tb1 += "<td>" + cd_tem1 + "</td>";
+                html_tab3_tb1 += "<td>" + HS1.toFixed(2) + "</td>";
+                html_tab3_tb1 += "<td>" + cd_tem2 + "</td>";
+                html_tab3_tb1 += "<td>" + HS_actual.toFixed(2) + "</td>";
+                html_tab3_tb1 += "<td>" + varHS.toFixed(2) + "</td>";
+                html_tab3_tb1 += "<td>" + slcd + "</td>";
+                html_tab3_tb1 += "<td>" + trung + "</td>";
+            
+            html_tab3_tb1 += "</tr>";
+
+            
+        }
+        document.getElementById("tab3_tb1_body").innerHTML += html_tab3_tb1;  
+        
+
+        for(var c = 0; c < getNameGroupShift.length; c++) {
+            var stt=c+1
+                group=getNameGroupShift[c].LOCATION
+                style=getNameGroupShift[c].STYLE_DETAIL               
+                html_tab3_tb2 += "<tr >";
+                    html_tab3_tb2 += "<td>" + stt + "</td>";
+                    html_tab3_tb2 += "<td>" + group + "</td>";
+                    html_tab3_tb2 += "<td>" + style + "</td>";
+                html_tab3_tb2 += "</tr>";
+
+        }
+    document.getElementById("tab3_tb2_body").innerHTML += html_tab3_tb2;  
+    }
+}
+  //--------------------------------------tab4 Non Sewing
+
+  document.querySelector("#showList_NoSewingToSewing").addEventListener("click",event => {
+        document.querySelector(".popup-showTemCN_NonSewing").style.display="none"
+        document.querySelector(".popup-showTemCN_NonSewingToSewing").style.display="flex"       
+       
+    }); 
+    document.querySelector("#close_tab4_tb2").addEventListener("click",event => {
+        document.querySelector(".popup-showTemCN_NonSewing").style.display="flex"
+        document.querySelector(".popup-showTemCN_NonSewingToSewing").style.display="none"       
+       
+    }); 
+    document.querySelector("#close_tab4_tb1").addEventListener("click",event => {
+        document.querySelector(".popup-showTemCN_NonSewing").style.display="none"
+        document.querySelector(".popup-showTemCN_NonSewingToSewing").style.display="flex"       
+       
+    }); 
+    document.querySelector("#refresh_tab4_tb1").addEventListener("click",event => {
+        document.querySelector(".popup-showTemCN_NonSewing").style.display="flex"
+        document.querySelector(".popup-showTemCN_NonSewingToSewing").style.display="none"       
+       
+    }); 
+   
+
+  var get_list_NonSewing=[]
+   function getlist_NonSewing(){
+   
+    var date1_tab4_tb1=document.getElementById('date1_tab4_tb1').value 
+    var getYear= date1_tab4_tb1.substring(0, 4); 
+    var getMonth= date1_tab4_tb1.substring(5, 7)-1; 
+    var getDate= date1_tab4_tb1.substring(8, 10);     
+    var myDate = new Date(getYear, getMonth, getDate);   
+    var numweek=myDate.getWeek() 
+ 
+
+                data={date1tab4tb1:date1_tab4_tb1, sweek:numweek}
+                var xmlhttp = new window.XMLHttpRequest();   
+                xmlhttp.onreadystatechange = function() {
+                                                
+                if (this.readyState == 4 && this.status == 200) {              
+                var rs1 = this.responseText;  
+                get_list_NonSewing = JSON.parse(rs1);  
+                                                                
+                }
+                }; 
+            xmlhttp.open("POST", "/KT/get_list_NonSewing",false);   
+            xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+            xmlhttp.send(JSON.stringify(data));
+            xmlhttp.addEventListener( "Lỗi", function( event ) {
+            alert( 'Có lỗi rồi đó bạn' );
+            } );   
+   }
+  ///////-------------------
+
+  var get_SAH_NonSewing=[]
+function getdata_NonSewing(){
+ 
+        var date1_tab4_tb1=document.getElementById('date1_tab4_tb1').value 
+        var getYear= date1_tab4_tb1.substring(0, 4); 
+        var getMonth= date1_tab4_tb1.substring(5, 7)-1; 
+        var getDate= date1_tab4_tb1.substring(8, 10);     
+        var myDate = new Date(getYear, getMonth, getDate);   
+        var numweek=myDate.getWeek() 
+    
+
+                    data={date1tab4tb1:date1_tab4_tb1, sweek:numweek}
+                    var xmlhttp = new window.XMLHttpRequest();   
+                    xmlhttp.onreadystatechange = function() {
+                                                    
+                    if (this.readyState == 4 && this.status == 200) {              
+                    var rs1 = this.responseText;  
+                    get_SAH_NonSewing = JSON.parse(rs1);  
+                                                                    
+                    }
+                    }; 
+                xmlhttp.open("POST", "/KT/get_data_NonSewing",false);   
+                xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')                             
+                xmlhttp.send(JSON.stringify(data));
+                xmlhttp.addEventListener( "Lỗi", function( event ) {
+                alert( 'Có lỗi rồi đó bạn' );
+                } );   
+    
+}
+  ///////-------------------
+
+function show_all_Non_Sewing(){
+    if (confirm("Bạn có muốn refresh báo cáo không ???")) { 
+            var get_ListNonSewing=[];
+            var get_SahNonSewing=[]
+            getlist_NonSewing();
+            getdata_NonSewing();
+            get_ListNonSewing=get_list_NonSewing;
+            get_SahNonSewing=get_SAH_NonSewing
+            html_tab4_tb1="";
+            html_tab4_tb2=""
+            document.getElementById("tab4_tb1_body").innerHTML="";
+            document.getElementById("tab4_tb2_body").innerHTML="";
+            var stt1=0;
+            for(var a = 0; a < get_ListNonSewing.length; a++) {
+                var cd="";
+                var stt=0;             
+                var hs_tt=0;
+                var slcd=0;
+                var ID1=get_ListNonSewing[a].idCN
+                var tenCN=get_ListNonSewing[a].Name
+                var group=get_ListNonSewing[a].groupName
+                var shift=get_ListNonSewing[a].Shift_new
+                var shift2=shift.substring(0, 3); 
+                var cd_sewing="";
+                if (group.substring(0, 2)=="PK"){
+                    var cd1="PACKING"
+                }else if (group.substring(0, 2)=="PA"){
+                    var cd1="PAD PRINT"
+                }else if (group.substring(0, 2)=="MB"){
+                    var cd1="MAKE BAND"
+                }
+                
+                for(var b = 0; b < get_SahNonSewing.length; b++) {
+                    var ID2=get_SahNonSewing[b].EMPLOYEE
+                    var cdtt=get_SahNonSewing[b].OPERATION
+                    var TEM=get_SahNonSewing[b].TEM
+                    var SAH1=get_SahNonSewing[b].SAH1
+                    var hs=get_SahNonSewing[b].HS
+                    if(ID1==ID2){                      
+                        hs_tt=hs
+                        cd=cd + cdtt+" ("+TEM.toFixed(0)+")"
+                        slcd=slcd+1;
+                        if (cdtt!="PAD PRINT" && cdtt!="PACKING" && cdtt!="MAKE BAND" && cdtt.substring(0, 7)!="STICKER" && cdtt!="CASING" && cdtt.substring(0, 11)!="CLIP THREAD" && cdtt.substring(0, 4)!="INSP"  && cdtt!="HEAT SEAL LOGO" && cdtt.substring(0, 4)!="TURN")   {
+                            cd_sewing=cd_sewing+ cdtt+" ("+TEM.toFixed(0)+")"
+                            stt1=stt1+1;
+                            html_tab4_tb2 += "<tr >";               
+                                html_tab4_tb2 += "<td>" + stt1 + "</td>";
+                                html_tab4_tb2 += "<td>" + ID1 + "</td>";
+                                html_tab4_tb2 += "<td>" + tenCN + "</td>";              
+                                html_tab4_tb2 += "<td>" + group + "</td>";
+                                html_tab4_tb2 += "<td>" + shift + "</td>";   
+                                html_tab4_tb2 += "<td>" + shift2 + "</td>"; 
+                                html_tab4_tb2 += "<td>" + cd1 + "</td>"; 
+                                html_tab4_tb2 += "<td>" + cd + "</td>";       
+                                html_tab4_tb2 += "<td>" + hs_tt.toFixed(2) + "</td>";    
+                                html_tab4_tb2 += "<td>" + slcd + "</td>";    
+                                html_tab4_tb2 += "<td>" + cd_sewing + "</td>";      
+                            html_tab4_tb2 += "</tr>";   
+
+                        }                     
+                    }
+
+                }
+                
+                stt=a+1
+                    html_tab4_tb1 += "<tr >";               
+                        html_tab4_tb1 += "<td>" + stt + "</td>";
+                        html_tab4_tb1 += "<td>" + ID1 + "</td>";
+                        html_tab4_tb1 += "<td>" + tenCN + "</td>";              
+                        html_tab4_tb1 += "<td>" + group + "</td>";
+                        html_tab4_tb1 += "<td>" + shift + "</td>";   
+                        html_tab4_tb1 += "<td>" + shift2 + "</td>"; 
+                        html_tab4_tb1 += "<td>" + cd1 + "</td>"; 
+                        html_tab4_tb1 += "<td>" + cd + "</td>";       
+                        html_tab4_tb1 += "<td>" + hs_tt.toFixed(2) + "</td>";    
+                        html_tab4_tb1 += "<td>" + slcd + "</td>";    
+                        html_tab4_tb1 += "<td>" + cd_sewing + "</td>";      
+                    html_tab4_tb1 += "</tr>";   
+                       
+                   
+            }
+           
+            document.getElementById("tab4_tb1_body").innerHTML += html_tab4_tb1;  
+            document.getElementById("tab4_tb2_body").innerHTML += html_tab4_tb2;  
+        }
+}
+
+</script>
+<script>
+
+    
+</script>
+        
+       
+  
+       
+</html>

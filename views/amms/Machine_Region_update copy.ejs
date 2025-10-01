@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>MACHINE UPDATE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+
+<style>
+  /* The side navigation menu */
+  .sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #6C3483 ; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  }
+  
+  /* The navigation menu links */
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  /* When you mouse over the navigation links, change their color */
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  /* Position and style the close button (top right corner) */
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+  #main {
+    transition: margin-left .5s;
+    padding: 2px;
+  }
+  
+  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+  .modal {
+     /* position: absolute; */
+     top: 10px;
+     right: 100px;
+     bottom: 0;
+     left: 0;
+     z-index: 10040;
+     overflow: auto;
+     overflow-y: auto;
+  }
+  /* spin */
+  .loader{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    position: relative;
+    margin: 0 auto;
+  }
+  
+  /* LOADER 1 */
+  
+  #loader-1:before, #loader-1:after{
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    border: 10px solid transparent;
+    border-top-color: #3498db;
+  }
+  
+  #loader-1:before{
+    z-index: 100;
+    animation: spin 1s infinite;
+  }
+  
+  #loader-1:after{
+    border: 10px solid #ccc;
+  }
+  
+  @keyframes spin{
+    0%{
+      -webkit-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+  
+    100%{
+      -webkit-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  
+  
+  /* tab */
+  * {box-sizing: border-box}
+  
+  /* Set height of body and the document to 100% */
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial;
+  }
+  
+  /* Style tab links */
+  .tablink {
+    background-color: #6C3483 ;
+    color: whitesmoke;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 20%;
+  }
+  
+  .tablink:hover {
+    background-color: #B3E5FC;
+  }
+  
+  /* Style the tab content (and add height:100% for full page content) */
+  .tabcontent {
+    color: black;
+    display: none;
+    padding: 100px 20px;
+    height: 100%;
+  }
+  
+  #Home {background-color: #B3E5FC;}
+  #News {background-color: #B3E5FC;}
+  #Contact {background-color: #B3E5FC;}
+  #About {background-color: #B3E5FC;}
+  
+  
+  
+  
+  /* Just for styling */
+  .styling {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    /* height: 150px;
+    overflow: auto; */
+  }
+  table, th, td {
+    border: 1px solid black;
+  }
+  table {
+  text-align: left;
+  position: relative;
+  border-collapse: collapse; 
+}
+  th {
+  background: white;
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
+  /* .fixed_header{
+      width: 400px;
+      table-layout: fixed;
+      border-collapse: collapse;
+  }
+  
+  .fixed_header tbody{
+    display:block;
+    width: 100%;
+    overflow: auto;
+    height: 100px;
+  } */
+  
+  /* .fixed_header thead tr {
+     display: block;
+  }
+  
+  .fixed_header thead {
+    background: #314261;
+    color:#6C3483 ;
+  }
+  
+  .fixed_header th, .fixed_header td {
+    padding: 5px;
+    text-align: left;
+    width: 200px;
+  } */
+    div.round1 {
+    border: 2px solid #6C3483 ;
+    border-radius: 5px;
+    }
+    body {
+      background-color: rgb(252, 250, 255);
+      font: 400 15px Lato, Lato;
+      line-height: 1.8;
+      color: #210b3a;
+    }
+    h2 {
+      font-size: 24px;
+      text-transform: uppercase;
+      color: #303030;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+    h4 {
+      font-size: 19px;
+      line-height: 1.375em;
+      color: #303030;
+      font-weight: 400;
+      margin-bottom: 30px;
+    }  
+    .jumbotron {
+      background-color: #f4511e;
+      color: #fff;
+      padding: 25px 25px;
+      font-family: times, serif;
+    }
+    .bg-grey {
+      background-color: #f6f6f6;
+    }
+    .thumbnail {
+      padding: 0 0 15px 0;
+      border: none;
+      border-radius: 0;
+    }
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      margin-bottom: 10px;
+    }
+    .carousel-control.right, .carousel-control.left {
+      background-image: none;
+      color: #f4511e;
+    }
+    .carousel-indicators li {
+      border-color: #f4511e;
+    }
+    .carousel-indicators li.active {
+      background-color: #f4511e;
+    }
+    .item h4 {
+      font-size: 19px;
+      line-height: 1.375em;
+      font-weight: 400;
+      font-style: italic;
+      margin: 70px 0;
+    }
+    .item span {
+      font-style: normal;
+    }
+    .panel {
+      border: 1px solid #6C3483 ; 
+      border-radius:0 !important;
+      transition: box-shadow 0.5s;
+    }
+    .panel:hover {
+      box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+    }
+    .panel-footer .btn:hover {
+      border: 1px solid #6C3483 ;
+      background-color: #fff !important;
+      color: #6C3483 ;
+    }
+    .panel-heading {
+      color: #fff !important;
+      background-color: #6C3483  !important;
+      padding: 25px;
+      border-bottom: 1px solid transparent;
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .panel-footer {
+      background-color: white !important;
+    }
+    .panel-footer h3 {
+      font-size: 32px;
+    }
+    .panel-footer h4 {
+      color: #aaa;
+      font-size: 14px;
+    }
+    .panel-footer .btn {
+      margin: 15px 0;
+      background-color: #f4511e;
+      color: #fff;
+    }
+    .navbar {
+      margin-bottom: 0;
+      background-color: #6C3483 ;
+      z-index: 9999;
+      border: 0;
+      font-size: 12px !important;
+      line-height: 1.42857143 !important;
+      letter-spacing: 4px;
+      border-radius: 0;
+      font-family: Arial;
+    }
+    .navbar li a, .navbar .navbar-brand {
+      color: black !important;
+    }
+    .navbar-nav li a:hover, .navbar-nav li.active a {
+      color: #6C3483  !important;
+      background-color: #fff !important;
+    }
+    .navbar-default .navbar-toggle {
+      border-color: transparent;
+      color: #fff !important;
+    }
+    footer .glyphicon {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #f4511e;
+    }
+  
+    @keyframes slide {
+      0% {
+        opacity: 0;
+        transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        transform: translateY(0%);
+      }
+    }
+    @-webkit-keyframes slide {
+      0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .col-sm-4 {
+        text-align: center;
+        margin: 25px 0;
+      }
+      .btn-lg {
+        width: 100%;
+        margin-bottom: 35px;
+      }
+    }
+    @media screen and (max-width: 480px) {
+      .logo {
+        font-size: 150px;
+      }
+    }
+</style>
+<div class="container">
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <br>
+        <span style="font-size:30px;cursor:pointer; color:white;" onclick="openNav()">&#9776; Menu</span>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <label id="username" style="padding-top: 15px; font-size:30px;cursor:pointer; color:white;">Hi <%= user %>!</label>
+      </ul>
+    </div>
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="/AM/inventory">total inventory</a>
+      <a href="/AM/upload">update machine</a>
+    </div>
+  </nav>
+</div>
+</head>
+<div id="main" onclick="closeNav()">
+<body class="container" style="margin: 1px auto; width: 100%;">
+    <br>
+    <br>
+    <div class="container" style="margin: 1px auto; width: 100%;">
+      <div class="container" style="margin: 1px auto; width: 100%;">
+        <div class="col-md-9">
+          <h2> UPDATE MACHINE INVENTORY BY LOADING EXCEL FILE</h2>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"  style="display: none;">
+          <h1 ><a id="refresh_link" href="#">refresh page</a></h1>
+        </div>
+      </div>
+    </div>
+    <div class="loader" id="loader-1" style="display: none; margin: 5px auto;"></div>
+  <!-- nhập thông tin nhóm chuyền , ca và mã hàng -->
+    <div class="row" style="border: 2px solid rgb(43, 39, 39); border-radius: 5px;">
+      <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-3" style="margin-right: 0px;">
+            <label for="file" style="margin-right: 0px;margin-top: 10px; text-align: right; font-size: 20px;">Click =>> chose file =>> update:</label>
+        </div>
+
+          <div class="col-md-1" style="margin-left: 0px;">
+            <form style="margin-left: 0px;" id="upload_form" method='POST' action='CCS/Upload_New_PR' submit='return false;'>
+              <input type='file' name='file' id='file' style='display: none;'>
+              <input type='submit' id='submit' style='display: none;'>
+              <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--6dp" id="btn_upload_new_PR" 
+                  style="margin-left: 0px; background-color: rebeccapurple;">
+                  <i class="material-icons">upload</i>
+              </button>
+            </form>
+          </div>      
+      </div>
+    </div>
+    <br>
+    <!-- table information -->
+    <div class="row">
+      
+      <div class="row" >
+        <style>
+            a {
+              text-decoration: none;
+              display: inline-block;
+              padding: 16px 16px;
+            }
+  
+            a:hover {
+              background-color: #ddd;
+              color: rebeccapurple;
+            }
+  
+        </style>
+        <div class="col-md-6"><p><strong id="text_result" style="color: #4B0082; font-family: Arial; font-size: x-large;">detail data from file update:</strong></p></div>
+        <div class="col-md-1" id="select_page" style="display: none;">
+          <div class="col-md-4">
+            <a href="#" onclick="pre_page()"><<</a>
+          </div>
+          <div class="col-md-4"  style="padding-top: 10px;"><label id="trang" style="padding-left: 15px; text-align: center;">1</label></div>
+          <div class="col-md-4">
+            <a href="#"  onclick="next_page()">>></a>
+          </div>
+        </div>
+
+      </div>
+          <div class="row" style="width:100%; margin-left: auto; margin-right: auto;">
+            <div class="table-responsive" style="height: 415px; width: 100%; margin-left: auto; margin-right: auto;">
+              <table id="ds_content" class="table" style="margin-left: auto; margin-right: auto;" ondblclick="change_HC()">
+                <!-- <table id="table_content"> style="height: 310px;" week,groupcbc,shift,style,size,output,eff,rate,headcount,ie_cbc -->
+                <thead>
+                  <tr >
+                    <th>No.</th>
+                    <th>ASSET</th>
+                    <th>COMPANY</th>
+                    <th>LAWPROD_ASSET_DESC</th>
+                    <th>LOCATION</th>
+                    <th>LAWPROD_AMLOCATION_DESCRIPTION</th>
+                    <th>ITEM_TOT_QTY</th>
+                    <th>DIVISION</th>
+                    <th>ACCT_UNIT</th>
+                    <th>INSRV_DATE</th>
+                    <th>SERIAL_NUMBER</th>
+                    <th>LIFE</th>
+                    <th>LIFE_REM</th>
+                    <th>MODEL_NUMBER</th>
+                    <th>TAG_NBR</th>
+                    <th>CREATION_DATE</th>
+                    <th>BOOK_BASIS</th>
+                    <th>Net_Book_Value</th>
+                    <th>CURRENCY_CODE</th>
+                    <th>STATUS</th>
+                    <th>IN_USE_STATUS</th>
+                  </tr>
+                </thead>  
+                <tbody style="height: 395px; overflow: auto;">
+                  
+                </tbody>
+              </table>
+            </div>
+            <br>
+          </div>
+    </div>
+
+
+
+
+  <script>
+    var form=document.getElementById('upload_form');
+    form.addEventListener('submit', e=>{
+        e.preventDefault();
+        return false;
+    })
+    document.getElementById('btn_upload_new_PR').addEventListener('click', function(){
+        document.getElementById('file').click();
+        document.getElementById('file').onchange=function(){
+            if (document.getElementById('file').value!='') document.getElementById('submit').click();
+        }
+        var form=document.getElementById('upload_form');
+        form.addEventListener('submit', e=>{
+            if (document.getElementById('file').value!=''){
+                e.preventDefault();
+                var xsend=new XMLHttpRequest();
+                xsend.onreadystatechange=function(){
+                    if (this.readyState==4 && this.status==200){
+                        //done
+                        result=xsend.responseText;
+                        // console.log(result);
+                        if (result!='error'){
+                            alert('File inventory have been updated!');
+                            var js2=JSON.parse(result)
+                            sessionStorage.setItem('list_mc',js2.list);
+                            ds=JSON.parse(js2.list)
+                            // console.log(ds)
+                            console.log(ds.length)
+                            ttdt=""
+                            if (ds.length>0){
+                              for (i=0;i<50;i++){
+                                ttdt+='<tr class="w3-sand"><td >'+ (i+1) +'</td><td >'+ ds[i].a1 + '</td><td >' + ds[i].a2 + '</td><td >' +  ds[i].a3
+                                ttdt+='</td><td >' + ds[i].a4+'</td><td >' + ds[i].a5+'</td><td >' +ds[i].a6+'</td><td >'+ds[i].a7
+                                ttdt+='</td><td >' +  ds[i].a8+'</td><td >' + ds[i].a9+'</td><td >' + ds[i].a10
+                                ttdt+='</td><td >' + ds[i].a11+'</td><td >' + ds[i].a12+'</td><td >' + ds[i].a13 +'</td><td >' + ds[i].a14+'</td><td >'+ ds[i].a15+'</td><td >'+ ds[i].a16+'</td><td >'
+                                ttdt+= ds[i].a17+'</td><td >'+ ds[i].a18+'</td><td >'+ ds[i].a19+'</td><td >' + ds[i].a20+'</td></tr>';
+                              }
+                              
+                            }
+                            $('#ds_content tbody').html(ttdt)
+                            console.log(ttdt)
+                            document.getElementById("select_page").style.display="inline";
+                        } else {
+                            alert('Something went wront, please check file again!');
+                        }
+                    }
+                }
+                var fileInput=document.getElementById('file');
+                var file;
+                file=fileInput.files[0];
+                console.log(file['name']);
+                var formData=new FormData();
+                formData.append('file', file);
+                if (file!=null){
+                    xsend.open('POST', '/AM/Upload_excel_File', true);
+                    xsend.send(formData);
+                }
+            }
+            return false;
+        })
+
+    })
+  </script>
+  <script type="text/javascript">
+      function pre_page(){
+        var ds=JSON.parse(sessionStorage.getItem('list_mc'));
+        var page=parseInt(document.getElementById("trang").innerText)
+        ttdt=""
+        if (page>1){
+          page=page-1
+          document.getElementById("trang").innerText=page
+          if (ds.length>0){
+            if ((page-1)*50<ds.length){
+              var pgend=ds.length
+              if((page-1)*50+50<ds.length){
+                pgend=(page-1)*50+50
+              }
+              for (i=(page-1)*50;i<pgend;i++){
+              ttdt+='<tr class="w3-sand"><td >'+ (i+1) +'</td><td >'+ ds[i].a1 + '</td><td >' + ds[i].a2 + '</td><td >' +  ds[i].a3
+              ttdt+='</td><td >' + ds[i].a4+'</td><td >' + ds[i].a5+'</td><td >' +ds[i].a6+'</td><td >'+ds[i].a7
+              ttdt+='</td><td >' +  ds[i].a8+'</td><td >' + ds[i].a9+'</td><td >' + ds[i].a10
+              ttdt+='</td><td >' + ds[i].a11+'</td><td >' + ds[i].a12+'</td><td >' + ds[i].a13 +'</td><td >' + ds[i].a14+'</td><td >'+ ds[i].a15+'</td><td >'+ ds[i].a16+'</td><td >'
+              ttdt+= ds[i].a17+'</td><td >'+ ds[i].a18+'</td><td >'+ ds[i].a19+'</td><td >' + ds[i].a20+'</td></tr>';
+              }
+            }
+        }
+        $('#ds_content tbody').html(ttdt)
+        }
+        
+
+      }
+      function next_page(){
+        var ds=JSON.parse(sessionStorage.getItem('list_mc'));
+        console.log(ds)
+        var page=parseInt(document.getElementById("trang").innerText)
+        ttdt=""
+        if ((page)*50<ds.length){
+          page=page+1
+          document.getElementById("trang").innerText=page;
+          if (ds.length>0){
+            if ((page-1)*50<ds.length){
+              var pgend=ds.length
+              if((page-1)*50+50<ds.length){
+                pgend=(page-1)*50+50
+              }
+              console.log(pgend)
+              for (i=(page-1)*50;i<pgend;i++){
+              ttdt+='<tr class="w3-sand"><td >'+ (i+1) +'</td><td >'+ ds[i].a1 + '</td><td >' + ds[i].a2 + '</td><td >' +  ds[i].a3
+              ttdt+='</td><td >' + ds[i].a4+'</td><td >' + ds[i].a5+'</td><td >' +ds[i].a6+'</td><td >'+ds[i].a7
+              ttdt+='</td><td >' +  ds[i].a8+'</td><td >' + ds[i].a9+'</td><td >' + ds[i].a10
+              ttdt+='</td><td >' + ds[i].a11+'</td><td >' + ds[i].a12+'</td><td >' + ds[i].a13 +'</td><td >' + ds[i].a14+'</td><td >'+ ds[i].a15+'</td><td >'+ ds[i].a16+'</td><td >'
+              ttdt+= ds[i].a17+'</td><td >'+ ds[i].a18+'</td><td >'+ ds[i].a19+'</td><td >' + ds[i].a20+'</td></tr>';
+              }
+            }
+        }
+        $('#ds_content tbody').html(ttdt)
+        } else{
+          alert("this is a last page!")
+        }
+
+      }
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "300px";
+        document.getElementById("main").style.marginLeft = "300px";
+        // document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+      }
+
+      /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+      }
+
+
+  </script>
+
+</body>
+</div>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<title>HBI wlot Library</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+h1,h2,h3,h4,h5,h6 {font-family: "Helvetica","Arial",sans-serif;}
+.w3-bar-block .w3-bar-item {padding:20px}
+body{
+  font-family: "Helvetica","Arial",sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  background-image: url("/public/imgbook/bodyBG2.jpg");
+  background-color: #cccccc;
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+.button {
+  transition-duration: 0.4s;
+}
+
+.button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+#container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+#container.rotate90,
+#container.rotate270 {
+  width: 100%;
+  height: 100%;
+}
+#image {
+  transform-origin: top left;
+  /* IE 10+, Firefox, etc. */
+  -webkit-transform-origin: top left;
+  /* Chrome */
+  -ms-transform-origin: top left;
+  /* IE 9 */
+}
+#container.rotate90 #image {
+  transform: rotate(90deg) translateY(-100%);
+  -webkit-transform: rotate(90deg) translateY(-100%);
+  -ms-transform: rotate(90deg) translateY(-100%);
+}
+#container.rotate180 #image {
+  transform: rotate(180deg) translate(-100%, -100%);
+  -webkit-transform: rotate(180deg) translate(-100%, -100%);
+  -ms-transform: rotate(180deg) translateX(-100%, -100%);
+}
+#container.rotate270 #image {
+  transform: rotate(270deg) translateX(-100%);
+  -webkit-transform: rotate(270deg) translateX(-100%);
+  -ms-transform: rotate(270deg) translateX(-100%);
+
+}
+</style>
+<body>
+<!-- Sidebar (hidden by default) -->
+<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:40%;min-width:300px;" id="mySidebar">
+  <a href="javascript:void(0)" onclick="w3_close()"
+  class="w3-bar-item w3-button">Close Menu</a>
+  <a href="/pic/wlot" onclick="w3_close()" class="w3-bar-item w3-button">Tìm kiếm ảnh work_lot</a>
+  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button">Chạy phân tích ảnh Work_lot</a>
+  <a href="/pic/wlot/edit" onclick="w3_close()" class="w3-bar-item w3-button">Sửa ảnh work_lot</a>
+  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button">About</a>
+</nav>
+<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-right" style="display:none;z-index:2;width:30%;min-width:300px; right: 0;" id="mySidebar_right">
+  <a href="javascript:void(0)" onclick="w3_close()"
+  class="w3-bar-item w3-button">Nhập thông tin đăng nhập</a>
+  <div class="w3-container w3-card-4 w3-light-grey">
+    <form id="form_signup" method="GET" style="font-size: 14px;">
+      <label class="w3-left">User Name:</label><br>
+      <input class="w3-input" id="username" name="username" type="text"><br>
+      <label class="w3-left">Pass:</label><br>
+      <input class="w3-input" id="password" name="password" type="password"><br>
+      <button class="w3-btn w3-blue w3-left" onclick="Login()" id="bt_signup">Đăng nhập</button><br>
+      ...
+    </form>
+  </div>
+</nav>
+<!-- Top menu -->
+<div class="w3-top" style="padding-bottom: 0;">
+  <div class="w3-white w3-xlarge" style="width: 100%;;margin:auto">
+    <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+    <a href="#"><div class="w3-right w3-padding-16" style="padding-right: 20px; font-size: 16px;" onclick="open_signup()" id="loginstt"><span class="glyphicon glyphicon-user" style="padding-right: 10px;"></span>Đăng nhập</div></a>
+    <div class="w3-center w3-padding-16">HBI IA work_lot picture lib</div>
+  </div>
+</div>
+  
+<!-- !PAGE CONTENT! -->
+
+<div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px" onclick="w3_close()">
+  <!-- First row-->
+  <div class="w3-row-padding w3-padding-16 w3-center" style="width:100%" id="food">
+    <div class="w3-container w3-card-4 w3-light-grey">
+      <form id="form_wlot_search" method="POST">
+        <h2>Tìm kiếm Work_lot</h2>
+        <label class="w3-left">nhập vào số worklot và nhấn nút tìm kiếm để xem danh sách ảnh:</label><br>
+        <input class="w3-input" id="worklot" name="worklot" type="text"><br>
+        <button class="w3-btn w3-blue w3-left" onclick="wlot_search()">Tìm Kiếm</button>
+      </form>
+      <br>...
+    </div>
+  </div>
+  <div id="spin1" style="display: none;" class="w3-spin w3-center">..</div>
+  <div class="w3-row-padding w3-padding-16 w3-center" style="width:100%" id="food">
+    <table id="table_worklot" class="w3-table-all w3-hoverable" onclick="table_click()">
+        <thead>
+          <tr class="w3-light-grey">
+          <th>wlot_number</th>
+          <th>note</th>
+          <th>link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1234567890</td>
+          <td>demo</td>
+          <td>thang 6/25.6.2020/6.26.2020-10/img-625221845-0026.jpg</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="w3-center" id="div_pic" style ="display: none; position: absolute;top: 450px; width: 1200px; z-index: 1; margin:auto; background-color: bisque;">
+    <form>
+    <button class="w3-btn w3-blue w3-right" onclick="rotate_img()">xoay ảnh</button> 
+    <button class="w3-btn w3-blue w3-left" onclick="hide_div()">Đóng</button>
+    </form>
+    <br>
+    <div class="w3-row" id="container">
+      <img style="width: 90%;height: auto; margin: auto; overflow:scroll;" id="image" src="" alt="" />
+    </div>
+    
+  </div>
+
+  <!-- Pagination -->
+  <div class="w3-center w3-padding-32">
+    <div class="w3-bar">
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
+      <a href="#" class="w3-bar-item w3-black w3-button">1</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer class="w3-row-padding w3-padding-32">
+    <div class="w3-third">
+      <h3>FOOTER</h3>
+      <p>some thing want to write on the footer.</p>
+      <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+    </div>
+  
+
+    <div class="w3-third w3-serif">
+      <h3>POPULAR TAGS</h3>
+      <p>
+        <span class="w3-tag w3-black w3-margin-bottom">Travel</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">New York</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Dinner</span>
+        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Salmon</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">France</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Drinks</span>
+        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Ideas</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Flavors</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Cuisine</span>
+        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Chicken</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Dressing</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Fried</span>
+        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Fish</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Duck</span>
+      </p>
+    </div>
+  </footer>
+
+<!-- End page content -->
+</div>
+
+<script type="text/javascript">
+// Script to open and close sidebar
+var angle = 0,
+img = document.getElementById('container');
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
+function open_signup(){
+  document.getElementById("mySidebar_right").style.display = "block";
+}
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("mySidebar_right").style.display = "none";
+}
+
+function rotate_img(){
+  event.preventDefault();
+  if (angle==360) angle=0;
+  angle = angle + 90;
+  img.className = "rotate" + angle;
+  return;
+}
+
+function hide_div(){
+  event.preventDefault();
+  document.getElementById("div_pic").style.display="none";
+  return;
+}
+
+function wlot_search(){
+          document.getElementById("div_pic").style.display="none";
+          $('#table_worklot tbody').html('')
+          var lotnumber=document.getElementById("worklot").value;
+          event.preventDefault();
+          lotnumber=lotnumber.toString();
+          if (lotnumber==''||lotnumber.length!=10){
+            alert("wlot nhập vào chưa đúng");
+            return;
+          }
+          document.getElementById("spin1").style.display="grid";
+          var frm = $('#form_wlot_search');
+          var main_url="/pic/wlot/search";
+          $.ajax({
+              type: "post",
+              url: main_url,
+              data: frm.serialize(),
+              // headers: {'X-Alt-Referer': referrer },
+              success: function (data) {
+                console.log(data)
+                document.getElementById('spin1').style.display="none";
+                const jsonObject=data;
+                // console.log(jsonObject)
+                ds=jsonObject;
+                if (ds.length==0){
+                  alert(" không có dữ liệu worklot\n vui lòng nhập wlot khác\n thank!")
+                }
+                  else{
+                    var i;
+                    var trHTML_ds='';
+                    for (i = 0; i < ds.length; i++) {
+                      linkqr=ds[i].imglink
+                      linkqr=linkqr.substr(63,linkqr.length)
+                      trHTML_ds += '<tr><td >' + ds[i].wlot + '</td><td >' + ds[i].note + '</td><td >' +linkqr+ '</td></tr>';
+                    };
+                    $('#table_worklot tbody').html(trHTML_ds)
+                  };
+
+                },
+                error: function () {
+                          alert("submit failed")
+                },
+          });
+
+};
+function tableText(tableRow) {
+  var cell = tableRow.getElementsByTagName("td")[2];
+  console.log(cell.innerText)
+  var imglink = cell.innerText;
+  console.log(imglink)
+  var linkst= imglink
+  document.getElementById('spin1').style.display="none";
+  document.getElementById("div_pic").style.display="grid";
+  document.getElementById("image").src="/imglink_temp/"+linkst;
+  // spl=imglink.split("/");
+  // var pic=spl[spl.length-1];
+  // var linkst= imglink.substr(0,imglink.length-pic.length-1)
+  // console.log(linkst)
+  // document.getElementById("text_link").value=linkst;
+  // var frm_dis = $('#form_store_link');
+  // var main_url="/pic/img_static";
+  // $.ajax({
+  //             type: "post",
+  //             url: main_url,
+  //             data: frm_dis.serialize(),
+  //             // headers: {'X-Alt-Referer': referrer },
+  //             success: function (data) {
+  //               console.log(data)
+  //               document.getElementById('spin1').style.display="none";
+  //               if (data=="success"){
+  //                 document.getElementById("div_pic").style.display="grid";
+  //                 document.getElementById("img_detail").src="/imglink_temp/"+pic
+  //               }
+  //                 else{
+  //                   alert("error happen")
+  //                 };
+
+  //               },
+  //               error: function () {
+  //                         alert("submit failed")
+  //               },
+  //     });
+  // document.getElementById("dialog1").click();
+};
+function table_click(){
+  var table = document.getElementById("table_worklot");
+              event.stopImmediatePropagation;
+              if (table) {
+                for (var i = 0; i < table.rows.length; i++) {
+                  table.rows[i].ondblclick = function(e) {
+                    tableText(this);
+                  };
+                };
+              };
+};
+function Login() {
+              event.preventDefault();
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                  var result_login=this.responseText
+                  if (result_login=="success"){
+                    document.getElementById("loginstt").innerText=document.getElementById("username").value;
+                    document.getElementById("username").disabled = true;
+                    document.getElementById("password").disabled = true;
+                    document.getElementById("bt_signup").innerText="Thoát";
+                    w3_close();
+                    alert("bạn đã đăng nhập thành công")
+                  } else{
+                      alert(result_login);
+                  }
+                  }
+                };
+                var login_status=document.getElementById("loginstt").innerText
+                var user_sign_up=document.getElementById("username").value
+                var pass_sign_up=document.getElementById("password").value
+                if (login_status=="Đăng nhập"){
+                    if (user_sign_up==''){
+                    alert('Bạn chưa nhập User');
+                    return;
+                    }
+                    if (pass_sign_up==''){
+                        alert('Bạn chưa nhập password');
+                        return;
+                    }
+                    xhttp.open("get", "/off_reg/login/"+user_sign_up+"/"+pass_sign_up, true);
+                    xhttp.send();
+                } else{
+                    document.getElementById("loginstt").innerText="Đăng nhập";
+                    document.getElementById("username").disabled = false;
+                    document.getElementById("password").disabled = false;
+                    document.getElementById("username").value="";
+                    document.getElementById("password").value="";
+                    document.getElementById("bt_signup").innerHTML="Đăng nhập";
+                    w3_close();
+                }
+                };
+</script>
+
+</body>
+</html>

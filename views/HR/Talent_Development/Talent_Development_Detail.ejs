@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-purple.min.css"> -->
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-indigo.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/JS/getmdl/getmdl-select.min.css"/>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <script defer src="/JS/getmdl/getmdl-select.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <title>Talent Development</title>
+    </header>
+    <body style="background-image: url('../Image/11.jpg'); background-repeat: no-repeat;">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <!-- Title -->
+                    <span class="mdl-layout-title">PROFILE</span>
+                </div>
+                <!-- Tabs -->
+                <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+                    <a href="#scroll-tab-1" class="mdl-layout__tab is-active">PROFILE</a>
+                    <a href="#scroll-tab-2" class="mdl-layout__tab">CV</a>
+                </div>
+            </header>
+            <!-- <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">PROFILE</span>
+            </div> -->
+            <%- include ("partials/Employee_nav.ejs"); -%>
+            <main class="mdl-layout__content">
+                <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+                    <div class="page-content">
+                        <div class="mdl-grid mdl-shadow--6dp" style="width: 210mm; background-color: whitesmoke; padding:0; z-index: 1;  margin-top: 40px;">
+                            <div class="mdl-cell mdl-cell--4-col mdl-shadow--4dp" style="padding: 0; margin: 0; background-color: #3F51B5; ">
+                                <div class="mdl-shadow--6dp" style="width: 200px; height: 200px; border-color: white; border-width: 5px;
+                                 margin: 10px auto; overflow: hidden; border-radius: 100px; z-index: 2; margin-top: 6mm; margin-left: 6mm;">
+                                    <img src="../Image/2.jpg" id="img_avatar1" style="height: 200px;" alt="avatar"></img>
+                                </div>
+                                <div class="mdl-grid" style="margin: 0; padding: 0;">
+                                    <div class="mdl-grid" style="padding: 0; margin:0; width: 100%;">
+                                        <h5 style="margin: 0 auto; color: white;" id="txt_name_profile"></h5>
+                                    </div>
+                                    <div class="mdl-grid" style="padding: 0; margin:0; margin-top: 10px; width: 100%;">
+                                        <div style="margin: 0 auto; color: white;" id="txt_ID_profile"></div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="mdl-grid" style="margin: 0; padding: 0; color: white; margin-top: 15px;">
+                                    <i class="material-icons" style="margin-left: 20px; margin-right: 10px;">card_giftcard</i>
+                                    <div style="font-size: 15px; margin-top: 3px;" id="txt_dob"></div>
+                                </div>
+                                <div class="mdl-grid" style="margin: 0; padding: 0; color: white; margin-top: 15px;">
+                                    <i class="material-icons" style="margin-left: 20px; margin-right: 10px;">check_box</i>
+                                    <div style="font-size: 15px; margin-top: 3px;" id="txt_marriage"></div>
+                                </div>
+                                <div class="mdl-grid" style="margin: 0; padding: 0; color: white; margin-top: 15px;">
+                                    <i class="material-icons" style="margin-left: 20px; margin-right: 10px;">phone</i>
+                                    <div style="font-size: 15px; margin-top: 3px;" id="txt_phone"></div>
+                                </div>
+                                <div class="mdl-grid" style="margin: 0; padding: 0; color: white; margin-top: 15px;">
+                                    <i class="material-icons" style="margin-left: 20px; margin-right: 10px;">location_on</i>
+                                    <div style="font-size: 15px; margin-top: 3px;" id="txt_address"></div>
+                                </div>
+                                <div class="mdl-grid" style="margin: 0; padding: 0; color: white; margin-top: 15px;">
+                                    <i class="material-icons" style="margin-left: 20px; margin-right: 10px;">email</i>
+                                    <div style="font-size: 15px; margin-top: 3px;" id="txt_email"></div>
+                                </div>
+                                <div class="mdl-grid" style="margin: 0; padding: 0; color: white; margin-top: 15px;">
+                                    <i class="material-icons" style="margin-left: 20px; margin-right: 10px;">contact_page</i>
+                                    <div style="font-size: 15px; margin-top: 3px;" id="txt_position_profile"></div>
+                                </div>
+                                <div class="mdl-grid" style="margin: 0; padding: 0; color: white; margin-top: 15px;">
+                                    <i class="material-icons" style="margin-left: 20px; margin-right: 10px;">extension</i>
+                                    <div style="font-size: 15px; margin-top: 3px;" id="txt_dept_profile"></div>
+                                </div>
+                                <div class="mdl-grid" style="margin: 0; padding: 0; color: white; margin-top: 15px;">
+                                    <i class="material-icons" style="margin-left: 20px; margin-right: 10px;">business</i>
+                                    <div style="font-size: 15px; margin-top: 3px;" id="txt_plant_profile"></div>
+                                </div>
+                                <div class="mdl-grid" style="margin: 0; padding: 0; color: white; margin-top: 15px;">
+                                    <i class="material-icons" style="margin-left: 20px; margin-right: 10px;">account_circle</i>
+                                    <div style="font-size: 15px; margin-top: 3px;" id="txt_head_dept"></div>
+                                </div>
+                                <div class="mdl-grid" style="margin: 0; padding: 0; color: white; margin-top: 15px;">
+                                    <i class="material-icons" style="margin-left: 20px; margin-right: 10px;">date_range</i>
+                                    <div style="font-size: 15px; margin-top: 3px;" id="txt_hire"></div>
+                                </div>
+                                <button class="mdl-button mdl-js-button" 
+                                    style="color:white; margin-top: 20px; float: right; margin-right: 20px;" id="btn_personal_infor">
+                                    <i class="material-icons">refresh</i>
+                                    Update
+                                </button>
+                            </div>
+                            <div class="mdl-cell mdl-cell--8-col" style="margin:0; padding: 0;">
+                                <!-- <div style="background-color: gray; margin-top:0; margin-left:0">
+                                    <h3>"If you don't have your own dream, someone will hire you do their."</h3>
+                                </div> -->
+                                <div class="mdl-card mdl-shadow--4dp" style="width: 98%; margin-left: 15px; margin-top: 25px; margin-bottom: 25px;">
+                                    <div class="mdl-card__title" style="background-color: green; color: whitesmoke;">
+                                        <h2 class="mdl-card__title-text">CARRER PROFILE</h2>
+                                    </div>
+                                    <div class="mdl-card__supporting-text" id="div_carrer">
+                                        <!-- <div class="mdl-grid">
+                                            <div class="mdl-cell mdl-cell--4-col" style="color: black;">
+                                                1/2019 - 1/2020
+                                            </div>
+                                            <div class="mdl-cell mdl-cell--8-col" style="color: black;">
+                                                <div>Company:    HanesBrands</div>
+                                                <div>Department: Engineer</div>
+                                                <div>Position:   Lean and Innovation Engineer</div>
+                                                <div>Level:      Non-Exampt</div>
+                                                <div>Contribution:Auto Bind Panel</div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="mdl-grid">
+                                            <div class="mdl-cell mdl-cell--4-col" style="color: black;">
+                                                1/2020 - now
+                                            </div>
+                                            <div class="mdl-cell mdl-cell--8-col" style="color: black;">
+                                                <div>Company:    HanesBrands</div>
+                                                <div>Department: Engineer</div>
+                                                <div>Position:   Senior Lean and Innovation Engineer</div>
+                                                <div>Level:      Non-Exampt</div>
+                                                <div>Contribution:Real Time System</div>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                    <div class="mdl-card__actions mdl-card--border">
+                                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_carrer">
+                                            Add more
+                                        </a>
+                                    </div>
+                                    <!-- <div class="mdl-card__menu">
+                                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                            <i class="material-icons">share</i>
+                                        </button>
+                                    </div> -->
+                                </div>
+                                <div class="mdl-card mdl-shadow--4dp" style="width: 98%; margin-left: 15px; margin-top: 25px;">
+                                    <div class="mdl-card__title" style="background-color: orange; color: whitesmoke;">
+                                        <h2 class="mdl-card__title-text">TRAINING & DEVELOPMENT HISTORY</h2>
+                                    </div>
+                                    <div class="mdl-card__supporting-text" id="div_traning_history">
+                                    </div>
+                                    <div class="mdl-card__actions mdl-card--border">
+                                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_add_training">
+                                            Add more
+                                        </a>
+                                    </div>
+                                    <!-- <div class="mdl-card__menu">
+                                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                            <i class="material-icons">share</i>
+                                        </button>
+                                    </div> -->
+                                </div>
+                                <div class="mdl-card mdl-shadow--4dp" style="width: 98%; margin-left: 15px; margin-top: 25px;">
+                                    <div class="mdl-card__title" style="background-color: indigo; color: whitesmoke;">
+                                        <h2 class="mdl-card__title-text">KEY ACHIEVEMENTS</h2>
+                                    </div>
+                                    <div class="mdl-card__supporting-text" id="div_key_archievement">
+                                        <!-- <div class="mdl-grid">
+                                            <div class="mdl-cell mdl-cell--4-col" style="color: black;">
+                                                Project/Event name
+                                            </div>
+                                            <div class="mdl-cell mdl-cell--8-col" style="color: black;">
+                                                <div>Project goals: </div>
+                                                <div>Description details: </div>
+                                                <div>Time-consuming:      </div>
+                                                <div>Result:</div>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                    <div class="mdl-card__actions mdl-card--border">
+                                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_key_achievement">
+                                            Add more
+                                        </a>
+                                    </div>
+                                    <!-- <div class="mdl-card__menu">
+                                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                            <i class="material-icons">share</i>
+                                        </button>
+                                    </div> -->
+                                </div>
+                                <div class="mdl-card mdl-shadow--4dp" style="width: 98%; margin-left: 15px; margin-top: 25px; margin-bottom: 25px;">
+                                    <div class="mdl-card__title" style="background-color: red; color: whitesmoke;">
+                                        <h2 class="mdl-card__title-text">LEARNING & DEVELOPMENT</h2>
+                                    </div>
+                                    <div class="mdl-card__supporting-text" id="div_development">
+                                        <!-- <div class="mdl-grid">
+                                            <div class="mdl-cell mdl-cell--4-col" style="color: black;">
+                                                Course name
+                                            </div>
+                                            <div class="mdl-cell mdl-cell--8-col" style="color: black;">
+                                                <div>Qualification: </div>
+                                                <div>Expected timeline:      </div>
+                                                <div>L& D update:</div>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                    <div class="mdl-card__actions mdl-card--border">
+                                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_development">
+                                            Add more
+                                        </a>
+                                    </div>
+                                    <!-- <div class="mdl-card__menu">
+                                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                            <i class="material-icons">share</i>
+                                        </button>
+                                    </div> -->
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+                    <div class="page-content">
+                        <div class="mdl-grid">
+                            <div style="margin:10px auto;">
+                                <label for="file" id="lable_file"><i class="material-icons" style="margin:0px auto; color:indigo; vertical-align: middle; cursor: pointer;">attach_file</i></label>
+                                <div class="mdl-tooltip" data-mdl-for="lable_file" style="font-size: 11px;">Choose Profile</div>
+                                <form id='upload_form_attach' method='POST' action='/Employee/Upload_Talent_Attach_Profile' style="width: fit-content; display: none;">
+                                    <input type='file' name='file' id='file' style="display: none;" onchange="load_file_attach(this)">
+                                    <input type='submit' id='submit' style='display: none;'>
+                                </form>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-left: 10px;">
+                                    <input class="mdl-textfield__input" type="text" id="txt_attach_link" disabled>
+                                    <label class="mdl-textfield__label" for="txt_attach_link">Attach File</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-grid" style="margin: 10px auto; width: 90%; height: 80vh;">
+                        <embed id="pdf_talent" width="90%" height="100%" style="margin: 10px auto;"/>
+                        <!-- src="../Assets/HR/NVXS&TTXS_2020.pdf" -->
+                    </div>
+                </section>
+            </main>
+        </div>
+    </body>
+    <dialog id="dialog_personal_infor" style="border:none; padding: 0; border-radius: 10px;">
+        <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="border-radius: 10px;">
+            <div class="mdl-card__title" style="background-color: teal; color: white;">
+                <h2 class="mdl-card__title-text">Personal Information</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="date" id="txt_p_DoB" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_DoB">Date of Birth</label>
+                </div>
+                <div id="div_cbb_marriage" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
+                    <input type="text" value="" class="mdl-textfield__input" id="cbb_marriage" readonly style="color: black;">
+                    <input type="hidden" value="" name="cbb_marriage">
+                    <label for="cbb_marriage" class="mdl-textfield__label">Marriage Status</label>
+                    <ul for="cbb_marriage" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-shadow--8dp" id="list_cbb_marriage">
+                        <li class="mdl-menu__item" data-val="Single">Single</li>
+                        <li class="mdl-menu__item" data-val="Married">Married</li>
+                    </ul>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="tel" id="txt_p_phone" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_p_phone">Mobile Phone</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_p_address" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_p_address">Address</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="email" id="txt_p_email" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_p_email">Email</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_p_position" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_p_position">Position Title</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_p_dept" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_p_dept">Department</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_p_plant" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_p_plant">Plant</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_p_head_dept" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_p_head_dept">Head Department</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="date" id="txt_p_hire" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_p_hire">Hire Date</label>
+                </div>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_update_personal_infor_dialog">
+                    <i class="material-icons">west</i>
+                    Update
+                </a>
+            </div>
+            <div class="mdl-card__menu">
+                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="btn_close_personal_infor" style="background-color: red; color: white">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="dialog_training_history" style="border:none; padding: 0; border-radius: 10px;">
+        <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="border-radius: 10px; width: 400px;">
+            <div class="mdl-card__title" style="background-color: teal; color: white;">
+                <h2 class="mdl-card__title-text">Training & Development History</h2>
+            </div>
+            <div class="mdl-card__supporting-text" style="margin-left: 20px;">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_t_course" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_t_course">Course Name</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_t_provider" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_t_provider">Traing Provider</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="date" id="txt_t_timeFrom" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_t_timeFrom">Start Course</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="date" id="txt_t_timeTo" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_t_timeTo">Finish Course</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_t_result" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_t_result">Result</label>
+                </div>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_add_training_history_dialog">
+                    <i class="material-icons">west</i>
+                    Update
+                </a>
+            </div>
+            <div class="mdl-card__menu">
+                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" 
+                style="background-color: red; color: white;" id="btn_close_training_history">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="dialog_key_achievement" style="border:none; padding: 0; border-radius: 10px;">
+        <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="border-radius: 10px; width: 400px;">
+            <div class="mdl-card__title" style="background-color: teal; color: white;">
+                <h2 class="mdl-card__title-text">Key Achievements</h2>
+            </div>
+            <div class="mdl-card__supporting-text" style="margin-left: 20px;">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_k_project" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_k_project">Project/Event Name</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_k_goal" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_k_goal">Project/Event Goals</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield">
+                    <textarea class="mdl-textfield__input" type="text" rows= "5" id="txt_k_description" ></textarea>
+                    <label class="mdl-textfield__label" for="txt_k_description">Description</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="date" id="txt_k_startTime" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_k_startTime">Start</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="date" id="txt_k_finishTime" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_k_finishTime">Finish</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_k_result" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_k_result">Result</label>
+                </div>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_add_key_achievement_dialog">
+                    <i class="material-icons">west</i>
+                    Update
+                </a>
+            </div>
+            <div class="mdl-card__menu">
+                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" 
+                style="background-color: red; color: white;" id="btn_close_key_achievement">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="dialog_development" style="border:none; padding: 0; border-radius: 10px;">
+        <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="border-radius: 10px; width: 400px;">
+            <div class="mdl-card__title" style="background-color: teal; color: white;">
+                <h2 class="mdl-card__title-text">Learning and Development</h2>
+            </div>
+            <div class="mdl-card__supporting-text" style="margin-left: 20px;">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_d_course" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_d_course">Course</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_d_qualification" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_d_qualification">Qualification</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="date" id="txt_d_startTime" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_d_startTime">Start</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="date" id="txt_d_finishTime" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_d_finishTime">Finish</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield">
+                    <textarea class="mdl-textfield__input" type="text" rows="5" id="txt_d_update" ></textarea>
+                    <label class="mdl-textfield__label" for="txt_d_update">Update status</label>
+                </div>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_development_dialog">
+                    <i class="material-icons">west</i>
+                    Update
+                </a>
+            </div>
+            <div class="mdl-card__menu">
+                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" 
+                style="background-color: red; color: white;" id="btn_close_development">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="dialog_carrer" style="border:none; padding: 0; border-radius: 10px;">
+        <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="border-radius: 10px; width: 400px;">
+            <div class="mdl-card__title" style="background-color: teal; color: white;">
+                <h2 class="mdl-card__title-text">Carrer Profile</h2>
+            </div>
+            <div class="mdl-card__supporting-text" style="margin-left: 20px;">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="date" id="txt_c_startTime" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_c_startTime">Start</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="date" id="txt_c_finishTime" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_c_finishTime">Finish</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_c_company" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_c_company">Company</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_c_department" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_c_department">Department</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_c_position" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_c_position">Position</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="txt_c_level" style="color: black;">
+                    <label class="mdl-textfield__label" for="txt_c_level">Level</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield">
+                    <textarea class="mdl-textfield__input" type="text" rows="5" id="txt_c_contribute" ></textarea>
+                    <label class="mdl-textfield__label" for="txt_c_contribute">Job Contribution</label>
+                </div>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_carrer_dialog">
+                    <i class="material-icons">west</i>
+                    Update
+                </a>
+            </div>
+            <div class="mdl-card__menu">
+                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" 
+                style="background-color: red; color: white;" id="btn_close_carrer">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+        </div>
+    </dialog>
+    <script>
+        get_employee_infor();
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+        var today= localISOTime.substring(0,10);
+        function load_avatar(empID){
+            console.log('../Assets/Employee/Avatar/'+empID+'.jpg')
+            document.getElementById('img_avatar').src='';
+            document.getElementById('img_avatar').src='../Assets/Employee/Avatar/'+empID+'.jpg';
+            document.getElementById('img_avatar1').src='../Assets/Employee/Avatar/'+empID+'.jpg';
+        }
+        var form1=document.getElementById("upload_form_attach");
+        form1.addEventListener("submit", e=>{
+            if (document.getElementById('file').value!=''){
+                e.preventDefault();
+                var xsend=new XMLHttpRequest();
+                xsend.onreadystatechange=function(){
+                    if (this.readyState==4 && this.status==200){
+                        var data=xsend.responseText;
+                        empID=document.getElementById('txt_id').innerHTML;
+                        
+                        if (imageExists("../Assets/Employee/TalentDevelopment/"+empID+'_2020.pdf')) {
+                            // console.log(empID)
+                            // document.getElementById('pdf_talent').src="../Assets/Employee/TalentDevelopment/"+empID+'_2020.pdf';
+                            // document.getElementById('pdf_talent').style.display="grid";
+                            location.reload();
+                        }
+                    }
+                }
+                var fileInput = document.getElementById('file');
+                var file;
+                empID=document.getElementById('txt_id').innerHTML;
+                newName=empID+'_2020.pdf';
+                file=fileInput.files[0];
+                var formData = new FormData();
+                formData.append('file', file, newName);
+                if (file!=null){
+                    xsend.open('POST','/Employee/Upload_Talent_Attach_Profile', true);
+                    xsend.send(formData);
+                }
+            }
+            return false;
+        });
+        function imageExists(image_url){
+            console.log(image_url);
+            var http = new XMLHttpRequest();
+            http.open('HEAD', image_url, false);
+            http.send();
+            return http.status != 404;
+        }
+        function get_employee_infor(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/Employee/Get_Employee_Infor",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                    console.log(result[0]);
+                    // document.getElementById('txt_header').innerHTML=result[0].NAME;
+                    document.getElementById('txt_id').innerHTML=result[0].ID;
+                    load_avatar(result[0].ID);
+                    document.getElementById('txt_name').innerHTML=result[0].NAME;
+                    document.getElementById('txt_dept').innerHTML=result[0].DEPT;
+                    document.getElementById('txt_type').innerHTML=result[0].TYPE;
+                    if (result[0].TYPE!='DR'){
+                        document.getElementById('txt_line').parentNode.parentNode.style.display="none";
+                    } else {
+                        document.getElementById('txt_line').parentNode.parentNode.style.display="inline";
+                        document.getElementById('txt_line').innerHTML=result[0].LINE;
+                    }
+                    document.getElementById('txt_pos').innerHTML=result[0].POSITION;
+                    document.getElementById('txt_line').innerHTML=result[0].LINE;
+                    document.getElementById('txt_shift').innerHTML=result[0].SHIFT;
+                    document.getElementById('txt_plant').innerHTML=result[0].PLANT;
+                    if (imageExists("../Assets/Employee/TalentDevelopment/"+result[0].ID+'_2020.pdf'))
+                    document.getElementById('pdf_talent').src="../Assets/Employee/TalentDevelopment/"+result[0].ID+"_2020.pdf";
+                    load_profile();
+                    load_key_achievement();
+                    load_development();
+                    load_carrer();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={ID: ''}
+            xsend.send(JSON.stringify(data));
+        }
+        function get_personal_infor(){
+            document.getElementById('txt_p_DoB').value=document.getElementById('txt_dob').innerHTML;
+            document.getElementById('txt_p_DoB').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_p_phone').value=document.getElementById('txt_phone').innerHTML;
+            document.getElementById('txt_p_phone').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_p_address').value=document.getElementById('txt_address').innerHTML;
+            document.getElementById('txt_p_address').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_p_email').value=document.getElementById('txt_email').innerHTML;
+            document.getElementById('txt_p_email').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_p_position').value=document.getElementById('txt_position_profile').innerHTML;
+            document.getElementById('txt_p_position').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_p_dept').value=document.getElementById('txt_dept_profile').innerHTML;
+            document.getElementById('txt_p_dept').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_p_plant').value=document.getElementById('txt_plant_profile').innerHTML;
+            document.getElementById('txt_p_plant').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_p_head_dept').value=document.getElementById('txt_head_dept').innerHTML;
+            document.getElementById('txt_p_head_dept').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_p_hire').value=document.getElementById('txt_hire').innerHTML;
+            document.getElementById('txt_p_hire').parentNode.classList.add('is-dirty');
+            console.log(document.getElementById('txt_marriage').innerHTML)
+            $('ul[for="cbb_marriage"] li[data-val="'+document.getElementById('txt_marriage').innerHTML+'"]').attr("data-selected", "true");
+            getmdlSelect.init('#div_cbb_marriage');
+        }
+        function load_file_attach(x) {
+            document.getElementById('txt_attach_link').value=x.files.item(0).name;
+            document.getElementById('txt_attach_link').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_attach_link').blur();
+            document.getElementById('submit').click();
+            document.getElementById('txt_attach_file').value="Hello ";
+        }       
+        //=====Date Format
+        function get_date_format(date_raw, format='yyyy-mm-dd'){
+            date=(new Date(date_raw)).toLocaleString("en-US", {timeZone: "Asia/Bangkok"}).split(', ')[0];
+            console.log(date)
+            month=date.split('/')[0];
+            if (month.length==1) month='0'+month;
+            day=date.split('/')[1];
+            if (day.length==1) day='0'+day;
+            year=date.split('/')[2];
+            if (format=='yyyy-mm') return month+'/'+year;
+            return year+'-'+month+'-'+day
+        }
+        //=====Modify Information
+        function modify_carrer(x){
+            empID=document.getElementById('txt_ID_profile').innerHTML;
+            year ='2021'
+            start_date=x.childNodes[0].childNodes[0].innerHTML.split('<br>')[0]
+            IDKey=empID+start_date+year;
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/HR/Load_Employee_Talent_Carrer_Detail",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={IDKey: IDKey};
+            xsend.send(JSON.stringify(data));
+        }
+        //=====Load Information
+        function load_profile(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/HR/Load_Employee_Talent_Spec",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                    document.getElementById('txt_name_profile').innerHTML=result[0].Name;
+                    document.getElementById('txt_ID_profile').innerHTML  =result[0].EmpID;
+                    document.getElementById('txt_dob').innerHTML         =get_date_format(result[0].DateOfBirth);
+                    document.getElementById('txt_marriage').innerHTML    =result[0].MarriageStatus
+                    document.getElementById('txt_phone').innerHTML       =result[0].MobilePhone
+                    document.getElementById('txt_address').innerHTML     =result[0].Address
+                    document.getElementById('txt_email').innerHTML       =result[0].Email
+                    document.getElementById('txt_position_profile').innerHTML    =result[0].Position
+                    document.getElementById('txt_dept_profile').innerHTML        =result[0].Department
+                    document.getElementById('txt_plant_profile').innerHTML       =result[0].Plant
+                    document.getElementById('txt_head_dept').innerHTML   =result[0].HeadDepartment
+                    document.getElementById('txt_hire').innerHTML        =get_date_format(result[0].HireDate);
+                    load_training_history();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            data={year: '2021'};
+            xsend.send(JSON.stringify(data));
+        }
+        function load_training_history(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/TalentDevelopment/Get_Training_History",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                    console.log(result);
+                    traning_history=document.getElementById('div_traning_history');
+                    while (traning_history.childNodes.length>0)
+                    traning_history.removeChild(traning_history.childNodes[0])
+                    for (var i=0; i<result.length; i++){
+                        div=document.createElement('div');
+                        div.setAttribute('class','mdl-grid');
+                        div_1=document.createElement('div');
+                        div_1.setAttribute('class','"mdl-cell mdl-cell--4-col');
+                        div_1.setAttribute('style','color: black; font-size: 13px; margin-top: 10px;');
+                        div_1.innerHTML='<b>'+result[i].Course+'<b>';
+                        div_2=document.createElement('div');
+                        div_2.setAttribute('class','"mdl-cell mdl-cell--8-col');
+                        div_2.setAttribute('style','color: black;');
+                        div_21=document.createElement('div');
+                        div_21.setAttribute('style','margin-top: 10px;')
+                        div_21.innerHTML='<i style="color: orange">Training Provider:</i> '+result[i].Provider;
+                        div_22=document.createElement('div');
+                        div_22.setAttribute('style','margin-top: 10px;')
+                        div_22.innerHTML='<i style="color: orange">Evaluate:</i> '+result[i].Result;
+                        div_23=document.createElement('div');
+                        div_23.setAttribute('style','margin-top: 10px;')
+                        div_23.innerHTML='<i style="color: orange">Duration:</i> '+result[i].StartTime.split('T')[0]+' - '+result[i].FinishTime.split('T')[0]
+                        div_2.appendChild(div_21);
+                        div_2.appendChild(div_22);
+                        div_2.appendChild(div_23);
+                        div.appendChild(div_1);
+                        div.appendChild(div_2);
+                        hr=document.createElement('hr')
+                        div.appendChild(hr);
+                        traning_history.appendChild(div)
+                        if (i<result.length-1) traning_history.appendChild(hr)
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send();
+        }
+        function load_key_achievement(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/TalentDevelopment/Get_Key_Achievement_History",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                    console.log(result);
+                    key_archievement=document.getElementById('div_key_archievement');
+                    while (key_archievement.childNodes.length>0)
+                    key_archievement.removeChild(key_archievement.childNodes[0])
+                    for (var i=0; i<result.length; i++){
+                        div=document.createElement('div');
+                        div.setAttribute('class','mdl-grid');
+                        div_1=document.createElement('div');
+                        div_1.setAttribute('class','"mdl-cell mdl-cell--4-col');
+                        div_1.setAttribute('style','color: black; font-size: 13px; margin-top: 10px;');
+                        div_1.innerHTML='<b>'+result[i].ProjectEvent+'</b>';
+                        div_2=document.createElement('div');
+                        div_2.setAttribute('class','"mdl-cell mdl-cell--8-col');
+                        div_2.setAttribute('style','color: black;');
+                        div_21=document.createElement('div');
+                        div_21.setAttribute('style','margin-top: 10px;')
+                        div_21.innerHTML='<i style="color: indigo">Project goals:</i> '+result[i].Target;
+                        div_22=document.createElement('div');
+                        div_22.setAttribute('style','margin-top: 10px;')
+                        div_22.innerHTML='<i style="color: indigo">Description:</i> '+result[i].Description;
+                        div_23=document.createElement('div');
+                        div_23.setAttribute('style','margin-top: 10px;')
+                        div_23.innerHTML='<i style="color: indigo">Duration:</i> '+result[i].StartTime.split('T')[0]+' - '+result[i].FinishTime.split('T')[0]
+                        div_24=document.createElement('div');
+                        div_24.setAttribute('style','margin-top: 10px;')
+                        div_24.innerHTML='<i style="color: indigo">Result:</i> '+result[i].Result;
+                        div_2.appendChild(div_21);
+                        div_2.appendChild(div_22);
+                        div_2.appendChild(div_23);
+                        div_2.appendChild(div_24);
+                        div.appendChild(div_1);
+                        div.appendChild(div_2);
+                        hr=document.createElement('hr')
+                        div.appendChild(hr);
+                        key_archievement.appendChild(div)
+                        if (i<result.length-1) key_archievement.appendChild(hr)
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send();
+        }
+        function load_development(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/TalentDevelopment/Get_Learning_Development",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                    console.log(result);
+                    development=document.getElementById('div_development');
+                    while (development.childNodes.length>0)
+                    development.removeChild(development.childNodes[0])
+                    for (var i=0; i<result.length; i++){
+                        div=document.createElement('div');
+                        div.setAttribute('class','mdl-grid');
+                        div_1=document.createElement('div');
+                        div_1.setAttribute('class','"mdl-cell mdl-cell--4-col');
+                        div_1.setAttribute('style','color: black; font-size: 13px; margin-top: 10px;');
+                        div_1.innerHTML=result[i].Course;
+                        div_2=document.createElement('div');
+                        div_2.setAttribute('class','"mdl-cell mdl-cell--8-col');
+                        div_2.setAttribute('style','color: black;');
+                        div_21=document.createElement('div');
+                        div_21.setAttribute('style','margin-top: 10px;')
+                        div_21.innerHTML='Qualification: '+result[i].Qualification;
+                        div_22=document.createElement('div');
+                        div_22.setAttribute('style','margin-top: 10px;')
+                        div_22.innerHTML='L& D Update: '+result[i].UpdateStatus;
+                        div_23=document.createElement('div');
+                        div_23.setAttribute('style','margin-top: 10px;')
+                        div_23.innerHTML='Duration: '+result[i].StartTime.split('T')[0]+' - '+result[i].FinishTime.split('T')[0]
+                        div_24=document.createElement('div');
+                        div_24.setAttribute('style','margin-top: 10px;')
+                        div_24.innerHTML='Result: '+result[i].Result;
+                        div_2.appendChild(div_21);
+                        div_2.appendChild(div_22);
+                        div_2.appendChild(div_23);
+                        div_2.appendChild(div_24);
+                        div.appendChild(div_1);
+                        div.appendChild(div_2);
+                        hr=document.createElement('hr')
+                        div.appendChild(hr);
+                        development.appendChild(div)
+                        if (i<result.length-1) development.appendChild(hr)
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send();
+        }
+        function load_carrer(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/TalentDevelopment/Get_Carrer_Profile",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=JSON.parse(xsend.responseText);
+                    console.log('Carrer Profile')
+                    console.log(result);
+                    carrer=document.getElementById('div_carrer');
+                    while (carrer.childNodes.length>0)
+                    carrer.removeChild(carrer.childNodes[0])
+                    for (var i=0; i<result.length; i++) {
+                        div=document.createElement('div');
+                        div.setAttribute('ondblclick', 'modify_carrer(this)');
+                        div.setAttribute('class','mdl-grid');
+                        div_1=document.createElement('div');
+                        div_1.setAttribute('class','"mdl-cell mdl-cell--4-col');
+                        div_1.setAttribute('style','color: black; font-size: 13px; margin-top: 10px;');
+                        div_1.innerHTML='<b>'+get_date_format(result[i].StartTime)+'<br>&#8594; '+get_date_format(result[i].FinishTime)+'<b>';
+                        div_2=document.createElement('div');
+                        div_2.setAttribute('class','"mdl-cell mdl-cell--8-col');
+                        div_2.setAttribute('style','color: black;');
+                        div_21=document.createElement('div');
+                        div_21.setAttribute('style','margin-top: 10px;')
+                        div_21.innerHTML='<i style="color: green;">Company:</i> '+result[i].Company;
+                        div_22=document.createElement('div');
+                        div_22.setAttribute('style','margin-top: 10px;')
+                        div_22.innerHTML='<i style="color: green;">Position:</i> '+result[i].Position;
+                        div_23=document.createElement('div');
+                        div_23.setAttribute('style','margin-top: 10px;')
+                        div_23.innerHTML='<i style="color: green;">Level:</i> '+result[i].Level;
+                        div_24=document.createElement('p');
+                        div_24.setAttribute('style','margin-top: 10px;')
+                        div_24.innerHTML='<i style="color: green;">Job Contribute:</i> '+result[i].JobContribute;
+                        div_2.appendChild(div_21);
+                        div_2.appendChild(div_22);
+                        div_2.appendChild(div_23);
+                        div_2.appendChild(div_24);
+                        div.appendChild(div_1);
+                        div.appendChild(div_2);
+                        hr=document.createElement('hr')
+                        div.appendChild(hr);
+                        carrer.appendChild(div)
+                        if (i<result.length-1) carrer.appendChild(hr)
+                    }
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            xsend.send();
+        }
+        //=====Show Dialog
+        document.getElementById('btn_add_training').addEventListener('click', function(){
+            document.getElementById('txt_t_timeFrom').value=today;
+            document.getElementById('txt_t_timeFrom').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_t_timeTo').value=today;
+            document.getElementById('txt_t_timeTo').parentNode.classList.add('is-dirty');
+            document.getElementById('dialog_training_history').showModal();
+        });
+        document.getElementById('btn_personal_infor').addEventListener('click', function(){
+            get_personal_infor();
+            document.getElementById('dialog_personal_infor').showModal();
+        });
+        document.getElementById('btn_key_achievement').addEventListener('click', function(){
+            document.getElementById('txt_k_startTime').value=today;
+            document.getElementById('txt_k_startTime').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_k_finishTime').value=today;
+            document.getElementById('txt_k_finishTime').parentNode.classList.add('is-dirty');
+            document.getElementById('dialog_key_achievement').showModal();
+        });
+        document.getElementById('btn_development').addEventListener('click', function(){
+            document.getElementById('txt_d_startTime').value=today;
+            document.getElementById('txt_d_startTime').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_d_finishTime').value=today;
+            document.getElementById('txt_d_finishTime').parentNode.classList.add('is-dirty');
+            document.getElementById('dialog_development').showModal();
+        });
+        document.getElementById('btn_carrer').addEventListener('click', function(){
+            document.getElementById('txt_c_startTime').value=today;
+            document.getElementById('txt_c_startTime').parentNode.classList.add('is-dirty');
+            document.getElementById('txt_c_finishTime').value=today;
+            document.getElementById('txt_c_finishTime').parentNode.classList.add('is-dirty');
+            document.getElementById('dialog_carrer').showModal();
+        });
+        //=====Update Function
+        function filter_text(text){
+            text=text.replace('"',"`");
+            text=text.replace('/','');
+            text=text.replace('\\','');
+            text=text.replace("'",'`');
+            return text;
+        }
+        function update_personal_infor(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/TalentDevelopment/Update_Personal_Infor",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=xsend.responseText;
+                    alert('Update Personal Infor Done!');
+                    load_profile();
+                    document.getElementById('btn_close_personal_infor').click();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            ID =document.getElementById('txt_id')         .innerHTML;
+            dob=document.getElementById('txt_p_DoB')      .value;
+            mar=document.getElementById('cbb_marriage')   .value;
+            mob=document.getElementById('txt_p_phone')    .value;
+            add=document.getElementById('txt_p_address')  .value;
+            ema=document.getElementById('txt_p_email')    .value;
+            pos=document.getElementById('txt_p_position') .value;
+            dep=document.getElementById('txt_p_dept')     .value;
+            pla=document.getElementById('txt_p_plant')    .value;
+            hea=document.getElementById('txt_p_head_dept').value;
+            hir=document.getElementById('txt_p_hire')     .value;
+            data={ID: ID, dob: dob, mar: mar, mob: mob, add: add, ema: ema, pos: pos, dep: dep, pla: pla, hea: hea, hir: hir}
+            console.log(data)
+            xsend.send(JSON.stringify(data));
+        }
+        function update_training_history(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/TalentDevelopment/Add_Training_History",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=xsend.responseText;
+                    alert('Update Training History Done!');
+                    document.getElementById('btn_close_training_history').click();
+                    load_training_history();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            ID         =document.getElementById('txt_id')        .innerHTML;
+            course     =document.getElementById('txt_t_course')  .value;
+            course=filter_text(course)
+            provider   =document.getElementById('txt_t_provider').value;
+            provider=filter_text(provider)
+            startTime  =document.getElementById('txt_t_timeFrom').value;
+            finishTime =document.getElementById('txt_t_timeTo')  .value;
+            result     =document.getElementById('txt_t_result')  .value;
+            result=filter_text(result);
+            data={ID: ID, course:course, provider: provider, startTime: startTime, finishTime: finishTime, result: result}
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+        function update_key_achievement(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/TalentDevelopment/Add_Key_Achievement_History",true);
+            xsend.onreadystatechange= function(){
+                if (this.readyState==4 && this.status==200) {
+                    result=xsend.responseText;
+                    alert('Update Key Achievement Done!');
+                    document.getElementById('btn_close_key_achievement').click();
+                    load_key_achievement();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            ID         =document.getElementById('txt_id')           .innerHTML;
+            project    =document.getElementById('txt_k_project')    .value;
+            project=filter_text(project)
+            target     =document.getElementById('txt_k_goal')       .value;
+            target=filter_text(target)
+            description=document.getElementById('txt_k_description').value;
+            description=filter_text(description)
+            startTime  =document.getElementById('txt_k_startTime')  .value;
+            finishTime =document.getElementById('txt_k_finishTime') .value;
+            result     =document.getElementById('txt_k_result')     .value;
+            result=filter_text(result)
+            data={ID: ID, projectEvent:project, target: target, description: description, startTime: startTime, finishTime: finishTime, result: result}
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+        function update_development(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/TalentDevelopment/Add_Learning_Development",true);
+            xsend.onreadystatechange= function() {
+                if (this.readyState==4 && this.status==200) {
+                    result=xsend.responseText;
+                    alert('Update Learning and Development Done!');
+                    load_development();
+                    document.getElementById('btn_close_development').click();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            ID            = document.getElementById('txt_id')             .innerHTML;
+            course        = document.getElementById('txt_d_course')       .value;
+            course=filter_text(course)
+            qualification = document.getElementById('txt_d_qualification').value;
+            qualification=filter_text(qualification)
+            startTime     = document.getElementById('txt_d_startTime')    .value;
+            finishTime    = document.getElementById('txt_d_finishTime')   .value;
+            update        = document.getElementById('txt_d_update')       .value;
+            update=filter_text(update)
+            data={ID: ID, course:course, qualification: qualification, startTime: startTime, finishTime: finishTime, update: update}
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+        function update_carrer(){
+            var xsend= new XMLHttpRequest();
+            xsend.open("POST","/TalentDevelopment/Add_Carrer_Profile",true);
+            xsend.onreadystatechange= function() {
+                if (this.readyState==4 && this.status==200) {
+                    result=xsend.responseText;
+                    alert('Update Carrer Profile Done!');
+                    load_carrer();
+                }
+            }
+            xsend.setRequestHeader("Content-type", "application/json");
+            startTime    = document.getElementById('txt_c_startTime') .value;
+            finishTime   = document.getElementById('txt_c_finishTime').value;
+            ID           = document.getElementById('txt_id')          .innerHTML;
+            company      = document.getElementById('txt_c_company')   .value;
+            company=filter_text(company)
+            dept         = document.getElementById('txt_c_department').value;
+            dept=filter_text(dept)
+            position     = document.getElementById('txt_c_position')  .value;
+            position=filter_text(position)
+            level        = document.getElementById('txt_c_level')     .value;
+            level=filter_text(level)
+            jobContribute= document.getElementById('txt_c_contribute').value;
+            jobContribute=filter_text(jobContribute)
+            data={ID: ID, company:company, dept: dept, position: position, startTime: startTime, finishTime: finishTime, level: level, jobContribute: jobContribute}
+            console.log(data);
+            xsend.send(JSON.stringify(data));
+        }
+        //=====Update button Dialog
+        document.getElementById('btn_update_personal_infor_dialog').addEventListener('click', function(){
+            update_personal_infor();
+        });
+        document.getElementById('btn_add_key_achievement_dialog').addEventListener('click', function(){
+            update_key_achievement();
+        });
+        document.getElementById('btn_add_training_history_dialog').addEventListener('click', function(){
+            update_training_history();
+        });
+        document.getElementById('btn_development_dialog').addEventListener('click', function(){
+            update_development();
+        });
+        document.getElementById('btn_carrer_dialog').addEventListener('click', function(){
+            update_carrer();
+        })
+        //=====Close Dialog
+        document.getElementById('btn_close_personal_infor').addEventListener('click', function(){
+            document.getElementById('dialog_personal_infor').close();
+        });
+        document.getElementById('btn_close_key_achievement').addEventListener('click', function(){
+            document.getElementById('dialog_key_achievement').close();
+        });
+        document.getElementById('btn_close_training_history').addEventListener('click', function(){
+            document.getElementById('dialog_training_history').close();
+        });
+        document.getElementById('btn_close_development').addEventListener('click', function(){
+            document.getElementById('dialog_development').close();
+        });
+        document.getElementById('btn_close_carrer').addEventListener('click', function(){
+            document.getElementById('dialog_carrer').close();
+        })
+    </script>
+</html>
