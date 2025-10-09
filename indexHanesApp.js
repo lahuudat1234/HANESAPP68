@@ -3523,7 +3523,7 @@ app.post("/tem-chung/insert-data", function (req, res) {
         }
         sql = ("replace into cutting_system.time_scan"
         + " (keyx, id, name, date, operation, cluster, time_in, shift, time_update)"
-        + " values ('"+keyx+"', '" + req.body.id + "', '" + req.body.name + "', DATE(NOW()),'" + req.body.operation + "','" + req.body.cluster + "', '"+timeUpdate+"','" + req.body.shift + "','"+timeUpdate+"')")
+        + " values ('"+keyx+"', '" + req.body.id + "', '" + req.body.name + "', DATE(NOW()),'" + req.body.operation + "','" + req.body.cluster + "', NOW(),'" + req.body.shift + "', NOW())")
         
         connection.query(sql, function (err, result, fields) {
             if (err) throw err;
@@ -3533,6 +3533,31 @@ app.post("/tem-chung/insert-data", function (req, res) {
         res.end();
     });
 });
+
+// app.post("/tem-chung/insert-data", function (req, res) {
+//     console.log(req.body)
+//     var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+//     var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+//     var timeUpdate = localISOTime.replace(/T/, ' ').replace(/\..+/, '');
+//     var keyx = req.body.id + '_' +  timeUpdate
+//     console.log(keyx)
+//     // return
+//     con5.getConnection(function (err, connection) {
+//         if (err) {
+//             throw err;
+//         }
+//         sql = ("replace into cutting_system.time_scan"
+//         + " (keyx, id, name, date, operation, cluster, time_in, shift, time_update)"
+//         + " values ('"+keyx+"', '" + req.body.id + "', '" + req.body.name + "', DATE(NOW()),'" + req.body.operation + "','" + req.body.cluster + "', '"+timeUpdate+"','" + req.body.shift + "','"+timeUpdate+"')")
+        
+//         connection.query(sql, function (err, result, fields) {
+//             if (err) throw err;
+//         });
+//         connection.release();
+//         res.send('done');
+//         res.end();
+//     });
+// });
 
 app.post("/tem-chung/update_timeout", function (req, res) {
     con5.getConnection(function (err, connection) {
