@@ -19,7 +19,7 @@
             
     </style>
     <body>
-        <form action="/login" method="POST">
+        <form action="/login" method="POST" id="loginForm">
             <div class="demo-card-square mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title mdl-card--expand">
                     <h2 class="mdl-card__title-text" style="text-align: center; margin: 10px auto;">Đăng nhập</h2>
@@ -61,3 +61,16 @@
         }
     </style>
 </html>
+<script>
+    const url = new URL(window.location.href);
+    // Lấy giá trị username và password từ query string
+    const username = url.searchParams.get('username');
+    const password = url.searchParams.get('password');
+    if (username) {
+        // Gán giá trị cho các ô input
+        document.getElementById("username").value = atob(username); // Thay bằng tên đăng nhập mong muốn
+        document.getElementById("password").value = atob(password); // Thay bằng mật khẩu mong muốn
+        // Tự động submit form
+        document.getElementById("loginForm").submit();
+    }
+</script>
