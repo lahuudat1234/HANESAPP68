@@ -3516,7 +3516,11 @@ app.post("/tem-chung/insert-data", function (req, res) {
     var timeUpdate = localISOTime.replace(/T/, ' ').replace(/\..+/, '');
     var keyx = req.body.id + '_' +  timeUpdate
     console.log(keyx)
-    // return
+    if (req.body.id == '') {
+        res.send('error');
+        res.end();
+        return
+    }
     con5.getConnection(function (err, connection) {
         if (err) {
             throw err;
